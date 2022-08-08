@@ -11,9 +11,11 @@ public class ReserveVO {
 	
 	// gd
 	private int gd_no; // 가드너 no
+	private String gd_id; // 가드너 id
 	private String gd_major; // 가드너 주요 종목
 	private String gd_ableaddr; // 가드너 출장가능지역
 	private String gd_name; // 가드너 이름
+	private String gd_hp; // 가드너 연락처
 	
 	// user 
 	private int user_no; // 유저 no
@@ -24,6 +26,7 @@ public class ReserveVO {
 	private String review; // 리뷰 내용
 	private double star; // 별점
 	private String review_answer; // 리뷰 답글
+	private Timestamp review_answerdate; // 답변 남긴시간
 	
 	// 예약
 	private int reserve_no; // 예약번호
@@ -31,7 +34,8 @@ public class ReserveVO {
 	private int reserve_hour; // 예약 시간
 	private String reserve_etc; // 예약 특이사항
 	private Timestamp reserve_time; // 예약한 시간
-	private int reserve_pay;
+	private int reserve_pay; // 결제여부 0 또는 1
+	
 	
 	//케어종목가격
 	private int major_no; // 케어종목 번호
@@ -69,17 +73,23 @@ public class ReserveVO {
 	// 검색
 	private String stype; // 검색타입
 	private String sword; // 검색어
+	private int dateStart; // 검색기준 시작일
+	private int dateEnd; // 검색기준 종료일
+	private int reviewCount; // 리뷰 수
+	private int starAverage; // 평균별점
+	private int cancelCount; // 취소 수
+	private int reserveCount; // 예약 수
+	
 	
 	// 체크박스
 	private String reserveSaerch1; // 검색조건 : 케어종목
 	private String reserveSaerch2; // 검색조건 : 출장가능주소
 	private String reserveSaerch3; // 검색조건 : 가드너 이름
 	
-	// 정렬 카테고리
-	private String category;
+	// 정렬
+	private String category; // 정렬관련 카테고리 
+	private int rnum;
 	
-	// 
-	private int dateStart;
-	private int dateEnd;
+
 
 }

@@ -1,60 +1,138 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plant.reserve.ReserveMapper">
-	
+	   
 	<select id="searchGd" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
-			*
-			, (SELECT count(review) cnt_a FROM review rv WHERE rv.gd_no = g.gd_no) as a
-			, (SELECT (sum(star)/count(star)) cnt_b FROM review rv WHERE rv.gd_no = g.gd_no) as b
-			, (SELECT count(cancel_no) cnt_c FROM Cancel c WHERE c.gd_no = g.gd_no) as c
-			, (SELECT (count(review)-c.cnt_c) cnt_d FROM reservation rsv WHERE rsv.gd_no = g.gd_no) as d
-		FROM 
-      		gd g INNER JOIN reservable r ON g.gd_no = r.gd_no 
-		WHERE reservable_do = 1
-		<where>
-			<if test="dateStart != null and dateStart != '' and dateEnd != null and dateEnd != ''">
-				AND (r.reservable_date BETWEEN #{dateStart} AND #{dateEnd})
-				<if test="stype != null and stype != ''">
-					<if test="reserveSaerch1 != null and reserveSaerch1 !=''">
-						AND g.gd_major Like '%${reserveSaerch1}%'
-					</if>
-					<if test="reserveSaerch2 != null and reserveSaerch2 !=''">
-						AND g.gd_ableaddr Like '%${reserveSaerch2}%'
-					</if>
-					<if test="reserveSaerch3 != null and reserveSaerch3 !=''">
-						AND g.gd_name = #{reserveSaerch3}
-					</if>
+			g.gd_no
+			, g.gd_id
+			, g.gd_name
+			, g.gd_hp
+			, g.gd_major
+			, r.reservable_date
+			, r.reservable_hour
+			, r.reservable_major
+			<if test="category != null and category != ''">
+				<if test="category == 'manyReview' or category == 'littleReview'">
+					, (SELECT 
+						count(review) 
+					FROM
+						review
+					WHERE
+						gd_no = #{gd_no}) as reviewCount
+				</if>
+				<if test="category == 'highStar' or category == 'lowStar'">
+					, (SELECT
+							(sum(star)/count(star))
+					FROM 
+						review
+					WHERE
+						gd_no = #{gd_no}) as starAverage
+				</if>
+				<if test="category == 'manyCancel' or category == 'littleCancel'">
+					, (SELECT 
+						count(cancel_no)
+					FROM 
+						cancel
+					WHERE
+						gd_no = #{gd_no}) as cancelCount
+				</if>
+				<if test="category == 'manyReserve' or category == 'littelReserve'">
+					, (SELECT 
+							(count(rsv.reserve_no)-
+								(SELECT 
+									count(cancel_no) 
+								FROM
+									cancel c 
+								WHERE 
+									gd_no = #{gd_no}
+								)
+							)
+						FROM
+							reservation rsv 
+						WHERE 
+							rsv.gd_no = #{gd_no}) as reserveCount
 				</if>
 			</if>
-			ORDER BY 
-			<if test="category != null and category != ''">
-				<if test="category = 'manyReview'">
-					ORDER BY a.cnt_a DESC
+		FROM 
+      		gd g
+      	INNER JOIN 
+      		(
+      			SELECT 
+      				ra.reservable_no
+					, ra.gd_no
+					, ra.reservable_date
+					, ra.reservable_hour
+					, ra.reservable_do
+					, rm.reservable_major 
+      			FROM 
+      				reservable ra 
+      			INNER JOIN 
+      				reservableMajor rm 
+      			ON 
+      				ra.reservable_no = rm.reservable_no 
+      		) as r
+      	ON
+      		g.gd_no = r.gd_no 
+		<where>
+			reservable_do = 0
+			<if test="dateStart != null and dateStart != '' and dateEnd != null and dateEnd != ''">
+				AND (r.reservable_date BETWEEN #{dateStart} AND #{dateEnd})
+				<if test="reserveSaerch1 != null and reserveSaerch1 !=''">
+					AND r.reservable_major Like '%${reserveSaerch1}%'
 				</if>
-				<if test="category = 'littleReview'">
-					ORDER BY a.cnt_a ASC
+				<if test="reserveSaerch2 != null and reserveSaerch2 !=''">
+					AND g.gd_ableaddr Like '%${reserveSaerch2}%'
 				</if>
-				<if test="category = 'highStar'">
-					ORDER BY b.cnt_b DESC
-				</if>
-				<if test="category = 'lowStar'">
-					ORDER BY b.cnt_b ASC
-				</if>
-				<if test="category = 'manyCancel'">
-					ORDER BY c.cnt_c DESC
-				</if>
-				<if test="category = 'littleCancel'">
-					ORDER BY c.cnt_c ASC
-				</if>
-				<if test="category = 'manyReserve'">
-					ORDER BY d.cnt_d DESC
-				</if>
-				<if test="category = 'littleReserve'">
-					ORDER BY d.cnt_d ASC
+				<if test="reserveSaerch3 != null and reserveSaerch3 !=''">
+					AND g.gd_name = #{reserveSaerch3}
 				</if>
 			</if>
 		</where>
+			<if test="category != null and category != ''">
+				<if test="category == 'manyReview'">
+					ORDER BY reviewCount DESC
+				</if>
+				<if test="category == 'littleReview'">
+					ORDER BY reviewCount ASC
+				</if>
+				<if test="category == 'highStar'">
+					ORDER BY starAverage DESC
+				</if>
+				<if test="category == 'lowStar'">
+					ORDER BY starAverage ASC
+				</if>
+				<if test="category == 'manyCancel'">
+					ORDER BY cancelCount DESC
+				</if>
+				<if test="category == 'littleCancel'">
+					ORDER BY cancelCount ASC
+				</if>
+				<if test="category == 'manyReserve'">
+					ORDER BY reserveCount DESC
+				</if>
+				<if test="category == 'littleReserve'">
+					ORDER BY reserveCount ASC
+				</if>
+			</if>
+	</select>
+	
+	<select id="searchGdReview" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			r.review_no
+			, r.review_date
+			, r.review
+			, r.review_answer
+			, r.review_answerdate
+		FROM
+			review r 
+		WHERE
+			r.gd_no = #{gd_no}
+	</select>
+	
+	<select id="majorList" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT *
+		FROM major
 	</select>
 	
 	<insert id="insertReservable" parameterType="com.plant.reserve.ReserveVO">

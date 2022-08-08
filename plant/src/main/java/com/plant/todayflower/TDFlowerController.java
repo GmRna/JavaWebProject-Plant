@@ -19,12 +19,12 @@ public class TDFlowerController {
 		// 지역 날짜 조회
 		LocalDate now = LocalDate.now();
 		// 지역 월,일 조회
-//		int month = now.getMonthValue();
-//		int day = now.getDayOfMonth();
+		int month = now.getMonthValue();
+		int day = now.getDayOfMonth();
 		
 		// 테스트
-		int month = 1;
-		int day = 1;
+//		int month = 1;
+//		int day = 1;
 		
 		// vo에 저장
 		vo.setTf_month(month);
@@ -32,7 +32,7 @@ public class TDFlowerController {
 		// model에 저장
 		model.addAttribute("data", service.select(vo));
 	
-		return "plant/todayFlower";
+		return "plant/todayFlower/todayFlower";
 	}
 	
 	// 오늘의 꽃 상세보기
@@ -54,7 +54,7 @@ public class TDFlowerController {
 		// model에 저장
 		model.addAttribute("data", service.select(vo));
 	
-		return "plant/todayFlowerView";
+		return "plant/todayFlower/todayFlowerView";
 	}
 	
 	

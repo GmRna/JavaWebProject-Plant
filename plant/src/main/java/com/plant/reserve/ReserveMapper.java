@@ -1,14 +1,18 @@
 package com.plant.reserve;
 
-import java.util.Map;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ReserveMapper {
-
+  
 	// 가드너 검색
-	ReserveVO searchGd(ReserveVO vo);
+	List<ReserveVO> searchGd(ReserveVO vo); // 가드너 리스트 검색
+	List<ReserveVO> searchGdReview(ReserveVO vo); // 검색된 가드너 리뷰목록 조회
+	
+	// 케어종목 리스트
+	List<ReserveVO> majorList(ReserveVO vo); 
 	
 	// 예약가능 스케줄
 	int insertReservable(ReserveVO vo); // 예약일정 insert

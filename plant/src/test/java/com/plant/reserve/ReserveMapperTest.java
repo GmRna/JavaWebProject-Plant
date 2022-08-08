@@ -1,5 +1,6 @@
 package com.plant.reserve;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -176,15 +177,24 @@ public class ReserveMapperTest {
 		log.info(mapper.insertPay(vo));
 		
 	}
-	// 테스트 실패
+	
 	@Test
 	public void searchGdTest() {
 		ReserveVO vo = new ReserveVO();
-		vo.setDateStart(20220101);
-		vo.setDateEnd(20220805);
-		vo.setReserveSaerch1("가지치기");
-		vo.setCategory("lowStar");
-		
-		log.info(mapper.searchGd(vo));
+//		vo.setGd_no(2);
+//		vo.setDateStart(20220101);
+//		vo.setDateEnd(20220805);
+//		vo.setReserveSaerch1("분재갈이");
+//		vo.setCategory("lowStar");
+		List<ReserveVO> list = mapper.searchGd(vo);
+		list.forEach(ReserveVO -> log.info(list));
+	}
+	
+//	@Test
+	public void searchGdReview() {
+		ReserveVO vo = new ReserveVO();
+		vo.setGd_no(2);
+		List<ReserveVO> list = mapper.searchGdReview(vo);
+		list.forEach(ReserveVO -> log.info(list));
 	}
 }

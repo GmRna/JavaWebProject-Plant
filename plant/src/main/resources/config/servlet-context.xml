@@ -43,8 +43,6 @@
 	</bean>
 		
 	<mybatis-spring:scan base-package="com.plant" annotation="org.apache.ibatis.annotations.Mapper" />
-	
-	
 	<!-- 파일 업로드 설정 경로? 안넣으면 null이라고 뜸 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="utf-8"/>
