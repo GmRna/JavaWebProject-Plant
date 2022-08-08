@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.reserve.ReserveMapper">
+	
+	<select id="searchGd" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			*
+			, (SELECT count(review) cnt_a FROM review rv WHERE rv.gd_no = g.gd_no) as a
+			, (SELECT (sum(star)/count(star)) cnt_b FROM review rv WHERE rv.gd_no = g.gd_no) as b
+			, (SELECT count(cancel_no) cnt_c FROM Cancel c WHERE c.gd_no = g.gd_no) as c
+			, (SELECT (count(review)-c.cnt_c) cnt_d FROM reservation rsv WHERE rsv.gd_no = g.gd_no) as d
+		FROM 
+      		gd g INNER JOIN reservable r ON g.gd_no = r.gd_no 
+		WHERE reservable_do = 1
+		<where>
+			<if test="dateStart != null and dateStart != '' and dateEnd != null and dateEnd != ''">
+				AND (r.reservable_date BETWEEN #{dateStart} AND #{dateEnd})
+				<if test="stype != null and stype != ''">
+					<if test="reserveSaerch1 != null and reserveSaerch1 !=''">
+						AND g.gd_major Like '%${reserveSaerch1}%'
+					</if>
+					<if test="reserveSaerch2 != null and reserveSaerch2 !=''">
+						AND g.gd_ableaddr Like '%${reserveSaerch2}%'
+					</if>
+					<if test="reserveSaerch3 != null and reserveSaerch3 !=''">
+						AND g.gd_name = #{reserveSaerch3}
+					</if>
+				</if>
+			</if>
+			ORDER BY 
+			<if test="category != null and category != ''">
+				<if test="category = 'manyReview'">
+					ORDER BY a.cnt_a DESC
+				</if>
+				<if test="category = 'littleReview'">
+					ORDER BY a.cnt_a ASC
+				</if>
+				<if test="category = 'highStar'">
+					ORDER BY b.cnt_b DESC
+				</if>
+				<if test="category = 'lowStar'">
+					ORDER BY b.cnt_b ASC
+				</if>
+				<if test="category = 'manyCancel'">
+					ORDER BY c.cnt_c DESC
+				</if>
+				<if test="category = 'littleCancel'">
+					ORDER BY c.cnt_c ASC
+				</if>
+				<if test="category = 'manyReserve'">
+					ORDER BY d.cnt_d DESC
+				</if>
+				<if test="category = 'littleReserve'">
+					ORDER BY d.cnt_d ASC
+				</if>
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertReservable" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			reservable(
+				gd_no,
+				reservable_date,
+				reservable_hour,
+				reservable_time
+			) VALUES (
+				#{gd_no},
+				#{reservable_date},
+				#{reservable_hour},
+				NOW()
+			)
+	</insert>
+	
+	<update id="updateReservable" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			reservable 
+		SET
+			reservable_do = #{reservable_do} 
+		WHERE
+			reservable_no = #{reservable_no}
+	</update>
+	
+	<update id="changeReservable" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			reservable
+		SET  
+			reservable_hour = #{reservable_hour},
+			reservable_time = NOW()
+		WHERE 
+			reservable_date = #{reservable_date} AND
+			reservable_no = #{reservable_no}
+	</update>
+	
+	<insert id="insertReservableMajor" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			reservable_major(
+				reservable_no,
+				reservable_major
+			) VALUES (
+				#{reservable_no},
+				#{reservable_major}
+			)
+	</insert>
+	
+	<update id="changeReservableMajor" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			reservable_major
+		SET 
+			reservable_major = #{reservable_major} 
+		WHERE
+			reservable_major_no = #{reservable_major_no}
+	</update>
+	
+	<insert id="insertReservation" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			reservation(
+				reservable_no,
+				gd_no,
+				user_no,
+				reserve_date,
+				reserve_hour,
+				reserve_etc,
+				reserve_time,
+				major_no
+			) VALUES (
+				#{reservable_no},
+				#{gd_no},
+				#{user_no},
+				#{reserve_date},
+				#{reserve_hour},
+				#{reserve_etc},
+				NOW(),
+				#{major_no}
+			)
+	</insert>
+	
+	<update id="changeReservation" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			reservation
+		SET  
+			reserve_hour = #{reserve_hour},
+			major_no = #{major_no},
+			reserve_time = NOW()
+		WHERE reserve_date = #{reserve_date} AND reserve_no = #{reserve_no}
+	</update>
+	
+	<update id="payReservation" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			reservation
+		SET  
+			reserve_pay = #{reserve_pay}
+		WHERE reserve_no = #{reserve_no}
+	</update>
+	
+	<insert id="insertCancel" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			cancel(
+				reserve_no,
+				gd_no,
+				user_no,
+				cancel_date,
+				cancel_comment,
+				cancel_type
+			) VALUES (
+				#{reserve_no},
+				#{gd_no},
+				#{user_no},
+				NOW(),
+				#{cancel_comment},
+				#{cancel_type}
+			)
+	</insert>
+	
+	<insert id="insertReview" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			review(
+				reserve_no,
+				gd_no,
+				user_no,
+				review_date,
+				review,
+				star
+			) VALUES (
+				#{reserve_no},
+				#{gd_no},
+				#{user_no},
+				NOW(),
+				#{review},
+				#{star}
+			)
+	</insert>
+	
+	<update id="answerReview" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			review
+		SET
+			review_answer = #{review_answer},
+			review_answerdate = NOW()
+		WHERE
+			review_no = #{review_no}
+	</update>
+	
+	<insert id="insertInquiry" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			inquiry(
+				reserve_no,
+				gd_no,
+				user_no,
+				inquiry_date,
+				inquiry
+			) VALUES (
+				#{reserve_no},
+				#{gd_no},
+				#{user_no},
+				NOW(),
+				#{inquiry}
+			)
+	</insert>
+	
+	<update id="answerInquiry" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE
+			inquiry 
+		SET
+			inquiry_answer = #{inquiry_answer},
+			inquiry_answerdate = NOW()
+		WHERE 
+			inquiry_no = #{inquiry_no}
+	</update>
+	
+	<insert id="insertPay" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			pay(
+				reserve_no,
+				pay_date,
+				pay_size
+			) VALUES (
+				#{reserve_no},
+				NOW(),
+				#{pay_size}
+			)
+	</insert>
+</mapper>
