@@ -182,10 +182,10 @@ public class ReserveMapperTest {
 	public void searchGdTest() {
 		ReserveVO vo = new ReserveVO();
 //		vo.setGd_no(2);
-//		vo.setDateStart(20220101);
-//		vo.setDateEnd(20220805);
-//		vo.setReserveSaerch1("분재갈이");
-//		vo.setCategory("lowStar");
+//		vo.setDateStart(20220802);
+//		vo.setDateEnd(20220801);
+//		vo.setSearchMajor("분재갈이"); 
+		vo.setCategory("littleReview");
 		List<ReserveVO> list = mapper.searchGd(vo);
 		list.forEach(ReserveVO -> log.info(list));
 	}

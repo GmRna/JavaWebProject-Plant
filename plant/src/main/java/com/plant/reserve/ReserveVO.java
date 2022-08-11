@@ -16,9 +16,17 @@ public class ReserveVO {
 	private String gd_ableaddr; // 가드너 출장가능지역
 	private String gd_name; // 가드너 이름
 	private String gd_hp; // 가드너 연락처
+	private String gd_picorg; // 가드너 사진이름(org)
+	private String gd_picreal; // 가드너 사진이름(real)	
+	private String gd_email; // 가드너 이메일
+	private String gd_career; // 가드너 이력
+	private String gd_certificate; // 가드너 자격사항
+	private int gd_age; // 가드너 나이
+	private Timestamp gd_regdate; // 가드너 가입일	
 	
 	// user 
 	private int user_no; // 유저 no
+	private int user_id; // 유저 id
 	
 	// 리뷰
 	private int review_no; // 리뷰 no
@@ -82,9 +90,9 @@ public class ReserveVO {
 	
 	
 	// 체크박스
-	private String reserveSaerch1; // 검색조건 : 케어종목
-	private String reserveSaerch2; // 검색조건 : 출장가능주소
-	private String reserveSaerch3; // 검색조건 : 가드너 이름
+	private String searchMajor; // 검색조건 : 케어종목
+	private String searchAbleaddr; // 검색조건 : 출장가능주소
+	private String searchName; // 검색조건 : 가드너 이름
 	
 	// 정렬
 	private String category; // 정렬관련 카테고리 

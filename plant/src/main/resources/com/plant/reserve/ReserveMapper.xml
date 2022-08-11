@@ -8,10 +8,17 @@
 			, g.gd_id
 			, g.gd_name
 			, g.gd_hp
-			, g.gd_major
+			, REPLACE(g.gd_major, '@', '•') as gd_major
+			, g.gd_picorg
 			, r.reservable_date
 			, r.reservable_hour
 			, r.reservable_major
+			, (SELECT
+					(sum(star)/count(star))
+				FROM 
+					review
+				WHERE
+					gd_no = g.gd_no) as starAverage
 			<if test="category != null and category != ''">
 				<if test="category == 'manyReview' or category == 'littleReview'">
 					, (SELECT 
@@ -19,15 +26,7 @@
 					FROM
 						review
 					WHERE
-						gd_no = #{gd_no}) as reviewCount
-				</if>
-				<if test="category == 'highStar' or category == 'lowStar'">
-					, (SELECT
-							(sum(star)/count(star))
-					FROM 
-						review
-					WHERE
-						gd_no = #{gd_no}) as starAverage
+						gd_no = g.gd_no) as reviewCount
 				</if>
 				<if test="category == 'manyCancel' or category == 'littleCancel'">
 					, (SELECT 
@@ -35,7 +34,7 @@
 					FROM 
 						cancel
 					WHERE
-						gd_no = #{gd_no}) as cancelCount
+						gd_no = g.gd_no) as cancelCount
 				</if>
 				<if test="category == 'manyReserve' or category == 'littelReserve'">
 					, (SELECT 
@@ -45,13 +44,13 @@
 								FROM
 									cancel c 
 								WHERE 
-									gd_no = #{gd_no}
+									gd_no = g.gd_no
 								)
 							)
 						FROM
 							reservation rsv 
 						WHERE 
-							rsv.gd_no = #{gd_no}) as reserveCount
+							rsv.gd_no = g.gd_no) as reserveCount
 				</if>
 			</if>
 		FROM 
@@ -75,18 +74,30 @@
       	ON
       		g.gd_no = r.gd_no 
 		<where>
-			reservable_do = 0
+			g.gd_acc = 1
+			AND reservable_do = 0
 			<if test="dateStart != null and dateStart != '' and dateEnd != null and dateEnd != ''">
 				AND (r.reservable_date BETWEEN #{dateStart} AND #{dateEnd})
-				<if test="reserveSaerch1 != null and reserveSaerch1 !=''">
-					AND r.reservable_major Like '%${reserveSaerch1}%'
-				</if>
-				<if test="reserveSaerch2 != null and reserveSaerch2 !=''">
-					AND g.gd_ableaddr Like '%${reserveSaerch2}%'
-				</if>
-				<if test="reserveSaerch3 != null and reserveSaerch3 !=''">
-					AND g.gd_name = #{reserveSaerch3}
-				</if>
+			</if>
+			
+			<if test="dateStart == null or dateStart == '' and dateEnd != null and dateEnd != ''">
+			<![CDATA[
+				AND (r.reservable_date <= #{dateEnd})
+			]]>
+			</if>
+			<if test="dateEnd == null or dateEnd == ''and dateStart != null and dateStart != ''">
+			<![CDATA[
+				AND (r.reservable_date >= #{dateStart})
+			]]>
+			</if>
+			<if test="searchMajor != null and searchMajor !=''">
+					AND r.reservable_major Like '%${searchMajor}%'
+			</if>
+			<if test="searchAbleaddr != null and searchAbleaddr !=''">
+					AND g.gd_ableaddr Like '%${searchAbleaddr}%'
+			</if>
+			<if test="searchName != null and searchName !=''">
+					AND g.gd_name = #{searchName}
 			</if>
 		</where>
 			<if test="category != null and category != ''">
@@ -94,7 +105,7 @@
 					ORDER BY reviewCount DESC
 				</if>
 				<if test="category == 'littleReview'">
-					ORDER BY reviewCount ASC
+					ORDER BY reviewCount ASC 
 				</if>
 				<if test="category == 'highStar'">
 					ORDER BY starAverage DESC
@@ -119,20 +130,93 @@
 	
 	<select id="searchGdReview" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
-			r.review_no
-			, r.review_date
-			, r.review
-			, r.review_answer
-			, r.review_answerdate
+			review_no
+			, review_date
+			, review
+			, review_answer
+			, review_answerdate
+			, star
+			, user_no
+			, (SELECT 
+					user_id
+				FROM 
+					user
+				WHERE
+					user_no = r.user_no) as user_id
 		FROM
-			review r 
+			review r
 		WHERE
-			r.gd_no = #{gd_no}
+			gd_no = #{gd_no}
+		ORDER BY star DESC
 	</select>
 	
 	<select id="majorList" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT *
 		FROM major
+	</select>
+	
+	<select id="searchGdReservable" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			r.reservable_date
+			, r.reservable_hour
+			, rm.reservable_major 
+		FROM 
+			reservable r 
+		INNER JOIN 
+			reservableMajor rm 
+		ON 
+			r.reservable_no = rm.reservable_no 
+		<where>
+			reservable_do = 0
+			AND r.gd_no = #{gd_no}
+			<if test="dateStart != null and dateStart != '' and dateEnd != null and dateEnd != ''">
+				AND (r.reservable_date BETWEEN #{dateStart} AND #{dateEnd})
+			</if>
+			
+			<if test="dateStart == null or dateStart == '' and dateEnd != null and dateEnd != ''">
+			<![CDATA[
+				AND (r.reservable_date <= #{dateEnd})
+			]]>
+			</if>
+			<if test="dateEnd == null or dateEnd == ''and dateStart != null and dateStart != ''">
+			<![CDATA[
+				AND (r.reservable_date >= #{dateStart})
+			]]>
+			</if>
+			<if test="searchMajor != null and searchMajor !=''">
+					AND rm.reservable_major Like '%${searchMajor}%'
+			</if>
+		</where>
+		ORDER BY
+			r.reservable_date ASC
+			, r.reservable_hour ASC
+	</select>
+	
+	<select id="viewGd" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			gd_no
+			, gd_email
+			, gd_name
+			, ROUND((TO_DAYS(NOW()) - (TO_DAYS(left(gd_regnum ,length(gd_regnum) - 1 )))) / 365) AS gd_age
+			, gd_hp
+			, gd_regdate
+			, gd_ableaddr
+			, gd_career
+			, gd_picorg
+			, gd_picreal
+			, gd_certificate
+			, gd_acc
+			, REPLACE(gd_major, '@', '•') as gd_major
+			, (SELECT
+					(sum(star)/count(star))
+				FROM 
+					review
+				WHERE
+					gd_no = #{gd_no}) as starAverage
+		FROM		 
+			gd
+		WHERE
+			gd_no = #{gd_no} 
 	</select>
 	
 	<insert id="insertReservable" parameterType="com.plant.reserve.ReserveVO">

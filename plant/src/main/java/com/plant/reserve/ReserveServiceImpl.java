@@ -22,6 +22,22 @@ public class ReserveServiceImpl implements ReserveService {
 	}
 
 	@Override
+	public List<ReserveVO> majorList(ReserveVO vo) {
+
+		return mapper.majorList(vo);
+	}
+	
+	@Override
+	public List<ReserveVO> searchGdReservable(ReserveVO vo) {
+		return mapper.searchGdReservable(vo);
+	}
+	
+	@Override
+	public ReserveVO viewGd(ReserveVO vo) {
+		return mapper.viewGd(vo);
+	}
+	
+	@Override
 	public int insertReservable(ReserveVO vo) {
 
 		return mapper.insertReservable(vo);
@@ -105,11 +121,7 @@ public class ReserveServiceImpl implements ReserveService {
 		return mapper.insertPay(vo);
 	}
 
-	@Override
-	public List<ReserveVO> majorList(ReserveVO vo) {
 
-		return mapper.majorList(vo);
-	}
 	
 	
 }

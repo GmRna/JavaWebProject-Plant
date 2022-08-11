@@ -4,12 +4,12 @@ import java.util.List;
 
 public interface ReserveService {
 	
-	// 가드너 검색
+	// 가드너 조회
 	List<ReserveVO> searchGd(ReserveVO vo); // 가드너 리스트 검색
 	List<ReserveVO> searchGdReview(ReserveVO vo); // 검색된 가드너 리뷰목록 조회
-	
-	// 케어종목 리스트
-	List<ReserveVO> majorList(ReserveVO vo);
+	List<ReserveVO> majorList(ReserveVO vo); // 케어종목 리스트
+	ReserveVO viewGd(ReserveVO vo); // 가드너 상세보기
+	List<ReserveVO> searchGdReservable(ReserveVO vo); // 가드너 예약 가능 시간 조회
 	
 	// 예약가능 스케줄
 	int insertReservable(ReserveVO vo); // 예약일정 insert
