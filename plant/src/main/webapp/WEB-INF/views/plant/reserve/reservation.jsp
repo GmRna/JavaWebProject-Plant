@@ -335,10 +335,6 @@ var reserveList = new Array();
 function reserveSelect(clickId) {
 	var select = clickId.split('_', 3);
 	var date = moment(select[0]);
-	
-	for(var i=0; i<reserveList.length; i++){
-		
-	}
 	if(reserveList.length === 0) {
 		var res = "<tr id='reservationArray'>";
 			res += "	<td id='reservationNo'>"+(reserveList.length+1)+"</td>";
@@ -351,10 +347,14 @@ function reserveSelect(clickId) {
 		$("#select").append(res);
 	
 		reserveList.push({
-			reserve_date : select[0]
-			, reserve_hour : select[1]
-			, reserve_major : select[2]
+			reserve_data : clickId
 		});
+	}
+	if(reserveList.length > 0) {
+		if(reserveList.includes === false) {
+			
+		}
+		
 	}
 }
 
