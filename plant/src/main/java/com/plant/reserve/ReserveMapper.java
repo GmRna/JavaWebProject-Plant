@@ -13,6 +13,8 @@ public interface ReserveMapper {
 	List<ReserveVO> majorList(ReserveVO vo); // 케어종목 리스트
 	ReserveVO viewGd(ReserveVO vo); // 가드너 상세보기
 	List<ReserveVO> searchGdReservable(ReserveVO vo); // 가드너 예약 가능 시간 조회
+	List<ReserveVO> searchGdReserved(ReserveVO vo); // 가드너 된 내역 조회
+	ReserveVO completionCount(ReserveVO vo); // 가드너 케어완료 수 조회
 	
 	// 예약가능 스케줄
 	int insertReservable(ReserveVO vo); // 예약일정 insert

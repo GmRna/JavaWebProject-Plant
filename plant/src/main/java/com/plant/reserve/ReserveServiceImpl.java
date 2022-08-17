@@ -1,5 +1,6 @@
 package com.plant.reserve;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,17 @@ public class ReserveServiceImpl implements ReserveService {
 
 	@Override
 	public List<ReserveVO> searchGd(ReserveVO vo) {
-		return mapper.searchGd(vo);
+		// gd 리스트 가져오기
+		List<ReserveVO> list = mapper.searchGd(vo); 
+		// exist 배열 생성
+		List<ReserveVO> exist = new ArrayList<ReserveVO>();
+		// 해당하는 gd가 예약가능한 일정이 있는 경우만 exist 배열에 저장
+		for(int i=0; i<list.size(); i++) {
+			if (mapper.searchGdReservable(list.get(i)) != null && mapper.searchGdReservable(list.get(i)).isEmpty() == false) {
+				exist.add(list.get(i));
+			} 
+		}
+		return exist;
 	}
 
 	@Override
@@ -33,8 +44,18 @@ public class ReserveServiceImpl implements ReserveService {
 	}
 	
 	@Override
+	public List<ReserveVO> searchGdReserved(ReserveVO vo) {
+		return mapper.searchGdReserved(vo);
+	}
+	
+	@Override
 	public ReserveVO viewGd(ReserveVO vo) {
 		return mapper.viewGd(vo);
+	}
+	
+	@Override
+	public ReserveVO completionCount(ReserveVO vo) {
+		return mapper.completionCount(vo);
 	}
 	
 	@Override

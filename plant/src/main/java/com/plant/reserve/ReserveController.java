@@ -1,6 +1,5 @@
 package com.plant.reserve;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,21 @@ public class ReserveController {
 	public String profileView(Model model, ReserveVO vo) {
 		model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
 		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
+		model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 가져오기
+		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 가져오기
 		return "plant/reserve/profileView";
 	}
+	
+	// 예약하기
+	@GetMapping("/reserve/reservation.do")
+	public String reservation(Model model, ReserveVO vo) {
+		model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
+		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
+		model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 가져오기
+		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 가져오기
+		model.addAttribute("completion", service.completionCount(vo));
+		return "plant/reserve/reservation";
+	}
+	
 	
 }

@@ -12,7 +12,14 @@ public class ReserveVO {
 	// gd
 	private int gd_no; // 가드너 no
 	private String gd_id; // 가드너 id
-	private String gd_major; // 가드너 주요 종목
+	// 가드너 주요 종목
+	private String gd_major1; // 분재갈이
+	private String gd_major2; // 실내식물관리
+	private String gd_major3; // 온라인상담
+	private String gd_major4; // 병충해 관리
+	private String gd_major5; // 가지치기
+	private String gd_major6; // 정원 식물케어
+	private String gd_major7; // 식물생장 관리
 	private String gd_ableaddr; // 가드너 출장가능지역
 	private String gd_name; // 가드너 이름
 	private String gd_hp; // 가드너 연락처
@@ -26,7 +33,7 @@ public class ReserveVO {
 	
 	// user 
 	private int user_no; // 유저 no
-	private int user_id; // 유저 id
+	private String user_nick; // 유저 닉네
 	
 	// 리뷰
 	private int review_no; // 리뷰 no
@@ -88,6 +95,9 @@ public class ReserveVO {
 	private int cancelCount; // 취소 수
 	private int reserveCount; // 예약 수
 	
+	// 케어진행완료
+	private int completion_no; // 케어진행 번호
+	private int completion_count; // 케어진행 수 세기
 	
 	// 체크박스
 	private String searchMajor; // 검색조건 : 케어종목
@@ -97,6 +107,9 @@ public class ReserveVO {
 	// 정렬
 	private String category; // 정렬관련 카테고리 
 	private int rnum;
+	
+	// 상세보기
+	private int selectDate; // 선택한 달력의 Id 값(날짜)
 	
 
 

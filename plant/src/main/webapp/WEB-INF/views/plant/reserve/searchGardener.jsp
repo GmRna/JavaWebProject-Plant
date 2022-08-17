@@ -112,17 +112,17 @@
     }
   	
   	// 대표후기 및 예약가능시간과 해당하는 시간의 예약가능 종목 보기
-  	function riviewAndReservable(){
+  	function riviewAndReservable(e){
   	   	$.ajax({
   	    	url : "/plant/reserve/riviewAndReservable.do"
   	   		, data : {
-  	   			gd_no : $("#gd_no").val()
+  	   			gd_no : $(e).attr("id")
   	   			, dateStart : Number($("#dateStart").val().replace(/\-/g,''))
   	   			, dateEnd : Number($("#dateEnd").val().replace(/\-/g,''))
   	   			, searchMajor : $("#searchMajor").val()
   	    	}
   	    	, success : function(res) {
-  	    		console.log("성공")
+  	    		console.log("성공");
   	   			$("#riviewAndReservable").html(res);
   	   		}
   	   	})
@@ -151,7 +151,6 @@
 							<input type="text" id="dateStart" name="dateStart">-
 							<input type="text" id="dateEnd" name="dateEnd">
 							<br>
-							<!-- 자바스크립트 셀렉트 박스 선택시 해당하는 id값을 가진 셀렉트 박스 생성 -->
 							<!-- 예약가능 종목, 출장주소, 이름으로 검색 -->
 							<h3>검색 옵션</h3>
 							<h4>케어종목</h4>
