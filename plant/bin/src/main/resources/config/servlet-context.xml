@@ -46,15 +46,14 @@
 	</bean>
 		
 	<mybatis-spring:scan base-package="com.plant" annotation="org.apache.ibatis.annotations.Mapper" />
-	
-	<!-- 파일 업로드 설정 경로? 안넣으면 null이라고 뜸 -->
+	<!-- 파일 업로드 설정 경로? 안넣으면 null이라고 뜸 
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<property name="defaultEncoding" value="utf-8"/>
 		<property name="maxUploadSize" value="104857560"/>
 		<property name="maxUploadSizePerFile" value="2097152"/>
 		<property name="uploadTempDir" value="/Users/ran/Desktop/Code/upload/tmp"/>
 		<property name="maxInMemorySize" value="10485756"/>
-	</bean> 
+	</bean> -->
 	
 	<!-- 로그인 을 하고 글쓰기 버튼 누르기 전에 얘가 가로챔 -->
 	<!-- <mvc:interceptors>

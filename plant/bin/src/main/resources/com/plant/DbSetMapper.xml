@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.DbSetMapper">
+	
+	<update id="apiInsert" parameterType="com.plant.DataVO">
+		INSERT td_flower(
+			tf_name,
+			tf_ename,
+			tf_month,
+			tf_day,
+			tf_content,
+			tf_lang,
+			tf_img,
+			tf_url,
+			tf_org,
+			tf_use,
+			tf_grow,
+			tf_type
+		)VALUES(
+			#{tf_name}
+			tf_ename,
+			tf_month,
+			tf_day,
+			tf_content,
+			tf_lang,
+			tf_img,
+			tf_url,
+			tf_org,
+			tf_use,
+			tf_grow,
+			tf_type
+		)
+	</update>
+	
+	<!-- ON DUPLICATE KEY UPDATE -->
+	
+</mapper>
