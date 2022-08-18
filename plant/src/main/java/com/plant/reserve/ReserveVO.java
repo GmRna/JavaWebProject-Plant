@@ -12,6 +12,7 @@ public class ReserveVO {
 	// gd
 	private int gd_no; // 가드너 no
 	private String gd_id; // 가드너 id
+	
 	// 가드너 주요 종목
 	private String gd_major1; // 분재갈이
 	private String gd_major2; // 실내식물관리
@@ -50,6 +51,7 @@ public class ReserveVO {
 	private String reserve_etc; // 예약 특이사항
 	private Timestamp reserve_time; // 예약한 시간
 	private int reserve_pay; // 결제여부 0 또는 1
+	private String selectReserve; // 선택한 예약번호
 	
 	
 	//케어종목가격

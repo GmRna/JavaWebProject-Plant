@@ -356,52 +356,40 @@ function reserveSelect(value, id) {
 	var gdAbleaddr = $("#ableaddr").text();
 	// 유저 출장 지역 주소
 	var userAddr = "<%-- <%=(String)session.getAttribute('userAddr')%> --%>"
-	// select Tr 길이
-	var trLength = $("#select tr").length;
-	var flag = true;
-	for(var i=0; i<trLength; i++) {
-		if($('#select tr').eq(i).attr('id') === reservableNo) {
-			alert("이미 선택된 날짜 입니다.");
-			flag = false;
-			break;
-		}
+	// 선택한 예약정보
+	var res = "<tr id='"+reservableNo+"'>";
+		res += "	<td>"+date.format('YYYY-MM-DD')+"</td>";
+		res += "	<td>"+select[1]+"</td>";
+		res += "	<td>"+select[2]+"</td>";
+		res += "	<td><button type='button' onclick='javascript:deleteList(this.value)' value='"+reservableNo+"'>선택취소</input></td>";
+		res += "</tr>";
+	// 예약 가격정보
+	var price = "<tr id='"+reservableNo+"Price'>";
+		price += "	<td>"+select[2]+"</td>";
+		price += "	<td>"+majorPay+"</td>";
+	// 유저의 주소와 가드너 출장 주소가 같을 때
+	if (gdAbleaddr === userAddr.includes(gdAbleaddr)) {
+		price += "	<td>추가내역 없음</td>";
+		price += "	<td>추가금액 없음</td>";
 	}
-	if(flag){
-		// 선택한 예약정보
-		var res = "<tr id='"+reservableNo+"'>";
-			res += "	<td>"+date.format('YYYY-MM-DD')+"</td>";
-			res += "	<td>"+select[1]+"</td>";
-			res += "	<td>"+select[2]+"</td>";
-			res += "	<td><button type='button' onclick='javascript:deleteList(this.value)' value='"+reservableNo+"'>선택취소</input></td>";
-			res += "</tr>";
-		// 예약 가격정보
-		var price = "<tr id='"+reservableNo+"Price'>";
-			price += "	<td>"+select[2]+"</td>";
-			price += "	<td>"+majorPay+"</td>";
-		// 유저의 주소와 가드너 출장 주소가 같을 때
-		if (gdAbleaddr === userAddr.includes(gdAbleaddr)) {
-			price += "	<td>추가내역 없음</td>";
-			price += "	<td>추가금액 없음</td>";
-		}
-		// 유저의 주소와 가드너 출장 주소가 같지 않을 때
-		if (gdAbleaddr !== userAddr.includes(gdAbleaddr)) {
-			price += "	<td>출장비용</td>";
-			price += "	<td>"+visitPay+"</td>";
-		}			
-			price += "	<td class='subTotal'>"+(Number(majorPay) + Number(visitPay))+"</td>";
-			price += "</tr>";
-		if($("#noSelect").length > 0){
-			$("#noSelect").remove();
-		}
-		if($("#noPrice").length > 0){
-			$("#noPrice").remove();
-		}
-		$("#select").append(res);
-		$("#price").append(price);
-		// 가격 총합
-		totalPrice();
-		formData();
+	// 유저의 주소와 가드너 출장 주소가 같지 않을 때
+	if (gdAbleaddr !== userAddr.includes(gdAbleaddr)) {
+		price += "	<td>출장비용</td>";
+		price += "	<td>"+visitPay+"</td>";
+	}		
+		price += "	<td class='subTotal'>"+(Number(majorPay) + Number(visitPay))+"</td>";
+		price += "</tr>";
+	if($("#noSelect").length > 0){
+		$("#noSelect").remove();
 	}
+	if($("#noPrice").length > 0){
+		$("#noPrice").remove();
+	}
+	$("#select").append(res);
+	$("#price").append(price);
+	// 가격 총합
+	totalPrice();
+	formData();
 }
 
 // 선택취소 버튼 눌러서 내역 삭제 
@@ -458,7 +446,7 @@ function formData() {
 	var trLength = $("#select tr").length; 
 	var reserveNo = "";
 	var form = "<input type='hidden' name='gd_no' value='"+gd_no+"'>";
-		form += "<input type='hidden' name='user_no' value='1'>"; // 추후 세션값으로 고치기
+		form += "<input type='hidden' name='user_no' value='세션값'>";
 	for(var i=0; i<trLength; i++) {
 		if(i === 0) {
 			reserveNo += ""+$('#select tr').eq(i).attr('id')+"";

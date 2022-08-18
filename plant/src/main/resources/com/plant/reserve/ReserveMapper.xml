@@ -132,13 +132,12 @@
 			*
 		FROM 
 			major
-		WHERE 
-			major_no NOT IN (7,8,9,10)
 	</select>
 	
 	<select id="searchGdReservable" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
-			r.reservable_date
+			r.reservable_no
+			, r.reservable_date
 			, r.reservable_hour
 			, rm.reservable_major
 		FROM 

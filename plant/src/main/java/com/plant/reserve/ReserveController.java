@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class ReserveController {
@@ -54,8 +55,21 @@ public class ReserveController {
 		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
 		model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 가져오기
 		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 가져오기
-		model.addAttribute("completion", service.completionCount(vo));
+		model.addAttribute("completion", service.completionCount(vo)); // 예약 완료 내역 조회
+		model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
 		return "plant/reserve/reservation";
+	}
+	
+	// 예약하기
+	@PostMapping("/reserve/pay.do")
+	public String pay(Model model, ReserveVO vo) {
+		model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
+		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
+		model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 가져오기
+		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 가져오기
+		model.addAttribute("completion", service.completionCount(vo)); // 예약 완료 내역 조회
+		model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
+		return "plant/reserve/pay";
 	}
 	
 	
