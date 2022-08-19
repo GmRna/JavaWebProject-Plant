@@ -142,6 +142,17 @@ public class ReserveServiceImpl implements ReserveService {
 		return mapper.insertPay(vo);
 	}
 
+	@Override
+	public ReserveVO user(ReserveVO vo) {
+		return mapper.user(vo);
+	}
+
+	@Override
+	public ReserveVO selectReserveVal(int Reserve_no) {
+		// TODO Auto-generated method stub
+		return mapper.selectReserveVal(Reserve_no);
+	}
+
 
 	
 	

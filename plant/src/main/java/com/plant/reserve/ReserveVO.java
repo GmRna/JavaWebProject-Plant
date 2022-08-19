@@ -1,6 +1,7 @@
 package com.plant.reserve;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +13,7 @@ public class ReserveVO {
 	// gd
 	private int gd_no; // 가드너 no
 	private String gd_id; // 가드너 id
+	
 	// 가드너 주요 종목
 	private String gd_major1; // 분재갈이
 	private String gd_major2; // 실내식물관리
@@ -33,7 +35,15 @@ public class ReserveVO {
 	
 	// user 
 	private int user_no; // 유저 no
-	private String user_nick; // 유저 닉네
+	private String user_nick; // 유저 닉네임
+	private String user_id; // 유저 id
+	private String user_email; // 유저 email
+	private String user_name; // 유저 이름
+	private String user_regnum; // 유저 주민등록번호
+	private int user_postcode; // 유저 우편번호
+	private String user_addr1; // 유저 주소(시군구)
+	private String user_addr2; // 유저 상세주소
+	private String user_hp; // 유저 연락처
 	
 	// 리뷰
 	private int review_no; // 리뷰 no
@@ -50,6 +60,8 @@ public class ReserveVO {
 	private String reserve_etc; // 예약 특이사항
 	private Timestamp reserve_time; // 예약한 시간
 	private int reserve_pay; // 결제여부 0 또는 1
+	private String selectReserve; // 선택한 예약번호
+	private List<Integer> selectReserveSubTotal; // 소계 금액
 	
 	
 	//케어종목가격

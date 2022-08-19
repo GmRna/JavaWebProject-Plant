@@ -132,13 +132,28 @@
 			*
 		FROM 
 			major
+	</select>
+	
+	<select id="selectReserveVal" resultType="com.plant.reserve.ReserveVO" parameterType="int">
+		SELECT 
+			r.reservable_no
+			, r.reservable_date
+			, r.reservable_hour
+			, rm.reservable_major
+		FROM 
+			reservable r 
+		INNER JOIN 
+			reservableMajor rm 
+		ON 
+			r.reservable_no = rm.reservable_no
 		WHERE 
-			major_no NOT IN (7,8,9,10)
+			r.reservable_no = #{reserevable_no} 
 	</select>
 	
 	<select id="searchGdReservable" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
-			r.reservable_date
+			r.reservable_no
+			, r.reservable_date
 			, r.reservable_hour
 			, rm.reservable_major
 		FROM 
@@ -270,6 +285,24 @@
 			gd
 		WHERE
 			gd_no = #{gd_no} 
+	</select>
+	
+	<select id="user" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			user_no
+			, user_nick
+			, user_id
+			, user_email
+			, user_name
+			, user_regnum
+			, user_postcode
+			, user_addr1
+			, user_addr2
+			, user_hp
+		FROM
+			user
+		WHERE
+			user_no = #{user_no}
 	</select>
 	
 	<insert id="insertReservable" parameterType="com.plant.reserve.ReserveVO">

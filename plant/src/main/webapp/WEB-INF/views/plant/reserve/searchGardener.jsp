@@ -158,7 +158,9 @@
 							<select id="searchMajor" name="searchMajor" class="dSelect">
 									<option value="">선택하지 않음</option>
 								<c:forEach var="m" items="${major}">
-									<option value="${m.major}">${m.major}</option>
+									<c:if test="${m.major_no ne 7 and m.major_no ne 8 and m.major_no ne 9 and m.major_no ne 10}">
+										<option value="${m.major}">${m.major}</option>
+									</c:if>
 								</c:forEach>
 							</select>
 							<h4>출장가능지역</h4>
