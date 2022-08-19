@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class PetplantServiceImpl implements PetplantService {
@@ -18,6 +20,7 @@ public class PetplantServiceImpl implements PetplantService {
 	@Override
 	public List<PetplantVO> list(PetplantVO vo) {
 		return mapper.list(vo);
+		
 	}
 
 	// 반려식물 게시물 등록
@@ -37,17 +40,27 @@ public class PetplantServiceImpl implements PetplantService {
 
 	// 반려식물 상세보기-파일 및 댓글
 	@Override
-	public Map Detpetplant(int no) {
-		List<PetplantVO> list = mapper.findpetplant(no);
-		List<PetplantVO> rlist = mapper.findpetreply(no);
-		//PetplantVO vo = new PetplantVO();
+	public Map findpetplant(PetplantVO vo) {
+		List<PetplantVO> flist = mapper.findpetplant(vo);
+		List<PetplantVO> rlist = mapper.findpetreply(vo);
+		
+		int checkLike = mapper.checkLike(vo);
+		
 		
 		//List<PetplantVO> likecount = mapper.countLike(vo); 
 		
 		Map map = new HashMap();
 		
-		map.put("list", list);
+		map.put("flist", flist);
 		map.put("rlist", rlist);
+		map.put("checkLike", checkLike);
+		
+		// 댓글 수 불러오기
+		
+		int no = vo.getPet_no();
+		int count_reply = mapper.countreply(no);
+		map.put("countreply", count_reply);
+		
 		//map.put("likecount", likecount);
 		
 		return map;
@@ -73,8 +86,14 @@ public class PetplantServiceImpl implements PetplantService {
 	@Override
 	public Map findpetreply(int no) {
 		List<PetplantVO> list = mapper.findpetreply(no);
+		
 		Map map = new HashMap();
 		map.put("list", list);
+		
+		// 댓글 수 불러오기
+		int countreply = mapper.countreply(no);
+		map.put("countreply", countreply);
+				
 		return map;
 	}
 	

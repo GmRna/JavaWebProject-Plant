@@ -2,12 +2,14 @@ package com.plant.petplant;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.plant.user.UserVO;
+
 
 @Controller
 public class PetplantController {
@@ -28,28 +32,45 @@ public class PetplantController {
 	@Autowired
 	PetplantService service;
 	
+	// 반려 식물 게시판 등록폼
 	@GetMapping("/plant/write.do")
 	public String plantwrite() {
 		return "plant/petplant/write";
 	}
-	
-	
-	@GetMapping("/plant/list123.do")
-	public String plantwrite2() {
-		return "plant/petplant/list";
+	 @GetMapping("/plant/in.do") 
+	 public String plantwrite2() { 
+		 return "plant/petplant/instagram";  
 	}
 	
-	@GetMapping("/plant/car.do")
-	public String car(Model model, PetplantVO vo) {
-		model.addAttribute("list", service.list(vo));
-		return "plant/petplant/list4";
+	 @GetMapping("/plant/in2.do") 
+	 public String plantwrite3() { 
+		 return "plant/petplant/instagram2";  
 	}
+	/*
+	 * @GetMapping("/plant/list123.do") public String plantwrite2() { return
+	 * "plant/petplant/list"; }
+	 * 
+	 * @GetMapping("/plant/car.do") public String car(Model model, PetplantVO vo) {
+	 * model.addAttribute("list", service.list(vo)); return "plant/petplant/list4";
+	 * }
+	 */
 	
 	
-	// 전체 리스트 
+	// 반려 게시판 전체 리스트 
 	@RequestMapping("/plant/list.do")
-	public String petPlantList(Model model, PetplantVO vo) throws Exception {
+	public String petPlantList(Model model, PetplantVO vo,  HttpServletRequest req) throws Exception {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginInfo");
+		
+		if (user != null) {
+			vo.setUser_no(user.getUser_no());
+			System.out.println("@@@@@@@@@@  " + vo.getUser_no());
+		}
+
 		model.addAttribute("list", service.list(vo));
+
 		return "plant/petplant/list2";
 	}
 	
@@ -59,7 +80,12 @@ public class PetplantController {
 	@ResponseBody
 	public int plantinsert(PetplantVO vo, MultipartHttpServletRequest  mhsq , Model model, HttpServletRequest req
 		) throws IllegalStateException, IOException {
-		
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginInfo");
+		vo.setUser_no(user.getUser_no());
+
 		int no = service.insert(vo);
 		vo.setFile_boardno(no);
 		System.out.println("setFile_boardno : "+ no);
@@ -96,19 +122,36 @@ public class PetplantController {
 		return no;
 	}
 
-	
 	// 반려식물 게시판 상세보기 
 	@GetMapping("/plant/findpetplant.do")
-	@ResponseBody
-	public Map findpetplant (Model model, @RequestParam(name="no") int no) {
-		Map map = new HashMap();
-		map.put("list", service.Detpetplant(no));
-		return map; 
+	public String findpetplant (Model model, PetplantVO vo,  HttpServletRequest req) {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginInfo");
+		
+		if(user != null) {
+			vo.setUser_no(user.getUser_no());
+			System.out.println("@@@@@@@@@@  " + vo.getUser_no());
+		}
+		
+		model.addAttribute("petboard", vo);
+		model.addAttribute("list",service.findpetplant(vo));
+		//Map map = new HashMap();
+		//map.put("list", service.findpetplant(vo));
+		
+		return "plant/petplant/petplantpopup";
 	}
 	
 	// 댓글 저장
 	@PostMapping("/plant/insertReply.do")
 	public String reply(PetplantVO vo , Model model, HttpServletRequest req) {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginInfo");
+		vo.setUser_no(user.getUser_no());
+				
 		model.addAttribute("comment", service.reply(vo));
 		return "common/return";
 	}
@@ -124,6 +167,12 @@ public class PetplantController {
 	// 댓글 답글 저장
 	@PostMapping("/plant/insertRereply.do")
 	public String rereply(PetplantVO vo , Model model, HttpServletRequest req) {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginInfo");
+		vo.setUser_no(user.getUser_no());
+		
 		model.addAttribute("comment", service.rereply(vo));
 		return "common/return";
 	}
@@ -134,7 +183,13 @@ public class PetplantController {
 	// 좋아요 체크 후 더하거나 빼기 
 	@PostMapping("/plant/checkLike.do")
 	@ResponseBody
-	public int checkLike(PetplantVO vo, @RequestParam(name="no") int no) {
+	public int checkLike(PetplantVO vo, @RequestParam(name="no") int no, HttpServletRequest req) {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginInfo");
+		
+		vo.setUser_no(user.getUser_no());
 		vo.setPet_no(no);
 		
 		int like = service.checkLike(vo);
@@ -153,7 +208,15 @@ public class PetplantController {
 	//댓글 좋아요 체크 후 더하거나 빼기 
 	@PostMapping("/plant/checkLikeReply.do")
 	@ResponseBody
-	public int checkLikeReply(PetplantVO vo, @RequestParam(name="no") int no , @RequestParam(name="rno") int rno) {
+	public int checkLikeReply(PetplantVO vo
+			, @RequestParam(name="no") int no
+			,@RequestParam(name="rno") int rno 
+			,HttpServletRequest req) {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginInfo");
+		vo.setUser_no(user.getUser_no());
 		vo.setPpreply_no(rno);
 		vo.setPet_no(no);
 		

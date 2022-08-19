@@ -1,70 +1,125 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.net.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
  
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes">
-<meta name="format-detection" content="telephone=no, address=no, email=no">
-<meta name="keywords" content="">
-<meta name="description" content="">
-
+<meta charset="UTF-8">
 <title>반려식물 게시판</title>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- 체크 박스 css -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
 
 <!-- 사진 캐러셀 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 
 <!-- 전체 css -->
-<!-- <link rel="stylesheet" href="/plant/css/petplant.css"/> -->
-<link href="/plant/css/instagram.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/plant/css/petplant.css"/>
 
-<script type="text/javascript">
+<script>
 // 전역 변수로 선언 - 함수에 계속 담아서 이동 시키기 때문에 & 그때 그때 마다 저장되는 변수값이 변해서
 var petboard;	// 반려식물 게시판 pk, content 배열 
+var replyLikeno;
 
 $(function () {
 	// 반려식물 TR 클릭 시 
-	$("#petplant #petplantImgDiv").click(function(){
-		var petplant = $(this).parent();
-		var no = petplant.find("input[name='pet_no']").val();
-		var user_no = petplant.find("input[name='user_no']").val();
-		var like_check = petplant.find("input[name='like_check']").val();
-		var countLike = petplant.find("input[name='countLike']").val();
-		var content = petplant.find("p[name='pet_content']").text();
-		var user_nick = petplant.find("input[name='user_nick']").val();
-		var count_reply = petplant.find("input[name='count_reply']").val();
+	$("#petplant td").click(function(){
+		var pettd = $(this);
+		var no = pettd.find("input[name='pet_no']").val();
+		var content =  pettd.find("textarea[name='pet_content']").val();
+	
+		petboard = {"no" : no, "content" : content }; 
 		
-		petboard = { "no" : no, "content" : content }; 
-		
-		console.log("게시판 번호 내용 : "+petboard.no +" : "+ petboard.content +" : "+ user_no);
+		console.log("게시판 번호 내용 : "+petboard);
 		
 		var imgsrc = "<%=request.getContextPath()%>";
 		
+		replyLikeno = 0; 
 		
 		$.ajax ({
 			url : 'findpetplant.do',
-			data : { 
-				pet_no : petboard.no,
-				pet_content : petboard.content,
-				countLike: countLike,
-				user_no : user_no,
-				like_check : like_check,
-				user_nick : user_nick,
-				count_reply : count_reply
-			},
-			//dataType : 'json',
+			data : {"no" : petboard.no},
+			dataType : 'json',
 			success : function (data) {
-				$("#pet").html(data);
+				var h = "";
+				if(data.list == null || data.list.length == 0) {
+					$("#pet").after(h);
+				}
+				
+					h += '<div class="popup_layer" id="popup_layer" style="display: none;">';
+					h += '	<div class="popup_box" id="popup_box" >';
+					h += '		<div style="height: 10px; width: 375px; float: top;"> ';
+					h += '  	</div>';
+					h += ' 			<div class="popup_cont" >';
+					h += '     			<p><h5> 작성자 : '+petboard.no+'</h5></p>';
+					// 사진 캐러셀 --------------------------------------------------
+						 	h += '<div class="swiper mySwiper">';
+						 	h += '	<div class="swiper-wrapper">';
+						for (var i=0; i<data.list.list.length; i++) {
+							h += '	<div class="swiper-slide">';
+							h += ' 		 <img src="'+imgsrc+'/upload/'+data.list.list[i].filename_real+'">';
+							h += '	</div>';
+						}
+							h += '	</div>';
+							h += '		<div class="swiper-button-next"></div>';
+							h += '		<div class="swiper-button-prev"></div>';
+							h += '</div>';
+					h += ' 				<div class="content" id="content" ><p> 내용 : '+petboard.content+'</p></div>';
+					h += '				<p><button type="button" id="addreplyBtn" class="addreplyBtn" onclick="addfrmreply()">댓글쓰기</button></p>';
+ 
+					
+					// 댓글 폼 -----------------------------------------------------------------------
+						if (data.list.rlist == 0){
+						 	h += '<div id="popup_reply">';
+							h += ' 	<p><h5> 등록된 댓글이 없습니다. </h5></p><br>';
+							h += '</div>'; 
+						}else {
+							for (var i=0; i<data.list.rlist.length; i++) {
+								// 댓글 pk, 그룹번호
+								replygno = data.list.rlist[i].ppr_gno;
+								replyno = data.list.rlist[i].ppr_no;
+								
+							 	h += '<div id="popup_reply">';
+							 	h += '	<div id="rereplyfrm'+ replyno+'" >';
+								 	if (data.list.rlist[i].ppr_nested !=0 ){
+										for(var j =0; j<data.list.rlist[i].ppr_nested; j++){
+											h += '\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0';   
+										}
+									}
+								 	if((data.list.rlist[i].ppr_secretCheck)==("on")){
+										h += '<span id=""비밀 댓글 입니다.></span>';
+								 	}else { 
+								 		h += '<span>댓글내용 : '+data.list.rlist[i].ppr_content+' </span><br>';
+								 	}
+								
+								// 좋아요 -------------------------------------------------------------------------------------
+								h += '		<div id="replyLikeclick">';
+								h += '			<div class="replyLikeDiv" id="replyLikeDiv'+replyLikeno+'">';
+								h += '				<input type="hidden" name="ppr_no" value="'+replyno+'">';
+								h += '				<span><img id="likeicon" src="/plant/img/seednotLike.png"></span> <span id="countLike">'+data.list.rlist[i].countLike+'</span>'; 
+								h += '			</div>'; 
+								h += '		</div>'; 
+								h += '		<div>';
+								h += '			<h5> 작성일 : '+data.list.rlist[i].ppr_regdate+'</h5>';
+												// 답글 작성 폼을 여는거니까 댓글 pk
+								h += '			<span id="addrereplyBtn'+replyno+'" onclick="addfrmrereply('+replyno+','+replygno+')"><h5>답글쓰기</h5></span>';
+								h += '		</div>';
+								h += '		<p></p>';
+								h += '	</div>'; 
+								h += '</div>'; 
+								
+								
+								replyLikeno++;
+							}
+			 			}
+					h += ' 		</div>';
+					h += '	</div>';
+					h += '</div>';
+					
+				$("#pet").after(h);
 				
 				// Swiper 함수 
 				var swiper = new Swiper(".mySwiper", {
@@ -73,7 +128,6 @@ $(function () {
 			          prevEl: ".swiper-button-prev",
 			        },
 			      });
-				
 				document.getElementById("popup_layer").style.display = "block";
 				
 			}, error: function (xhr, desc, err) {
@@ -81,9 +135,8 @@ $(function () {
 	            console.log(err);
 	            return; 
 	        }
-		}); 
-		
-	}); 
+		}) 
+	})
 	// 창 밖 누르면 창 꺼짐
 	$(document).mouseup(function (e){
 		var LayerPopup = $("#popup_layer");
@@ -94,20 +147,15 @@ $(function () {
 	
 	
 	// 게시판 좋아요 클릭
-	$("#petlikediv #petlike").click(function(){ 
-		<c:if test="${empty loginInfo}">
-			alert('로그인 후 이용해주세요');
-			location.href="/plant/user/login.do";
-		</c:if>
+	$("#pet_like #replyLikeDiv").click(function(){ 
 		
-		var petlike = $(this).parent().parent().parent();
-		var no =  petlike.find("input[name='pet_no']").val();
+		var petlike= $(this);
+		var no = petlike.find("input[name='pet_no']").val();
 		var likesrc = petlike.find("#likeicon");
-		var spanlike = petlike.children().find("#countLike"); 
-		var countlike = petlike.children().find("#countLike").text(); 
+		var spanlike = petlike.find("#countLike"); 
+		var countlike = petlike.find("#countLike").text(); 
 		
 		console.log("no : " + no + " src : " + likesrc + " countlike : " + countlike);	// 찍힘
-		
 		
 		$.ajax({
 			url : 'checkLike.do',
@@ -129,12 +177,40 @@ $(function () {
 	            console.log(err);
 	            return; 
 	        }
-		}) 
-	
-		
+		})
 	});
 	
-	
+	// 댓글 좋아요 클릭
+	$(document).on("click", "#replyLikeclick div", function(){ 
+		
+		var replyLike= $(this);
+		var rno = replyLike.find("input[name='ppr_no']").val(); 
+		var likesrc = replyLike.find("#likeicon");
+		var spanlike = replyLike.find("#countLike");  
+		var countlike = replyLike.find("#countLike").text();
+		
+		$.ajax({
+			url : 'checkLikeReply.do',
+			method : 'post',
+			data : { "rno" : rno },
+			dataType : 'json',
+			success : function (like) {
+				if (like == 1 ){
+					$(likesrc).attr('src','/plant/img/seedLike.png');
+					countlike = parseInt(countlike) + 1;
+					$(spanlike).text(countlike);					 
+				} else {
+					$(likesrc).attr('src','/plant/img/seednotLike.png');
+					countlike = parseInt(countlike) - 1;
+					$(spanlike).text(countlike);	
+				}
+			}, error: function (xhr, desc, err) {
+	            alert('에러가 발생');
+	            console.log(err);
+	            return; 
+	        }
+		})
+	});
 });
 
 
@@ -201,7 +277,33 @@ function delrereplyfrm(replyno) {
 	document.querySelector("#addrereplyBtn" + replyno).style.display = '';
 } 
 
+// 댓글 저장
+function addreply() {
+	var frm = $("#reply")[0];
+	var formData = new FormData(frm);
+	//댓글 창닫기
+	delReplyfrm();
 
+	//document.querySelector("#addfrmrereply" + replyno).style.display = '';
+	
+	$.ajax ({
+		method : 'post',
+		url : 'insertReply.do', 
+		data : formData,
+		processData: false,
+        contentType: false,
+		success : function (res) {
+			alert("댓글 작성 완료");
+			replyload();
+		}, error: function (xhr, desc, err) {
+            alert('에러가 발생');
+            console.log("에러 err : "+err);
+            console.log("에러 xhr : "+xhr);
+            return; 
+        }
+	}); 
+	
+}
 
 // 답글 저장
 function addrereply(replyno) {
@@ -291,94 +393,9 @@ function replyload() {
 <body>
 <h2>반려식물 게시판 ${loginInfo.user_id}</h2>
 
-<div class="popup_layer" id="popup_layer" style="display: none;">
-	<div class="popup_box">
-    	<div style="height: 10px; width: 375px; float: top;">
-      	</div>
-      	<!--팝업 컨텐츠 영역-->
-      	<div class="popup_cont">
-        	<div id="pet" ></div>
-    	</div>
-	</div>
-</div>
+<div id="pet" ></div>
 
-
-	<main>
-      <div class="feeds" id="petplant" >
-      	<c:forEach items="${list}" var="list">
-       
-        <!-- article 프로필 사진 및 아이디-->
-	        <article>
-	          <header>
-	            <div class="profile-of-article">
-	              <img class="img-profile pic" src="https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-19/s320x320/28434316_190831908314778_1954023563480530944_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_ohc=srwTEwYMC28AX8gftqw&oh=98c7bf39e441e622c9723ae487cd26a0&oe=5F68C630" >
-	              <span class="userID main-id point-span" >${list.user_nick }</span>
-	            </div>
-	            <img class="icon-react icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" >
-	          </header>
-	          
-	          <!-- 넘겨줘야할 vo -->
-		      <input type="hidden" name="pet_no" value="${list.pet_no }">
-		      <input type="hidden" name="user_no" value="${list.user_no }">
-		      <input type="hidden" name="like_check" value="${list.like_check }">
-		      <input type="hidden" name="countLike" value="${list.countLike }">
-		      <input type="hidden" name="user_nick" value="${list.user_nick }">
-		      <input type="hidden" name="count_reply" value="${list.count_reply }">
-		          
-	          <!-- 상세 페이지 창 띄우는 이미지 petplantImgDiv -->
-	          <div id="petplantImgDiv">
-				  <!-- 이미지 -->		       
-		          <div class="main-image">
-		          <c:set var="pets" value="${fn:split(list.filename_real,',')}"></c:set>
-				  	<c:forEach items="${pets}" var="pets" begin="0" end="0">
-						<img class="pet_img"  src="<%=request.getContextPath()%>/upload/${pets}">
-					</c:forEach>
-		          </div>
-			  </div>
-		     	  
-		          <div class="icons-react">
-		            <div class="icons-left" id="petlikediv">
-		            	<div id="petlike">
-			           		<c:choose>	
-								<c:when test="${list.like_check == 1}">
-									<img id="likeicon" class="icon-react" src="/plant/img/seedLike.png" >
-								</c:when>
-								<c:otherwise>
-									<img id="likeicon" class="icon-react" src="/plant/img/seednotLike.png" >
-								</c:otherwise>
-							</c:choose>
-						</div>
-		              <img class="icon-react" src="/plant/img/free-icon-oval-empty-outlined-speech-bubble-54467.png" >
-		            </div>
-		            <img class="icon-react" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/bookmark.png" >
-		          </div>
-		          
-		          <!-- article text data -->
-		          <div class="reaction">
-			          <div class="liked-people">
-			          	<p><span class="point-span" id="countLike">${list.countLike}</span>명이 좋아합니다</p>
-			          </div>
-		            <!-- 내용 -->
-		          	<div class="description">
-		            	<span class="point-span userID">${list.user_nick }</span><p name="pet_content">${list.pet_content }</p>
-		          	</div>
-		            <br>
-
-		             <!-- 댓글 수 -->
-		             <div class="comment-section">
-			         	<div class="time-log">
-		                	<span>댓글 수 ${list.count_reply}개</span>
-		              	</div>
-		             </div>
-		             <br>
-		          </div>
-		    	
-	        </article>
-        </c:forEach>
-      </div>
-    </main>
-    
-    <%-- 
+<div> 
 	<table border="1" >
 		<c:forEach items="${list}" var="list">
 			<tr id="petplant">
@@ -409,7 +426,7 @@ function replyload() {
 							</c:otherwise>
 						</c:choose>
 							<input type="hidden" name="pet_no" value="<c:out value='${list.pet_no }'/>" >
-							<span id="countLike" name="countLike">${list.countLike}</span> 
+							<span id="countLike">${list.countLike}</span> 
 					</span>
 					<span class="">
 					
@@ -418,8 +435,19 @@ function replyload() {
 			</tr>
 		</c:forEach>
 	</table>
-	 --%>
+</div>
 	
-
+	
+<div class="popup_layer1" id="popup_layer" style="display: none;">
+	<div class="popup_box">
+    	<div style="height: 10px; width: 375px; float: top;">
+      	</div>
+      	<!--팝업 컨텐츠 영역-->
+      	<div class="popup_cont">
+        	<h5> 반려식물 팝업 </h5>
+    	</div>
+	</div>
+</div>
+	
 </body>
 </html>

@@ -13,7 +13,7 @@ public interface PetplantService {
 	// 반려식물 파일등록
 	int insertfile(PetplantVO vo);
 	// 반려식물 상세보기(사진 및 댓글)
-	Map Detpetplant(int no);
+	Map findpetplant(PetplantVO vo);
 	// 반려식물 댓글 저장 후 불러오기
 	Map findpetreply(int no);
 	//반려식물 상세보기-댓글달기
