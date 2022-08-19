@@ -13,10 +13,14 @@ public interface ReserveService {
 	List<ReserveVO> searchGdReserved(ReserveVO vo); // 가드너 예약된 내역 조회
 	ReserveVO completionCount(ReserveVO vo); // 가드너 케어완료 수 조회
 	
+	// 유저 조회
+	ReserveVO user(ReserveVO vo); // 유저정보 조회
+	
 	// 예약가능 스케줄
 	int insertReservable(ReserveVO vo); // 예약일정 insert
 	int updateReservable(ReserveVO vo); // 예약 확정시 update
 	int changeReservable(ReserveVO vo); // 예약일정 변경(시간)
+	ReserveVO selectReserveVal(int Reserve_no); // 선택학 예약번호로 예약정보 조회
 
 	// 예약가능 스케줄 케어종목
 	int insertReservableMajor(ReserveVO vo); // 예약가능 스케줄의 케어종목 insert

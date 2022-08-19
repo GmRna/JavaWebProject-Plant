@@ -311,7 +311,7 @@ function calendarMaker(target, date) {
         				res += "	<td>"+reservableDate[i].reservable_hour+"</td>";
         				res += "	<td>"+reservableDate[i].reservable_major+"</td>";
         				res += "	<td>";
-        				res += "		<button type='button' id='"+reservableDate[i].reservable_no+"' onclick='javascript:reserveSelect(this.value, this.id)' value='"+idValue+"_"+reservableDate[i].reservable_hour+"_"+reservableDate[i].reservable_major+"'>예약</button>";
+        				res += "		<button type='button' onclick='javascript:reserveSelect(this.value, "+reservableDate[i].reservable_no+")' value='"+idValue+"_"+reservableDate[i].reservable_hour+"_"+reservableDate[i].reservable_major+"'>예약</button>";
         				res += "	</td>";
         				res += "</tr>";
         				res += "<tr>";
@@ -358,9 +358,14 @@ function reserveSelect(value, id) {
 	var userAddr = "<%-- <%=(String)session.getAttribute('userAddr')%> --%>"
 	// select Tr 길이
 	var trLength = $("#select tr").length;
+	// 선택된 날짜가 아닐 때 true
 	var flag = true;
+	// 출장비용 추가 부과
+	var accept = true;
+	// 내역 앞에 추가 여부
+	var prepend = true;
 	for(var i=0; i<trLength; i++) {
-		if($('#select tr').eq(i).attr('id') === reservableNo) {
+		if(Number($('#select tr').eq(i).attr('id')) === reservableNo) {
 			alert("이미 선택된 날짜 입니다.");
 			flag = false;
 			break;
@@ -369,11 +374,12 @@ function reserveSelect(value, id) {
 	if(flag){
 		// 선택한 예약정보
 		var res = "<tr id='"+reservableNo+"'>";
-			res += "	<td>"+date.format('YYYY-MM-DD')+"</td>";
-			res += "	<td>"+select[1]+"</td>";
+			res += "	<td id='"+select[0]+"'>"+date.format('YYYY-MM-DD')+"</td>";
+			res += "	<td id='"+select[1]+"'>"+select[1]+"</td>";
 			res += "	<td>"+select[2]+"</td>";
 			res += "	<td><button type='button' onclick='javascript:deleteList(this.value)' value='"+reservableNo+"'>선택취소</input></td>";
 			res += "</tr>";
+
 		// 예약 가격정보
 		var price = "<tr id='"+reservableNo+"Price'>";
 			price += "	<td>"+select[2]+"</td>";
@@ -383,12 +389,39 @@ function reserveSelect(value, id) {
 			price += "	<td>추가내역 없음</td>";
 			price += "	<td>추가금액 없음</td>";
 		}
-		// 유저의 주소와 가드너 출장 주소가 같지 않을 때
+		// 유저의 주소와 가드너 출장 주소가 같지 않을(출장비용 1회만 부과되도록)
 		if (gdAbleaddr !== userAddr.includes(gdAbleaddr)) {
-			price += "	<td>출장비용</td>";
-			price += "	<td>"+visitPay+"</td>";
+			var result = true;
+			for(var i=0; i<trLength; i++) {			
+			 	// 선택일의 값 비교(같은 값만 비교)
+				if($('#select tr').eq(i).find("td:eq(0)").attr('id') === select[0]){
+					// 선택한 시간 +1 -1 인 경우
+					if($('#select tr').eq(i).find("td:eq(1)").text() == Number(select[1])+1 || $('#select tr').eq(i).find("td:eq(1)").text() == Number(select[1])-1){
+						price += "	<td>연속된 시간으로 출장비용 없음</td>";
+						price += "	<td>추가금액 없음</td>";
+						result = false;
+						break;
+					}
+					// 1시간이상 일정이 차이가 날때 확인
+					if($('#select tr').eq(i).find("td:eq(1)").text() > Number(select[1])+1 || $('#select tr').eq(i).find("td:eq(1)").text() < Number(select[1])-1){
+						if (!confirm("연속된 시간이 아닐경우 출장비용이 추가적으로 부과됩니다. 그래도 예약하시겠습니까?")) {
+							accept = false;
+							break;
+				        } else {
+				        	price += "	<td>출장비용</td>";
+							price += "	<td>"+visitPay+"</td>";
+							result = false;
+							break;
+				        }
+					}
+				}
+			}
+			if(result) {
+				price += "	<td>출장비용</td>";
+				price += "	<td>"+visitPay+"</td>";
+			}
 		}			
-			price += "	<td class='subTotal'>"+(Number(majorPay) + Number(visitPay))+"</td>";
+			price += "	<td class='subTotal' id='"+id+"subTotal'>"+(Number(majorPay) + Number(visitPay))+"</td>";
 			price += "</tr>";
 		if($("#noSelect").length > 0){
 			$("#noSelect").remove();
@@ -396,8 +429,10 @@ function reserveSelect(value, id) {
 		if($("#noPrice").length > 0){
 			$("#noPrice").remove();
 		}
-		$("#select").append(res);
-		$("#price").append(price);
+		if(accept){
+			$("#price").append(price);
+			$("#select").append(res);
+		}
 		// 가격 총합
 		totalPrice();
 		formData();
@@ -444,7 +479,7 @@ function totalPrice() {
 		sum += Number($(".subTotal").eq(i).text());
 	}
 	
-	var res = "<td>"+sum+"원</td>"
+	var res = "<td id='totalPrice'>"+sum+"원</td>"
 	// 합계 출력
 	$("#noTotalPrice").html(res);
 }
@@ -468,7 +503,10 @@ function formData() {
 		}
 	}
 		form += "<input type='hidden' name='selectReserve' value='"+reserveNo+"'>";
-		console.log(reserveNo)
+	var reserveNoList = reserveNo.split(',');
+	for(var i=0; i<reserveNoList.length; i++) {
+		form += "<input type='hidden' name='selectReserveSubTotal' value='"+$('#'+reserveNoList[i]+'subTotal').text()+"'>";
+	}
 	$("#param").html(form);
 }
 
@@ -553,29 +591,6 @@ function goPay() {
 		<div>
 			<div id="reservableSchedule"></div>
 			<div>
-				<h3>예약자 정보</h3>
-				<table border='1'>
-					<tr>
-						<td>예약자 이름</td>
-						<td colspan='2'>로그인 세션에 저장된 유저이름</td>
-					</tr>
-					<tr>
-						<td>주소</td>
-						<td>
-							<input type="text" id="addr1" readonly value="세션에 저장된 유저주소1">
-						</td>
-						<td>
-							<input type="text" id="addr2" readonly value="세션에 저장된 유저주소2">
-							<input type="button" onclick="javascript:update()" value="수정">
-						</td>
-					</tr>
-					<tr>
-						<td>특이사항</td>
-						<td colspan="2">
-							<textarea rows="10px" cols="70px"></textarea>
-						</td>
-					</tr>
-				</table>
 				<table border='1'>
 					<tbody>
 						<tr>

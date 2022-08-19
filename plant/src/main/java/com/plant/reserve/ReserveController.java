@@ -1,5 +1,6 @@
 package com.plant.reserve;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +64,17 @@ public class ReserveController {
 	// 예약하기
 	@PostMapping("/reserve/pay.do")
 	public String pay(Model model, ReserveVO vo) {
+		String selectReserve = vo.getSelectReserve();
+		String[] reserve_no = selectReserve.split(",");
+		List<ReserveVO> list = new ArrayList<ReserveVO>();
+		for(int i=0; i<reserve_no.length; i++) {
+			list.add(service.selectReserveVal(Integer.parseInt(reserve_no[i])));
+		}
+		model.addAttribute("vo", vo.getSelectReserveSubTotal());
+		model.addAttribute("user", service.user(vo)); // 유저정보 조회
 		model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
 		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
-		model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 가져오기
+		model.addAttribute("selectReserve", list); // 선택된 예약내용
 		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 가져오기
 		model.addAttribute("completion", service.completionCount(vo)); // 예약 완료 내역 조회
 		model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
