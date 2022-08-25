@@ -13,7 +13,7 @@ public interface PetplantService {
 	// 반려식물 파일등록
 	int insertfile(PetplantVO vo);
 	// 반려식물 상세보기(사진 및 댓글)
-	Map findpetplant(PetplantVO vo);
+	Map findpetfile(PetplantVO vo);
 	// 반려식물 댓글 저장 후 불러오기
 	Map findpetreply(int no);
 	//반려식물 상세보기-댓글달기
@@ -32,6 +32,42 @@ public interface PetplantService {
 	int countLikeReply(int no);
 	// 댓글 좋아요 체크
 	int checkLikeReply(PetplantVO vo);
+
+	// 댓글 삭제
+	int delreply(PetplantVO vo);
+	// 답글 삭제
+	int delRereply(PetplantVO vo);
+	
+	// 댓글 수정
+	int modreply(PetplantVO vo);
+	// 답글 수정
+	int modRereply(PetplantVO vo);
+	
+	// 상세보기 하려면  필요한 vo..
+	List<PetplantVO> select(PetplantVO vo);
+	
+	
+	// 게시판 수정 - 내용 불러오기
+	PetplantVO findpetcontent(int pet_no);
+	// 게시판 수정 - 사진 불러오기
+	Map findFile(PetplantVO vo);
+	// 게시판 수정 - 내용 업데이트
+	int update(PetplantVO vo);
+	// 게시판 수정 - 파일 삭제
+	int deletefile(PetplantVO vo);
+	// 게시판 수정 - 파일 업데이트
+	int updatefile(PetplantVO vo);
+
+	//
+	int selectsavepetplant(PetplantVO vo);
+
+	int pluspetplant(PetplantVO vo);
+
+	int minuspetplant(PetplantVO vo);
+
+	
+
+
 
 
 	

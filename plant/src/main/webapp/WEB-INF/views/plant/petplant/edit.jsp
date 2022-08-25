@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@page import="java.net.*"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -7,6 +9,9 @@
 <meta charset="UTF-8">
 <title>반려식물 게시판 등록</title>
 
+<!-- 
+<link rel="stylesheet" type="text/css" href="/plant/css/instagram.css">
+ -->
 <style>
 .insert {
     padding: 20px 30px;
@@ -37,10 +42,15 @@
     height: 40px;
 }
 </style>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script>
+
 var fileNo = 0;
 var filesArr = new Array();
+
 
 /* 첨부파일 추가 */
 function addFile(obj){
@@ -77,6 +87,7 @@ function addFile(obj){
 	            fileNo++;
 				
 				filesArr.push(file);
+				console.log("file 이 어케 담기는디..?" + file);
             };
             reader.readAsDataURL(file);
             
@@ -108,10 +119,32 @@ function validation(obj){
     }
 }
 
-/* 첨부파일 삭제 */
+/* 첨부파일 새로 수정하는거 삭제 */
 function deleteFile(num) {
     document.querySelector("#file" + num).remove();
     filesArr[num].is_delete = true;
+}
+
+/* 첨부파일 db에서 가져온거 삭제 */
+function deleteFileDB(num,file_no,filename_real) {
+	$.ajax ({
+		url : 'deletefile.do',
+		method : 'post',
+		data : {
+			file_no : file_no,
+			filename_real : filename_real
+		},
+		success: function () {
+            alert("등록된 파일 삭제");
+        },
+        error: function (xhr, desc, err) { 
+            alert('에러가 발생 하였습니다.');
+            console.log(err);
+            return;
+        }
+	})
+	
+    document.querySelector("#file" + num).remove();
 }
 
 
@@ -123,11 +156,9 @@ function filecheck() {
     	return fales;
     	
     } else {
-		
-    		
-    	var form = document.querySelector("form");
+    	var form = document.querySelector("#editfrm");
     	var formData = new FormData(form);
-
+    	
     	    for (var i = 0; i < filesArr.length; i++) {
     	        // 삭제되지 않은 파일만 폼데이터에 담기
     	        if (!filesArr[i].is_delete) {
@@ -135,13 +166,10 @@ function filecheck() {
     	    	    console.log("file?????? : " + filesArr[i]);
     	        }
     	    }
-    	    //var pet_content = $("#pet_content").val();
-    	    //var data = formData + pet_content;
-    	    //console.log("찍히니?2 : " + pet_content);
     	    
     	    $.ajax({
     	    	method: 'POST',
-    	        url: 'insert.do',
+    	        url: 'update.do',
     	        dataType: 'json',
     	        data: formData,
     	        async: true,
@@ -153,7 +181,7 @@ function filecheck() {
     	        //headers: {'cache-control': 'no-cache', 'pragma': 'no-cache'},
     	        success: function () {
     	            alert("성공");
-    	            location.href="list.do";
+    	            //location.href="list.do";
     	        },
     	        error: function (xhr, desc, err) { 
     	            alert('에러가 발생 하였습니다.');
@@ -161,20 +189,33 @@ function filecheck() {
     	            return;
     	        }
     	    });
+    	   
     }
 }
+
 </script>
 </head>
 <body>
 
 
 <div class="insert">
-    <form method="post" onsubmit="return false;"  enctype="multipart/form-data" >
-        내용 <textarea name="pet_content" id="pet_content"></textarea>
-        	<input type="file" onchange="addFile(this);"  multiple />
-        	<div class="file-list"></div>
-    </form>
-			<input type="submit" onclick="filecheck();" value="저장">
+	<form id="editfrm" method="post" onsubmit="return false;"  enctype="multipart/form-data" >
+	    	<input type="hidden" name="pet_no" value="${plist.pet_no}">
+	        내용 <textarea name="pet_content" id="pet_content">${plist.pet_content}</textarea>
+	        
+        	파일 <input type="file" onchange="addFile(this);"  multiple />
+        	<!-- 여기에 파일 리스트 불러오기 -->
+        	<div class="file-list">
+        	<c:forEach items="${flist.flist}" var="flist" varStatus="status">
+				<div id="file${status.index}" class="filebox">
+		        	<img src="<%=request.getContextPath()%>/upload/${flist.filename_real}" style="width:90px; height:90px;" >
+		            <p id="name" class="name"> ${flist.filename_org}</p>
+		            <a class="delete" onclick="deleteFileDB(${status.index},${flist.file_no},'${flist.filename_real}');"><button type="button" class="far fa-minus-square">삭제</button></a>
+				</div>
+	        </c:forEach>   
+        	</div>
+	</form>
+	<input type="submit" onclick="filecheck();" value="수정완료">
 </div>
 
 </body>

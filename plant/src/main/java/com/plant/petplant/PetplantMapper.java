@@ -16,7 +16,7 @@ public interface PetplantMapper {
 	int insertfile(PetplantVO vo);
 
 	// 반려식물 상세보기 - 파일
-	List<PetplantVO> findpetplant(PetplantVO vo);
+	List<PetplantVO> findpetfile(PetplantVO vo);
 	// 반려식물 상세보기 - 댓글 좋아요
 	List<PetplantVO> findpetreply(PetplantVO vo);
 
@@ -47,6 +47,43 @@ public interface PetplantMapper {
 	List<PetplantVO> findpetreply(int no);
 	// 게시판에 달린 댓글 수 불러오기
 	int countreply(int no);
+
+	// 댓글 삭제
+	int delreply(PetplantVO vo);
+	// 그룹번호 있는지 체크
+	int replyGnoCheck(PetplantVO vo);
+	// 답글 삭제
+	int delRereply(PetplantVO vo);
+	// 댓글, 답글 완전 삭제
+	int deletereply(PetplantVO vo);
+	
+	// 댓글 수정
+	int modreply(PetplantVO vo); 
+	// 답글 수정
+	int modRereply(PetplantVO vo);
+	
+	// 상세보기에 필요한
+	List<PetplantVO> select(PetplantVO vo);
+	
+	// 수정 - 내용 불러오기
+	PetplantVO findpetcontent(int pet_no);
+
+	// 수정 - 내용
+	int update(PetplantVO vo);
+	// 수정 - 수정 전에 삭제
+	int deletefile(PetplantVO vo);
+	// 수정 - 파일 
+	int updatefile(PetplantVO vo);
+
+	
+	
+	int selectsavepetplant(PetplantVO vo);
+
+	int pluspetplant(PetplantVO vo);
+
+	int minuspetplant(PetplantVO vo);
+
+	
 
 	
 	

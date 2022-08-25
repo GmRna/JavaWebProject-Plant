@@ -263,6 +263,12 @@ img.comment-lock {
     font-size: 12px;
     color: #8e8e8e;
 }
+
+.check {
+    height: 18px;
+    font-size: 12px;
+    color: #8e8e8e;
+}
 .hl {
     border-top: 1px solid #DBDBDB;
     width: 612px;
@@ -415,4 +421,66 @@ ul.story-list .profile-text {
 	line-height:1.4rem;
 	font-size:14px;  
 	width:670px; margin:auto;
+}
+
+
+#replydiv {
+	padding-bottom:20px;
+}
+
+/* 신고 박스*/
+.reportDiv {
+	font-size: 11px;
+    position: absolute;
+    width: 191px;
+    height: 250px;
+    display: block;
+    padding: 8px 8px 8px 8px;
+    box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -webkit-box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);
+    color: var(--paper-listbox-color, var(--primary-text-color));
+    border: var(--paper-listbox-border);
+    background: #fff;
+}
+.reportBtn {
+	position: absolute;
+	font-size: 15px;
+    width: 110px;
+    height: auto;
+    display: block;
+    padding: 8px 8px 8px 8px;
+    box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -webkit-box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);
+    color: var(--paper-listbox-color, var(--primary-text-color));
+    border: var(--paper-listbox-border);
+    background: #fff;
+    text-align: center;
+}
+
+.moreDiv {
+	position: absolute;
+	font-size: 15px;
+    width: 110px;
+    height: auto;
+    display: block;
+    padding: 8px 8px 8px 8px;
+    box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -webkit-box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%); 
+    -moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);
+    color: var(--paper-listbox-color, var(--primary-text-color));
+    border: var(--paper-listbox-border);
+    background: #fff;
+    text-align: center;
+}
+
+.icon-siren {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-edit {
+    width: 24px;
+    height: 24px;
 }

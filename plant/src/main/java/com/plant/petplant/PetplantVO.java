@@ -2,9 +2,9 @@ package com.plant.petplant;
 
 import java.sql.Timestamp;
 
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
@@ -16,6 +16,7 @@ public class PetplantVO {
 	private Timestamp pet_regdate;
 	private String pet_content;
 	private String user_nick;
+	private int user_writeNo;
 	
 	// 파일 저장
 	private int file_no;
@@ -43,11 +44,8 @@ public class PetplantVO {
 	private int countreplyLike; // 댓글 좋아요 수
 	private int like_check;	// 게시판 좋아요 했는지 안했는지 체크
 	private int like_replycheck;	// 댓글 좋아요 했는지 안했는지 체크
-	
-	 
-	
-	
-	
+
+	private int ppp_check;
 	
 	
 }
