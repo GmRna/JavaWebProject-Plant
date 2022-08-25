@@ -123,13 +123,11 @@
 									    </c:if>
 						               		<span class="point-span userID">${rlist.user_nick} 댓글 번호 ${rlist.ppr_no}</span>
 						               		<input type="hidden" name="ppr_no" value="${rlist.ppr_no}">
-						               		<c:if test="${rlist.count_reply == 0}">
+						               		<c:if test="${empty list.rlist}">
 						               			등록된 댓글이 없습니다.
-						            			<input type="text" value="${rlist.count_reply}"> 
 						            		</c:if>
 						               		<c:if test="${rlist.ppr_secretCheck eq '0'}">
 						               			${rlist.ppr_content}
-						               			<input type="text" value="${rlist.count_reply}"> 
 						               		</c:if>
 						               		<c:if test="${rlist.ppr_secretCheck eq null}">
 						               			${rlist.ppr_content}

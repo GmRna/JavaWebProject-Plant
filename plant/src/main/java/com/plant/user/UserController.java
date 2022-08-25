@@ -83,12 +83,17 @@ public class UserController {
 	@PostMapping("/user/login.do")
 	public String login(UserVO vo, HttpSession sess, Model model) {
 		if (service.loginCheck(vo, sess)) {
-			return "redirect:/plant/list.do";
+			return "redirect:/user/home.do";
 		} else {
 			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
 			return "plant/common/alert";
 		}
 		
+	}
+	
+	@GetMapping("/user/home.do")
+	public String main () {
+		return "common/header";
 	}
 	
 	@GetMapping("/user/logout.do")
