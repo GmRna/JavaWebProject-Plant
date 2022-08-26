@@ -187,6 +187,11 @@
 	            		"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
 	            	"</thead>" +
 	            	"<tbody id='custom_set_date'>" +
+	            	// 달력검색을 위한 클래스 생성
+	            		"<tr>" +
+	            			"<input type='hidden' class='reservable'>"+
+	            			"<input type='hidden' class='reserved'>"+
+	            		"</tr>"+
 	            	"</tbody>" +
 	            "</table>";
 	        return calendar_html_code;

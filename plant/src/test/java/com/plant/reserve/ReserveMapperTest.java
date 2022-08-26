@@ -100,15 +100,6 @@ public class ReserveMapperTest {
 		
 	}
 	
-//	@Test
-	public void payReservationTest () {
-		ReserveVO vo = new ReserveVO();
-		vo.setReserve_no(5);
-		vo.setReserve_pay(1);
-		
-		log.info(mapper.payReservation(vo));
-		
-	}
 	
 //	@Test
 	public void insertCancelTest () {

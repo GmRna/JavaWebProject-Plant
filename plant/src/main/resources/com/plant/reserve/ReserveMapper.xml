@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plant.reserve.ReserveMapper">
 	   
+	<!-- 가드너 검색 -->
 	<select id="searchGd" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
 			g.gd_no
@@ -103,6 +104,7 @@
 			</if>
 	</select>
 	
+	<!-- 가드너 리뷰 검색 -->
 	<select id="searchGdReview" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
 			review_no
@@ -127,6 +129,7 @@
 		ORDER BY star DESC
 	</select>
 	
+	<!-- 케어종목 리스트 -->
 	<select id="majorList" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
 			*
@@ -134,6 +137,7 @@
 			major
 	</select>
 	
+	<!-- 예약가능 내역 조회 -->
 	<select id="selectReserveVal" resultType="com.plant.reserve.ReserveVO" parameterType="int">
 		SELECT 
 			r.reservable_no
@@ -150,6 +154,7 @@
 			r.reservable_no = #{reserevable_no} 
 	</select>
 	
+	<!-- 가드너 예약가능 일정 확인 -->
 	<select id="searchGdReservable" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
 			r.reservable_no
@@ -190,9 +195,11 @@
 			, r.reservable_hour ASC
 	</select>
 	
+	<!-- 가드너 예약된 일정 확인 -->
 	<select id="searchGdReserved" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
-			r.reservable_date
+			r.reservable_no
+			, r.reservable_date
 			, r.reservable_hour
 			, rm.reservable_major
 		FROM 
@@ -229,6 +236,7 @@
 			, r.reservable_hour ASC
 	</select>
 	
+	<!-- 케어진행 완료 수 -->
 	<select id="completionCount" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT
 			count(completion_no) as completion_count
@@ -238,6 +246,7 @@
 			gd_no = #{gd_no}
 	</select>
 	
+	<!-- 가드너 프로필 상세보기 -->
 	<select id="viewGd" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT
 			gd_no
@@ -287,6 +296,7 @@
 			gd_no = #{gd_no} 
 	</select>
 	
+	<!-- 유저 프로필 상세보기 -->
 	<select id="user" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT
 			user_no
@@ -305,6 +315,138 @@
 			user_no = #{user_no}
 	</select>
 	
+	<!-- 예약 조회 -->
+	<select id="viewReservation" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			reserve_no
+			, gd_no
+			, user_no
+			, reserve_date
+			, reserve_hour
+			, reserve_etc
+			, reserve_time
+		FROM
+			reservation
+		WHERE				
+			reserve_no = #{reserve_no} AND reserve_pay = 1 AND reserve_cancel = 0
+	</select>
+	
+	<!-- 유저 예약내역 확인 -->
+	<select id="userReservation" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			reserve_no
+			, gd_no
+			, user_no
+			, reserve_date
+			, reserve_hour 
+			, reserve_time
+			, (
+				SELECT
+					major
+				FROM
+					major
+				WHERE
+					major_no = r.major_no
+			) AS major
+		FROM
+			reservation r
+		WHERE				
+			user_no = #{user_no} AND reserve_pay = 1 AND reserve_cancel = 0
+	</select>
+	
+	<!-- 가드너 예약내역 확인 -->
+	<select id="gdReservation" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			reserve_no
+			, gd_no
+			, user_no
+			, reserve_date
+			, reserve_hour
+			, reserve_etc
+			, reserve_time
+			, (
+				SELECT
+					major
+				FROM
+					major
+				WHERE
+					major_no = r.major_no
+			) AS major
+		FROM
+			reservation r
+		WHERE				
+			gd_no = #{gd_no} AND reserve_pay = 1 AND reserve_cancel = 0
+	</select>
+	
+	<!-- 유저 결제 내역 -->
+	<select id="userPayHistory" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			pay_no
+			, reserve_no
+			, pay_date
+			, pay_size
+			, gd_no
+			, user_no
+			, buyer_name
+			, buyer_addr
+			, buyer_postcode
+			, buyer_email
+			, buyer_tel
+			, merchant_uid
+			, pay_method
+			, reserve_cancel
+		FROM
+			pay
+		WHERE 
+			user_no = #{user_no}
+	</select>
+	
+	<!-- 가드너 결제 내역 -->
+	<select id="gdPayHistory" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			pay_no
+			, reserve_no
+			, pay_date
+			, pay_size
+			, gd_no
+			, user_no
+			, buyer_name
+			, buyer_addr
+			, buyer_postcode
+			, buyer_email
+			, buyer_tel
+			, merchant_uid
+			, pay_method
+			, reserve_cancel
+		FROM
+			pay
+		WHERE 
+			gd_no = #{gd_no}
+	</select>
+	
+	<!-- 유저 결제 내역 중복제거-->
+	<select id="userPayHistoryDeduplication" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT DISTINCT
+			pay_date
+			, pay_size
+			, gd_no
+			, user_no
+			, buyer_name
+			, buyer_addr
+			, buyer_postcode
+			, buyer_email
+			, buyer_tel
+			, merchant_uid
+			, pay_method
+			, reserve_cancel
+		FROM
+			pay
+		WHERE
+			user_no = #{user_no}
+		ORDER BY pay_date
+	</select>
+	
+	<!-- 예약가능 일자 입력 -->
 	<insert id="insertReservable" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
 			reservable(
@@ -320,15 +462,45 @@
 			)
 	</insert>
 	
+	<!-- 예약가능 여부 업데이트 -->
 	<update id="updateReservable" parameterType="com.plant.reserve.ReserveVO">
 		UPDATE 
 			reservable 
 		SET
 			reservable_do = #{reservable_do} 
 		WHERE
-			reservable_no = #{reservable_no}
+			reservable_no = 
+			(
+				SELECT 
+					reservable_no
+				FROM
+					reservation
+				WHERE
+					reserve_no = #{reserve_no}
+			) 
 	</update>
 	
+	<!-- 예약 취소 여부 업데이트 -->
+	<update id="updateReservationCancel" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			reservation 
+		SET
+			reserve_cancel = #{reserve_cancel} 
+		WHERE
+			reserve_no = #{reserve_no}
+	</update>
+	
+	<!-- 결제 취소 여부 업데이트 -->
+	<update id="updatePayCancel" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			pay 
+		SET
+			reserve_cancel = #{reserve_cancel} 
+		WHERE
+			reserve_no = #{reserve_no}
+	</update>
+	
+	<!-- 예약가능 시간 변경 -->
 	<update id="changeReservable" parameterType="com.plant.reserve.ReserveVO">
 		UPDATE 
 			reservable
@@ -336,10 +508,20 @@
 			reservable_hour = #{reservable_hour},
 			reservable_time = NOW()
 		WHERE 
-			reservable_date = #{reservable_date} AND
 			reservable_no = #{reservable_no}
 	</update>
 	
+	<!-- 케어가능한 종목 변경 -->
+	<update id="changeReservableMajor" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE 
+			reservableMajor
+		SET 
+			reservable_major = #{reservable_major} 
+		WHERE
+			reservable_no = #{reservable_no}
+	</update>
+	
+	<!-- 케어가능한 종목 추가(미사용) -->
 	<insert id="insertReservableMajor" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
 			reservable_major(
@@ -351,15 +533,8 @@
 			)
 	</insert>
 	
-	<update id="changeReservableMajor" parameterType="com.plant.reserve.ReserveVO">
-		UPDATE 
-			reservable_major
-		SET 
-			reservable_major = #{reservable_major} 
-		WHERE
-			reservable_major_no = #{reservable_major_no}
-	</update>
 	
+	<!-- 예약 추가 -->
 	<insert id="insertReservation" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
 			reservation(
@@ -375,14 +550,51 @@
 				#{reservable_no},
 				#{gd_no},
 				#{user_no},
-				#{reserve_date},
-				#{reserve_hour},
+				(
+					SELECT 
+						reservable_date
+					FROM 
+						reservable
+					WHERE 
+						reservable_no = #{reservable_no} 
+				),
+				(
+					SELECT 
+						reservable_hour
+					FROM 
+						reservable
+					WHERE 
+						reservable_no = #{reservable_no} 
+				),
 				#{reserve_etc},
 				NOW(),
-				#{major_no}
+				(
+					SELECT
+						major_no
+					FROM 
+						major
+					WHERE
+						major = 
+						(
+						SELECT
+							rm.reservable_major
+						FROM 
+							reservable r
+						INNER JOIN 
+							reservableMajor rm 
+						ON 
+							r.reservable_no = rm.reservable_no 
+						WHERE 
+							r.reservable_no = #{reservable_no} 
+						)
+				)
 			)
+			<selectKey resultType="int" keyProperty="reserve_no" order="AFTER">
+        		SELECT LAST_INSERT_ID()
+    		</selectKey>     
 	</insert>
 	
+	<!-- 예약 시간 변경 -->
 	<update id="changeReservation" parameterType="com.plant.reserve.ReserveVO">
 		UPDATE 
 			reservation
@@ -390,17 +602,22 @@
 			reserve_hour = #{reserve_hour},
 			major_no = #{major_no},
 			reserve_time = NOW()
-		WHERE reserve_date = #{reserve_date} AND reserve_no = #{reserve_no}
+		WHERE 
+			reserve_date = #{reserve_date} AND reserve_no = #{reserve_no}
 	</update>
 	
-	<update id="payReservation" parameterType="com.plant.reserve.ReserveVO">
+	<!-- 예약 결제여부 및 특이사항 추가 -->
+	<update id="updateReservation" parameterType="com.plant.reserve.ReserveVO">
 		UPDATE 
 			reservation
 		SET  
 			reserve_pay = #{reserve_pay}
-		WHERE reserve_no = #{reserve_no}
+			, reserve_etc = #{reserve_etc}
+		WHERE 
+			reserve_no = #{reserve_no}
 	</update>
 	
+	<!-- 취소내역 추가 -->
 	<insert id="insertCancel" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
 			cancel(
@@ -420,6 +637,7 @@
 			)
 	</insert>
 	
+	<!-- 리뷰 추가 -->
 	<insert id="insertReview" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
 			review(
@@ -439,6 +657,7 @@
 			)
 	</insert>
 	
+	<!-- 리뷰 답변 입력 -->
 	<update id="answerReview" parameterType="com.plant.reserve.ReserveVO">
 		UPDATE 
 			review
@@ -449,6 +668,7 @@
 			review_no = #{review_no}
 	</update>
 	
+	<!-- 1:1문의 -->
 	<insert id="insertInquiry" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
 			inquiry(
@@ -466,6 +686,7 @@
 			)
 	</insert>
 	
+	<!-- 1:1 문의 답변 -->
 	<update id="answerInquiry" parameterType="com.plant.reserve.ReserveVO">
 		UPDATE
 			inquiry 
@@ -476,16 +697,49 @@
 			inquiry_no = #{inquiry_no}
 	</update>
 	
+	<!-- 결제내역 입력 -->
 	<insert id="insertPay" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
 			pay(
-				reserve_no,
-				pay_date,
-				pay_size
+				reserve_no
+				, pay_date
+				, pay_size
+				, gd_no
+				, user_no
+				, buyer_name
+				, buyer_addr
+				, buyer_postcode
+				, buyer_email
+				, buyer_tel
+				, merchant_uid
+				, pay_method
 			) VALUES (
-				#{reserve_no},
-				NOW(),
-				#{pay_size}
+				#{reserve_no}
+				, NOW()
+				, #{pay_size}
+				, #{gd_no}
+				, #{user_no}
+				, #{buyer_name}
+				, #{buyer_addr}
+				, #{buyer_postcode}
+				, #{buyer_email}
+				, #{buyer_tel}
+				, #{merchant_uid}
+				, #{pay_method}
 			)
 	</insert>
+	
+	<delete id="deleteReservable" parameterType="com.plant.reserve.ReserveVO">
+		DELETE FROM 
+			reservable
+		WHERE
+			reservable_no = #{reservable_no}
+	</delete>
+	
+	<delete id="deleteReservableMajor" parameterType="com.plant.reserve.ReserveVO">
+		DELETE FROM 
+			reservableMajor
+		WHERE
+			reservable_no = #{reservable_no}
+	</delete>
 </mapper>

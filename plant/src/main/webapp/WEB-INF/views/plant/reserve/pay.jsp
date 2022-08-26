@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
@@ -9,14 +9,24 @@
 </style>
 <meta charset="UTF-8">
 <title>가드너 예약 결제</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- moment.js -->
 <script src="https://momentjs.com/downloads/moment.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- postCode api -->
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript"
+	src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 <script>
+	$(function(){	
+		reserveInfo();
+	});
 	// 우편번호 API
     function postCode() {
         new daum.Postcode({
-            oncomplete: function(data) {
+            oncomplete: function(data) {        		
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
                 // 각 주소의 노출 규칙에 따라 주소를 조합한다.
@@ -59,84 +69,179 @@
         }).open();
     }
 	// 가드너 번호
-	var gd_no = "${vo.gd_no}";
-	// selectReserve Array 생성 및 값 저장
-	var selectReserve = new Array();
-	<c:forEach items = "${selectReserve}" var = "r">
-		selectReserve.push({
+	var gd_no = "${gd.gd_no}";
+	// 유저 번호
+	var user_no = "${user.user_no}";
+	// reservableNoList Array 및 소계 가격 리스트 생성 저장
+	var reservableNoList = new Array();
+	// reservable_no 
+	var selectReserve = "";
+	<c:forEach var = "r" items ="${selectReserve}" varStatus="status">
+		reservableNoList.push({
 			reservable_no : ${r.reservable_no}
 			, reservable_date : ${r.reservable_date}
 			, reservable_hour : ${r.reservable_hour}
 			, reservable_major : "${r.reservable_major}"
+			, reservable_subTotal : ${total[status.index]}
 		});
+		selectReserve += ",${r.reservable_no}";
 	</c:forEach>
-	<c:forEach items = "${vo}" var = "v">
-		console.log("메롱")
-	</c:forEach>
+
 	// 예약 내용 가져오기
 	function reserveInfo() {
 		var res = "";
 			res += "<tr>";
 			res += "	<td>예약일</td>";
-		for(var i=0; i<selectReserve.length; i++) {
-			res += "	<td>"+selectReserve[i].reservable_date+"</td>";
+		for(var i=0; i<reservableNoList.length; i++) {
+			res += "	<td>"+moment(reservableNoList[i].reservable_date.toString()).format('YYYY-MM-DD')+"</td>";
 		}
 			res += "</tr>";
 			res += "<tr>";
 			res += "	<td>예약시간</td>";
-		for(var i=0; i<selectReserve.length; i++) {
-			res += "	<td>"+selectReserve[i].reservable_hour+"</td>";
+		for(var i=0; i<reservableNoList.length; i++) {
+			res += "	<td>"+reservableNoList[i].reservable_hour+"</td>";
 		}
 			res += "</tr>";
 			res += "<tr>";
 			res += "	<td>케어내용</td>";
-		for(var i=0; i<selectReserve.length; i++) {
-			res += "	<td>"+selectReserve[i].reservable_major+"</td>";
+		for(var i=0; i<reservableNoList.length; i++) {
+			res += "	<td>"+reservableNoList[i].reservable_major+"</td>";
 		}
 			res += "</tr>";
-			res += "<tr>";
+			res += "<tr id='subTotal'>";
 			res += "	<td>케어당 가격</td>";
-			res += "	<td>"+gd_no+"</td>";
+		for(var i=0; i<reservableNoList.length; i++) {
+			res += "	<td>"+reservableNoList[i].reservable_subTotal+"</td>";
+		}
 			res += "</tr>";
 			
-			$("#reserveInfo").html(res);
+		$("#reserveInfo").html(res);
+		totalPrice();
+	}
+	// 총합계 구하기
+	function totalPrice() {
+		var sum = 0;
+		for(var i=1; i<($("#subTotal td").length); i++) {
+			sum += Number($("#subTotal td").eq(i).text());
+		}
+		var res = "<div id='totalPrice'>"+sum+"원</div>"
+		$('#total').html(res);
 	}
 	
-	$(function(){	
-		reserveInfo();
-	});
+	// 결제 아임 포트 api
+	function requestPay() {
+	// 가맹정 식별코드
+		var IMP = window.IMP;
+		IMP.init("imp56776552"); // 예: imp00000000
+		
+		// 전체가격
+		var sum = 0;
+		for(var i=1; i<($("#subTotal td").length); i++) {
+			sum += Number($("#subTotal td").eq(i).text());
+		}
+		
+	    // IMP.request_pay(param, callback) 결제창 호출
+	    IMP.request_pay({ 
+			pg: "html5_inicis"
+	        , pay_method: "card"
+	        , merchant_uid: createPayNum()
+	        , name: "가드너 파견 예약"
+	        , amount: 100 // 테스트용 추후 sum으로 변경
+	        , buyer_email: $("#user_email").val()
+	        , buyer_name: $("#user_name").val()
+	        , buyer_tel: $("#user_hp").val()
+	        , buyer_addr: $("#addr1").val()+$("#addr2").val()
+	        , buyer_postcode: $("#postCode").val()
+		}
+	    ,function(rsp) {
+			
+			// 결제검증
+			$.ajax({
+	        	type : "POST"
+	        	, url : "/plant/reserve/verifyIamport/" + rsp.imp_uid
+	        	, dataType:"JSON"
+	        })
+	        .done(function(data) {       	
+	        	// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
+	        	if(rsp.paid_amount == data.response.amount){
+		        	alert("결제 완료");
+		        	var etcVal = $("#etc").val();
+		        	var payInfo = "";
+		        		payInfo += "<input type='hidden' name='user_no' value='"+user_no+"'>";
+		        		payInfo += "<input type='hidden' name='selectReserve' value='"+selectReserve+"'>";
+		        		payInfo += "<input type='hidden' name='gd_no' value='"+Number(gd_no)+"'>";
+		        		payInfo += "<input type='hidden' name='buyer_name' value='"+data.response.buyerName+"'>";
+		        		payInfo += "<input type='hidden' name='buyer_addr' value='"+data.response.buyerAddr+"'>";
+		        		payInfo += "<input type='hidden' name='buyer_postcode' value='"+data.response.buyerPostcode+"'>";
+		        		payInfo += "<input type='hidden' name='buyer_email' value='"+data.response.buyerEmail+"'>";
+		        		payInfo += "<input type='hidden' name='buyer_tel' value='"+data.response.buyerTel+"'>";
+		        		payInfo += "<input type='hidden' name='merchant_uid' value='"+data.response.merchantUid+"'>";
+		        		payInfo += "<input type='hidden' name='pay_method' value='"+data.response.payMethod+"'>";
+		        		payInfo += "<input type='hidden' name='pay_size' value='"+Number(data.response.amount)+"'>";
+		        		if(etcVal === '' || etcVal === null) {
+		        			payInfo += "<input type='hidden' name='reserve_etc' value='없음'>";
+		        		}
+		        		if(etcVal !== '' || etcVal !== null) {
+		        			payInfo += "<input type='hidden' name='reserve_etc' value='"+etcVal+"'>";
+		        		}
+	        		$("#param").html(payInfo)
+	        		frm.submit();
+		        }
+			});
+		}
+		);
+	}
+	
+	// 결제번호 만들기
+	function createPayNum(){
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = String(date.getMonth() + 1).padStart(2, "0");
+		var day = String(date.getDate()).padStart(2, "0");
+		
+		let orderNum = year + month + day;
+		for(var i=0; i<10; i++) {
+			orderNum += Math.floor(Math.random() * 8);	
+		}
+		return orderNum;
+	}
 </script>
 </head>
 <body>
-	<h1> 결제 페이지</h1>
+	<h1>결제 페이지</h1>
 	<!-- 결제페이지 상단 -->
-	<div style="float:left; width:100%;">
+	<div style="float: left; width: 100%; margin: 30px;">
 		<!-- 결제 정보 -->
-		<div style="float:left; width:80%;">
+		<div style="float: left; width: 80%;">
 			<h3>예약자 정보</h3>
-			<table style="width:100%;" border="1">
+			<table style="width: 100%;" border="1">
 				<tbody>
 					<tr>
 						<td>예약자</td>
 						<td>
-							<input type="text" id="us_name" value="${user.user_name}">
+							<input type="text" id="user_name" value="${user.user_name}">
 						</td>
 					</tr>
 					<tr>
 						<td>연락처</td>
 						<td>
-							<input type="text" id="us_name" value="${user.user_hp}">
+							<input type="text" id="user_hp" value="${user.user_hp}">
+						</td>
+					</tr>
+					<tr>
+						<td>이메일</td>
+						<td>
+							<input type="text" id="user_email" value="${user.user_email}">
 						</td>
 					</tr>
 					<tr>
 						<td rowspan="3">주소</td>
-						<td>
-							<input type="text" name="postCode" id="postCode" class="inNextBtn" style="float:left;" value="${user.user_postcode}" readonly>
-							<span>
-								<a href="javascript:postCode();" style="float:left; width:auto; clear:none;">우편번호</a>
-							</span>
-
-						</td>
+						<td><input type="text" name="postCode" id="postCode"
+							class="inNextBtn" style="float: left;"
+							value="${user.user_postcode}" readonly> <span> <a
+								href="javascript:postCode();"
+								style="float: left; width: auto; clear: none;">우편번호 검색</a>
+						</span></td>
 					</tr>
 					<tr>
 						<td>
@@ -148,34 +253,49 @@
 							<input type="text" id="addr2" value="${user.user_addr2}">
 						</td>
 					</tr>
-					<tr>
-						<td>특이사항</td>
-						<td>
-							<textarea id="etc" rows="10px" cols="30px"></textarea>
-						</td>
-					</tr>
 				</tbody>
 			</table>
 			<h3>예약정보</h3>
-			<table style="width:100%;" border="1">
+			<table style="width: 100%;" border="1">
 				<tbody>
 					<tr>
-						<td>가드너 이름</td>
-						<td colspan="100">${data.gd_name}</td>
+						<td>가드너= 이름</td>
+						<td colspan="100">${gd.gd_name}</td>
 					</tr>
 					<tr>
 						<td>가드너 연락처</td>
-						<td colspan="100">${data.gd_hp}</td>
+						<td colspan="100">${gd.gd_hp}</td>
 					</tr>
 				</tbody>
 				<tbody id="reserveInfo">
 				</tbody>
+				<tbody>
+					<tr>
+						<td>요청사항</td>
+						<td colspan="100">
+							<input type="text" id="etc" style="height:20px; width:400px;">
+						</td>
+					</tr>
+					<tr>
+						<td>총 합계 금액</td>
+						<td colspan="100"><div id="total"></div></td>
+					</tr>
+					<tr>
+						<td>카드 결제</td>
+						<td colspan="100"><button onclick="requestPay()">결제하기</button></td>
+					</tr>
+					<tr>
+						<td colspan="100">* 본 버전은 테스트 버전이기 때문에 테스트하여도 다음날 00시에 자동환불처리됩니다. *</td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
-		<!-- 결제 총합산 가격 및 내역 -->
-		<div style="float:right; margin-right:10px; width:20%;">
-		456
-		</div>
+	</div>
+	<div>
+		<!-- 파라메터 전달을 위한 form -->
+			<form method="post" name="frm" id="frm" action="payConfirm.do">
+				<div id="param"></div>
+			</form>
 	</div>
 </body>
 </html>

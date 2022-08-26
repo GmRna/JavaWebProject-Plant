@@ -13,7 +13,7 @@ public interface ReserveMapper {
 	List<ReserveVO> majorList(ReserveVO vo); // 케어종목 리스트
 	ReserveVO viewGd(ReserveVO vo); // 가드너 상세보기
 	List<ReserveVO> searchGdReservable(ReserveVO vo); // 가드너 예약 가능 시간 조회
-	List<ReserveVO> searchGdReserved(ReserveVO vo); // 가드너 된 내역 조회
+	List<ReserveVO> searchGdReserved(ReserveVO vo); // 가드너 예약된 내역 조회
 	ReserveVO completionCount(ReserveVO vo); // 가드너 케어완료 수 조회
 	
 	// 유저 조회
@@ -24,15 +24,21 @@ public interface ReserveMapper {
 	int updateReservable(ReserveVO vo); // 예약 확정시 update
 	int changeReservable(ReserveVO vo); // 예약일정 변경(시간)
 	ReserveVO selectReserveVal(int Reserve_no); // 선택학 예약번호로 예약정보 조회
+	int deleteReservable(ReserveVO vo); // 예약가능 스케줄의 삭제
 
 	// 예약가능 스케줄 케어종목
 	int insertReservableMajor(ReserveVO vo); // 예약가능 스케줄의 케어종목 insert
 	int changeReservableMajor(ReserveVO vo); // 예약가능 스케줄의 케어종목 변경
+	int deleteReservableMajor(ReserveVO vo); // 예약가능 종목의 삭제
 	
 	// 예약
+	ReserveVO viewReservation(ReserveVO vo); // 예약내역 조회
+	List<ReserveVO> userReservation(ReserveVO vo); // 유저예약 내역 확인
+	List<ReserveVO> gdReservation(ReserveVO vo); // 가드너 내역 확인
 	int insertReservation(ReserveVO vo); // 예약 insert
 	int changeReservation(ReserveVO vo); // 예약 변경
-	int payReservation(ReserveVO vo); // 결제시 결제 컬럼값 변경
+	int updateReservation(ReserveVO vo); // 결제시 결제 컬럼값 변경
+	int updateReservationCancel(ReserveVO vo); // 예약 취소 여부 업데이트
 	
 	// 취소
 	int insertCancel(ReserveVO vo); // 취소 insert
@@ -47,4 +53,8 @@ public interface ReserveMapper {
 	
 	// 결제
 	int insertPay(ReserveVO vo); // 결제 insert
+	int updatePayCancel(ReserveVO vo); // 결제 취소 여부 업데이트
+	List<ReserveVO> gdPayHistory(ReserveVO vo); // 유저결제 내역 확인
+	List<ReserveVO> userPayHistory(ReserveVO vo); // 가드너결제 내역 확인
+	List<ReserveVO> userPayHistoryDeduplication(ReserveVO vo); // 유저 결제 내역 중복내역 제거
 }
