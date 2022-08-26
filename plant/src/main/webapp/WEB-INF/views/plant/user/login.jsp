@@ -48,7 +48,7 @@
                             <div class="btnSet clear">
                                 <div style="padding:10px;"> 
                                     <a href="/plant/user/join.do" class="btn">일반 회원가입</a> 
-                                    <a href="/plant/user/join.do" class="btn">가드너 회원가입</a> 
+                                    <a href="/plant/gd/join.do" class="btn">가드너 회원가입</a> 
                                 </div>
                                 <div style="padding:10px;"> 
                                     <a href="findEmail.do" class="btn">아이디 찾기</a>
