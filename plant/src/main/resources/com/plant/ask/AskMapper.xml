@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.ask.AskMapper">
+
+	<insert id="insert" parameterType="com.plant.ask.AskVO">
+		INSERT INTO ask (
+			ask_title, ask_content, ask_regdate, ask_viewcount, user_no, filename_org, filename_real
+		) VALUES (
+			#{ask_title}, #{ask_content}, NOW(), #{ask_viewcount}, #{user_no}, #{filename_org}, #{filename_real} 
+		)
+	
+	</insert>
+	
+	<select id="view" parameterType="int" resultType="com.plant.ask.AskVO" >
+		SELECT * FROM ask WHERE ask_no = #{xxxxx}
+	</select>
+	
+	<select id="list" parameterType="com.plant.ask.AskVO" resultType="com.plant.ask.AskVO">
+		SELECT * FROM ask ORDER BY ask_regdate DESC
+		LIMIT #{startIdx}, #{pageRow};
+	</select>
+	
+	<select id="count" parameterType="com.plant.ask.AskVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM ask
+		<where>
+				<if test="stype !=null and stype !=''">
+					<if test="stype != 'all'">
+						${stype} LIKE '%${sword}%'
+					</if>
+					<if test="stype == 'all'">
+						ask_title LIKE '%${sword}%' OR ask_content LIKE '%${sword}%'
+					</if>
+	
+				</if>
+		</where>
+	
+	<!-- stype가 null이 아니고 stype가 빈문자열이 아니면 그리고 stype가 all이 아니면?-->
+	</select>
+	
+	<update id="update" parameterType="com.plant.ask.AskVO">
+		UPDATE ask SET
+			ask_title =#{ask_title} 
+			, ask_content = #{ask_content}
+			<if test="filename_org != null">
+		 	filename_org = #{filename_org}
+		 	filename_real, #{filename_real}
+		
+			</if>
+			
+		WHERE ask_no = #{ask_no}
+	</update>
+	
+
+	<update id="updateViewcount" parameterType="int">
+		UPDATE ask
+		SET ask_viewcount = ask_viewcount+1 WHERE ask_no = #{ask_no} 
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM ask WHERE ask_no = #{ask_no}
+	</delete>
+
+</mapper>

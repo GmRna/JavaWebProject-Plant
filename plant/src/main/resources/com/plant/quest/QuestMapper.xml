@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.quest.QuestMapper">
+	
+	<select id="list" parameterType="com.plant.quest.QuestVO" resultType="com.plant.quest.QuestVO">
+		SELECT *,
+			(SELECT COUNT(*) FROM quest_comment WHERE quest_no=quest.quest_no AND tablename='quest') AS comment_count
+		 FROM quest
+		<where>
+			<if test="stype != null and stype != ''">
+				<if test="stype != 'all'">
+					${stype} LIKE '%${sword}%'
+				</if>
+				<if test="stype == 'all'">
+		    		quest_title LIKE '%${sword}%' OR  quest_content LIKE '%${sword}%'
+		    	</if>
+		    </if>
+		</where>
+		ORDER BY quest_regdate DESC
+		LIMIT  ${startIdx},${pageRow};
+	</select>
+	
+	<insert id="insert" parameterType="com.plant.quest.QuestVO">
+		INSERT INTO quest (
+				quest_title, quest_content, quest_viewcount, quest_regdate, user_no, quest_filenameorg, quest_filenamereal, quest_level 
+				) VALUES (
+				#{quest_title}, #{quest_content}, 0, NOW(), #{user_no},  #{quest_filenameorg}, #{quest_filenamereal}, #{quest_level}
+			)
+	</insert>
+	
+	<select id="count" parameterType="com.plant.quest.QuestVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM quest
+		<where>
+			<if test="stype != null and stype != ''">
+				<if test="stype != 'all'">
+					${stype} LIKE '%${sword}%'
+				</if>
+				<if test="stype == 'all'">
+		    		quest_title LIKE '%${sword}%' OR  quest_content LIKE '%${sword}%'
+		    	</if>
+		    </if>
+		</where>
+	</select>
+	
+	<select id="view" parameterType="int" resultType="com.plant.quest.QuestVO">
+		SELECT * FROM quest WHERE quest_no = #{xxxxx}
+	</select>
+	
+	<update id ="updateViewcount" parameterType="int">
+		UPDATE quest SET quest_viewcount = quest_viewcount+1 WHERE quest_no = #{quest_no}
+	</update>
+	
+	<update id="update" parameterType="com.plant.quest.QuestVO">
+		UPDATE quest SET
+			quest_title = #{quest_title}
+			, quest_content = #{quest_content}
+			<if test="quest_filenameorg != null">
+			, quest_filenameorg = #{quest_filenameorg}
+			, quest_filenamereal = #{quest_filenamereal}
+			
+			</if>
+		WHERE quest_no = #{quest_no}
+	
+	</update>
+	
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM quest WHERE quest_no = #{quest_no}
+	</delete>
+
+</mapper>

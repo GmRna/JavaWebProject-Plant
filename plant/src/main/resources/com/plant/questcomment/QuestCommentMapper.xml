@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.questcomment.QuestCommentMapper">
+
+	<insert id="insert" parameterType="com.plant.questcomment.QuestCommentVO">
+		INSERT INTO quest_comment (
+			content, user_no, quest_no, regdate, tablename
+		
+		) VALUES (
+			#{content}, #{user_no}, #{quest_no}, NOW(), #{tablename}
+		)
+	
+	</insert>
+	
+	<select id="count" parameterType="com.plant.questcomment.QuestCommentVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM quest_comment
+		WHERE quest_no = #{quest_no} AND tablename = #{tablename}
+	</select>
+	
+
+	<select id="list" parameterType="com.plant.questcomment.QuestCommentVO" resultType="com.plant.questcomment.QuestCommentVO">
+		SELECT *,
+			(SELECT name FROM member WHERE no = quest_comment.user_no) AS member_name
+		FROM quest_comment
+		
+		WHERE quest_no = #{quest_no} AND tablename = #{tablename}
+		ORDER BY regdate DESC
+		LIMIT ${startIdx}, ${pageRow};
+	</select>
+	
+	
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM quest_comment WHERE quest_no = #{quest_no}
+	</delete>
+	
+	</mapper>

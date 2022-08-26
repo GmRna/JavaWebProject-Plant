@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.notice.NoticeMapper">
+	
+	<select id="list" parameterType="com.plant.notice.NoticeVO" resultType="com.plant.notice.NoticeVO">
+	SELECT * FROM notice
+		<where>
+			<if test="stype != null and stype != ''">
+				<if test="stype != 'all'">
+					${stype} LIKE '%${sword}%'
+				</if>
+				<if test="stype == 'all'">
+		    		notice_title LIKE '%${sword}%' OR  notice_content LIKE '%${sword}%'
+		    	</if>
+		    </if>
+		</where>
+		ORDER BY notice_regdate DESC
+		LIMIT  ${startIdx},${pageRow};	
+		</select>
+	
+	
+	<insert id="insert" parameterType="com.plant.notice.NoticeVO">
+		
+		INSERT INTO notice(
+			admin_no, notice_title, notice_content, notice_viewcount, notice_regdate, filename_org, filename_real, notice_level
+			) VALUES (
+				admin_no, #{notice_title}, #{notice_content}, 0, NOW(), #{filename_org}, #{filename_real}, #{notice_level}
+			)
+		
+	</insert>
+	
+	<select id="count" parameterType="com.plant.notice.NoticeVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM notice
+		<where>
+			<if test="stype != null and stype != ''">
+				<if test="stype != 'all'">
+					${stype} LIKE '%${sword}%'
+				</if>
+				<if test="stype == 'all'">
+		    		notice_title LIKE '%${sword}%' OR  notice_content LIKE '%${sword}%'
+		    	</if>
+		    </if>
+		</where>
+	</select>
+	
+	<select id="view" parameterType="com.plant.notice.NoticeVO" resultType="com.plant.notice.NoticeVO">
+		SELECT * FROM notice WHERE notice_no = #{xxxx}
+	</select>
+	
+	
+	<update id="updateViewcount" parameterType="int">
+		UPDATE notice SET notice_viewcount = notice_viewcount+1 WHERE notice_no = #{notice_no}
+			
+	</update>
+	
+	
+	<update id="update" parameterType="com.plant.notice.NoticeVO">
+		UPDATE notice SET
+			notice_title = #{notice_title}
+			, notice_content = #{notice_content}
+			
+		WHERE notice_no = #{notice_no}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		DELETE FROM notice WHERE notice_no=#{notice_no}
+	</delete>
+	
+	
+</mapper>
