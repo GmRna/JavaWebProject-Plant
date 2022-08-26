@@ -62,7 +62,7 @@
 		<property name="defaultEncoding" value="utf-8"/>
 		<property name="maxUploadSize" value="104857560"/>
 		<property name="maxUploadSizePerFile" value="2097152"/>
-		<property name="uploadTempDir" value="/Users/ran/Desktop/Code/upload/tmp"/>
+		<!-- <property name="uploadTempDir" value="/Users/ran/Desktop/Code/upload/tmp"/> -->
 		<property name="maxInMemorySize" value="10485756"/>
 	</bean> 
 	

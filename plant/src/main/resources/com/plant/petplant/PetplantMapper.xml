@@ -4,18 +4,19 @@
 	
 	<!-- 게시판  전체 리스트 - 게시판내용 + 파일 + 좋아요수  -->
 	<select id="list" resultType="com.plant.petplant.PetplantVO">
-	SELECT * FROM petplant AS a
+		select *,
+			(select user_nick FROM user WHERE user_no=a.user_no) AS user_nick,
+			(select user_no FROM user WHERE user_no=a.user_no) AS user_writeNo,
+			(select count(*) from ppLike where pet_no=a.pet_no and user_no= #{user_no} and ppreply_no=0) like_check,
+		    (select count(*) from ppLike where pet_no=a.pet_no and ppreply_no=0) countLike,
+    		(select count(*) from ppReply where pet_no=a.pet_no) count_reply,
+    		(select count(*) from petplantput where pet_no=a.pet_no and user_no = #{user_no} ) ppp_check
+		from petplant AS a
 		INNER JOIN ( 
-			SELECT file_boardno, group_concat(filename_real) AS filename_real
-			FROM plant_file group by file_boardno
+			SELECT pet_no, group_concat(filename_real) AS filename_real
+			FROM plant_file group by pet_no
 		) AS b
-		ON (a.pet_no = b.file_boardno)
-		LEFT JOIN (
-			SELECT count(*) as countLike , pet_no
-    		FROM ppLike group by pet_no
-    	)AS c
-    	ON (a.pet_no = c.pet_no)
-   	ORDER BY a.pet_no DESC
+		ON (a.pet_no = b.pet_no) ORDER BY a.pet_no DESC
 	</select>
 	
 	<!-- 반려식물 게시판 등록 -->
@@ -25,7 +26,7 @@
 			, pet_regdate
 		) 
 		VALUES ( 
-			0
+			#{user_no}
 			, #{pet_content}
 			, NOW()	
 		)
@@ -38,14 +39,14 @@
 	<insert id="insertfile" parameterType="com.plant.petplant.PetplantVO" >
 		INSERT INTO plant_file ( 
 			user_no 
-			,file_boardno
+			,pet_no
 			,file_tablename
 			,filename_org
 			,filename_real
 			,file_regdate 
 		) VALUES (
-			0
-			, #{file_boardno}
+			#{user_no}
+			, #{pet_no}
 			, #{file_tablename}
 			, #{filename_org}
 			, #{filename_real}
@@ -53,23 +54,57 @@
 		)
 	</insert>
 	
+	<!-- 반려식물 게시판 내용 수정 -->
+	<update id="update"  >
+		UPDATE petplant SET pet_content = #{pet_content}, pet_regdate = NOW() WHERE pet_no = #{pet_no} 
+	</update>
 	
+	<!-- 반려식물 게시판 파일 수정 전에 사진 전체 삭제 -->
+	<delete id="deletefile"  parameterType="com.plant.petplant.PetplantVO">
+		DELETE FROM plant_file WHERE file_no = #{file_no} AND filename_real = #{filename_real} 
+	</delete>
+	
+	
+	
+	
+	<!-- 반려식물 게시판 수정 - 내용 불러오기 -->
+	<select id="findpetcontent" parameterType="int" resultType="com.plant.petplant.PetplantVO">
+		SELECT * FROM petplant WHERE pet_no = #{pet_no}
+	</select>
 	
 	<!-- 게시판 상세보기 - 파일 -->
-	<select id="findpetplant" parameterType="int" resultType="com.plant.petplant.PetplantVO">
-		SELECT * FROM plant_file WHERE file_boardno=#{no}
+	<select id="findpetfile" parameterType="com.plant.petplant.PetplantVO" resultType="com.plant.petplant.PetplantVO">
+		SELECT * FROM plant_file WHERE pet_no=#{pet_no}
 	</select>
 	
 	<!-- 게시판 상세보기 - 댓글이랑 대댓글 -->
-	<select id="findpetreply" parameterType="int" resultType="com.plant.petplant.PetplantVO">
-		SELECT * FROM ppReply AS a
-			LEFT OUTER JOIN (
-				SELECT count(*) as countLike , ppreply_no
-	    		FROM ppLike group by ppreply_no
-	    	) b
-	    ON a.ppr_no	= b.ppreply_no
+	<select id="findpetreply" parameterType="com.plant.petplant.PetplantVO" resultType="com.plant.petplant.PetplantVO">
+		SELECT * ,
+			(select user_nick FROM user WHERE user_no=a.user_no) AS user_nick,
+			(select IFNULL(count(*),0) from ppReply where pet_no=#{pet_no}) AS count_reply,
+			(select count(*) from ppLike where ppreply_no = a.ppr_no)  countreplyLike,			
+            (select count(*) from ppLike where user_no=#{user_no} and ppreply_no = a.ppr_no ) like_replycheck,
+            (select count(*) from ppLike where user_no=#{user_no} and pet_no = a.pet_no) like_check
+        FROM ppReply AS a
 	    WHERE a.pet_no=#{pet_no}
 		ORDER BY ppr_gno DESC , ppr_order ASC
+	</select>
+	
+	<!-- petboard -->
+	<select id="select" parameterType="com.plant.petplant.PetplantVO" resultType="com.plant.petplant.PetplantVO" >
+		SELECT * ,
+			(select user_nick FROM user WHERE user_no=a.user_no) AS user_nick,
+			(select count(*) from ppLike where pet_no=a.pet_no and user_no= #{user_no} and ppreply_no=0) like_check,
+			(select count(*) from ppLike where user_no=#{user_no} and pet_no =#{pet_no} )  countLike
+		FROM petplant AS a
+		WHERE pet_no = #{pet_no}		
+	</select>
+	
+	
+	
+	<!-- 댓글 개수 불러오기 -->
+	<select id="countreply" parameterType="com.plant.petplant.PetplantVO" resultType="java.lang.Integer" >
+		select count(*) as count_reply from ppReply where pet_no=#{pet_no}
 	</select>
 	
 	<!-- 반려식물 게시판 상세보기 - 댓글 등록 -->
@@ -134,19 +169,26 @@
 	
 	
 	
+	
 	<!-- 반려식물 게시판 및 상세 게시판- 댓글 좋아요 체크 -->
 	<select id="checkLike" parameterType="com.plant.petplant.PetplantVO" resultType="java.lang.Integer" >
-		SELECT COUNT(*) FROM ppLike WHERE pet_no = #{pet_no} AND user_no = 0 
-		<if test="ppreply_no != null">
-			AND ppreply_no = #{ppreply_no} 
-		</if>
+		SELECT COUNT(*) FROM ppLike WHERE pet_no = #{pet_no} AND user_no = #{user_no} 
+	</select>
+	
+	<!-- 반려식물 게시판 및 상세 게시판- 댓글 좋아요 체크 -->
+	<select id="checkLikeReply" parameterType="com.plant.petplant.PetplantVO" resultType="java.lang.Integer" >
+		SELECT COUNT(*) FROM ppLike WHERE ppreply_no = #{ppreply_no}  AND user_no = #{user_no} 
 	</select>
 	
 	<!-- 반려식물 상세 - 댓글 좋아요 카운트  -->
 	<select id="countLikeReply"  resultType="com.plant.petplant.PetplantVO"> 
-		SELECT count(*) AS countLike , ppreply_no FROM ppLike 
-		group by ppreply_no
-		order by ppreply_no DESC
+		SELECT * , 
+			(select count(*) from ppLike where user_no=#{user_no} and pet_no =#{pet_no} )  countLike,
+			(select count(*) from ppLike where pet_no=a.pet_no and user_no= #{user_no} and ppreply_no=0) like_check,
+			(select count(*) from ppLike where user_no=#{user_no} and ppreply_no = a.ppr_no and pet_no=0 ) like_replycheck,
+			(select count(*) from ppLike where ppreply_no = a.ppr_no)  countreplyLike,
+		FROM ppReply AS a
+		ORDER BY ppr_gno DESC , ppr_order ASC
 	</select>
 	
 	
@@ -159,17 +201,62 @@
 		)
 		VALUES (
 			#{pet_no}
-			, 0
+			, #{user_no}
 			, #{ppreply_no} 
 		)
 	</insert>
 	
 	<!-- 반려식물 상세 - 댓글 좋아요 마이너스 -->
 	<delete id="minusLike" parameterType="com.plant.petplant.PetplantVO" >
-		DELETE FROM ppLike WHERE pet_no = #{pet_no} AND user_no = 0
-		<if test="ppreply_no != null ">
-			AND ppreply_no = #{ppreply_no} 
+		DELETE FROM ppLike WHERE pet_no = #{pet_no} AND user_no = #{user_no} AND ppreply_no = #{ppreply_no} 
+	</delete>
+
+	<!-- 댓글,답글 수정 -->
+	<update id="modreply" parameterType="com.plant.petplant.PetplantVO"  >
+		UPDATE ppReply SET ppr_content = #{ppr_content}, ppr_regdate =NOW() 
+		<if test="ppr_secretCheck != null">
+			, ppr_secretCheck = #{ppr_secretCheck}
 		</if>
+		<if test="ppr_secretCheck == null">
+			,ppr_secretCheck = '0'
+		</if>
+		WHERE ppr_no = #{ppr_no}
+	</update>
+	
+	<!-- 답글 잇을 경우 댓글,답글 업데이트 삭제 -->
+	<delete id="delreply" parameterType="com.plant.petplant.PetplantVO" >
+		UPDATE ppReply SET ppr_content = '삭제된 댓글입니다', ppr_secretCheck = 0  WHERE ppr_no = #{ppr_no}
+	</delete>
+	<!-- order번호 나보다 높은사람 있을 경우? -->	
+	<select id="replyGnoCheck" parameterType="com.plant.petplant.PetplantVO" resultType="java.lang.Integer" >
+	 	SELECT 
+	 	FROM ppReply
+	</select>
+	
+	<!-- 답글 없는 댓글 완전삭제 -->
+	<delete id="deletereply" parameterType="com.plant.petplant.PetplantVO" >
+		DELETE FROM ppReply WHERE ppr_no = #{ppr_no}
 	</delete>
 	
+	
+	
+	<select id="selectsavepetplant"  parameterType="com.plant.petplant.PetplantVO" resultType="java.lang.Integer" >
+		SELECT count(*) AS ppp_check FROM petplantput WHERE pet_no = #{pet_no} AND user_no = #{user_no}
+	</select>
+	
+	<insert id="pluspetplant" parameterType="com.plant.petplant.PetplantVO">
+		INSERT INTO petplantput (
+			pet_no
+			, user_no
+			, ppp_regdate
+		) VALUES (
+			#{pet_no}
+			, #{user_no}
+			, NOW()
+		) 
+	</insert>
+	
+	<delete id="minuspetplant" parameterType="com.plant.petplant.PetplantVO">
+		DELETE FROM petplantput WHERE pet_no = #{pet_no} AND user_no = #{user_no}
+	</delete>
 </mapper>

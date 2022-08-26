@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class PetplantServiceImpl implements PetplantService {
@@ -18,6 +20,7 @@ public class PetplantServiceImpl implements PetplantService {
 	@Override
 	public List<PetplantVO> list(PetplantVO vo) {
 		return mapper.list(vo);
+		
 	}
 
 	// 반려식물 게시물 등록
@@ -37,17 +40,27 @@ public class PetplantServiceImpl implements PetplantService {
 
 	// 반려식물 상세보기-파일 및 댓글
 	@Override
-	public Map Detpetplant(int no) {
-		List<PetplantVO> list = mapper.findpetplant(no);
-		List<PetplantVO> rlist = mapper.findpetreply(no);
-		//PetplantVO vo = new PetplantVO();
+	public Map findpetfile(PetplantVO vo) {
+		List<PetplantVO> flist = mapper.findpetfile(vo);
+		List<PetplantVO> rlist = mapper.findpetreply(vo);
+		
+		int checkLike = mapper.checkLike(vo);
+		
 		
 		//List<PetplantVO> likecount = mapper.countLike(vo); 
 		
 		Map map = new HashMap();
 		
-		map.put("list", list);
+		map.put("flist", flist);
 		map.put("rlist", rlist);
+		map.put("checkLike", checkLike);
+		
+		// 댓글 수 불러오기
+		
+		int no = vo.getPet_no();
+		int count_reply = mapper.countreply(no);
+		map.put("countreply", count_reply);
+		
 		//map.put("likecount", likecount);
 		
 		return map;
@@ -56,6 +69,11 @@ public class PetplantServiceImpl implements PetplantService {
 	// 첫 댓글 등록
 	@Override
 	public boolean reply(PetplantVO vo) {
+		
+		if(vo.getPpr_secretCheck() == null) {
+			vo.setPpr_secretCheck("0");
+		}
+		
 		boolean in = mapper.reply(vo);
 		if(in) mapper.gnoUpdate(vo.getPpr_no());	// 댓글의 pk를 가져와야 하니까
 		return in;
@@ -73,8 +91,14 @@ public class PetplantServiceImpl implements PetplantService {
 	@Override
 	public Map findpetreply(int no) {
 		List<PetplantVO> list = mapper.findpetreply(no);
+		
 		Map map = new HashMap();
 		map.put("list", list);
+		
+		// 댓글 수 불러오기
+		int countreply = mapper.countreply(no);
+		map.put("countreply", countreply);
+				
 		return map;
 	}
 	
@@ -109,7 +133,85 @@ public class PetplantServiceImpl implements PetplantService {
 		return mapper.checkLikeReply(vo);
 	}
 
+	// 댓글 삭제
+	@Override
+	public int delreply(PetplantVO vo) {
+		return mapper.delreply(vo);
+	}
+	// 답글 삭제
+	@Override
+	public int delRereply(PetplantVO vo) {
+		return mapper.delRereply(vo);
+	}
+	
+	// 댓글 수정
+	@Override
+	public int modreply(PetplantVO vo) {
+		return mapper.modreply(vo);
+	}
+	// 답글 수정
+	@Override
+	public int modRereply(PetplantVO vo) {
+		return mapper.modRereply(vo);
+	}
+
+	@Override
+	public List<PetplantVO> select(PetplantVO vo) {
+		return mapper.select(vo);
+	}
+
+	// 반려 식물 게시판 - 수정 내용 불러오기
+	@Override
+	public PetplantVO findpetcontent(int pet_no) {
+		return mapper.findpetcontent(pet_no);
+	}
+
+	@Override
+	public Map findFile(PetplantVO vo) {
+		List<PetplantVO> flist = mapper.findpetfile(vo);
+		
+		Map map = new HashMap();
+		map.put("flist", flist);
+		
+		return map;
+	}
+	
+	// 반려 게시판 수정 - 내용
+	@Override
+	public int update(PetplantVO vo) {
+		return mapper.update(vo);
+	}
+	// 반려 게시판 수정 - 사진
+	@Override
+	public int updatefile(PetplantVO vo) {
+		vo.setFile_tablename("petplant");
+		return mapper.updatefile(vo);
+	}
+
+	@Override
+	public int deletefile(PetplantVO vo) {
+		return mapper.deletefile(vo);
+	}
+
+	@Override
+	public int selectsavepetplant(PetplantVO vo) {
+		return mapper.selectsavepetplant(vo);
+	}
+
+	@Override
+	public int pluspetplant(PetplantVO vo) {
+		return mapper.pluspetplant(vo);
+	}
+
+	@Override
+	public int minuspetplant(PetplantVO vo) {
+		return mapper.minuspetplant(vo);
+	} 
+	
+
+
 	
 	
 	
 }
+

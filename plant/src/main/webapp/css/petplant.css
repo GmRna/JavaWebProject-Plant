@@ -1,0 +1,112 @@
+.swiper {
+        width: 100%;
+        height: 100%;
+      }
+
+      .swiper-slide {
+        text-align: center;
+        font-size: 18px;
+        background: #fff;
+
+        /* Center slide text vertically */
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+      }
+
+      .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      
+/*popup*/
+.popup_layer {position:fixed;top:0;left:0;z-index: 10000; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
+/*팝업 박스*/
+.popup_box {position: relative; top:50%;left:50%; overflow: auto; height: 700px; width:750px; transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
+
+/*컨텐츠 영역*/
+.popup_box .popup_cont {padding:20px;line-height:1.4rem;font-size:14px;  width:650px; margin:auto;}
+.popup_box .popup_reply {padding:10px;line-height:1.4rem;font-size:14px;  width:380px;}
+.popup_box .popup_rereply {padding:10px;line-height:1.4rem;font-size:14px;  width:380px;}
+
+.popup_box .popup_cont h2 {padding:15px 0;color:#333;margin:0;}
+.popup_box .popup_cont h5 {padding:5px 0;color:#333;margin:0;}
+.popup_box .popup_cont p{ border-bottom: 1px solid #666;padding-bottom: 10px;}
+
+
+/*댓글 작성 div*/
+.checkbox {
+	float:left;
+}
+.ppr_content{
+	width:380px;
+	height:100px;
+}
+/*input 은 숨겨주기*/
+input#check{
+  display:none;
+  }
+/*input 바로 다음의 label*/
+input#check + label{
+  cursor:pointer;
+  float:left;
+ }
+
+/*input 바로 다음의 label:before 에 체크하기 전 CSS 설정*/
+input#check + label:before{
+  content:"";
+  display:inline-block;
+  width:17px;
+  height:17px;
+  line-height:17px;
+  border:1px solid #cbcbcb;
+  vertical-align:middle;/*체크 전과 체크 후 높이 차이 때문에 설정*/
+  }
+  
+/*checked된 input 바로 다음의 label:before 에 체크 후 CSS 설정*/  
+input#check:checked + label:before{
+  content:"\f00c";/*폰트어썸 유니코드*/
+  font-family:"Font Awesome 5 free"; /*폰트어썸 아이콘 사용*/
+  font-weight:900;/*폰트어썸 설정*/
+  color:#fff;
+  background-color:#000;
+  border-color:#000;
+  font-size:13px;
+  text-align:center;
+  }
+  
+  
+/*버튼영역*/
+.popup_box .popup_btn {display:table;table-layout: fixed;width:100%;height:70px;background:#ECECEC;word-break: break-word;}
+.popup_box .popup_btn a {position: relative; display: table-cell; height:70px;  font-size:17px;text-align:center;vertical-align:middle;text-decoration:none; background:#ECECEC;}
+.popup_box .popup_btn a:before{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
+.popup_box .popup_btn a:after{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
+.popup_box .popup_btn a.close_day {background:#5d5d5d;}
+.popup_box .popup_btn a.close_day:before, .popup_box .popup_btn a.close_day:after{display:none;}
+/*오버레이 뒷배경*/
+.popup_overlay{position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);}
+/*popup*/
+ 
+ 
+/*list 사진 및 좋아요 사진*/
+.pet_img img {
+	width:90px; 
+	height:90px;
+}
+.likeicon img { 
+	width:20px; 
+	height:20px;
+}
+      

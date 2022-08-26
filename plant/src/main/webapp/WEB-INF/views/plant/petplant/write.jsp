@@ -170,7 +170,7 @@ function filecheck() {
 
 <div class="insert">
     <form method="post" onsubmit="return false;"  enctype="multipart/form-data" >
-        내용 <input type="text" name="pet_content" id="pet_content">
+        내용 <textarea name="pet_content" id="pet_content"></textarea>
         	<input type="file" onchange="addFile(this);"  multiple />
         	<div class="file-list"></div>
     </form>

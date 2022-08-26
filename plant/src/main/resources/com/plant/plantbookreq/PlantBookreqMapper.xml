@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.plantbookreq.PlantBookreqMapper">
+	
+	<select id="listBookreq"  resultType="com.plant.plantbookreq.PlantBookreqVO" >
+		SELECT * ,
+			(SELECT user_nick FROM user WHERE user_no = a.user_no ) AS user_nick
+		FROM plantbookreq a
+		<where>
+			<if test="stype != null and stype != '' ">
+				<if test="stype != 'all' ">
+					${stype} LIKE '%${sword}%'
+				</if>
+				<if test="stype == 'all' ">
+					pbreq_content LIKE '%${sword}%' OR user_nick LIKE '%${sword}%'
+				</if>
+			</if>
+		</where>
+		ORDER BY pbreq_gno DESC , pbreq_ono ASC
+		LIMIT ${startIdx} , ${pageRow}
+	</select>
+	
+	
+	<select id="count" parameterType="com.plant.plantbookreq.PlantBookreqVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM plantbookreq
+		<where>
+			<if test="stype != null and stype != '' ">
+				<if test="stype != 'all' ">
+					${stype} LIKE '%${sword}%'
+				</if>
+				<if test="stype == 'all' ">
+					pbreq_content LIKE '%${sword}%' OR user_nick LIKE '%${sword}%'
+				</if>
+			</if>
+		</where>		
+	</select>
+	<select id="viewBookreq"  resultType="com.plant.plantbookreq.PlantBookreqVO" >
+		SELECT * ,
+			(SELECT user_nick FROM user WHERE user_no = a.user_no ) AS user_nick
+		FROM plantbookreq a 
+		WHERE pbreq_no = #{pbreq_no}
+	</select>
+	
+	
+	<insert id="insertBookreq" parameterType="com.plant.plantbookreq.PlantBookreqVO" >
+		INSERT INTO plantbookreq (
+			user_no
+			, pbreq_title
+			, pbreq_content
+			, pbreq_status
+			, pbreq_gno
+			, pbreq_admin
+			, pbreq_regdate
+			, filename_org
+			, filename_real
+		) VALUES ( 
+			#{user_no}
+			, #{pbreq_title}
+			, #{pbreq_content}
+			, #{pbreq_status}
+			, #{pbreq_gno}
+			, #{pbreq_admin}
+			, NOW()
+			, #{filename_org}
+			, #{filename_real}
+		)
+		<selectKey keyProperty="pbreq_no" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()			
+		</selectKey>
+	</insert>
+	
+</mapper>
