@@ -30,6 +30,7 @@ public class ReserveVO {
 	private String gd_email; // 가드너 이메일
 	private String gd_career; // 가드너 이력
 	private String gd_certificate; // 가드너 자격사항
+	private int gd_acc; // 가드너 승인여부	
 	private int gd_age; // 가드너 나이
 	private Timestamp gd_regdate; // 가드너 가입일	
 	
@@ -62,6 +63,7 @@ public class ReserveVO {
 	private int reserve_pay; // 결제여부 0 또는 1
 	private String selectReserve; // 선택한 예약번호
 	private List<Integer> selectReserveSubTotal; // 소계 금액
+	private int reserve_cancel; // 취소 여부
 	
 	
 	//케어종목가격
@@ -74,12 +76,7 @@ public class ReserveVO {
 	private Timestamp inquiry_date; // 문의한 시간
 	private String inquiry; // 문의 내용
 	private String inquiry_answer; // 문의 답변
-	
-	// 결제
-	private int pay_no; // 결제번호
-	private Timestamp pay_date; // 결제 시간
-	private int pay_size; // 결제액
-	
+		
 	// 취소
 	private int cancel_no; // 취소 번호
 	private Timestamp cancel_date; // 취소한 시간
@@ -122,6 +119,20 @@ public class ReserveVO {
 	
 	// 상세보기
 	private int selectDate; // 선택한 달력의 Id 값(날짜)
+	
+	// 결제정보
+	private int pay_no; // 결제번호
+	private String buyer_name; // 구매자 이름
+	private String buyer_addr; // 구매자 주소
+	private String buyer_postcode; // 구매자 우편번호
+	private String buyer_email; // 구매자 이메일
+	private String buyer_tel; // 구매자 전화번호
+	private String merchant_uid; // 구매자 구매번호
+	private String pay_method; // 구매자 결제 타입
+	private Timestamp pay_date; // 결제 시간
+	private int pay_size; // 결제액
+	private List<ReserveVO> selectNoList; // 결제한 결제 번호 리스트
+
 	
 
 

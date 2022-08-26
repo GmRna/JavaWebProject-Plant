@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReserveServiceImpl implements ReserveService {
@@ -101,9 +102,9 @@ public class ReserveServiceImpl implements ReserveService {
 	}
 
 	@Override
-	public int payReservation(ReserveVO vo) {
+	public int updateReservation(ReserveVO vo) {
 
-		return mapper.payReservation(vo);
+		return mapper.updateReservation(vo);
 	}
 
 	@Override
@@ -146,14 +147,81 @@ public class ReserveServiceImpl implements ReserveService {
 	public ReserveVO user(ReserveVO vo) {
 		return mapper.user(vo);
 	}
-
+	
 	@Override
 	public ReserveVO selectReserveVal(int Reserve_no) {
-		// TODO Auto-generated method stub
+		
 		return mapper.selectReserveVal(Reserve_no);
 	}
 
+	@Override
+	public ReserveVO viewReservation(ReserveVO vo) {
+		
+		return mapper.viewReservation(vo);
+	}
 
-	
-	
+	@Override
+	public List<ReserveVO> userReservation(ReserveVO vo) {
+
+		return mapper.userReservation(vo);
+	}
+
+	@Override
+	public List<ReserveVO> gdReservation(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.gdReservation(vo);
+	}
+
+	@Override
+	public List<ReserveVO> gdPayHistory(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.gdPayHistory(vo);
+	}
+
+	@Override
+	public List<ReserveVO> userPayHistory(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.userPayHistory(vo);
+	}
+
+	@Override
+	public int updateReservationCancel(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateReservationCancel(vo);
+	}
+
+	@Override
+	public int updatePayCancel(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updatePayCancel(vo);
+	}
+
+	@Override
+	public List<ReserveVO> userPayHistoryDeduplication(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.userPayHistoryDeduplication(vo);
+	}
+
+	@Override
+	@Transactional
+	public int payProcess(ReserveVO vo) {
+		mapper.insertReservation(vo);
+		mapper.updateReservable(vo);
+		mapper.updateReservation(vo);
+		mapper.insertPay(vo);
+		return 1;
+	}
+
+	@Override
+	public int deleteReservable(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.deleteReservable(vo);
+	}
+
+	@Override
+	public int deleteReservableMajor(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.deleteReservableMajor(vo);
+	}
+
 }
