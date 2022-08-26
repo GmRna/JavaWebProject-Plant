@@ -1,3 +1,4 @@
+<%@page import="com.plant.user.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -20,7 +21,8 @@ a{text-decoration:none;font-size:14px}
   float: left;
   text-align: center;
   line-height: 40px;
-  background-color: #5778ff;
+  background-color: #628262;
+  
 }
 
 .menu a {
@@ -29,7 +31,7 @@ a{text-decoration:none;font-size:14px}
 
 .submenu > li {
   line-height: 50px;
-  background-color: #94a9ff;
+  background-color: #b7d5ac;
 }
 
 .submenu {
@@ -37,7 +39,7 @@ a{text-decoration:none;font-size:14px}
   overflow: hidden;
 }
 .menu > li:hover {
-  background-color: #94a9ff;
+  background-color: #628262;
   transition-duration: 0.5s;
 }
 
@@ -50,39 +52,63 @@ a{text-decoration:none;font-size:14px}
 <body>
 
  <ul class="menu">
-      <li>
-        <a href="">반려 식물 게시판</a>
-        <ul class="submenu">
-          <li><a href="/plant/plant/write.do">반려 식물 게시판 글쓰기</a></li>
-          <li><a href="/plant/plant/list.do">반려 식물 게시판</a></li>
+	<li>
+       <a href="">로그인</a>
+       <ul class="submenu">
+         <li><a href="/plant/user/login.do">회원 로그인</a></li> 
+         <li><a href="/plant/user/login.do">가드너 로그인</a></li> 
+         <li><a href="/plant/user/login.do">관리자 로그인</a></li> 
+       </ul>
+     </li>
+     <li>
+       <a href="">박현정</a>
+       <ul class="submenu">
+         <li><a href="/plant/plant/write.do">반려 식물 게시판 글쓰기</a></li>
+         <li><a href="/plant/plant/list.do">반려 식물 게시판</a></li>
+         <li><a href="/plant/plantbookreq/writeBookreq.do">식물 도감 요청 리스트 글쓰기</a></li>
+         <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
+         <li><a href="/plant/petplantDiary/writeDiary.do">관찰일지 쓰기</a></li>
+       </ul>
+     </li>
+     
+     <li>
+       <a href="#">MENU51</a>
+       <ul class="submenu">
+         <li><a href="#">submenu01</a></li>
+       </ul>
+     </li>
+    
+     <li>
+       <a href="#">MENU52</a>
+       <ul class="submenu">
+         <li><a href="#">submenu01</a></li>
+       </ul>
+     </li>
+     
+     <li>
+       <a href="#">MENU5</a>
+       <ul class="submenu">
+         <li><a href="#">submenu01</a></li>
+       </ul>
+     </li>
+     <li>
+     	<% 
+     	HttpSession sess = request.getSession();
+     	UserVO user = new UserVO();
+     	user = (UserVO)sess.getAttribute("loginInfo");
+     	%>
+     	${loginInfo.getUser_nick()} 가 로그인
+     	<ul class="submenu">
+         <li><a href="#">submenu01</a></li>
+       </ul>
+     </li>
+   	 <li>
+   	 	<a>로그아웃 </a>
+   	 	<ul class="submenu">
+         <li><a href="#">submenu01</a></li>
         </ul>
-      </li>
-      <li>
-        <a href="">식물 도감 요청 리스트</a>
-        <ul class="submenu">
-          <li><a href="/plant/plantbookreq/writeBookreq.do">식물 도감 요청 리스트 글쓰기</a></li>
-          <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="/plant/user/login.do">로그인</a>
-        <ul class="submenu">
-          <li><a href="/plant/user/login.do">로그인</a></li> 
-        </ul>
-      </li>
-      <li>
-        <a href="#">MENU4</a>
-        <ul class="submenu">
-          <li><a href="#">submenu01</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">MENU5</a>
-        <ul class="submenu">
-          <li><a href="#">submenu01</a></li>
-        </ul>
-      </li>
-    </ul>
-
+   	 </li>
+	</ul>
+	
 </body>
 </html>

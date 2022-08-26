@@ -72,8 +72,18 @@ function view(pbreq_no) {
 							${reqlist.pbreq_title}
 						</span>
 					</td>
-					<td class="writer">${reqlist.user_nick}</td>
-					<td class="date"><fmt:formatDate value="${reqlist.pbreq_regdate}" pattern="yyyy-MM-dd" /></td>
+					<td class="writer">
+						<c:if test="${reqlist.user_no == 0}">
+							관리자
+						</c:if>
+						<c:if test="${reqlist.user_no != 0}">
+							${reqlist.user_nick}
+						</c:if>
+					</td>
+					
+					<td class="date">
+						<fmt:formatDate value="${reqlist.pbreq_regdate}" pattern="yyyy-MM-dd" />
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
