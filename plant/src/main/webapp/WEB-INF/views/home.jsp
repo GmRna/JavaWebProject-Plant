@@ -1,14 +1,42 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-	<title>Home</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, gd-scalable=yes">
+    <meta name="format-detection" content="telephone=no, address=no, email=no">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>로그인 화면</title>
+    <link rel="stylesheet" href="/plant/css/reset.css"/>
+    <link rel="stylesheet" href="/plant/css/contents.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
+<form action="home.do" method="post" id="loginFrm1" name="loginFrm1" onsubmit="return loginCheck1();"><!-- header에서 id="board"이미 사용중이라서 board2로 함 -->
+            <div class="sub">
+                <div class="size">
+                    <h3 class="sub_title">로그인 화면</h3>
+                    
+                    <div class="member">
+                        <div class="box">
+                            <div class="btnSet clear">
+                                <div style="padding:10px;"> 
+                                    <a href="/plant/user/login.do" class="btn">일반 회원 로그인</a> 
+                                    <a href="/plant/gd/login.do" class="btn">가드너 회원 로그인</a> 
+                                </div>
+                                <div style="padding:10px;"> 
+                                    <a href="/plant/admin/login.do" class="btn">관리자 로그인</a>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>        
+        </form>
 
-<P>  The time on the server is ${serverTime}. </P>
 </body>
 </html>
