@@ -66,23 +66,22 @@
 		<property name="maxInMemorySize" value="10485756"/>
 	</bean> 
 	
-	<!-- 로그인 을 하고 글쓰기 버튼 누르기 전에 얘가 가로챔 -->
-	<!-- <mvc:interceptors>
+	<mvc:interceptors>
 		<mvc:interceptor>
-		 	<mvc:mapping path="/board/write.do"/>
+		<!--  	<mvc:mapping path="/board/write.do"/>
 			<mvc:mapping path="/board/insert.do"/>
 			<mvc:mapping path="/board/edit.do"/>
-			<mvc:mapping path="/board/update.do"/> 
-			<mvc:mapping path="/board/delete.do"/> 
-			
+			<mvc:mapping path="/board/update.do"/>
+			<mvc:mapping path="/board/delete.do"/>
+			-->
 			
 			<mvc:mapping path="/board/**/"/>
 			<mvc:exclude-mapping path="/board/index.do"/>
 			<mvc:exclude-mapping path="/board/view.do"/>
 			
 			
-			<bean class="interceptor.MemberLoginInterceptor"></bean>
+			<bean class="interceptor.MemberLoginInterceptor"></bean> 		
 		</mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors>
 	
 </beans>

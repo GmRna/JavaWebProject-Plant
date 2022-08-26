@@ -1,32 +1,35 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=yes">
-    <meta name="format-detection" content="telephone=no, address=no, email=no">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <title>게시판 수정</title>
-    <link rel="stylesheet" href="/plant/css/reset.css"/>
-    <link rel="stylesheet" href="/plant/css/contents.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-    	function goSave() {
-    		frm.submit();
-    	}
-    </script>
+<title><%=util.Property.title %></title>
+<%@ include file="/WEB-INF/views/plant/include/headHtml.jsp" %>
+<script>
+
+function goSave() {
+	if ($("#notice_title").val() == "") {
+		alert('제목을 입력해 주세요.');
+		$("#notice_title").focus();
+		return false;
+	}
+
+	if ($("#notice_content").val() == "") {
+		alert('내용을 입력해 주세요.');
+		$("#notice_content").focus();
+		return false;
+	} 
+	$('#frm').submit();
+}
+</script>
 </head>
 <body>
     
         <div class="sub">
             <div class="size">
-                <h3 class="sub_title">게시판</h3>
+                <h3 class="sub_title">게시물 수정</h3>
     
                 <div class="bbs">
-                <form method="post" name="frm" id="frm" action="update.do"  ><!-- enctype="multipart/form-data" -->
+                <form method="post" name="frm" id="frm" action="update.do" enctype="multipart/form-data">
                 <input type="hidden" name="notice_no" value="${data.notice_no }">
                     <table class="notice_write">
                         <tbody>
@@ -39,9 +42,15 @@
                         <tr>
                             <th>내용</th>
                             <td>
-                                <textarea name="notice_content" id="content">${data.notice_content }</textarea>
+                                <textarea name="notice_content" id="content" value="${data.notice_content }"></textarea>
                             </td>
                         </tr>
+                        <tr>
+							<th>첨부파일</th>
+							<td>
+								<input type="file" name="filename_org" value="${noticeimg_org}">
+							</td>
+						</tr>
                         </tbody>
                     </table>
                     <div class="btnSet"  style="text-align:right;">

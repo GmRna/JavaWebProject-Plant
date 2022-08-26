@@ -107,8 +107,8 @@
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -240,7 +240,12 @@
     		<artifactId>httpclient</artifactId>
     		<version>4.5.13</version>
 		</dependency>
-
+		
+		<dependency>
+    		<groupId>servlets.com</groupId>
+    		<artifactId>cos</artifactId>
+    		<version>05Nov2002</version>
+		</dependency>
 		
 	</dependencies>
     <build>

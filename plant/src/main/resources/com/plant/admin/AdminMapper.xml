@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.admin.AdminMapper">
+
+	<select id="loginCheck" parameterType="com.plant.admin.AdminVO" resultType="com.plant.admin.AdminVO">
+		SELECT * FROM admin WHERE admin_id = #{admin_id} AND admin_pwd = #{admin_pwd}
+	</select>
+	
+</mapper>

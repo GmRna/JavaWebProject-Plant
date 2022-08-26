@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.plant.user.UserVO;
+import com.plant.user.UserVO;
 
 @Controller
 public class UserController {
@@ -28,9 +30,74 @@ public class UserController {
 	@Autowired
 	UserService service;
 	
+	@GetMapping("/user/list.do")
+	public String list(Model model, UserVO vo) {
+		model.addAttribute("data", service.index(vo));
+		return "/user/list";
+	}
+	
+	@GetMapping("/user/view.do")
+	public String view(UserVO vo, Model model) {		
+		UserVO data = service.view(vo.getUser_no());
+		model.addAttribute("data", data);
+		return "/user/view";
+	}
+	
+	@RequestMapping("/user/detail")
+	public String detail(UserVO vo, Model model) {
+		UserVO data = service.detail(vo.getUser_no());
+		model.addAttribute("vo", data);
+		return "/user/detail";
+	}
+	
+	@RequestMapping("/user/myInfo")
+	public String myInfo(UserVO vo, Model model, HttpServletRequest req) {
+		HttpSession sess = req.getSession();
+		vo = (UserVO) sess.getAttribute("loginUserInfo");
+		UserVO data = service.myInfo(vo.getUser_id());
+		model.addAttribute("vo", data);
+		return "/user/myInfo";
+	}
+	
+	@GetMapping("/user/edit.do")
+	public String edit(UserVO vo, Model model, HttpServletRequest req) {
+		HttpSession sess = req.getSession();
+		vo = (UserVO) sess.getAttribute("loginUserInfo");
+		UserVO data = service.myInfo(vo.getUser_id());
+		model.addAttribute("vo", data);
+		return "user/edit";
+	}
+	
+	@PostMapping("/user/edit.do")
+	public String edit(UserVO vo, Model model) {
+		int no = service.edit(vo);
+		if (no > 0) {
+			vo.setUser_no(no);
+			model.addAttribute("msg", "정상적으로 수정되었습니다.");
+			model.addAttribute("url", "myInfo.do");
+			return "common/alert";
+		} else {
+			model.addAttribute("msg", "수정 오류");
+			return "common/alert";
+		}
+	}
+	
+	@GetMapping("/user/delete.do")
+	public String delete(UserVO vo, Model model) {
+		if(service.delete(vo.getUser_no())) {
+		
+		model.addAttribute("msg", "탈퇴처리되었습니다.");
+		model.addAttribute("url", "list.do");
+		return "common/alert";
+		} else {
+		model.addAttribute("msg", "탈퇴 실패");
+		return "common/alert";
+		}
+	}
+	
 	@GetMapping("/user/join.do")
 	public String join() {
-		return "plant/user/join";
+		return "user/join";
 	}
 	
 	@PostMapping("/user/join.do")
@@ -56,13 +123,18 @@ public class UserController {
 		if (no > 0) {
 			vo.setUser_no(no);
 			model.addAttribute("msg", "정상적으로 회원가입되었습니다.");
-			model.addAttribute("url", "login.do");
+			model.addAttribute("url", "welcome.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "회원가입오류");
 			return "common/alert";
 		}
 
+	}
+	
+	@GetMapping("/user/welcome.do")
+	public String welcome() {
+		return "user/welcome";
 	}
 	
 	@GetMapping("/user/emailDupCheck.do")
@@ -75,25 +147,31 @@ public class UserController {
 		out.flush();
 	}
 	
+	@GetMapping("/user/nickDupCheck.do")
+	public void nickDupCheck(@RequestParam String id, HttpServletResponse res) throws IOException {
+		int count = service.nickDupCheck(id);
+		boolean r = false;
+		if (count > 0) r = true;
+		PrintWriter out = res.getWriter();
+		out.print(r);
+		out.flush();
+	}
+	
+	// 로그인 창
 	@GetMapping("/user/login.do")
 	public String login() {
-		return "plant/user/login";
+		return "user/login";
 	}
 	
 	@PostMapping("/user/login.do")
 	public String login(UserVO vo, HttpSession sess, Model model) {
 		if (service.loginCheck(vo, sess)) {
-			return "redirect:/user/home.do";
+			return "redirect:/board/index.do";
 		} else {
 			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
-			return "plant/common/alert";
+			return "common/alert";
 		}
 		
-	}
-	
-	@GetMapping("/user/home.do")
-	public String main () {
-		return "common/header";
 	}
 	
 	@GetMapping("/user/logout.do")
@@ -102,13 +180,13 @@ public class UserController {
 		sess.invalidate(); // 세션초기화(세션객체에있는 모든 값들이 삭제)
 		//sess.removeAttribute("loginInfo"); // 세션객체의 해당값만 삭제
 		model.addAttribute("msg", "로그아웃되었습니다.");
-		model.addAttribute("url", "/project/board/index.do");
+		model.addAttribute("url", "/plant/user/login.do");
 		return "common/alert";
 	}
 	
 	@GetMapping("/user/findEmail.do")
 	public String findEmail() {
-		return "plant/user/findEmail";
+		return "user/findEmail";
 	}
 	
 	@PostMapping("/user/findEmail.do")
@@ -122,12 +200,17 @@ public class UserController {
 	
 	@GetMapping("/user/findPwd.do")
 	public String findPwd() {
-		return "plant/user/findPwd";
+		return "user/findPwd";
 	}
 	
-	/*
-	 * @PostMapping("/user/findPwd.do") public String findPwd(Model model, UserVO
-	 * param) { UserVO vo = service.findPwd(param); if (vo != null) {
-	 * model.addAttribute("result", vo.getUser_email()); } return "common/return"; }
-	 */
+	@PostMapping("/user/findPwd.do")
+	public String findPwd(Model model, UserVO param) {
+		UserVO vo = service.findPwd(param);
+		if (vo != null) {
+			model.addAttribute("result", vo.getUser_email());
+		}
+		return "common/return";
+	}
+	
+
 }
