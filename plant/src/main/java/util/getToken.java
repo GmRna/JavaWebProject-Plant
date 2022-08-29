@@ -1,4 +1,4 @@
-package com.plant.util;
+package util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

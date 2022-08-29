@@ -30,11 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.plant.util.getToken;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+
+import util.getToken;
 
 @Controller
 public class ReserveController {
@@ -49,11 +50,17 @@ public class ReserveController {
 	@Autowired
 	ReserveService service;
 	 
+	// 예약페이지
+	@GetMapping("/reserve/reserve.do")
+	public String reserve(Model model, ReserveVO vo) {
+		return "plant/reserve/reserve";
+	}
+	
 	// 가드너 검색 사이트
 	@GetMapping("/reserve/searchGardener.do")
 	public String searchGdGet(Model model, ReserveVO vo) {
 		model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
-	return "plant/reserve/searchGardener";
+		return "plant/reserve/searchGardener";
 	}
 	
 	// 프로필 카드
@@ -303,6 +310,23 @@ public class ReserveController {
 		return "plant/reserve/gdReservationView";
 	}
 	
+	// 가드너 예약가능일정 추가
+	@PostMapping("/reserve/addReservableSchedule.do")
+	public String addReservableSchedule(Model model, ReserveVO vo) {
+		service.insertReservable(vo);
+		service.insertReservableMajor(vo);
+		return "plant/reserve/gdReservationView";
+	}
+	
+	// 케어진행완료페이지
+	@GetMapping("/reserve/completion.do")
+	public String completion(Model model, ReserveVO vo) {
+		model.addAttribute("completionList", service.selectCompletion(vo)); // 케어진행완료 리스트
+		model.addAttribute("noCompletionList", service.selectNoCompletion(vo)); // 케어미진행 리스트 
+		model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
+		model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
+		return "plant/reserve/completion";
+	}
 	
 	
 	

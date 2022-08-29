@@ -360,6 +360,7 @@
 			reserve_no
 			, gd_no
 			, user_no
+			, reservable_no
 			, reserve_date
 			, reserve_hour
 			, reserve_etc
@@ -372,6 +373,22 @@
 				WHERE
 					major_no = r.major_no
 			) AS major
+			, (
+				SELECT
+					user_name
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_name
+			, (
+				SELECT
+					user_nick
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_nick
 		FROM
 			reservation r
 		WHERE				
@@ -460,6 +477,9 @@
 				#{reservable_hour},
 				NOW()
 			)
+		<selectKey resultType="int" keyProperty="reservable_no" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>     
 	</insert>
 	
 	<!-- 예약가능 여부 업데이트 -->
@@ -521,10 +541,10 @@
 			reservable_no = #{reservable_no}
 	</update>
 	
-	<!-- 케어가능한 종목 추가(미사용) -->
+	<!-- 케어가능한 종목 추가 -->
 	<insert id="insertReservableMajor" parameterType="com.plant.reserve.ReserveVO">
 		INSERT INTO 
-			reservable_major(
+			reservableMajor(
 				reservable_no,
 				reservable_major
 			) VALUES (
@@ -729,6 +749,7 @@
 			)
 	</insert>
 	
+	<!-- 예약가능 일정 삭제 -->
 	<delete id="deleteReservable" parameterType="com.plant.reserve.ReserveVO">
 		DELETE FROM 
 			reservable
@@ -736,10 +757,144 @@
 			reservable_no = #{reservable_no}
 	</delete>
 	
+	<!-- 예약가능 종목 삭제 -->
 	<delete id="deleteReservableMajor" parameterType="com.plant.reserve.ReserveVO">
 		DELETE FROM 
 			reservableMajor
 		WHERE
 			reservable_no = #{reservable_no}
 	</delete>
+	
+	<!-- 케어 진행된 종목 찾기 -->
+	<select id="selectCompletion" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			reserve_no
+			, gd_no
+			, user_no
+			, (
+				SELECT
+					user_name
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_name
+			, (
+				SELECT
+					user_nick
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_nick
+			, (
+				SELECT
+					major
+				FROM
+					major
+				WHERE
+					major_no = r.major_no
+			) AS major
+			, reserve_date
+			, reserve_hour
+			, reserve_time
+		FROM 
+			reservation r
+		WHERE 
+			gd_no = #{gd_no}
+			AND reserve_pay = 1
+			AND reserve_cancel = 0
+			AND reserve_completion = 1
+	</select>
+	
+	<!-- 케어 진행되지 않은 종목 찾기 -->
+	<select id="selectNoCompletion" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			reserve_no
+			, gd_no
+			, user_no
+			, (
+				SELECT
+					user_name
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_name
+			, (
+				SELECT
+					user_nick
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_nick
+			, (
+				SELECT
+					major
+				FROM
+					major
+				WHERE
+					major_no = r.major_no
+			) AS major
+			, reserve_date
+			, reserve_hour
+			, reserve_time
+		FROM 
+			reservation r
+		WHERE 
+			gd_no = #{gd_no}
+			AND reserve_pay = 1
+			AND reserve_cancel = 0
+			AND reserve_completion = 0
+	</select>
+	
+	<!-- 케어 진행 완료 여부 입력 -->
+	<update id="updateCompletion" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE
+			reservation 
+		SET
+			reserve_completion = 1
+		WHERE 
+			reserve_no = #{reserve_no}
+			AND gd_no = #{gd_no}
+			AND reserve_pay = 1
+			AND reserve_cancel = 0
+	</update>
+	
+	<!-- 케어 진행 내용 입력 -->
+	<insert id="insertCompletion" parameterType="com.plant.reserve.ReserveVO">
+		INSERT INTO 
+			completion(
+				user_no
+				, gd_no
+				, reserve_no
+				, completion_date
+				, completion_comment
+				, completion_picorg1
+				, completion_picreal1
+				, completion_picorg2
+				, completion_picreal2
+				, completion_picorg3
+				, completion_picreal3
+			) VALUES (
+				#{user_no}
+				, #{gd_no}
+				, #{reserve_no}
+				, NOW()
+				, #{completion_comment}
+				<if test="completion_picreal1 != null and completion_picreal1 !=''">
+					, #{completion_picorg1}
+					, #{completion_picreal1}
+				</if>
+				<if test="completion_picreal2 != null and completion_picreal2 !=''">
+					, #{completion_picorg2}
+					, #{completion_picreal2}
+				</if>
+				<if test="completion_picreal3 != null and completion_picreal3 !=''">
+					, #{completion_picorg3}
+					, #{completion_picreal3}
+				</if>
+			)
+	</insert>
 </mapper>
