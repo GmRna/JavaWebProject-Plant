@@ -49,6 +49,7 @@
 				</ul>
 			</li>
 			
+			
 			<c:if test="${!empty loginUserInfo}"> 
 				<li>
 					<% 
