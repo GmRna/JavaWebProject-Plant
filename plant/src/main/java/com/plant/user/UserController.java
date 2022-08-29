@@ -33,21 +33,21 @@ public class UserController {
 	@GetMapping("/user/list.do")
 	public String list(Model model, UserVO vo) {
 		model.addAttribute("data", service.index(vo));
-		return "/user/list";
+		return "/plant/user/list";
 	}
 	
 	@GetMapping("/user/view.do")
 	public String view(UserVO vo, Model model) {		
 		UserVO data = service.view(vo.getUser_no());
 		model.addAttribute("data", data);
-		return "/user/view";
+		return "/plant/user/view";
 	}
 	
 	@RequestMapping("/user/detail")
 	public String detail(UserVO vo, Model model) {
 		UserVO data = service.detail(vo.getUser_no());
 		model.addAttribute("vo", data);
-		return "/user/detail";
+		return "/plant/user/detail";
 	}
 	
 	@RequestMapping("/user/myInfo")
@@ -56,7 +56,7 @@ public class UserController {
 		vo = (UserVO) sess.getAttribute("loginUserInfo");
 		UserVO data = service.myInfo(vo.getUser_id());
 		model.addAttribute("vo", data);
-		return "/user/myInfo";
+		return "/plant/user/myInfo";
 	}
 	
 	@GetMapping("/user/edit.do")
@@ -65,7 +65,7 @@ public class UserController {
 		vo = (UserVO) sess.getAttribute("loginUserInfo");
 		UserVO data = service.myInfo(vo.getUser_id());
 		model.addAttribute("vo", data);
-		return "user/edit";
+		return "/plant/user/edit";
 	}
 	
 	@PostMapping("/user/edit.do")
@@ -74,7 +74,7 @@ public class UserController {
 		if (no > 0) {
 			vo.setUser_no(no);
 			model.addAttribute("msg", "정상적으로 수정되었습니다.");
-			model.addAttribute("url", "myInfo.do");
+			model.addAttribute("url", "/plant/myInfo.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "수정 오류");
@@ -97,7 +97,7 @@ public class UserController {
 	
 	@GetMapping("/user/join.do")
 	public String join() {
-		return "user/join";
+		return "/plant/user/join";
 	}
 	
 	@PostMapping("/user/join.do")
@@ -134,7 +134,7 @@ public class UserController {
 	
 	@GetMapping("/user/welcome.do")
 	public String welcome() {
-		return "user/welcome";
+		return "/plant/user/welcome";
 	}
 	
 	@GetMapping("/user/emailDupCheck.do")
@@ -186,7 +186,7 @@ public class UserController {
 	
 	@GetMapping("/user/findEmail.do")
 	public String findEmail() {
-		return "user/findEmail";
+		return "/plant/user/findEmail";
 	}
 	
 	@PostMapping("/user/findEmail.do")
@@ -200,7 +200,7 @@ public class UserController {
 	
 	@GetMapping("/user/findPwd.do")
 	public String findPwd() {
-		return "user/findPwd";
+		return "/plant/user/findPwd";
 	}
 	
 	@PostMapping("/user/findPwd.do")

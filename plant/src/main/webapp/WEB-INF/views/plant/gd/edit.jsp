@@ -10,10 +10,10 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <title>내 정보 수정하기</title>
-    <link rel="stylesheet" href="/plant/css/reset.css"/>
-    <link rel="stylesheet" href="/plant/css/contents.css"/>
-    <link rel="stylesheet" href="/plant/css/common.css"/>
-    <link rel="stylesheet" href="/plant/css/style.css"/>
+    <link rel="stylesheet" href="/project/css/reset.css"/>
+    <link rel="stylesheet" href="/project/css/contents.css"/>
+    <link rel="stylesheet" href="/project/css/common.css"/>
+    <link rel="stylesheet" href="/project/css/style.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -265,7 +265,7 @@
                 	<tr>
                             <th>*아이디(이메일)</th>
                             <td>
-                                <input type="text" name="gd_id" id="gd_id" class="inNextBtn" value="${vo.gd_id }" readonly="readonly" style="float:left;">
+                                <input type="text" name="gd_id" id="gd_id" class="inNextBtn" value="${vo.gd_id }" style="float:left;">
                             </td>
                     </tr>
                     <tr>
@@ -283,23 +283,23 @@
                     <tr>
                         <th>*이름</th>
                             <td>
-                            	<input type="text" name="gd_name" id="gd_name" value="${vo.gd_name }" readonly="readonly" style="float:left;"> 
+                            	<input type="text" name="gd_name" id="gd_name" value="${vo.gd_name }" style="float:left;"> 
                             </td>
                     </tr>
                     <tr>
                         <th>*주민등록번호</th>
                             <td>
-                                <input type="text" name="gd_regnum" id="gd_regnum" value="${vo.gd_regnum }" readonly="readonly" style="float:left;">
+                                <input type="text" name="gd_regnum" id="gd_regnum" value="${vo.gd_regnum }" style="float:left;">
                             </td>
 					</tr> 
                     <tr>
 						  <th class="first">*주소</th>
 						  <td colspan="3" class="last">
-						      <input type="text" id="gd_postcode" name="gd_postcode" placeholder="우편번호" value="${vo.gd_postcode }" /> 
+						      <input type="text" id="gd_postcode" name="gd_postcode" placeholder="우편번호" value="${vo.gd_postcode }" readonly="readonly"/> 
 								<a href="javascript:void(0);" onclick="gd_postcode();return false;" class="btn btn-info m-btn--air">우편번호찾기</a>
 						  <br>
 						  <span style="line-height:50%"><br></span>
-							  <input type="text" id="gd_addr1" name="gd_addr1" placeholder="법정주소" value="${vo.gd_addr1 }" style="width:350px" />
+							  <input type="text" id="gd_addr1" name="gd_addr1" placeholder="법정주소" value="${vo.gd_addr1 }" readonly="readonly" style="width:350px" />
 							  <input type="text" id="gd_addr2" name="gd_addr2" placeholder="상세주소" value="${vo.gd_addr2 }" style="width:350px" />
 						  </td>
 						</tr>
@@ -472,7 +472,7 @@
                 <div class="btnSet clear">
                     <div>
                     <a href="javascript:;" class="btn" onclick="goSave();">저장</a> 
-                    <a href="/plant/gd/login.do" class="btn">취소</a>
+                    <a href="/project/gd/login.do" class="btn">취소</a>
                     </div>
                     <div>별표가 있는 항목은 필수 항목입니다.</div>
                 </div>

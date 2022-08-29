@@ -36,7 +36,7 @@ public class GdController {
 	public String index(Model model, GdVO vo) {
 		model.addAttribute("data", service.index(vo));
 	
-		return "/gd/list";
+		return "/plant/gd/list";
 	}
 	
 	@GetMapping("/gd/view.do")
@@ -44,32 +44,19 @@ public class GdController {
 		
 		GdVO data = service.view(vo.getGd_no());
 		model.addAttribute("data", data);
-		return "/gd/view";
+		return "/plant/gd/view";
 	}
 	
 	@RequestMapping("/gd/detail")
 	public String detail(GdVO vo, Model model) {
 		GdVO data = service.detail(vo.getGd_no());
 		model.addAttribute("vo", data);
-		return "/gd/detail";
-	}
-	
-	@GetMapping("/gd/delete.do")
-	public String delete(GdVO vo, Model model) {
-		if(service.delete(vo.getGd_no())) {
-		
-		model.addAttribute("msg", "삭제되었습니다.");
-		model.addAttribute("url", "list.do");
-		return "common/alert";
-		} else {
-		model.addAttribute("msg", "삭제실패");
-		return "common/alert";
-		}
+		return "/plant/gd/detail";
 	}
 	
 	@GetMapping("/gd/join.do")
 	public String join() {
-		return "gd/join";
+		return "/plant/gd/join";
 	}
 	
 	@PostMapping("/gd/join.do")
@@ -97,7 +84,7 @@ public class GdController {
 			service.insertcar(vo);
 			service.insertcer(vo);
 			model.addAttribute("msg", "정상적으로 회원가입되었습니다.");
-			model.addAttribute("url", "welcome.do");
+			model.addAttribute("url", "/plant/gd/welcome.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "회원가입오류");
@@ -107,7 +94,7 @@ public class GdController {
 	
 	@GetMapping("/gd/welcome.do")
 	public String welcome() {
-		return "gd/welcome";
+		return "/plant/gd/welcome";
 	}
 	
 	@GetMapping("/gd/emailDupCheck.do")
@@ -122,7 +109,7 @@ public class GdController {
 	
 	@GetMapping("/gd/login.do")
 	public String login() {
-		return "gd/login";
+		return "/plant/gd/login";
 	}
 	
 	@RequestMapping("/gd/myInfo")
@@ -131,7 +118,20 @@ public class GdController {
 		vo = (GdVO) sess.getAttribute("loginGdInfo");
 		GdVO data = service.myInfo(vo.getGd_id());
 		model.addAttribute("vo", data);
-		return "/gd/myInfo";
+		return "/plant/gd/myInfo";
+	}
+	
+	@GetMapping("/gd/delete.do")
+	public String delete(GdVO vo, Model model) {
+		if(service.delete(vo.getGd_no())) {
+		
+		model.addAttribute("msg", "삭제되었습니다.");
+		model.addAttribute("url", "list.do");
+		return "common/alert";
+		} else {
+		model.addAttribute("msg", "삭제실패");
+		return "common/alert";
+		}
 	}
 	
 	@GetMapping("/gd/edit.do")
@@ -140,7 +140,8 @@ public class GdController {
 		vo = (GdVO) sess.getAttribute("loginGdInfo");
 		GdVO data = service.myInfo(vo.getGd_id());
 		model.addAttribute("vo", data);
-		return "gd/edit";
+		service.delete(vo.getGd_no());
+		return "/plant/gd/edit";
 	}
 	
 	@PostMapping("/gd/edit.do")
@@ -162,16 +163,16 @@ public class GdController {
 			vo.setGd_picorg(org);
 			vo.setGd_picreal(real);
 		}
-		int no = service.edit(vo);
+		int no = service.insert2(vo);
 		if (no > 0) {
 			vo.setGd_no(no);
-			service.insertcar(vo);
-			service.insertcer(vo);
-			model.addAttribute("msg", "정상적으로 회원가입되었습니다.");
-			model.addAttribute("url", "welcome.do");
+			service.insertcar2(vo);
+			service.insertcer2(vo);
+			model.addAttribute("msg", "정상적으로 수정되었습니다.");
+			model.addAttribute("url", "/plant/gd/login.do");
 			return "common/alert";
 		} else {
-			model.addAttribute("msg", "회원가입오류");
+			model.addAttribute("msg", "회원 정보 수정 오류");
 			return "common/alert";
 		}
 	}
@@ -180,7 +181,7 @@ public class GdController {
 	public String access(GdVO vo, Model model, HttpServletRequest req) {
 		GdVO data = service.access(vo.getGd_id());
 		model.addAttribute("vo", data);
-		return "gd/access";
+		return "/plant/gd/access";
 	}
 	
 	@PostMapping("/gd/login")
@@ -194,7 +195,7 @@ public class GdController {
 			model.addAttribute("msg", "승인대기 중입니다.");
 			return "common/alert";
 		}else if (vo.getGd_acc() == 1) {
-			return "redirect:/board/gd.do";
+			return "redirect:/plant/board/gd.do";
 		}else if(vo.getGd_acc() == 2){
 			model.addAttribute("msg", "가입 요청이 거절된 아이디입니다.");
 			return "common/alert";
@@ -221,7 +222,7 @@ public class GdController {
 	
 	@GetMapping("/gd/findEmail.do")
 	public String findEmail() {
-		return "gd/findEmail";
+		return "/plant/gd/findEmail";
 	}
 	
 	@PostMapping("/gd/findEmail.do")
@@ -235,7 +236,7 @@ public class GdController {
 	
 	@GetMapping("/gd/findPwd.do")
 	public String findPwd() {
-		return "gd/findPwd";
+		return "/plant/gd/findPwd";
 	}
 	
 	@PostMapping("/gd/findPwd.do")

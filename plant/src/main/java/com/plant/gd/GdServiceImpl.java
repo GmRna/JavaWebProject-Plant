@@ -158,6 +158,23 @@ public class GdServiceImpl implements GdService {
 		return mapper.access(gd_id);
 	}
 
+	@Override
+	public int insert2(GdVO vo) {
+		int no = mapper.insert(vo);
+		no = vo.getGd_no();
+		return no;
+	}
+	
+	@Override
+	public int insertcar2(GdVO vo) {		
+		return mapper.insertcar(vo);
+	}
+
+	@Override
+	public int insertcer2(GdVO vo) {		
+		return mapper.insertcer(vo);
+	}
+
 
 
 }
