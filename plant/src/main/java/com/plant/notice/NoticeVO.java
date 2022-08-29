@@ -18,8 +18,8 @@ public class NoticeVO {
 	private String notice_content;
 	private int notice_viewcount;
 	private Timestamp notice_regdate;
-	private String filename_org;
-	private String filename_real;
+	private String noticeimg_org;
+	private String noticeimg_real; 
 	private int notice_level;
 	
 	//NoticeService에서 목록을 불러오는 용도

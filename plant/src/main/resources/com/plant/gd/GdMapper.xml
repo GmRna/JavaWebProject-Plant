@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plant.gd.GdMapper">
+
+	<select id="list" parameterType="java.util.Map" resultType="com.plant.gd.GdVO">
+		SELECT gd_no, gd_name, gd_id, gd_email, gd_hp, gd_acc, gd_ableaddr, gd_regdate FROM gd ORDER BY gd_regdate DESC limit ${startIdx}, ${pageRow};;
+	</select>
+	
+	<select id="view" parameterType="com.plant.gd.GdVO" resultType="com.plant.gd.GdVO">
+		SELECT * FROM gd WHERE gd_no = #{xxxx}
+	</select>
+	
+	<select id="detail" resultType="com.plant.gd.GdVO">
+		SELECT * FROM gd WHERE gd_no = #{gd_no}
+	</select>
+	
+	<select id="access" resultType="com.plant.gd.GdVO">
+		SELECT * FROM gd WHERE gd_id = #{gd_id}
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM gd WHERE gd_no=#{gd_no }
+	</delete>
+	
+	<select id="myInfo" resultType="com.plant.gd.GdVO">
+		SELECT * FROM gd WHERE gd_id = #{gd_id}
+	</select>
+	
+	<select id="count" parameterType="com.plant.gd.GdVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM gd
+		
+		<where>
+			<if test="stype !=null and stype !='' ">
+				<if test="stype !='all' ">
+				${stype} LIKE '%${sword}%'
+			</if>
+			<if test="stype !='all' ">
+				title LIKE '%${sword}%' OR content LIKE '%${sword}%'
+			</if>
+			</if>				
+		</where>
+		ORDER BY gd_regdate DESC
+		LIMIT ${startIdx}, ${pageRow};	
+	
+	</select>
+
+	<insert id="insert" parameterType="com.plant.gd.GdVO">
+		INSERT INTO gd (
+			gd_id, gd_pwd, gd_email, gd_name, gd_regnum, gd_postcode, gd_addr1, gd_addr2, gd_hp, gd_ableaddr, gd_picorg, gd_picreal, gd_major1, gd_major2, gd_major3, gd_major4, gd_major5, gd_major6, gd_major7
+		) VALUES (
+			#{gd_id}, #{gd_pwd}, #{gd_email}, #{gd_name}, #{gd_regnum}, #{gd_postcode}, #{gd_addr1}, #{gd_addr2}, #{gd_hp}, #{gd_ableaddr}, #{gd_picorg}, #{gd_picreal}, #{gd_major1}, #{gd_major2}, #{gd_major3}, #{gd_major4}, #{gd_major5}, #{gd_major6}, #{gd_major7}
+		)
+		<selectKey keyProperty="gd_no" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()			
+		</selectKey>
+	</insert>
+	
+	<insert id="insertcar" parameterType="com.plant.gd.GdVO">
+		INSERT INTO car (
+			gd_no, gd_career
+		) VALUES (
+			#{gd_no} , #{gd_career}
+		)
+	</insert>
+	
+	<insert id="insertcer" parameterType="com.plant.gd.GdVO">
+		INSERT INTO cer (
+			gd_no, gd_certificate
+		) VALUES (
+			#{gd_no} , #{gd_certificate}
+		)
+	</insert>
+	
+	<!-- 아이디(이메일) 중복 체크 -->
+	<select id="emailDupCheck" parameterType="string" resultType="int">
+		SELECT COUNT(*) FROM gd WHERE gd_id = #{gd_id}
+	</select>
+	
+	<select id="loginCheck" parameterType="com.plant.gd.GdVO" resultType="com.plant.gd.GdVO">
+		SELECT * FROM gd WHERE gd_id = #{gd_id} AND gd_pwd = #{gd_pwd}
+	</select>
+	
+	<select id="findEmail" parameterType="com.plant.gd.GdVO" resultType="com.plant.gd.GdVO">
+		SELECT gd_id FROM gd WHERE gd_name=#{gd_name} AND gd_hp=#{gd_hp}  
+	</select>
+	
+	<select id="findPwd" parameterType="com.plant.gd.GdVO" resultType="com.plant.gd.GdVO">
+		SELECT * FROM gd WHERE gd_hp=#{gd_hp} AND gd_email=#{gd_email}  
+	</select>
+	
+	<update id="updateTempPwd" parameterType="com.plant.gd.GdVO">
+		UPDATE gd SET gd_pwd = #{gd_pwd} WHERE gd_hp=#{gd_hp} AND gd_email = #{gd_email}
+	</update>
+	
+	<update id="acc" parameterType="com.plant.gd.GdVO" >
+		UPDATE gd SET gd_acc = #{gd_acc} WHERE gd_id=#{gd_id} AND gd_email = #{gd_email}
+	</update>
+	
+	<delete id="edit">
+		DELETE FROM gd WHERE gd_no=#{gd_no }
+	</delete>
+	
+	<insert id="insert2" parameterType="com.plant.gd.GdVO">
+		INSERT INTO gd (
+			gd_id, gd_pwd, gd_email, gd_name, gd_regnum, gd_postcode, gd_addr1, gd_addr2, gd_hp, gd_ableaddr, gd_picorg, gd_picreal, gd_major1, gd_major2, gd_major3, gd_major4, gd_major5, gd_major6, gd_major7
+		) VALUES (
+			#{gd_id}, #{gd_pwd}, #{gd_email}, #{gd_name}, #{gd_regnum}, #{gd_postcode}, #{gd_addr1}, #{gd_addr2}, #{gd_hp}, #{gd_ableaddr}, #{gd_picorg}, #{gd_picreal}, #{gd_major1}, #{gd_major2}, #{gd_major3}, #{gd_major4}, #{gd_major5}, #{gd_major6}, #{gd_major7}
+		)
+		<selectKey keyProperty="gd_no" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()			
+		</selectKey>
+	</insert>
+	
+	<insert id="insertcar2" parameterType="com.plant.gd.GdVO">
+		INSERT INTO car (
+			gd_no, gd_career
+		) VALUES (
+			#{gd_no}, #{gd_career}
+		)
+	</insert>
+	
+	<insert id="insertcer2" parameterType="com.plant.gd.GdVO">
+		INSERT INTO cer (
+			gd_no, gd_certificate
+		) VALUES (
+			#{gd_no}, #{gd_certificate}
+		)
+	</insert>
+	
+</mapper>

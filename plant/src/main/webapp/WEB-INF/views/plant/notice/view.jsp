@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.net.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -26,29 +27,29 @@
                         <div class="title">
                             <dl>
                                 <dt>제목 : ${data.notice_title }</dt>
-                                <dd class="date">작성일 : ${data.notice_regdate } </dd>
+                                <dd class="date">작성일 : <fmt:formatDate value = "${data.notice_regdate }" pattern="yyyy-MM-dd HH:mm"/></dd>
                                 <dd class="viewcount">조회수 : ${data.notice_viewcount } </dd>
                             </dl>
                         </div>
                         <div class="cont"><p>${data.notice_content } </p> </div>
-                       <dl class="file">
-                            <dt>첨부파일 </dt>
-                            <dd>
-                            <a href="/plant/common/download.jsp?oName=${URLEncoder.encode(data.filename_org,'UTF-8')}&sName=${data.filename_real}" 
-                            target="_blank">${data.filename_org } </a></dd>
-                        </dl>
-                                    
+                        <div>
+	                        <dl class="file">
+	                            <dt>첨부파일 </dt>
+	                            <dd class="file">
+	                            <a href="/plant/common/download.jsp?oName=${URLEncoder.encode(data.noticeimg_org,'UTF-8')}&sName=${data.noticeimg_real}" 
+	                            target="_blank">${data.noticeimg_org } </a></dd>
+	                        </dl>
+               			</div>
                         <div class="btnSet clear">
                             <div class="fl_l">
-                            <a href="/plant/notice/index.do" class="btn">목록으로</a></div>
-                            <a href="/plant/notice/edit.do?notice_no=${data.notice_no }" class="btn">수정하기</a></div>
-                            <a href="/plant/notice/delete.do?notice_no=${data.notice_no }" class="btn">삭제하기</a></div>
-                        </div>
-                
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+                            <a href="/plant/notice/index.do" class="btn">목록으로</a>
+                            <a href="/plant/notice/edit.do?notice_no=${data.notice_no }" class="btn">수정</a>
+                            <a href="/plant/notice/delete.do?notice_no=${data.notice_no }" class="btn">삭제</a>
+                        	</div>                
+                    	</div>
+                	</div>
+            	</div>
+        	</div>
+		</div>    
 </body>
 </html>

@@ -2,6 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plant.user.UserMapper">
 
+	<select id="list" parameterType="java.util.Map" resultType="com.plant.user.UserVO">
+		SELECT user_no, user_name, user_id, user_email, user_nick, user_hp, user_favrplant, user_regdate FROM user ORDER BY user_regdate DESC limit ${startIdx}, ${pageRow};
+	</select>
+	
+	<select id="view" resultType="com.plant.user.UserVO" parameterType="com.plant.user.UserVO">
+		SELECT * FROM user WHERE user_no = #{user_no} 
+	</select>
+	
+	<select id="detail" resultType="com.plant.user.UserVO">
+		SELECT * FROM user WHERE user_no = #{user_no}
+	</select>
+	
+	<select id="myInfo" resultType="com.plant.user.UserVO">
+		SELECT * FROM user WHERE user_id = #{user_id}
+	</select>
+
 	<insert id="insert" parameterType="com.plant.user.UserVO">
 		INSERT INTO user (
 			user_nick, user_id, user_pwd, user_email, user_name, user_regnum, user_postcode, user_addr1, user_addr2, user_hp, user_plantname, user_planttype, user_plantfile_org, user_plantfile_real, user_favrplant, user_open
@@ -10,8 +26,34 @@
 		)
 	</insert>
 	
+	<delete id="delete" parameterType="int">
+		DELETE FROM user WHERE user_no=#{user_no }
+	</delete>
+	
+	<select id="count" parameterType="com.plant.user.UserVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM user
+		
+		<where>
+			<if test="stype !=null and stype !='' ">
+				<if test="stype !='all' ">
+				${stype} LIKE '%${sword}%'
+			</if>
+			<if test="stype !='all' ">
+				title LIKE '%${sword}%' OR content LIKE '%${sword}%'
+			</if>
+			</if>				
+		</where>
+		ORDER BY user_regdate DESC
+		LIMIT ${startIdx}, ${pageRow};	
+	
+	</select>
+	
 	<select id="emailDupCheck" parameterType="string" resultType="int">
 		SELECT COUNT(*) FROM user WHERE user_id = #{user_id}
+	</select>
+	
+	<select id="nickDupCheck" parameterType="string" resultType="int">
+		SELECT COUNT(*) FROM user WHERE user_nick = #{user_nick}
 	</select>
 	
 	<select id="loginCheck" parameterType="com.plant.user.UserVO" resultType="com.plant.user.UserVO">
@@ -28,5 +70,17 @@
 	
 	<update id="updateTempPwd" parameterType="com.plant.user.UserVO">
 		UPDATE user SET user_pwd = #{user_pwd} WHERE user_hp=#{user_hp} AND user_email = #{user_email}
+	</update>
+	
+	<update id="updateInfo" parameterType="com.plant.user.UserVO">
+		UPDATE user SET user_pwd = #{user_pwd} WHERE user_id =#{user_id} AND user_regnum = #{user_regnum}
+	</update>
+	
+	<update id="edit" parameterType="com.plant.user.UserVO">
+		UPDATE user SET user_pwd = #{user_pwd}, user_email = #{user_email}, user_name = #{user_name},
+			   user_postcode = #{user_postcode}, user_addr1 = #{user_addr1}, user_addr2 = #{user_addr2},
+			   user_hp = #{user_hp}, user_plantname = #{user_plantname}, user_planttype = #{user_planttype},
+			   user_plantfile_org = #{user_plantfile_org}, user_favrplant = #{user_favrplant}, user_open = #{user_open}
+		WHERE user_id =#{user_id} AND user_regnum = #{user_regnum}
 	</update>
 </mapper>
