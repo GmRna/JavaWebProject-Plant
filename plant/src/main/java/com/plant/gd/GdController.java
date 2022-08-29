@@ -54,19 +54,6 @@ public class GdController {
 		return "/gd/detail";
 	}
 	
-	@GetMapping("/gd/delete.do")
-	public String delete(GdVO vo, Model model) {
-		if(service.delete(vo.getGd_no())) {
-		
-		model.addAttribute("msg", "삭제되었습니다.");
-		model.addAttribute("url", "list.do");
-		return "common/alert";
-		} else {
-		model.addAttribute("msg", "삭제실패");
-		return "common/alert";
-		}
-	}
-	
 	@GetMapping("/gd/join.do")
 	public String join() {
 		return "gd/join";
@@ -134,12 +121,26 @@ public class GdController {
 		return "/gd/myInfo";
 	}
 	
+	@GetMapping("/gd/delete.do")
+	public String delete(GdVO vo, Model model) {
+		if(service.delete(vo.getGd_no())) {
+		
+		model.addAttribute("msg", "삭제되었습니다.");
+		model.addAttribute("url", "list.do");
+		return "common/alert";
+		} else {
+		model.addAttribute("msg", "삭제실패");
+		return "common/alert";
+		}
+	}
+	
 	@GetMapping("/gd/edit.do")
 	public String edit(GdVO vo, Model model, HttpServletRequest req) {
 		HttpSession sess = req.getSession();
 		vo = (GdVO) sess.getAttribute("loginGdInfo");
 		GdVO data = service.myInfo(vo.getGd_id());
 		model.addAttribute("vo", data);
+		service.delete(vo.getGd_no());
 		return "gd/edit";
 	}
 	
@@ -162,16 +163,16 @@ public class GdController {
 			vo.setGd_picorg(org);
 			vo.setGd_picreal(real);
 		}
-		int no = service.edit(vo);
+		int no = service.insert2(vo);
 		if (no > 0) {
 			vo.setGd_no(no);
-			service.insertcar(vo);
-			service.insertcer(vo);
-			model.addAttribute("msg", "정상적으로 회원가입되었습니다.");
-			model.addAttribute("url", "welcome.do");
+			service.insertcar2(vo);
+			service.insertcer2(vo);
+			model.addAttribute("msg", "정상적으로 수정되었습니다.");
+			model.addAttribute("url", "/plant/gd/login.do");
 			return "common/alert";
 		} else {
-			model.addAttribute("msg", "회원가입오류");
+			model.addAttribute("msg", "회원 정보 수정 오류");
 			return "common/alert";
 		}
 	}

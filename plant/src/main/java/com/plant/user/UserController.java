@@ -33,14 +33,14 @@ public class UserController {
 	@GetMapping("/user/list.do")
 	public String list(Model model, UserVO vo) {
 		model.addAttribute("data", service.index(vo));
-		return "/user/list";
+		return "/plant/user/list";
 	}
 	
 	@GetMapping("/user/view.do")
 	public String view(UserVO vo, Model model) {		
 		UserVO data = service.view(vo.getUser_no());
 		model.addAttribute("data", data);
-		return "/user/view";
+		return "/plant/user/view";
 	}
 	
 	@RequestMapping("/user/detail")
@@ -56,7 +56,7 @@ public class UserController {
 		vo = (UserVO) sess.getAttribute("loginUserInfo");
 		UserVO data = service.myInfo(vo.getUser_id());
 		model.addAttribute("vo", data);
-		return "/user/myInfo";
+		return "/plant/user/myInfo";
 	}
 	
 	@GetMapping("/user/edit.do")
@@ -65,7 +65,7 @@ public class UserController {
 		vo = (UserVO) sess.getAttribute("loginUserInfo");
 		UserVO data = service.myInfo(vo.getUser_id());
 		model.addAttribute("vo", data);
-		return "user/edit";
+		return "/plant/user/edit";
 	}
 	
 	@PostMapping("/user/edit.do")
@@ -97,7 +97,7 @@ public class UserController {
 	
 	@GetMapping("/user/join.do")
 	public String join() {
-		return "user/join";
+		return "/plant/user/join";
 	}
 	
 	@PostMapping("/user/join.do")
@@ -134,7 +134,7 @@ public class UserController {
 	
 	@GetMapping("/user/welcome.do")
 	public String welcome() {
-		return "user/welcome";
+		return "/plant/user/welcome";
 	}
 	
 	@GetMapping("/user/emailDupCheck.do")
@@ -160,13 +160,13 @@ public class UserController {
 	// 로그인 창
 	@GetMapping("/user/login.do")
 	public String login() {
-		return "user/login";
+		return "/plant/user/login";
 	}
 	
 	@PostMapping("/user/login.do")
 	public String login(UserVO vo, HttpSession sess, Model model) {
 		if (service.loginCheck(vo, sess)) {
-			return "redirect:/board/index.do";
+			return "redirect:/plant.do";
 		} else {
 			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
 			return "common/alert";

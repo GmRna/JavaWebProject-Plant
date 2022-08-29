@@ -33,4 +33,9 @@ public interface GdService {
 
 	int edit(GdVO vo);
 
+	int insert2(GdVO vo);
+	int insertcar2(GdVO vo);
+	int insertcer2(GdVO vo);
+
+
 }	

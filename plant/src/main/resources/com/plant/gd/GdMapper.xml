@@ -96,14 +96,35 @@
 		UPDATE gd SET gd_acc = #{gd_acc} WHERE gd_id=#{gd_id} AND gd_email = #{gd_email}
 	</update>
 	
-	<update id="edit" parameterType="com.plant.gd.GdVO">
-		UPDATE gd, car, cer
-		SET gd_pwd=#{gd_pwd}, gd_email=#{gd_email}, gd_name=#{gd_name}, gd_postcode=#{gd_postcode},
-			gd_addr1=#{gd_addr1}, gd_addr2=#{gd_addr2}, gd_hp=#{gd_hp}, gd_ableaddr=#{gd_ableaddr},
-			gd_picorg=#{gd_picorg}, gd_major1=#{gd_major1}, gd_major2=#{gd_major2}, gd_major3=#{gd_major3},
-			gd_major4=#{gd_major4}, gd_major5=#{gd_major5}, gd_major6=#{gd_major6}, gd_major7=#{gd_major7},
-			gd_career=#{gd_career}, gd_certificate=#{gd_certificate}
-		WHERE car.gd_no =cer.gd_no and gd.gd_no = cer.gd_no
-	</update>
+	<delete id="edit">
+		DELETE FROM gd WHERE gd_no=#{gd_no }
+	</delete>
+	
+	<insert id="insert2" parameterType="com.plant.gd.GdVO">
+		INSERT INTO gd (
+			gd_id, gd_pwd, gd_email, gd_name, gd_regnum, gd_postcode, gd_addr1, gd_addr2, gd_hp, gd_ableaddr, gd_picorg, gd_picreal, gd_major1, gd_major2, gd_major3, gd_major4, gd_major5, gd_major6, gd_major7
+		) VALUES (
+			#{gd_id}, #{gd_pwd}, #{gd_email}, #{gd_name}, #{gd_regnum}, #{gd_postcode}, #{gd_addr1}, #{gd_addr2}, #{gd_hp}, #{gd_ableaddr}, #{gd_picorg}, #{gd_picreal}, #{gd_major1}, #{gd_major2}, #{gd_major3}, #{gd_major4}, #{gd_major5}, #{gd_major6}, #{gd_major7}
+		)
+		<selectKey keyProperty="gd_no" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()			
+		</selectKey>
+	</insert>
+	
+	<insert id="insertcar2" parameterType="com.plant.gd.GdVO">
+		INSERT INTO car (
+			gd_no, gd_career
+		) VALUES (
+			#{gd_no}, #{gd_career}
+		)
+	</insert>
+	
+	<insert id="insertcer2" parameterType="com.plant.gd.GdVO">
+		INSERT INTO cer (
+			gd_no, gd_certificate
+		) VALUES (
+			#{gd_no}, #{gd_certificate}
+		)
+	</insert>
 	
 </mapper>

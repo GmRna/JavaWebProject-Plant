@@ -26,4 +26,8 @@ public interface GdMapper {
 	GdVO myInfo(String gd_id);
 	GdVO access(String gd_id);
 	int edit(GdVO vo);
+	
+	int insert2(GdVO vo);
+	int insertcar2(GdVO vo);
+	int insertcer2(GdVO vo);
 }
