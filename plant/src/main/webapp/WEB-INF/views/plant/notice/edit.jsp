@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!doctype html>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <html lang="ko">
 <head>
 <title><%=util.Property.title %></title>

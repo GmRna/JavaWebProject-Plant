@@ -74,7 +74,7 @@ public class UserController {
 		if (no > 0) {
 			vo.setUser_no(no);
 			model.addAttribute("msg", "정상적으로 수정되었습니다.");
-			model.addAttribute("url", "/plant/myInfo.do");
+			model.addAttribute("url", "/plant/user/myInfo.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "수정 오류");
@@ -166,7 +166,7 @@ public class UserController {
 	@PostMapping("/user/login.do")
 	public String login(UserVO vo, HttpSession sess, Model model) {
 		if (service.loginCheck(vo, sess)) {
-			return "redirect:/plant.do";
+			return "redirect:/main/index.do";
 		} else {
 			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
 			return "common/alert";
