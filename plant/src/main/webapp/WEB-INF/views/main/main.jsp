@@ -16,7 +16,7 @@
 <!-- Header -->
 	<section id="header">
 	
-		<h1><a href="plant/main/index.do">P L A N T</a></h1>
+		<h1><a href="/plant/main/index.do">P L A N T</a></h1>
 		
 		<nav id="nav">
 		<ul>
@@ -88,6 +88,39 @@
 			<h2>Howdy. This is Dopetrope.</h2>
 			<p>A responsive template by HTML5 UP</p>
 		</header>
+	</section>
+	
+	<!-- Footer -->
+	<section id="footer">
+		<div class="container">
+			<div class="row">
+				<div class="col-4 col-12-medium">
+					<section>
+						<ul class="contact">
+							<li>
+								<h3>Address</h3>
+								<p>
+									Untitled Incorporated<br />
+									1234 Somewhere Road Suite<br />
+									Nashville, TN 00000-0000
+								</p>
+							</li>
+						</ul>
+					</section>
+				</div>
+				<div class="col-12">
+					<!-- Copyright -->
+					<div id="copyright">
+						<ul class="links">
+							<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							<li>
+								<p><a href="/plant/admin/login.do">관리자 로그인</a></p>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 	
 	

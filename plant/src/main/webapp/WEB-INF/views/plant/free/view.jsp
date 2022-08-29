@@ -35,12 +35,12 @@
 		getComment(1);
 	});
     function goSave() {
-		<c:if test="${empty loginInfo}">
+		<c:if test="${empty loginUserInfo}">
 		alert('댓글은 로그인 후 작성 가능합니다.')
-		location.href = '/plant/member/login.do';
+		location.href = '/plant/user/login.do';
 		</c:if>
 		
-		<c:if test="${!empty loginInfo}">
+		<c:if test="${!empty loginUserInfo}">
 		if (confirm('댓글을 저장하시겠습니까?')) {
     		$.ajax({
     			url :  "/plant/freecomment/insert.do",

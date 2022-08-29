@@ -22,9 +22,9 @@
 	<insert id="insert" parameterType="com.plant.notice.NoticeVO">
 		
 		INSERT INTO notice(
-			admin_no, notice_title, notice_content, notice_viewcount, notice_regdate, filename_org, filename_real, notice_level
+			admin_no, notice_title, notice_content, notice_viewcount, notice_regdate, noticeimg_org, noticeimg_real, notice_level
 			) VALUES (
-				admin_no, #{notice_title}, #{notice_content}, 0, NOW(), #{filename_org}, #{filename_real}, #{notice_level}
+				admin_no, #{notice_title}, #{notice_content}, 0, NOW(), #{noticeimg_org}, #{noticeimg_real}, #{notice_level}
 			)
 		
 	</insert>
