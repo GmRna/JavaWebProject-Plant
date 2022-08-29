@@ -160,13 +160,13 @@ public class UserController {
 	// 로그인 창
 	@GetMapping("/user/login.do")
 	public String login() {
-		return "user/login";
+		return "/plant/user/login";
 	}
 	
 	@PostMapping("/user/login.do")
 	public String login(UserVO vo, HttpSession sess, Model model) {
 		if (service.loginCheck(vo, sess)) {
-			return "redirect:/board/index.do";
+			return "redirect:/main/index.do";
 		} else {
 			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
 			return "common/alert";

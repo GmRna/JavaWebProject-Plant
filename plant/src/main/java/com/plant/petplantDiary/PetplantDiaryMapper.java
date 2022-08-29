@@ -7,4 +7,6 @@ public interface PetplantDiaryMapper {
 
 	PetplantDiaryVO userplant(int user_no);
 
+	int insertDiary(PetplantDiaryVO vo);
+
 }

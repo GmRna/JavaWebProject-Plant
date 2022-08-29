@@ -12,7 +12,7 @@ public class PetplantDiaryVO {
 	
 	private int diary_no;
 	private int user_no;
-	private Timestamp pet_regdate;
+	private String pet_regdate;
 	private String user_plantname;
 	private String user_planttype;
 	private String filename_org;

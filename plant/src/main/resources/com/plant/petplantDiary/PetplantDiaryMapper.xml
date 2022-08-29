@@ -8,5 +8,28 @@
 		WHERE user_no = #{user_no}
 	</select>
 	
+	<insert id="insertDiary" >
+		INSERT INTO petplantdiary (
+			user_no 
+			,  pet_regdate 
+			,  user_plantname 
+			,  user_planttype 
+			,  user_plantfile_org 
+			,  user_plantfile_real
+			,  diary_title 
+			,  diary_weather 
+			,  diary_content 
+		) VALUES (
+			#{user_no} 
+			, #{pet_regdate}
+			, #{user_plantname} 
+			, #{user_planttype} 
+			, #{user_plantfile_org} 
+			, #{user_plantfile_real}
+			, #{diary_title} 
+			, #{diary_weather} 
+			, #{diary_content}
+		)
+	</insert>
 	
 </mapper>

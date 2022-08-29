@@ -3,6 +3,7 @@
 <%@page import="java.net.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+ <%@include file ="../../common/petplantheader.jsp" %>
  
 <!DOCTYPE html>
 <html>
