@@ -40,7 +40,7 @@ public class PetplantDiaryController {
 		
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 
 		vo.setUser_no(user.getUser_no());
 		
@@ -54,7 +54,7 @@ public class PetplantDiaryController {
 		//유저 번호 set 
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		vo.setUser_no(user.getUser_no());
 		
 		if(!file.isEmpty()) {

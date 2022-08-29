@@ -72,7 +72,9 @@
 			</c:if>
 			
 			<c:if test="${empty loginUserInfo}"> 
-				<a href="/plant/user/login.do">로그인</a>
+				<li>
+					<a href="/plant/user/login.do">로그인</a>
+				</li>
 			</c:if>
 		</ul>
 		</nav>

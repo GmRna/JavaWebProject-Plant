@@ -70,7 +70,7 @@ public class PetplantController {
 
 		model.addAttribute("list", service.list(vo));
 
-		return "plant/petplant/list2";
+		return "plant/petplant/list";
 	}
 	
 	
