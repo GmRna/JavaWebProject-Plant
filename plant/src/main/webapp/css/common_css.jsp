@@ -26,7 +26,7 @@ a:hover{transition: 0.5s !important;}
 ================================================== */
 #container{clear:both; position:relative; width:1200px; height:100%;  margin-top:-62px; padding-top:62px; }
 #menuWrap{position:relative; width:220px; float:left; min-height:100%; background:#f5f5f5; border-right:1px solid #dddddd; position:relative;}
-#contentsWrap{position:relative; float:left; height:100%; padding-left:25px; /*width:955px*/}
+#contentsWrap{position:relative; float:left; height:100%; padding-left:25px; width:900px;}
 #menuWrap .allmenu{background:#484b56 url(<%=util.Property.contextPath%>/img/ico_allmenu.png) no-repeat 20px center; height:58px; line-height:58px;color:#fff; font-size:16px; padding-left:50px; position:relative;}
 #menuWrap .allmenu .allmenu_con{position:absolute; left:0; width:1200px; top:58px; background:#545762; z-index:99; display:none; padding:20px 30px 40px 50px;}
 #menuWrap .allmenu .allmenu_con dl{float:left; /*width:15.666%;*/ margin-right:2%;}

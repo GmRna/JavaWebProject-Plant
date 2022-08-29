@@ -108,10 +108,7 @@
 /** tr에 bgColor 클래스 사용하는 경우 -  배경칼라처리 **/
 .bbs .list thead.bgColor{border-top:none; border-bottom:none;}
 .bbs .list thead.bgColor th{padding:10px 20px; font-size:13px; height:20px; line-height:14px; color:#fff; background:#404143;}
-.icon {
-	width: 24px;
-    height: 24px;	
-}
+
 
 /* search */
 .bbsSearch {min-height:32px; -webkit-box-sizing:border-box; -moz-box-sizing:border-box; box-sizing:border-box; z-index:10; width:500px; margin:20px auto 15px;} 
