@@ -91,6 +91,12 @@
 	// 달력 출력
 	var nowDate = new Date();
 	
+	// 현재 시간
+	var nowYear = nowDate.getFullYear();
+	var nowMonth = ('0' + (nowDate.getMonth() + 1)).slice(-2);
+	var nowDay = ('0' + nowDate.getDay()).slice(-2);
+	var dateStr = nowYear + nowMonth + nowDay;
+	
 	// 결제 내역
 	var gdPayHistoryList = new Array();
 	<c:forEach items = "${gdPayHistoryList}" var = "p">
@@ -119,11 +125,14 @@
 			reserve_no : ${r.reserve_no}
 			, gd_no : ${r.gd_no}
 			, user_no : ${r.user_no}
+			, reservable_no : ${r.reservable_no}
 			, reserve_date : ${r.reserve_date}
 			, reserve_hour : ${r.reserve_hour}
 			, reserve_etc : "${r.reserve_etc}"
 			, reserve_time : "${r.reserve_time}"
 			, major : "${r.major}"
+			, user_name : "${r.user_name}"
+			, user_nick : "${r.user_nick}"
 		});
 	</c:forEach>
 	
@@ -159,11 +168,6 @@
 		});
 	</c:forEach>
 	
-	console.log(reservableList);
-	console.log(reservedList);
-	console.log(reservationList);
-	console.log(gdPayHistoryList);
-	console.log(majorList);
 	// 달력 호출
 	function calendarMaker(target, date) {
 	    if (date == null || date == undefined) {
@@ -223,78 +227,81 @@
 	    $(target).find("#custom_set_date").append(tag);
 	    classChange();
 	    calMoveEvtFn();
-		
-	    function assembly(year, month) {
-	        var calendar_html_code =
-	            "<table class='custom_calendar_table'>" +
-	            	"<colgroup>" +
-	           			"<col style='width:50px'/>" +
-	            		"<col style='width:50px'/>" +
-	            		"<col style='width:50px'/>" +
-	            		"<col style='width:50px'/>" +
-	            		"<col style='width:50px'/>" +
-	            		"<col style='width:50px'/>" +
-	            		"<col style='width:50px'/>" +
-	            	"</colgroup>" +
-	            	"<thead class='cal_date'>" +
-	            		"<th><button type='button' class='prev'><</button></th>" +
-	            		"<th colspan='5'>";
-	        // 달이 한 자리일 때
+	
+	
+		/** 년도와 월로 table head 부분 작성
+		*/
+		function assembly(year, month) {
+			var calendar_html_code =
+				"<table class='custom_calendar_table'>" +
+					"<colgroup>" +
+						"<col style='width:50px'/>" +
+						"<col style='width:50px'/>" +
+						"<col style='width:50px'/>" +
+						"<col style='width:50px'/>" +
+						"<col style='width:50px'/>" +
+						"<col style='width:50px'/>" +
+						"<col style='width:50px'/>" +
+					"</colgroup>" +
+				"<thead class='cal_date'>" +
+					"<th><button type='button' class='prev'><</button></th>" +
+					"<th colspan='5'>";
+			// 달이 한 자리일 때
 			if (month < 10) {
 				calendar_html_code += "<p id='"+year+"0"+month+"' class='yearMonth'>";
 			}
-	        // 달이 두 자리일 때
+			// 달이 두 자리일 때
 			if (month >= 10) {
 				calendar_html_code += "<p id='"+year+""+month+"' class='yearMonth'>";
 			}
 			calendar_html_code += "<span>" + year + "</span>년 <span>" + month + "</span>월</p></th>" +
-						"<th><button type='button' class='next'>></button></th>" +
-	            	"</thead>" +
-	            	"<thead  class='cal_week'>" +
-	            		"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
-	            	"</thead>" +
-	            	"<tbody id='custom_set_date'>" +
-	            	// 달력검색을 위한 클래스 생성
-	            		"<tr>" +
-	            			"<input type='hidden' class='reserved'>"+
-	            			"<input type='hidden' class='reservable'>"+
-	            			"<input type='hidden' class='default'>"+
-	            		"</tr>"+
-	            	"</tbody>" +
-	            "</table>";
-	        return calendar_html_code;
-	    }
+				"<th><button type='button' class='next'>></button></th>" +
+				"</thead>" +
+				"<thead  class='cal_week'>" +
+					"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
+				"</thead>" +
+				// 달력검색을 위한 클래스 생성
+				"<tbody id='custom_set_date'>" +
+					"<tr>" +
+						"<input type='hidden' class='reserved'>"+
+						"<input type='hidden' class='reservable'>"+
+						"<input type='hidden' class='default'>"+
+					"</tr>"+
+				"</tbody>" +
+		        "</table>";
+			return calendar_html_code;
+		}
 	    
-	    /** 저장된 array에 따라서 달력 class 값 변경
-	    */
-    	function classChange() {
-    		// table id값 스캔
+		/** 저장된 array에 따라서 달력 class 값 변경
+		*/
+	    function classChange() {
+	    	// table id값 스캔
 			var tdId = $('#custom_set_date').find('td');
-    		// 예약가능한 date class 값 변경
-    		for(var i=0; i<reservableList.length; i++) {
-    			for(var j=0; j<tdId.length; j++) {
-    				if(reservableList[i].reservable_date === Number($(tdId[j]).attr('id'))) {
-    					var thisId = $(tdId[j]).attr('id');
-    					$('#'+thisId+'').attr('class','reservable');	    				
-    				}
-    			}
-   	 		}
-    		// 예약된 내역 date class 값 변경
-    		for(var x=0; x<reservedList.length; x++) {
-    			for(var y=0; y<tdId.length; y++) {
-    				// 현재 id 값
-    				var thisId = $(tdId[y]).attr('id');
-    				// 현재 class값
-    				var thisClass = $('#'+thisId+'').attr('class');
-    				if(thisClass !== 'reservable'){
-    					if(reservedList[x].reservable_date === Number(thisId)) {
-    						$('#'+thisId+'').attr('class','reserved');	    				
-    					}
-    				}
+	    	// 예약가능한 date class 값 변경
+	    	for(var i=0; i<reservableList.length; i++) {
+	    		for(var j=0; j<tdId.length; j++) {
+	    			if(reservableList[i].reservable_date === Number($(tdId[j]).attr('id'))) {
+	    				var thisId = $(tdId[j]).attr('id');
+	    				$('#'+thisId+'').attr('class','reservable');	    				
+	    			}
 	    		}
-    		}
-    		// 예약없는 td class값 변경
-	    	for(var z=0; z<tdId.length; z++) {
+	   		}
+	    	// 예약된 내역 date class 값 변경
+	    	for(var x=0; x<reservedList.length; x++) {
+	    		for(var y=0; y<tdId.length; y++) {
+	    			// 현재 id 값
+	    			var thisId = $(tdId[y]).attr('id');
+	    			// 현재 class값
+	    			var thisClass = $('#'+thisId+'').attr('class');
+	    			if(thisClass !== 'reservable'){
+	    				if(reservedList[x].reservable_date === Number(thisId)) {
+	    					$('#'+thisId+'').attr('class','reserved');	    				
+	    				}
+	    			}
+		    	}
+	    	}
+	    	// 예약없는 td class값 변경
+		    for(var z=0; z<tdId.length; z++) {
 				// 현재 id 값
 				var thisId = $(tdId[z]).attr('id');
 				// 현재 class값
@@ -303,141 +310,196 @@
 					$('#'+thisId+'').attr('class','default');	    				
 				}
 			}
-    	}
-	    
-	    /** 마우스로 달력 클릭시 값가져오기
-	    */
-	    function calMoveEvtFn() {
-	        // 전달 클릭
-	        $(".custom_calendar_table").on("click", ".prev", function () {
-	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() - 1, nowDate.getDate());
-	            calendarMaker($(target), nowDate);
-	        });
-	        // 다음날 클릭
-	        $(".custom_calendar_table").on("click", ".next", function () {
-	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
-	            calendarMaker($(target), nowDate);
-	        });
-	        // 년월 클릭
-	        $(".custom_calendar_table").on("click", ".next", function () {
-	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
-	            calendarMaker($(target), nowDate);
-	        });	        
-	        //일자 선택 클릭
-        	$(".custom_calendar_table").on("click", "td", function () {
-				// 클릭한 id값
-				var idValue = $(this).attr('id');			
-				
-				// 클릭한 td id값에 맞는 예약가능 일자 true 처리
-				function rbDate(reservableList) {
-					if(reservableList.reservable_date === Number(idValue)) {
-						return true;
-					}
-				}
-				// 클릭한 td id값에 맞는 예약된 일자 true 처리
-				function rdDate(reservedList) {
-					if(reservedList.reservable_date === Number(idValue)) {
-						return true;
-					}
-				}
-				// true인 객체 배열화
-        		var reservableDate = reservableList.filter(rbDate); // 예약 가능일자
-				var reservedDate = reservedList.filter(rdDate); // 예약 된 일자
-				
-    			var date = moment(idValue); // 모맨트 js 활용 하여 데이터 포맷 변경
-    			
-	        	// select_day 클래스 삭제
-	            $(".custom_calendar_table .select_day").removeClass("select_day");
-    			
-	        	// 삭제 후 예약데이터와 비교하여 다시 클래스 변경       	
-	            classChange();
-	        	// default
-            	if ($('#'+idValue+'').attr('class') === 'default') {
-					reservableChooseListDeleteAll();
-            	}
-	        	// select_day
-            	if ($(".custom_calendar_table .select_day").hasClass("select_day")) {
-            		$(this).removeClass("select_day").addClass("select_day");
-            	}
-	        	// reservable
-        		if ($(".custom_calendar_table .reservable").hasClass("reservable")) {
-        			$(this).removeClass("reservable").addClass("select_day");
-        			var reservable = "";
-        			// 예약가능 시간	
-        			if (reservableDate.length > 0) {
-        				reservable += "<table border='1'>";
-        				reservable += "	<tr>";
-        				reservable += "		<td colspan='10'>예약가능 일정</td>";	
-            			reservable += "	</tr>";	            	
-            			reservable += "	<tr>";            			
-            			reservable += "		<td>예약일</td>";	
-            			reservable += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
-            			reservable += "	</tr>";	            	
-            			reservable += "	<tr>";
-        				for(var i=0; i<reservableDate.length; i++){
-        					reservable += "	<td>예약 시간</td>";
-        					reservable += "	<td>"+reservableDate[i].reservable_hour+"</td>";
-        					reservable += "	<td>케어 종목</td>";
-        					reservable += "	<td>"+reservableDate[i].reservable_major+"</td>";
-        					reservable += "	<td>수정 및 삭제하기</td>";
-        					reservable += "	<td>";
-        					reservable += "		<button type='button' onclick='javascript:reservableChoose(this.value, "+reservableDate[i].reservable_no+")' value='"+idValue+"_"+reservableDate[i].reservable_hour+"_"+reservableDate[i].reservable_major+"'>선택</button>";
-        					reservable += "	</td>";
-        					reservable += "</tr>";
-        					reservable += "<tr>";
-        				}
-        			}
-        			reservable += "</tr>";
-                	reservable += "</table>";
-                	$("#reservableSchedule").html(reservable);
-        		}
-	        	// reserved
-            	if ($(".custom_calendar_table .reserved").hasClass("reserved")) {
-            		$(this).removeClass("reserved").addClass("select_day");
-            		var reserved = "";
-            		// 예약된 시간
-            		if (reservedDate.length > 0) {
-            			reserved += "<table border='1'>";
-            			reserved += "	<tr>";
-        				reserved += "		<td colspan='10'>예약된 일정</td>";	
-        				reserved += "	</tr>";	            	
-        				reserved += "	<tr>";            			
-        				reserved += "		<td>예약일</td>";	
-            			reserved += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
-            			reserved += "	</tr>";	            	
-            			reserved += "	<tr>";
-        				for(var i=0; i<reservedDate.length; i++){
-        					reserved += "	<td>예약 시간</td>";
-        					reserved += "	<td>"+reservedDate[i].reservable_hour+"</td>";
-        					reserved += "	<td>케어 종목</td>";
-        					reserved += "	<td>"+reservedDate[i].reservable_major+"</td>";
-        					reserved += "	<td>";
-        					reserved += "		<button type='button' onclick='javascript:reservedView(this.value, "+reservedDate[i].reservable_no+")' value='"+idValue+"_"+reservedDate[i].reservable_hour+"_"+reservedDate[i].reservable_major+"'>상세보기</button>";
-        					reserved += "	</td>";
-        					reserved += "</tr>";
-        					reserved += "<tr>";
-        				}
-            		}
-            		reserved += "</tr>";
-            		reserved += "</table>";
-                	$("#reservedSchedule").html(reserved);
-					reservableChooseListDeleteAll();
-            	}
-            	if ($(".custom_calendar_table .default").hasClass("default")) {
-            		$(this).removeClass("default").addClass("select_day");
-					var add = "<td  id='addReservableDate'>"+date.format('YYYY-MM-DD')+"</td>";
-					$('#addReservableDate').html(add);
-            	}
-	        });
 	    }
+	    
+		/** 마우스로 달력 클릭시 예약 내역 표시
+		*/
+		function calMoveEvtFn() {
+			// 전달 클릭
+			$(".custom_calendar_table").on("click", ".prev", function () {
+				nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() - 1, nowDate.getDate());
+				calendarMaker($(target), nowDate);
+			});
+			// 다음달 클릭
+			$(".custom_calendar_table").on("click", ".next", function () {
+				nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
+				calendarMaker($(target), nowDate);
+			});
+			// 년월 클릭
+			$(".custom_calendar_table").on("click", ".next", function () {
+				nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
+				calendarMaker($(target), nowDate);
+			});	        
+			//일자 선택 클릭
+			$(".custom_calendar_table").on("click", "td", function () {
+				$('#reservedView').html('<div id="reservedView"></div>'); // 예약상세보기 초기화
+				onclickCount = 0; // 온클릭 횟수 초기화
+				var reset = true;
+				if (addReservalbeReset) {
+					reset = confirm("다른 날짜 클릭시 추가된 예약가능 일정이 모두 초기화 됩니다. 초기화 하시겠습니까?");
+				}
+				if (reservableChooseReset) {
+					reset = confirm("다른 날짜 클릭시 추가된 예약가능 수정 및 삭제값이 모두 초기화 됩니다. 초기화 하시겠습니까?");
+				}
+				if(reset){
+					reservableChooseReset = false;
+					addReservalbeReset = false;
+					// 클릭한 id값
+					var idValue = $(this).attr('id');			
+		    		// 모맨트 js 활용 하여 데이터 포맷 변경
+		    		var date = moment(idValue); 
+					// 클릭한 id값 SelectDate에 넣기
+					if(Number(idValue)){
+						var selectDate = ""
+							selectDate += "<tr>";
+							selectDate += "		<td>선택일</td>";
+							selectDate += "		<td  id='"+idValue+"'>"+date.format('YYYY-MM-DD')+"</td>";
+							selectDate += "		<td><button type='button' onclick='addReservable("+idValue+")'>예약가능일정 추가하기</button></td>";
+							selectDate += "</tr>";
+							selectDate += "<tr>";
+							selectDate += "		<td>예약가능시간</td>"; 
+							selectDate += "		<td>케어종목</td>";
+							selectDate += "		<td>선택</td>";
+							selectDate += "</tr>";
+						var addReservableSchedule = "<tr><td colspan='3'>예약가능일정을 추가하여 주세요</td></tr>"
+						$('#selectDate').html(selectDate);
+						$('#addReservableSchedule').html(addReservableSchedule);
+					} else {
+						var selectDate = ""
+							selectDate += "<td>선택일</td>";
+							selectDate += "<td>정확한 일자를 선택해주세요</td>";
+						$('#selectDate').html(selectDate);
+						$('#addReservableSchedule').html("<div id='addReservableSchedule'></div>");
+					}
+					// 클릭한 td id값에 맞는 예약가능 일자 true 처리
+					function rbDate(reservableList) {
+						if(reservableList.reservable_date === Number(idValue)) {
+							return true;
+						}
+					}
+					// 클릭한 td id값에 맞는 예약된 일자 true 처리
+					function rdDate(reservedList) {
+						if(reservedList.reservable_date === Number(idValue)) {
+							return true;
+						}
+					}
+					// true인 객체 배열화
+		        	var reservableDate = reservableList.filter(rbDate); // 예약 가능일자
+					var reservedDate = reservedList.filter(rdDate); // 예약 된 일자
+						
+		    			
+			        // select_day 클래스 삭제
+					$(".custom_calendar_table .select_day").removeClass("select_day");
+		    			
+					// 삭제 후 예약데이터와 비교하여 다시 클래스 변경       	
+					classChange();
+					// default
+					if ($('#'+idValue+'').attr('class') === 'default') {
+						var noReserve = "";
+							noReserve += "<table border='1'>";
+							noReserve += "	<tr>";
+							noReserve += "		<td colspan='2'>예약이 없는 일정</td>";	
+							noReserve += "	</tr>";	            	
+							noReserve += "	<tr>";            			
+							noReserve += "		<td>선택일</td>";	
+		        			noReserve += "		<td>"+date.format('YYYY-MM-DD')+"</td>";	
+		        			noReserve += "	</tr>";	            	
+		        			noReserve += "	<tr>";
+		        			noReserve += "		<td colspan='2'>예약되거나 예약된 일정이 없습니다.</td>";
+		        			noReserve += "	</tr>";
+		        			noReserve += "</table>";        			
+		            	$("#noReserve").html(noReserve);
+		            	reservableChooseListDeleteAll();
+		            }
+			        // select_day
+		            if ($(".custom_calendar_table .select_day").hasClass("select_day")) {
+		            	$(this).removeClass("select_day").addClass("select_day");
+		            }
+			        // reservable
+		        	if ($(".custom_calendar_table .reservable").hasClass("reservable")) {
+		        		$(this).removeClass("reservable").addClass("select_day");
+		        		var reservable = "";
+		        		// 예약가능 시간	
+		        		if (reservableDate.length > 0) {
+		        			$("#noReserve").html("<div id='noReserve'></div>");
+		        			reservable += "<table border='1'>";
+		        			reservable += "	<tr>";
+		        			reservable += "		<td colspan='10'>예약가능 일정</td>";	
+		            		reservable += "	</tr>";	            	
+		            		reservable += "	<tr>";            			
+		            		reservable += "		<td>예약일</td>";	
+		            		reservable += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
+		            		reservable += "	</tr>";	            	
+		            		reservable += "	<tr>";
+		        			for(var i=0; i<reservableDate.length; i++){
+		        				reservable += "	<td>예약가능 일정</td>";
+		        				reservable += "	<td>"+reservableDate[i].reservable_hour+"시</td>";
+		        				reservable += "	<td>케어 종목</td>";
+		        				reservable += "	<td>"+reservableDate[i].reservable_major+"</td>";
+		        				reservable += "	<td>수정 및 삭제하기</td>";
+		        				reservable += "	<td>";
+		        				reservable += "		<button type='button' onclick='javascript:reservableChoose(this.value, "+reservableDate[i].reservable_no+")' value='"+idValue+"_"+reservableDate[i].reservable_hour+"_"+reservableDate[i].reservable_major+"'>선택</button>";
+		        				reservable += "	</td>";
+		        				reservable += "</tr>";
+		        				reservable += "<tr>";
+		        			}
+		        		}
+		        		reservable += "</tr>";
+		                reservable += "</table>";
+		                $("#reservableSchedule").html(reservable);
+		        	}
+			        // reserved
+		            if ($(".custom_calendar_table .reserved").hasClass("reserved")) {
+		            	$(this).removeClass("reserved").addClass("select_day");
+		            	var reserved = "";
+		            	// 예약된 시간
+		            	if (reservedDate.length > 0) {
+		            		$("#noReserve").html("<div id='noReserve'></div>");
+		            		reserved += "<table border='1'>";
+		            		reserved += "	<tr>";
+		        			reserved += "		<td colspan='10'>예약된 일정</td>";	
+		        			reserved += "	</tr>";	            	
+		        			reserved += "	<tr>";            			
+		        			reserved += "		<td>예약일</td>";	
+		            		reserved += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
+		            		reserved += "	</tr>";	            	
+		            		reserved += "	<tr>";
+		        			for(var i=0; i<reservedDate.length; i++){
+		        				reserved += "	<td>예약된 일정</td>";
+		        				reserved += "	<td>"+reservedDate[i].reservable_hour+"시</td>";
+		       					reserved += "	<td>케어 종목</td>";
+		       					reserved += "	<td>"+reservedDate[i].reservable_major+"</td>";
+		       					reserved += "	<td>";
+		       					reserved += "		<button type='button' onclick='javascript:reservedView(this.value, "+reservedDate[i].reservable_no+")' value='"+idValue+"_"+reservedDate[i].reservable_hour+"_"+reservedDate[i].reservable_major+"'>상세보기</button>";
+		       					reserved += "	</td>";
+		       					reserved += "</tr>";
+		       					reserved += "<tr>";
+		       				}
+		           		}
+		           		reserved += "</tr>";
+		           		reserved += "</table>";
+		               	$("#reservedSchedule").html(reserved);
+						reservableChooseListDeleteAll();
+					}
+		            if ($(".custom_calendar_table .default").hasClass("default")) {
+		           		$(this).removeClass("default").addClass("select_day");
+		           	}
+				}
+			});
+		}
 	}
 	
+	// reservableChoose(), reservableChooseListDelete(), reservableChooseDelete(), 
+	// updateConfirm(), reservableChooseUpdate(), reservableChooseListDeleteAll() 에서 사용하는 예약가능 리스트
+	var reservableChooseList = new Array();
 	/** 예약 가능한 번호와 밸류(예약가능일시 종목) 파라미터로 받아와서 리스트에 저장 후 출력
 		value = String 
 		reserve_no = int
 	*/
-	var reservableChooseList = new Array();
+	// 예약가능일정 수정 삭제 선택내역 리셋 확인을 위한 boolean
+	var reservableChooseReset = false;
 	function reservableChoose(value, reserve_no) {
+		
 		var valueList = value.split('_', 3);
 		var rcListLength = $("#rcList tr").length;
 		
@@ -498,6 +560,7 @@
 			}
 			if(reservableChooseList.length !== 0) {
 				$('#reservableChoose').html(choose);
+				reservableChooseReset = true;
 			}
 		}
 	}
@@ -561,6 +624,7 @@
 		reservableChooseList.length = 0;
 		var empty = "<div id='reservableChoose'></div>"
 		$('#reservableChoose').html(empty);
+		reservableChooseReset = false;
 	}
 	
 	/** 선택된 예약가능 리스트의 시간값 종목값 수정가능하게 바꾸고 삭제버튼 없애기
@@ -653,7 +717,7 @@
 			}
 		}
 		if(overlap == false) {
-			alert("중복된 시간을 적지 말아주세요. \n 잘못입력한 곳 :"+log+"");
+			alert("이미 예약된 시간이거나 이미 존재하는 시간입니다. \n 잘못입력한 곳 :"+log+"");
 			$('#rcList tr').eq(num).find("td:eq(1)").html("<input type='text' value='"+reservableChooseList[num].reserve_hour+"'/>");
 		}
 		if(flag == false) {
@@ -719,11 +783,298 @@
   	    			console.log(res);
   	    			alert(""+result+"\n예약정보가 삭제되었습니다.");
   	    			reservableChooseListDeleteAll();
-  	    			calMoveEvtFn();
+  	    			location.reload();
   	   			}
   	   		});
 		}
 	}
+	
+	/** reservable_date를 받아서 예약가능일정 추
+		reservable_date = int
+	*/
+	// 다른 일정 클릭시 일정추가표 삭제 확인을 위한 boolean
+	var addReservalbeReset = false;
+	// 버튼 클릭횟수 알기위한 변수
+	var onclickCount = 0;
+	function addReservable(reservable_date) {
+		onclickCount++;
+		// 추가되는 row
+		var add = "";
+			add += "<tr id='addReservableTr_"+onclickCount+"'>";
+			add += "	<td>";
+			add += "		<input type='text' value='(9시~20시 사이의 값을 입력해주세요)' onfocus=this.value=''>";
+			add += "	</td>";
+			add += "	<td>";
+			add += "		<select id='addMajorList' name='addMajorList'>";
+			for(var i=0; i<majorList.length; i++) {
+					if(majorList[i].major_no !== 7) {
+						add += "<option value='"+majorList[i].major+"'>"+majorList[i].major+"</option>"
+					}
+			}
+			add += "		</select>";
+			add += "	</td>";
+			add += "	<td>";
+			add += "		<button type='button' onclick='removeThis("+onclickCount+")'>지우기</button> ";
+			add += "	</td>";
+			add += "</tr>";
+		// 추가되는 button (ajax 송신을 위한 onclick 버튼)
+		var submit = "";
+			submit += "<tr>";
+			submit += "		<td colspan='3'>";
+			submit += "			<button type='button' onclick='addReservableListSubmit()'>위의 일정 추가하기</button> ";
+			submit += "		</td>";
+			submit += "</tr>";
+		if($('#addReservableSchedule tr td').length == 1){
+			$('#addReservableSchedule').html(add);
+			$('#addReservableSubmit').html(submit);			
+			addReservalbeReset = true;
+		} else {
+			$('#addReservableSchedule').append(add);
+			addReservalbeReset = true;
+		}
+	}
+	
+	/** 추가하기 버튼 누른 횟수를 변수로 받아 해당하는 row 삭제
+		onclickCount = int
+	*/
+	function removeThis(onclickCount) {
+		$('#addReservableTr_'+onclickCount+'').remove();
+		if($('#addReservableSchedule tr').length == 0) {
+			$('#addReservableSchedule').html("<tr><td colspan='3'>예약가능일정을 추가하여 주세요</td></tr>");
+			$('#addReservableSubmit').html("");
+		}
+	}
+	
+	/** 추가된 일정과 기존 예약된 일정 데이터 값 비교하여 겹치지 않는 데이터 insert
+	*/
+	function addReservableListSubmit() {
+		var trLength = $('#addReservableSchedule tr').length;
+		console.log(trLength);
+		var excute = false;
+		var check = false;
+		var go = false;
+		var log = "";
+		var num = 0;
+		var result = "";
+		var dateData = $('#selectDate tr').eq(0).find("td:eq(1)").attr("id");
+		for(var i=0; i<trLength; i++) {
+			var hourData = $('#addReservableSchedule tr').eq(i).find("td:eq(0)").find("input").val();
+			var majorData = $('#addReservableSchedule tr').eq(i).find("td:eq(1)").find("select").val();
+			console.log(hourData);
+			console.log(majorData);
+			if(Number(hourData) >= 9 && Number(hourData) <= 20) { // 9시 ~20시 일때만 실행
+				excute = true;
+			} else { // 9시~20시가 아닐 때 for문 중지후 오류난 부분값 저장
+				excute = false;
+				num += i+1;
+				log += "예약가능시간 :"+hourData+" \n 케어종목 : "+majorData+"";
+				break;
+			}
+			// 겹치는 시간 없는지 확인
+			if(excute) {
+				for(var j=0; j<reservableList.length; j++) {
+					if(Number(dateData) == reservableList[j].reservable_date) {
+						if(Number(hourData) == reservableList[j].reservable_hour){
+							check = false;
+							num += i+1;
+							log += "예약가능시간 :"+hourData+" \n 케어종목 : "+majorData+"";
+							break;
+						} 
+					} else {
+						check = true;	
+					}
+				}
+				if(check) {
+					for(var j=0; j<reservedList.length; j++) {
+						if(Number(dateData) == reservedList[j].reservable_date) {
+							if(Number(hourData) == reservedList[j].reservable_hour){
+								go = false;
+								num += i+1;
+								log += "예약가능시간 :"+hourData+" \n 케어종목 : "+majorData+"";
+								break;
+							} else {
+								go = true;	
+							}
+						}
+					}
+				}
+				// false일때 for문 탈출
+				if(go == false) {
+					break;
+				}
+				if(go) {
+					$.ajax({
+		  	    		url : "addReservableSchedule.do"
+		  	  	    	, method : "POST"
+		  	  	   		, data : ({
+		  	  	   			gd_no : Number(gd_no)
+		  	   				, reservable_date : Number(dateData)
+		  	   				, reservable_hour : Number(hourData)
+		  	   				, reservable_major : majorData
+		  	    		})
+		  	    		, success : function(res) {
+		  	   			}
+		  	    		, error : function(res) {
+		  	    			alert("입력중 에러발생하였습니다.");
+		  	    		}
+		  	   		});
+				}
+			}
+		}
+		// 시간값 잘못 입력했을 때
+		if(excute == false) {
+			alert("9시~20시 사이의 숫자를 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"")
+		}
+		// 중복시간이 있을 때
+		if(check == false) {
+			alert("이미 예약된 시간입니다. 확인 후 다른 시간을 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"")
+		}
+		if(excute && check && go) {
+			alert("정상적으로 일정추가 되었습니다.");
+			location.reload();
+		}
+	}
+	
+	/** 예약된 예약가능번호, 예약일, 예약 시간, 예약종목으로 예약정보 상세보기 
+		value(예약일_예약시간_예약종목) = String
+		reserved_no = int
+	*/
+	function reservedView(value, reserved_no) {
+		var reserveInfo = "";
+		for(var i=0; i<reservationList.length; i++) {
+			if(reservationList[i].reservable_no === reserved_no) {
+				reserveInfo += "<table border='1'>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td colspan='4'>예약된 일정 상세보기</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>회원이름(닉네임)</td>";
+				reserveInfo += "		<td colspan='3'>"+reservationList[i].user_name+"("+reservationList[i].user_nick+")</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>주문자(예약당시 입력된 이름)</td>";
+				for(var j=0; j<gdPayHistoryList.length; j++) {
+					if(reservationList[i].reserve_no === gdPayHistoryList[j].reserve_no) {
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_name+"</td>";
+						reserveInfo += "</tr>";
+						reserveInfo += "<tr>";
+						reserveInfo += "	<td>연락처(이메일)</td>";
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_tel+"("+gdPayHistoryList[j].buyer_email+")</td>";
+						reserveInfo += "</tr>";
+						reserveInfo += "<tr>";
+						reserveInfo += "	<td>출장요청주소</td>";
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_addr+"</td>";
+						reserveInfo += "</tr>";
+						reserveInfo += "<tr>";
+						reserveInfo += "	<td>결제번호<button type='button' onclick='thisPaidRserve("+reservationList[i].reserve_no+","+gdPayHistoryList[j].merchant_uid+")'>함께 결제된 다른 예약 확인</button></td>";
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].merchant_uid+"</td>";
+						reserveInfo += "</tr>";
+						break;
+					}
+				}
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>예약일</td>";
+				reserveInfo += "		<td colspan='3'>"+moment(String(reservationList[i].reserve_date)).format('YYYY-MM-DD')+"</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>예약시간</td>";
+				reserveInfo += "		<td colspan='3'>"+reservationList[i].reserve_hour+"시</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>예약종목</td>";
+				reserveInfo += "		<td colspan='3'>"+reservationList[i].major+"</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>특이사항 및 요청사항</td>";
+				reserveInfo += "		<td colspan='3'>"+reservationList[i].reserve_etc+"</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tbody id='thisPaidRserve'>";
+				reserveInfo += "	</tbody>";
+				reserveInfo += "</table>";
+				break;
+			}
+		}
+		$('#reservedView').html(reserveInfo);
+	}
+	
+	/** 결제 번호로 같이 결제한 예약리스트 불러오기
+		reserve_no = Int
+		merchant_uid = Int
+	*/
+	function thisPaidRserve(reserve_no, merchant_uid) {
+		var paidOthers = "";
+		for(var i=0; i<gdPayHistoryList.length; i++) {
+			if(Number(gdPayHistoryList[i].merchant_uid) === merchant_uid) {
+				if(gdPayHistoryList[i].reserve_no === reserve_no) {
+					paidOthers += "<tr>";
+					paidOthers += "		<td colspan='4'>함께 결제된 다른 예약</td>";
+					paidOthers += "</tr>";
+					paidOthers += "<tr>";
+					paidOthers += "		<td>예약일</td>";
+					paidOthers += "		<td>예약시간</td>";
+					paidOthers += "		<td>예약종목</td>";
+					paidOthers += "		<td>해당 날짜로 이동</td>";
+					paidOthers += "</tr>";
+					for(var j=0; j<reservationList.length; j++) {
+						if(reservationList[j].reserve_no === reserve_no) {
+							paidOthers += "<tr>";
+							paidOthers += "		<td>"+reservationList[j].reserve_date+"</td>";
+							paidOthers += "		<td>"+reservationList[j].reserve_hour+"</td>";
+							paidOthers += "		<td>"+reservationList[j].major+"</td>";
+							paidOthers += "		<td>현재 선택된 예약건</td>";
+							paidOthers += "</tr>";
+						}
+						if(reservationList[j].reserve_no !== reserve_no) {
+							paidOthers += "<tr>";
+							paidOthers += "		<td>"+reservationList[j].reserve_date+"</td>";
+							paidOthers += "		<td>"+reservationList[j].reserve_hour+"</td>";
+							paidOthers += "		<td>"+reservationList[j].major+"</td>";
+							paidOthers += "		<td><button type='button' onclick='move("+reservationList[j].reserve_date+")'>이동</button></td>";
+							paidOthers += "</tr>";
+						}
+					}
+				}
+			}
+		}
+		$('#thisPaidRserve').html(paidOthers);
+	}
+	
+	/** id(년월일)로 달력클릭이벤트 실행
+		date = Int
+	*/
+	function move (date) {
+		var moveYear = String(date).substr(0,4);
+		var moveMonth = String(date).slice(4,6);
+		var moveDay = String(date).slice(6,8);
+		var thisCalYearDate = $('#calendarForm table .cal_date tr th p').attr('id');
+		var thisCalYear = thisCalYearDate.substr(0,4);
+		var thisCalMonth = thisCalYearDate.slice(4,6);
+		if(moveYear !== thisCalYear) {
+			alert("같은 해의 예약만 이동가능합니다.")
+		}
+		if(moveYear === thisCalYear) {
+			if(moveMonth === thisCalMonth) {
+				$('#'+date+'').trigger('click');
+				$('#reservedView').html('<div id="reservedView"></div>');
+			}
+			if(Number(moveMonth) > Number(thisCalMonth)) {
+				var num = Number(moveMonth) - Number(thisCalMonth);
+				nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + num, nowDate.getDate());
+				calendarMaker($("#calendarForm"), nowDate);
+				$('#'+date+'').trigger('click');
+				$('#reservedView').html('<div id="reservedView"></div>');
+			}
+			if(Number(moveMonth) < Number(thisCalMonth)) {
+				var num = Number(thisCalMonth) - Number(moveMonth);
+				nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() - num, nowDate.getDate());
+				calendarMaker($("#calendarForm"), nowDate);
+				$('#'+date+'').trigger('click');
+				$('#reservedView').html('<div id="reservedView"></div>');
+			}
+		}
+		
+	}
+	
 </script>
 </head>
 <body>
@@ -738,38 +1089,45 @@
 			<div>
 				<div id="reservedSchedule"></div> 
 			</div>
-			<!-- 예약된 내역 상세보기 -->
-			<div>
-				<div id="reservedView"></div> 
-			</div>
-
-		</div>
-		
-		<!-- 하단 -->
-		<div>
 			<!-- 예약 가능한 일정 확인 -->
 			<div>
 				<div id="reservableSchedule"></div>
 			</div>
+			<!-- 예약된 내역 상세보기 -->
+			<div>
+				<div id="reservedView"></div> 
+			</div>
+			<!-- 예약된 내역 상세보기 -->
+			<div>
+				<div id="noReserve"></div> 
+			</div>
+		</div>
+		
+		<!-- 하단 -->
+		<div>
 			<!-- 선택된 예약일정 확인 -->
 			<div>
 				<div id="reservableChoose"></div>
 			</div>
 			<!-- 예약 추가 하기 -->
 			<div>
-				<div id="addReservableSchedule"></div>
-				<table border="1">
-					<tr>
-						<td colspan="2">예약일정추가</td>
-					</tr>
-					<tr>
-						<td>예약일</td>
-						<td id="addReservableDate">날짜를 선택해주세요</td>
-					</tr>
-					<tr>
-						<td colspan="2"><button type="button" onclick="addReservable()">위의 시간으로 예약일정 추가 하기</button> </td>
-					</tr>
-				</table>
+				<div>
+					<table border="1">
+						<tr>
+							<td colspan='3'>예약가능일 추가하기</td>
+						</tr>
+						<tbody  id="selectDate">
+							<tr>
+								<td>선택일</td>
+								<td>달력에서 날짜를 선택해주세요</td>
+							</tr>
+						</tbody>
+						<tbody id="addReservableSchedule">
+						</tbody>
+						<tbody id="addReservableSubmit">
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

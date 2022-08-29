@@ -86,6 +86,12 @@
 	// 달력 출력
 	var nowDate = new Date();
 	
+	// 현재 시간
+	var nowYear = nowDate.getFullYear();
+	var nowMonth = ('0' + (nowDate.getMonth() + 1)).slice(-2);
+	var nowDay = ('0' + nowDate.getDay()).slice(-2);
+	var dateStr = nowYear + nowMonth + nowDay;
+	
 	// 유저 결제 내역
 	var userPayHistory = new Array();
 	<c:forEach items = "${userPayHistory}" var = "p">

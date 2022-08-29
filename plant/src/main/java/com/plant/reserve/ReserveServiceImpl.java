@@ -224,4 +224,29 @@ public class ReserveServiceImpl implements ReserveService {
 		return mapper.deleteReservableMajor(vo);
 	}
 
+	@Override
+	public int insertCompletion(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.insertCompletion(vo);
+	}
+
+	@Override
+	public int updateCompletion(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateCompletion(vo);
+	}
+
+	@Override
+	public List<ReserveVO> selectCompletion(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectCompletion(vo);
+	}
+
+	@Override
+	public List<ReserveVO> selectNoCompletion(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectNoCompletion(vo);
+	}
+	
+
 }
