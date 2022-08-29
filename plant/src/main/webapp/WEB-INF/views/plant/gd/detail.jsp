@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/plant/css/reset.css"/>
     <link rel="stylesheet" href="/plant/css/contents.css"/>
 </head>
+<body>
  <div class="sub">
             <div class="size">
                 <h3 class="sub_title">가드너 상세정보</h3>

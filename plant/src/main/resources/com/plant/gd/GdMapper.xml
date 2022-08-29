@@ -57,17 +57,17 @@
 	
 	<insert id="insertcar" parameterType="com.plant.gd.GdVO">
 		INSERT INTO car (
-			gd_career
+			gd_no, gd_career
 		) VALUES (
-			#{gd_career}
+			#{gd_no} , #{gd_career}
 		)
 	</insert>
 	
 	<insert id="insertcer" parameterType="com.plant.gd.GdVO">
 		INSERT INTO cer (
-			gd_certificate
+			gd_no, gd_certificate
 		) VALUES (
-			#{gd_certificate}
+			#{gd_no} , #{gd_certificate}
 		)
 	</insert>
 	

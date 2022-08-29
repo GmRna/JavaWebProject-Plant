@@ -20,12 +20,12 @@ public class AdminController {
 	
 	@GetMapping("/admin/login.do")
 	public String login() {
-		return "admin/login";
+		return "/plant/admin/login";
 	}
 	
 	@GetMapping("/admin/admin.do")
 	public String adminMain() {
-		return "/board/admin";
+		return "/plant/board/admin";
 	}
 	
 	@PostMapping("/admin/login.do")

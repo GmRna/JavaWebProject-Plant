@@ -10,7 +10,7 @@
 <body>
 	<div id="join_finish">
 	<div class="box">
-		<strong>{{$vo.gd_name}} 고객님,</strong><br> 회원가입을 진심으로 환영합니다.
+		<br> 회원가입을 진심으로 환영합니다.
 		승인심사 후 홈페이지 예약 관리 시스템 사용가능합니다.
 	</div>
 	<div class="btn"><span class="box_btn w150 large"><a href="http://localhost:8080/plant/gd/login.do">로그인 화면으로</a></span></div>

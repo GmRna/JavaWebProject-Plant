@@ -27,9 +27,6 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                번호
-                            </tr>
-                            <tr>
                                 <th>이름</th>
                                 <th>아이디</th>
                                 <th>비밀번호</th>
