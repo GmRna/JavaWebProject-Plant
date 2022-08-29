@@ -10,8 +10,6 @@
 
 <link rel="stylesheet" href="/plant/css/header/header.css"  type="text/css"/>
 
-<!-- <link rel="stylesheet" href="../../../css/main/main.css?after"  type="text/css"/>
- -->
 </head>
 
 <body class="homepage is-preload">
@@ -30,6 +28,7 @@
 			        <li><a href="/plant/plantbookreq/writeBookreq.do">식물 도감 요청 리스트 글쓰기</a></li>
 			        <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
 			    	<li><a href="/plant/petplantDiary/writeDiary.do">관찰일지 쓰기</a></li>
+			    	<li><a href="/plant/petplantDiary/listDiary.do">관찰일지 리스트</a></li>
 				</ul>
 			</li>
 			

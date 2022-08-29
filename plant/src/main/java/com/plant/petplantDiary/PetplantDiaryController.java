@@ -27,11 +27,29 @@ public class PetplantDiaryController {
 	@Autowired
 	PetplantDiaryService service;
 	
+	
+	// 반려식물 관찰일지 - 리스트
+	@GetMapping("/petplantDiary/listDiary.do")
+	public String petplantDiarylist (PetplantDiaryVO vo, Model model, HttpServletRequest req) {
+		// 유저번호 가져오기
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+
+		vo.setUser_no(user.getUser_no());
+		
+		model.addAttribute("diartlist" , service.listDiary(vo));
+		
+		return "plant/petplantDiary/petplantDiarylist";
+	}
+		
+	
 	// 반려식물 관찰일지 - 쓰기
 	@GetMapping("/petplantDiary/writeDiary.do")
-	public String write () {
+	public String petplantDiarywrite () {
 		return "plant/petplantDiary/petplantDiarywrite";
 	}
+	
 	
 	// 반려식물 관찰일지 - 등록된 반려식물 데이터 가져오기
 	@PostMapping(value="/petplantDiary/userplant.do" ,  produces = "application/json; charset=utf8")
@@ -59,6 +77,7 @@ public class PetplantDiaryController {
 		
 		if(!file.isEmpty()) {
 			String fileorg = file.getOriginalFilename();
+			System.out.println("파일 이름 : " + fileorg);
 			String fileext = fileorg.substring(fileorg.lastIndexOf("."));
 			String filereal = new Date().getTime()+fileext;
 			
@@ -72,11 +91,12 @@ public class PetplantDiaryController {
 				System.out.println("파일 저장 실패" + e);
 			}
 			
-			vo.setFilename_org(fileorg);
-			vo.setFilename_real(filereal);
+			vo.setUser_plantfile_org(fileorg);
+			vo.setUser_plantfile_real(filereal);
 		}
+		int no = service.insertDiary(vo);
 		
-		if(service.insertDiary(vo) == 1) {
+		if(no == 1) {
 			model.addAttribute("msg", "정상적으로 저장되었습니다.");
 			model.addAttribute("url", "listDiary.do");
 			return "common/alert";
@@ -84,6 +104,7 @@ public class PetplantDiaryController {
 			model.addAttribute("msg", "저장 실패.");
 			return "common/alert";
 		}
-		
 	}
+	
+	
 }

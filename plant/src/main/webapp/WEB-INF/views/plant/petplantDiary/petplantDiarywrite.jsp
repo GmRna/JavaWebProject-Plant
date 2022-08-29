@@ -79,11 +79,13 @@ function save() {
 	$("#frm").submit();
 }
 </script>
+
 <style type="text/css">
 img {
 	width: 25px;
 	height: 25px;
 }
+
 </style>
 
 
