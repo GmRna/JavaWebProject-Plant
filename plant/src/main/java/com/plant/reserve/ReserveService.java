@@ -58,4 +58,9 @@ public interface ReserveService {
 	//트랜잭션
 	int payProcess(ReserveVO vo); // 페이 트랜잭션
 	
+	// 케어진행
+	int insertCompletion(ReserveVO vo); // 케어진행내용 입력
+	int updateCompletion(ReserveVO vo); // 케어진행완료 여부 입력
+	List<ReserveVO> selectCompletion(ReserveVO vo); // 케어진행된 내역 불러오기
+	List<ReserveVO> selectNoCompletion(ReserveVO vo); // 케어진행되지 않은 내역 불러오기 
 }

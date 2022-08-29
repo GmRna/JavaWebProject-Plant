@@ -30,7 +30,7 @@
 	var reservationList = new Array();
 	<c:forEach var = "r" items ="${reservation}" varStatus="status">
 		reservationList.push({
-			reserve_etc : ${r.reserve_etc}
+			reserve_etc : "${r.reserve_etc}"
 		});
 	</c:forEach>
 	// 예약 내용 가져오기
