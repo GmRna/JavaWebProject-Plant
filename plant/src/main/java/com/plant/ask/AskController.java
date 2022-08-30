@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.plant.member.MemberVO;
+import com.plant.notice.NoticeVO;
 
 @Controller
 public class AskController {
@@ -23,7 +24,8 @@ public class AskController {
 	AskService service;
 	
 	@GetMapping("/ask/index.do")
-	public String index(Model model, AskVO vo) {							//index는 service.index(vo) / view는 getAsk_no
+	public String index(Model model, AskVO vo) {							
+		//index는 service.index(vo) / view는 getAsk_no
 		model.addAttribute("data", service.index(vo));
 		
 		return "/plant/ask/index";
@@ -41,6 +43,22 @@ public class AskController {
 	@GetMapping("/ask/write.do")
 	public String write() {
 		return "/plant/ask/write";
+	}
+	
+	@PostMapping("/ask/write.do")
+	public String insert(AskVO vo, Model model) {
+		//System.out.println("타이틀 : " + vo.getNotice_title());
+		if (service.insert(vo)) {
+			model.addAttribute("msg", "문의사항이 접수되었습니다.");
+			model.addAttribute("url", "index.do");
+			
+			return "common/alert";
+		} else {
+			model.addAttribute("msg", "문의사항 저장 실패");
+			
+			return "common/alert";
+		}
+		
 	}
 	
 	@PostMapping("/ask/insert.do")

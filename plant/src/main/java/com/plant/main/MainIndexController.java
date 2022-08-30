@@ -11,4 +11,8 @@ public class MainIndexController {
 	public String mainIndex () { 
 		return "main/main";
 	}
+
 }
+
+
+

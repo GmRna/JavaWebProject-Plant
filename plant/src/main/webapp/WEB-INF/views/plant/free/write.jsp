@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -45,16 +46,17 @@
                                 <textarea name="free_content" id="free_content"></textarea>
                             </td>
                         </tr>
+
                         <tr>
                             <th>첨부파일</th>
                             <td>
-                                <input type="file" id="filename">
+                                <input type="file" id="filenameorg">
                             </td>
                         </tr>
                         </tbody>
                     </table>
                     <div class="btnSet"  style="text-align:right;">
-                        <a class="btn" href="javascript:goSave();">작성하기 </a><br>
+                        <a class="btn" href="javascript:goSave();">작성하기 </a><br><br>
                         <a class="btn" href="/plant/free/index.do">돌아가기</a>
                     </div>
                     </form>

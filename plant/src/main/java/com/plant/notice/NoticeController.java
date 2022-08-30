@@ -6,6 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.plant.notice.NoticeVO;
+
 @Controller
 public class NoticeController {
 	
@@ -19,12 +21,18 @@ public class NoticeController {
 		return "/plant/notice/index";
 	}
 	
+	@GetMapping("/notice/index2.do")
+	public String index2(Model model, NoticeVO vo) {
+		model.addAttribute("data", service.index(vo));
+		return "/plant/notice/index2";
+	}
+	
 	
 	@GetMapping("/notice/write.do")
-	public String write() {
-		
+	public String write() {		
 		return "/plant/notice/write";
 	}
+	
 	@PostMapping("/notice/write.do")
 	public String insert(NoticeVO vo, Model model) {
 		//System.out.println("타이틀 : " + vo.getNotice_title());
@@ -47,6 +55,14 @@ public class NoticeController {
 		NoticeVO data = service.view(vo.getNotice_no());
 		model.addAttribute("data", data);
 		return "/plant/notice/view";
+	}
+	
+	@GetMapping("/notice/view2.do")
+	public String view2(NoticeVO vo, Model model) {
+		
+		NoticeVO data = service.view(vo.getNotice_no());
+		model.addAttribute("data", data);
+		return "/plant/notice/view2";
 	}
 	
 	@GetMapping("/notice/edit.do")

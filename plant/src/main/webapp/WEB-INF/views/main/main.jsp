@@ -16,7 +16,7 @@
 <!-- Header -->
 	<section id="header">
 	
-		<h1><a href="plant/main/index.do">P L A N T</a></h1>
+		<h1><a href="/plant/main/index.do">P L A N T</a></h1>
 		
 		<nav id="nav">
 		<ul>
@@ -32,23 +32,22 @@
 			        <li><a href="/plant/plantbookreq/writeBookreq.do">식물 도감 요청 리스트 글쓰기</a></li>
 			        <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
 			    	<li><a href="/plant/petplantDiary/writeDiary.do">관찰일지 쓰기</a></li>
-			    	<li><a href="/plant/petplantDiary/listDiary.do">관찰일지 리스트</a></li>
 				</ul>
 			</li>
 			
 			<li>
-				<a href="left-sidebar.html">게시판</a>
+				<a href="/plant/free/index.do">게시판</a>
 				<ul>
-			    	<li><a href="/plant/petplantDiary/writeDiary.do">자유 게시판</a></li>
-			    	<li><a href="/plant/petplantDiary/writeDiary.do">질문 게시판</a></li>
+			    	<li><a href="/plant/free/index.do">자유 게시판</a></li>
+			    	<li><a href="/plant/quest/index.do">질문 게시판</a></li>
 				</ul>
 			</li>
 			
 			<li>
-				<a href="left-sidebar.html">공지/문의 사항</a>
+				<a href="/plant/notice/index2.do">공지/문의 사항</a>
 				<ul>
-					<li><a href="/plant/plant/write.do">공지 사항</a></li>
-			        <li><a href="/plant/plant/list.do">문의 사항</a></li>
+					<li><a href="/plant/notice/index2.do">공지 사항</a></li>
+               		<li><a href="/plant/ask/index.do">문의 사항</a></li>
 				</ul>
 			</li>
 			
@@ -60,15 +59,15 @@
 			     	UserVO user = new UserVO();
 			     	user = (UserVO)sess.getAttribute("loginUserInfo");
 			     	%>
-					<a href="left-sidebar.html" class="mypage">My page</a>
+					<a href="/plant/user/myInfo.do" class="mypage">My page</a>
 					<ul>
-				        <li><a href="/plant/plantbookreq/writeBookreq.do">마이페이지</a></li>
+				        <li><a href="/plant/user/myInfo.do">마이페이지</a></li>
 				    	<li><a href="/plant/petplantDiary/writeDiary.do">관찰일지 쓰기</a></li>
 					</ul>
 				
 				</li>
 				<li>
-					<a href="left-sidebar.html">로그아웃</a>
+					<a href="/plant/user/logout.do">로그아웃</a>
 				</li>			
 			</c:if>
 			
@@ -115,7 +114,7 @@
 						<ul class="links">
 							<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 							<li>
-								<p><a href="#">관리자 로그인</a></p>
+								<p><a href="/plant/admin/login.do">관리자 로그인</a></p>
 							</li>
 						</ul>
 					</div>
@@ -123,9 +122,6 @@
 			</div>
 		</div>
 	</section>
-	
-	
-	
 	
 </div>
 

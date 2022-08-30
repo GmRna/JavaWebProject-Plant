@@ -4,8 +4,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import com.plant.user.UserVO;
-
 public interface GdService {
 	
 	Map index(GdVO vo);

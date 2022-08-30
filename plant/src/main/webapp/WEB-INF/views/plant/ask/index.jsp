@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,12 +18,12 @@
   	<script>
   	
   		function goWrite(){
-  			<c:if test="${empty loginInfo}">
+  			<c:if test="${empty loginUserInfo}">
   				alert('로그인 후 글작성이 가능합니다.')
-  				location.href = '/plant/member/login.do';
+  				location.href = '/plant/user/login.do';
   				
   			</c:if>
-  			<c:if test="${!empty loginInfo}">
+  			<c:if test="${!empty loginUserInfo}">
   				location.href = 'write.do';
   			</c:if>
   		}
@@ -37,8 +38,6 @@
     
                 <div class="bbs">
                     <table class="list">
-                           <h3 class="logconfirm" style="text-align:right;">로그인 중인 아이디 : ${loginInfo.email }</h3>
-                     
                     
                         <caption>문의사항</caption>
                         	<colgroup>

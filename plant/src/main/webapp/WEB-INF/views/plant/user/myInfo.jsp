@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -172,7 +173,7 @@
                 <div class="btnSet clear">
                     <div>
                     <a href="/plant/user/edit.do" class="btn">수정</a> 
-                    <a href="/plant/board/index.do" class="btn">홈 화면</a></div>
+                    <a href="/plant/main/index.do" class="btn">홈 화면</a></div>
                     
                 </div>
             </div>

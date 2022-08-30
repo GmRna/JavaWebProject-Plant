@@ -74,7 +74,7 @@ public class UserController {
 		if (no > 0) {
 			vo.setUser_no(no);
 			model.addAttribute("msg", "정상적으로 수정되었습니다.");
-			model.addAttribute("url", "/plant/myInfo.do");
+			model.addAttribute("url", "/plant/user/myInfo.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "수정 오류");

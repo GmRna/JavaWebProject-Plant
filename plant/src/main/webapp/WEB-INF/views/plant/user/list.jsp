@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -55,7 +56,7 @@
 						</c:if>
                         <c:forEach var="vo" items="${data.list }" varStatus="status">           
                             <tr>
-                                <td>${data.totalCount-status.index-(UserVO.page-1)*UserVO.pageRow }<!-- 총 개수 - 인덱스 - (현재 페이지 번호 - 1) * 페이지 당 개수 --></td>
+                                <td>${data.totalCount-status.index-(UserVO.page-1)*UserVO.pageRow }</td> 
                                 <td class="txt_l">
                                     <a href="detail.do?user_no=${vo.user_no }">${vo.user_name} </a>
                                 </td>

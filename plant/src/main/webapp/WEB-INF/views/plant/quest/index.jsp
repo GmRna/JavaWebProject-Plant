@@ -17,11 +17,11 @@
    	<script>
   	
   		function goWrite(){
-  			<c:if test="${empty loginInfo}">
-  				alert('로그인 후 글작성이 가능합니다.')
-  				location.href = '/plant/member/login.do';
+  			<c:if test="${empty loginUserInfo}">
+  				alert('사용자 로그인 후 글작성이 가능합니다.')
+  				location.href = '/plant/user/login.do';
   			</c:if>
-  			<c:if test="${!empty loginInfo}">
+  			<c:if test="${!empty loginUserInfo}">
   				location.href = 'write.do';
   			</c:if>
   		}
@@ -37,7 +37,6 @@
     
                 <div class="bbs">
                     <table class="list">
-                           <h3 class="logconfirm" style="text-align:right;">로그인 중인 아이디 : ${loginInfo.email }</h3>
                         <caption>질문게시판 목록</caption>
                         <colgroup>
                             <col width="80px" />

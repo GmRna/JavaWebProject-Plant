@@ -14,10 +14,6 @@
 		SELECT * FROM gd WHERE gd_no = #{gd_no}
 	</select>
 	
-	<select id="access" resultType="com.plant.gd.GdVO">
-		SELECT * FROM gd WHERE gd_id = #{gd_id}
-	</select>
-	
 	<delete id="delete">
 		DELETE FROM gd WHERE gd_no=#{gd_no }
 	</delete>
@@ -92,7 +88,7 @@
 		UPDATE gd SET gd_pwd = #{gd_pwd} WHERE gd_hp=#{gd_hp} AND gd_email = #{gd_email}
 	</update>
 	
-	<update id="acc" parameterType="com.plant.gd.GdVO" >
+	<update id="access" parameterType="com.plant.gd.GdVO" >
 		UPDATE gd SET gd_acc = #{gd_acc} WHERE gd_id=#{gd_id} AND gd_email = #{gd_email}
 	</update>
 	

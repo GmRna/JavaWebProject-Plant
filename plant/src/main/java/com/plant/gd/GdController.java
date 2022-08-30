@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.plant.comment.CommentService;
 import com.plant.comment.CommentVO;
 import com.plant.gd.GdVO;
+import com.plant.user.UserVO;
 import com.plant.gd.GdVO;
 import com.plant.gd.GdVO;
 
@@ -183,6 +184,7 @@ public class GdController {
 		model.addAttribute("vo", data);
 		return "/plant/gd/access";
 	}
+
 	
 	@PostMapping("/gd/login")
 	public String login(GdVO vo, HttpSession sess, Model model, HttpServletRequest req) {		
