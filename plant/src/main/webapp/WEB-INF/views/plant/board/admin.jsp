@@ -21,7 +21,7 @@ function calcHeight(id){
 	
 	//change the height of the iframe
 	document.getElementById(id).height=
-	the_height;
+	the_height+100;
 	//document.getElementById('the_iframe').scrolling = "no";
 	document.getElementById(id).style.overflow = "hidden";
 }

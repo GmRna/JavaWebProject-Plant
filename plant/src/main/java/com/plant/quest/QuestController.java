@@ -39,7 +39,7 @@ public class QuestController {
 		return "/plant/quest/write";
 	}
 	
-	@PostMapping("/quest/insert.do")
+	@PostMapping("/quest/write.do")
 	public String insert(QuestVO vo, Model model,
 			@RequestParam MultipartFile filename,
 			HttpServletRequest req) {

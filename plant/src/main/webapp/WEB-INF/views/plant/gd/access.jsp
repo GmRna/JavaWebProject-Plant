@@ -35,7 +35,7 @@
 	<div class="sub">
 		<div class="size">
 			<h3 class="sub_title">가드너 승인처리</h3>
-			<form name="frm" id="frm" action="update.do" method="post" enctype="multipart/form-data">
+			<form name="frm" id="frm" action="access.do" method="post" enctype="multipart/form-data">
 			<table class="board_write">
 				<caption>가드너 승인처리</caption>
 				<colgroup>
@@ -116,6 +116,7 @@
                             </td>
                     	</tr>
                     </tbody>
+                    
                 </table>                       
                 </form>
                 <!-- //write--->
