@@ -75,12 +75,17 @@ function checkday(petdate) {
 	$("#todaypet").text(result);
 }
 
+function save() {
+	$("#frm").submit();
+}
 </script>
+
 <style type="text/css">
 img {
 	width: 25px;
 	height: 25px;
 }
+
 </style>
 
 
@@ -88,8 +93,8 @@ img {
 <body>
 
 <div>
-	<form id="frm" method="post" action=""  enctype="multipart/form-data" >
-		<span>기르기 시작한 날짜 <input type="text" id="datepicker"></span> 
+	<form id="frm" method="post" action="insertDiary.do"  enctype="multipart/form-data" >
+		<span>기르기 시작한 날짜 <input type="text" id="datepicker" name="pet_regdate"></span> 
 		<span id="todaypet"></span>    일째
 		
 		<br><br>
@@ -99,15 +104,18 @@ img {
 		사진 <input type="file" name="file" id="user_plantfile_org"><br>
 		
 		<br><br><br>
-		제목 <input type="text" name="title"><br>
+		제목 <input type="text" name="diary_title"><br>
 		날씨 <br>
-			<input type="checkbox" name="1" checked="checked"> 맑음
-			<input type="checkbox" name="2" > 비
-		  	<input type="checkbox" name="3" > 구름
-		  	<input type="checkbox" name="4" > 눈
+			<div>
+				<input type="checkbox" name="diary_weather" value="1"checked="checked"> 맑음
+				<input type="checkbox" name="diary_weather" value="2" > 비
+			  	<input type="checkbox" name="diary_weather" value="3" > 구름
+			  	<input type="checkbox" name="diary_weather" value="4" > 눈
+			</div>
 		<br><br><br>
-		관찰 내용 <textarea name="content"></textarea>
+		관찰 내용 <textarea name="diary_content"></textarea>
 	</form>
+	<button onclick="save()">작성완료</button>
 </div>
 
 

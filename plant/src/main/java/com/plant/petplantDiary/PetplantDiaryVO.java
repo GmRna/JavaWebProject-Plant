@@ -12,11 +12,11 @@ public class PetplantDiaryVO {
 	
 	private int diary_no;
 	private int user_no;
-	private Timestamp pet_regdate;
+	private String pet_regdate;
 	private String user_plantname;
 	private String user_planttype;
-	private String filename_org;
-	private String filename_real;
+	private String user_plantfile_org;
+	private String user_plantfile_real;
 	private String diary_title;
 	private int diary_weather;
 	private String diary_content;

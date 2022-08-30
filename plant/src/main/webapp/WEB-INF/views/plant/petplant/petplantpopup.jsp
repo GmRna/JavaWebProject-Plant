@@ -24,10 +24,10 @@
 			            	<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
 			            	<div class="moreDiv" id="moreDiv${petboard.pet_no}" style="display:none;" >
 								<c:if test="${loginInfo.user_no eq petboard.user_writeNo }">
-									<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/edit.png" >수정하기</span>
+									<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
 								</c:if>
 								<c:if test="${empty loginInfo or loginInfo.user_no ne petboard.user_writeNo}">
-								<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/icon-siren.png" >신고하기</span>
+								<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>
 								</c:if>
 							</div>
 			            </div>
@@ -52,19 +52,19 @@
 			           		<!-- 게시판 좋아요 눌렀는지 않눌럿는지 체크 -->
 			           		<c:choose>	
 								<c:when test="${petboard.like_check == 1}">
-									<img id="likeicon" class="icon-react" src="/plant/img/seedLike.png" >
+									<img id="likeicon" class="icon-react" src="/plant/img/petplant/seedLike.png" >
 								</c:when>
 								<c:otherwise>
-									<img id="likeicon" class="icon-react" src="/plant/img/seednotLike.png" >
+									<img id="likeicon" class="icon-react" src="/plant/img/petplant/seednotLike.png" >
 								</c:otherwise>
 							</c:choose>
 			            </div>
 			             <div class="icon-react" id="petputDiv">
 			              	<c:if test="${pppcheck == 0 }">
-						  		<img class="icon-react save" src="/plant/img/save1.png" >
+						  		<img class="icon-react save" src="/plant/img/petplant/save1.png" >
 						  	</c:if>
 			              	<c:if test="${pppcheck == 1 }">
-						  		<img class="icon-react save" src="/plant/img/save2.png" >
+						  		<img class="icon-react save" src="/plant/img/petplant/save2.png" >
 						  	</c:if>
 					  	</div>
 			          </div>
@@ -134,14 +134,14 @@
 						               		</c:if>
 						               		<c:if test="${rlist.ppr_secretCheck eq 'on'}">
 						               			<c:if test="${loginInfo.user_no eq petboard.user_writeNo}">
-						               				<img class="comment-lock" src="/plant/img/free-icon-padlock-456112.png" > ${rlist.ppr_content}
+						               				<img class="comment-lock" src="/plant/img/petplant/padlock.png" > ${rlist.ppr_content}
 						               			</c:if>
 						               			<c:if test="${loginInfo.user_no ne petboard.user_writeNo}">
 						               				<c:if test="${loginInfo.user_no eq rlist.user_no}">
-						               					<img class="comment-lock" src="/plant/img/free-icon-padlock-456112.png" > ${rlist.ppr_content}
+						               					<img class="comment-lock" src="/plant/img/petplant/padlock.png" > ${rlist.ppr_content}
 						               				</c:if>
 						               				<c:if test="${loginInfo.user_no ne rlist.user_no}">
-						               					<img class="comment-lock" src="/plant/img/free-icon-padlock-456112.png" > 비밀 댓글 입니다.
+						               					<img class="comment-lock" src="/plant/img/petplant/padlock.png" > 비밀 댓글 입니다.
 						               				</c:if>
 						               			</c:if>
 						               		</c:if>
@@ -156,10 +156,10 @@
 						               	
 						               	<c:choose>	
 									  		<c:when test="${rlist.like_replycheck == 1}">
-												<img id="hearticon" class="comment-heart" src="/plant/img/redheart.png" >
+												<img id="hearticon" class="comment-heart" src="/plant/img/petplant/redheart.png" >
 											</c:when>
 											<c:otherwise>
-						                   		<img id="hearticon" class="comment-heart" src="/plant/img/heart.png">
+						                   		<img id="hearticon" class="comment-heart" src="/plant/img/petplant/heart.png">
 											</c:otherwise>
 									  	</c:choose>
 						                </li>
@@ -241,20 +241,20 @@ $(function () {
 			dataType : 'json',
 			success : function (like) {
 				if (like == 1 ){
-					$(likeicon).attr('src','/plant/img/seedLike.png');
+					$(likeicon).attr('src','/plant/img/petplant/seedLike.png');
 					countlike = parseInt(countlike) + 1;
 					$(spanlike).text(countlike);
 					
-					$(".seedImage").eq(listIdx).attr('src','/plant/img/seedLike.png');
+					$(".seedImage").eq(listIdx).attr('src','/plant/img/petplant/seedLike.png');
 					update_bottom_count = update_bottom_count + 1;
 					$(update_bottom).text(update_bottom_count);
 					
 				} else {
-					$(likeicon).attr('src','/plant/img/seednotLike.png');
+					$(likeicon).attr('src','/plant/img/petplant/seednotLike.png');
 					countlike = parseInt(countlike) - 1;
 					$(spanlike).text(countlike);
 					
-					$(".seedImage").eq(listIdx).attr('src','/plant/img/seednotLike.png');
+					$(".seedImage").eq(listIdx).attr('src','/plant/img/petplant/seednotLike.png');
 					update_bottom_count = update_bottom_count - 1;
 					$(update_bottom).text(update_bottom_count);
 				} 
@@ -291,10 +291,10 @@ $(function () {
 			success : function (like) {
 				console.log("like + " + JSON.stringify(like));
 				if (like == 1 ){
-					$(hearticon).attr('src','/plant/img/redheart.png');  
+					$(hearticon).attr('src','/plant/img/petplant/redheart.png');  
 					console.log("좋아요 + ");
 				} else {
-					$(hearticon).attr('src','/plant/img/heart.png');
+					$(hearticon).attr('src','/plant/img/petplant/heart.png');
 					console.log("좋아요 - ");
 				}
 			}, error: function (xhr, desc, err) {

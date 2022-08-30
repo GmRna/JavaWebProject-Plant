@@ -67,7 +67,7 @@ function view(pbreq_no) {
 					<td>
 						<span class="txt_l" style="text-align:left;" onclick="view(${reqlist.pbreq_no})" >
 							<c:if test="${reqlist.pbreq_admin == 1 }">
-								<img class="icon" src="/plant/img/answer.png">
+								<img class="icon" src="/plant/img/petplant/pQnA_answer.png">
 							</c:if>
 							${reqlist.pbreq_title}
 						</span>

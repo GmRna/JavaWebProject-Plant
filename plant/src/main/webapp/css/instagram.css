@@ -1,4 +1,5 @@
 * {
+	margin: 0;
     box-sizing: border-box;
     font-family: 'helvetica neue', 'Apple SD Gothic Neo', Roboto, Helvetica, Arial, sans-serif;
 }
@@ -8,6 +9,7 @@ body {
     padding: 0;
     margin: 0;
 }
+
 p, span {
     font-size: 14px;
 }
@@ -48,8 +50,10 @@ nav {
     justify-content: center;
     background-color: white;
     border-bottom: 1px solid #DBDBDB;
+    
 }
 .nav-container {
+	overflow: hidden;
     max-width: 1000px;
     padding: 0 20px;
     display: flex;
@@ -484,3 +488,12 @@ ul.story-list .profile-text {
     width: 24px;
     height: 24px;
 }
+
+h1 {
+	color: #252122;
+	font-weight: 900;
+	font-size: 2.5em;
+	letter-spacing: -0.035em;
+	line-height: 1;
+}
+		

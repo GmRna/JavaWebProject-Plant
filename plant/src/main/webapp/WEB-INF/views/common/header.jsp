@@ -10,12 +10,11 @@
 
 <link rel="stylesheet" href="/plant/css/header/header.css"  type="text/css"/>
 
-<!-- <link rel="stylesheet" href="../../../css/main/main.css?after"  type="text/css"/>
- -->
 </head>
 
 <body class="homepage is-preload">
 <div id="page-wrapper">
+<<<<<<< HEAD
    <nav id="nav">
       <ul>
          <li class="current"><a href="/plant/main/index.do">HOME</a></li>
@@ -76,10 +75,8 @@
          </c:if>
       </ul>
    </nav>
+
 </div>
-
-
-
 
    <script src="/plant/js/header/jquery.min.js"></script>
    <script src="/plant/js/header/jquery.dropotron.min.js"></script>
@@ -88,7 +85,6 @@
    <script src="/plant/js/header/breakpoints.min.js"></script>
    <script src="/plant/js/header/util.js"></script>
    <script src="/plant/js/header/main.js"></script>
-   
    
 </body>
 </html>
