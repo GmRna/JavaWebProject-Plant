@@ -38,16 +38,41 @@ public class PetplantDiaryController {
 
 		vo.setUser_no(user.getUser_no());
 		
-		model.addAttribute("diartlist" , service.listDiary(vo));
+		model.addAttribute("diarylist" , service.listDiary(vo));
 		
 		return "plant/petplantDiary/petplantDiarylist";
 	}
+	
+	
+	// 반려식물 관찰일지 - 상세 리스트
+	@PostMapping("/petplantDiary/listdetDiary.do")
+	public String petplantdetDiarylist (PetplantDiaryVO vo, Model model, HttpServletRequest req) {
+		// 유저번호 가져오기
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		
+		vo.setUser_no(user.getUser_no());
+		System.out.println("안넘어 오니~" + vo.getDiary_gno() + vo.getUser_plantname());
+		
+		model.addAttribute("diarylist" , service.listdetDiary(vo));
+		
+		return "plant/petplantDiary/petplantDiarylistdet";
+	}
 		
 	
-	// 반려식물 관찰일지 - 쓰기
+	// 반려식물 관찰일지 - 쓰기 폼
 	@GetMapping("/petplantDiary/writeDiary.do")
-	public String petplantDiarywrite () {
+	public String writeDiary () {
 		return "plant/petplantDiary/petplantDiarywrite";
+	}
+	
+	// 반려식물 관찰일지 - 쓰기 두번째 쓰기 폼
+	@PostMapping("/petplantDiary/writedetDiary.do")
+	public String writedetDiary (PetplantDiaryVO vo, Model model) {
+		System.out.println("vo : " +vo.getUser_plantname());
+		model.addAttribute("vo", vo);
+		return "plant/petplantDiary/petplantDiarywritedet";
 	}
 	
 	
@@ -66,7 +91,7 @@ public class PetplantDiaryController {
 		
 		return plant;
 	}
-	
+	// 반려식물 관찰일지 - 첫 저장
 	@PostMapping("/petplantDiary/insertDiary.do")
 	public String insert (PetplantDiaryVO vo, Model model, @RequestParam MultipartFile file, HttpServletRequest req) {
 		//유저 번호 set 
@@ -106,5 +131,47 @@ public class PetplantDiaryController {
 		}
 	}
 	
+	
+	// 반려식물 관찰일지 - 두번째 
+	@PostMapping("/petplantDiary/insertTwoDiary.do")
+	public String insertTwo (PetplantDiaryVO vo, Model model, @RequestParam MultipartFile file, HttpServletRequest req) {
+		//유저 번호 set 
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		vo.setUser_no(user.getUser_no());
+		
+		if(!file.isEmpty()) {
+			String fileorg = file.getOriginalFilename();
+			System.out.println("파일 이름 : " + fileorg);
+			String fileext = fileorg.substring(fileorg.lastIndexOf("."));
+			String filereal = new Date().getTime()+fileext;
+			
+			String path = req.getRealPath("/upload");
+			
+			try {
+				System.out.println("파일저장");
+				file.transferTo(new File(path+filereal));
+			
+			} catch (Exception e) {
+				System.out.println("파일 저장 실패" + e);
+			}
+			
+			vo.setUser_plantfile_org(fileorg);
+			vo.setUser_plantfile_real(filereal);
+		}
+		
+		int no = service.insertTwoDiary(vo);
+		
+		if(no == 1) {
+			model.addAttribute("msg", "정상적으로 저장되었습니다.");
+			model.addAttribute("url", "listDiary.do");
+			return "common/alert";
+		}else {
+			model.addAttribute("msg", "저장 실패.");
+			return "common/alert";
+		}
+	}
+		
 	
 }

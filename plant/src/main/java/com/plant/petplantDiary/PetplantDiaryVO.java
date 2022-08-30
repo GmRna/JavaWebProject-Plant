@@ -20,5 +20,8 @@ public class PetplantDiaryVO {
 	private String diary_title;
 	private int diary_weather;
 	private String diary_content;
+	private int diary_gno;
+	private int diary_ono;
+	private int diary_day;
 	
 }

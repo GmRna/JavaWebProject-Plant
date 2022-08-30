@@ -4,9 +4,19 @@
 	
 	
 	<select id="listDiary" parameterType="com.plant.petplantDiary.PetplantDiaryVO" resultType="com.plant.petplantDiary.PetplantDiaryVO" >
-		SELECT * FROM petplantdiary WHERE user_no = ${user_no} 
+		SELECT * FROM petplantdiary WHERE user_no = #{user_no}  AND diary_ono = 0
 	</select>
 	
+	<select id="listdetDiary" parameterType="com.plant.petplantDiary.PetplantDiaryVO" resultType="com.plant.petplantDiary.PetplantDiaryVO" >
+		SELECT * 
+		FROM petplantdiary 
+		WHERE user_no = #{user_no} AND user_plantname = #{user_plantname} AND diary_gno = #{diary_gno}
+		ORDER BY diary_gno DESC
+	</select>
+	
+	<select id="getpetname" parameterType="int" resultType="com.plant.petplantDiary.PetplantDiaryVO">
+		SELECT * FROM petplantdiary WHERE diary_no = #{diary_no}
+	</select>
 	
 	
 	<select id="userplant" parameterType="int" resultType="com.plant.petplantDiary.PetplantDiaryVO">
@@ -15,10 +25,11 @@
 		WHERE user_no = #{user_no}
 	</select>
 	
-	<insert id="insertDiary" >
+	<insert id="insertDiary" parameterType="com.plant.petplantDiary.PetplantDiaryVO">
 		INSERT INTO petplantdiary (
 			user_no 
 			,  pet_regdate 
+			,  diary_day
 			,  user_plantname 
 			,  user_planttype 
 			,  user_plantfile_org 
@@ -29,6 +40,7 @@
 		) VALUES (
 			#{user_no} 
 			, #{pet_regdate}
+			, #{diary_day}
 			, #{user_plantname} 
 			, #{user_planttype} 
 			, #{user_plantfile_org} 
@@ -37,6 +49,52 @@
 			, #{diary_weather} 
 			, #{diary_content}
 		)
+		<selectKey keyProperty="diary_no" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()			
+		</selectKey>
 	</insert>
+	
+	
+	<insert id="insertTwoDiary" parameterType="com.plant.petplantDiary.PetplantDiaryVO">
+		INSERT INTO petplantdiary (
+			user_no 
+			,  pet_regdate 
+			,  diary_day
+			,  user_plantname 
+			,  user_planttype 
+			,  user_plantfile_org 
+			,  user_plantfile_real
+			,  diary_title 
+			,  diary_weather 
+			,  diary_content 
+			,  diary_gno
+			,  diary_ono
+		) VALUES (
+			#{user_no} 
+			, #{pet_regdate}
+			, #{diary_day}
+			, #{user_plantname} 
+			, #{user_planttype} 
+			, #{user_plantfile_org} 
+			, #{user_plantfile_real}
+			, #{diary_title} 
+			, #{diary_weather} 
+			, #{diary_content}
+			, #{diary_gno}
+			, #{diary_ono}
+		)
+	</insert>
+	
+	
+	
+	<update id="gnoUpdate" parameterType="int">
+		UPDATE petplantdiary SET diary_gno=#{diary_gno} WHERE diary_no=#{diary_no}
+	</update>
+	
+	
+	<update id="onoUpdate" parameterType="int">
+		UPDATE petplantdiary SET diary_ono=diary_ono+1 WHERE diary_no=#{diary_no} AND diary_ono > #{diary_ono}
+	</update>
+	
 	
 </mapper>

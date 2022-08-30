@@ -11,5 +11,11 @@ public interface PetplantDiaryService {
 	
 	// 관찰일지 리스트 - 전체 리스트
 	List<PetplantDiaryVO> listDiary(PetplantDiaryVO vo);
+	
+	// 두번째 등록
+	int insertTwoDiary(PetplantDiaryVO vo);
+
+	// 디테일
+	Map listdetDiary(PetplantDiaryVO vo);
 
 }

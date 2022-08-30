@@ -24,10 +24,19 @@ public class PetplantDiaryServiceImpl implements PetplantDiaryService {
 	}
 
 	
-	// 반려 식물 관찰일지 - 등록 
+	// 반려 식물 관찰일지 - 등록 첫 등록
 	@Override
 	public int insertDiary(PetplantDiaryVO vo) {
-		return mapper.insertDiary(vo);
+		int no = mapper.insertDiary(vo);
+		if(no > 0) mapper.gnoUpdate(vo.getDiary_no());
+		return no;
+	}
+	// 두번째 등록
+	@Override
+	public int insertTwoDiary(PetplantDiaryVO vo) {
+		mapper.onoUpdate(vo);
+		vo.setDiary_ono(vo.getDiary_ono()+1);
+		return mapper.insertTwoDiary(vo);
 	}
 
 	// 반려 식물 관찰일지 - 리스트 ( 전체 - 유저번호, 식물 이름 )
@@ -35,5 +44,19 @@ public class PetplantDiaryServiceImpl implements PetplantDiaryService {
 	public List<PetplantDiaryVO> listDiary(PetplantDiaryVO vo) {
 		return mapper.listDiary(vo);
 	}
+
+	// 반려 식물 관찰일지 - 상세보기
+	@Override
+	public Map listdetDiary(PetplantDiaryVO vo) {
+		Map map = new HashMap();
+		List<PetplantDiaryVO> diarylist = mapper.listdetDiary(vo);
+		PetplantDiaryVO diaryVO =  mapper.getpetname(vo.getDiary_no());
+		
+		map.put("diarylist", diarylist);
+		map.put("diaryVO", diaryVO);
+		
+		return map;
+	}
+
 	
 }

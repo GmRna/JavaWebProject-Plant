@@ -14,6 +14,13 @@
 <link rel="stylesheet" href="/plant/css/reset.css"/>
 <link rel="stylesheet" href="/plant/css/contents.css"/>
     
+<style type="text/css">
+img {
+	width: 24px;
+	height: 24px;
+}
+
+</style>
 </head>
 
 <script type="text/javascript">
@@ -21,6 +28,7 @@ function view(pbreq_no) {
 	location.href = "viewBookreq.do?pbreq_no="+pbreq_no;
 }
 </script>
+
 
 <body>
 
