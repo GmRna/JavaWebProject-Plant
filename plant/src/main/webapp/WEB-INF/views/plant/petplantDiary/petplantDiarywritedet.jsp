@@ -65,7 +65,7 @@ body {
 
 </head>
 <body>
-
+  
 <div>
 	<form id="frm" method="post" action="insertTwoDiary.do"  enctype="multipart/form-data" >
 		<input type="hidden" name="diary_no" value="${vo.diary_no }">
