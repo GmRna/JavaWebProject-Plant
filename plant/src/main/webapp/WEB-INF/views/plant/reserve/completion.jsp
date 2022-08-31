@@ -74,6 +74,45 @@
 	color: #fff;
 }
 
+.file-list {
+    height: 200px;
+    overflow: auto;
+    border: 1px solid #989898;
+    padding: 10px;
+}
+.file-list .filebox p {
+    font-size: 14px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.file-list .filebox .delete button{
+    color: #ff5353;
+    margin-left: 5px;
+    width: 50px;
+    height: 40px;
+}
+
+/* The Modal (background) */    
+.searchModal {       
+	display: none; /* Hidden by default */        
+	position: fixed; /* Stay in place */        
+	z-index: 10; /* Sit on top */       
+	left: 0;        
+	top: 0;        
+	width: 100%; /* Full width */       
+	height: 100%; /* Full height */        
+	overflow: auto; /* Enable scroll if needed */        
+	background-color: rgb(0,0,0); /* Fallback color */        
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */    
+}     
+/* Modal Content/Box */    
+.search-modal-content {        
+	background-color: #fefefe;        
+	margin: 15% auto; /* 15% from the top and centered */       
+	padding: 20px;        
+	border: 1px solid #888;        
+	width: 70%; /* Could be more or less, depending on screen size */    
+}
 
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -88,6 +127,7 @@
 	var urlParams = new URL(location.href).searchParams;
 	var gd_no = urlParams.get('gd_no');
 	var gd_name = "${gd.gd_name}";
+	var contextPath = "<%=request.getContextPath()%>";
 	
 	// 달력 출력
 	var nowDate = new Date();
@@ -131,6 +171,15 @@
 			, reserve_major : "${c.major}"
 			, reserve_date : ${c.reserve_date}
 			, reserve_hour : ${c.reserve_hour}
+			, reserve_review : ${c.reserve_review}
+			, completion_date : "${c.completion_date}"
+			, completion_comment : "${c.completion_comment}"
+			, completion_picorg1 : "${c.completion_picorg1}"
+			, completion_picreal1 : "${c.completion_picreal1}"
+			, completion_picorg2 : "${c.completion_picorg2}"
+			, completion_picreal2 : "${c.completion_picreal2}"
+			, completion_picorg3 : "${c.completion_picorg3}"
+			, completion_picreal3 : "${c.completion_picreal3}"
 		});
 	</c:forEach>
 	
@@ -146,6 +195,22 @@
 			, reserve_major : "${nc.major}"
 			, reserve_date : ${nc.reserve_date}
 			, reserve_hour : ${nc.reserve_hour}
+		});
+	</c:forEach>
+	
+	// 리뷰
+	var reviewList = new Array();
+	<c:forEach items = "${reviewList}" var = "rv">
+		reviewList.push({
+			reserve_no : ${rv.reserve_no}
+			, gd_no : ${rv.gd_no}
+			, user_no : ${rv.user_no}
+			, review_no : ${rv.review_no}
+			, review_date : "${rv.review_date}"
+			, review : "${rv.review}"
+			, review_answer : "${rv.review_answer}"
+			, review_answerdate : "${rv.review_answerdate}"
+			, star : ${rv.star}
 		});
 	</c:forEach>
 	
@@ -308,83 +373,115 @@
 			});  
 			//일자 선택 클릭
 			$(".custom_calendar_table").on("click", "td", function () {
-				viewReserveInfoDelete() // 상세보기 내역 삭제
-				// 클릭한 id값
-				var idValue = $(this).attr('id');			
-		   		// 모맨트 js 활용 하여 데이터 포맷 변경
-		   		var date = moment(idValue); 
-				// 클릭한 td id값에 맞는 예약가능 일자 true 처리
-				function cDate(completionList) {
-					if(completionList.reserve_date === Number(idValue)) {
-						return true;
-					}
+				if (reset == false) {
+					flag = confirm("날짜 클릭시 작성된 내용이 모두 초기화 됩니다. 초기화 하시겠습니까?");
 				}
-				// 클릭한 td id값에 맞는 예약된 일자 true 처리
-				function ncDate(noCompletionList) {
-					if(noCompletionList.reserve_date === Number(idValue)) {
-						return true;
+				if(flag) {
+					insertCompletionDelete(); // 예약 완료 확인 입력 삭제
+					reset = true;
+					viewDelete() // 상세보기 내역 삭제
+					// 클릭한 id값
+					var idValue = $(this).attr('id');			
+			   		// 모맨트 js 활용 하여 데이터 포맷 변경
+			   		var date = moment(idValue); 
+					// 클릭한 td id값에 맞는 예약가능 일자 true 처리
+					function cDate(completionList) {
+						if(completionList.reserve_date === Number(idValue)) {
+							return true;
+						}
 					}
-				}
-				// true인 객체 배열화
-		       	var completionDate = completionList.filter(cDate); // 케어진행 완료
-				var noCompletionDate = noCompletionList.filter(ncDate); // 케어미진행
+					// 클릭한 td id값에 맞는 예약된 일자 true 처리
+					function ncDate(noCompletionList) {
+						if(noCompletionList.reserve_date === Number(idValue)) {
+							return true;
+						}
+					}
+					// true인 객체 배열화
+			       	var completionDate = completionList.filter(cDate); // 케어진행 완료
+					var noCompletionDate = noCompletionList.filter(ncDate); // 케어미진행
+						
+			        // select_day 클래스 삭제
+					$(".custom_calendar_table .select_day").removeClass("select_day");
+			    		
+					// 삭제 후 예약데이터와 비교하여 다시 클래스 변경       	
+					classChange();
 					
-		        // select_day 클래스 삭제
-				$(".custom_calendar_table .select_day").removeClass("select_day");
-		    		
-				// 삭제 후 예약데이터와 비교하여 다시 클래스 변경       	
-				classChange();
-				
-				// default
-				if ($('#'+idValue+'').attr('class') === 'default') {
-
-		        }
-			    // select_day
-		        if ($(".custom_calendar_table .select_day").hasClass("select_day")) {
-		          	$(this).removeClass("select_day").addClass("select_day");
-		        }
-			    // completion
-		      	if ($(".custom_calendar_table .completion").hasClass("completion")) {
-		       		$(this).removeClass("completion").addClass("select_day");
-		        }
-			    // noCompletion
-		        if ($(".custom_calendar_table .noCompletion").hasClass("noCompletion")) {
-		          	$(this).removeClass("noCompletion").addClass("select_day");
-	            	var noCompletion = "";
-	            	// 예약된 시간
-	            	if (noCompletionDate.length > 0) {
-	            		$("#noReserve").html("<div id='noReserve'></div>");
-	            		noCompletion += "<table border='1'>";
-	            		noCompletion += "	<tr>";
-	            		noCompletion += "		<td colspan='10'>케어 미진행 일정</td>";	
-	            		noCompletion += "	</tr>";	            	
-	            		noCompletion += "	<tr>";            			
-	            		noCompletion += "		<td>예약일</td>";	
-	            		noCompletion += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
-	            		noCompletion += "	</tr>";	            	
-	            		noCompletion += "	<tr>";
-	        			for(var i=0; i<noCompletionDate.length; i++){
-	        				noCompletion += "	<td>예약된 일정</td>";
-	        				noCompletion += "	<td>"+noCompletionDate[i].reserve_hour+"시</td>";
-	        				noCompletion += "	<td>케어 종목</td>";
-	        				noCompletion += "	<td>"+noCompletionDate[i].reserve_major+"</td>";
-	       					noCompletion += "	<td>";
-	       					noCompletion += "		<button type='button' onclick='viewReserveInfo("+noCompletionDate[i].reserve_no+","+idValue+","+noCompletionDate[i].reserve_hour+",\""+noCompletionDate[i].reserve_major+"\")'>예약상세보기</button>";
-	       					noCompletion += "	</td>";
-	       					noCompletion += "	<td>";
-	       					noCompletion += "		<button type='button' onclick='insertCompletionForm("+noCompletionDate[i].reserve_no+","+idValue+","+noCompletionDate[i].reserve_hour+",\""+noCompletionDate[i].reserve_major+"\")'>예약 진행 완료 내역 입력하기</button>";
-	       					noCompletion += "	</td>";
-	       					noCompletion += "</tr>";
-	       					noCompletion += "<tr>";
-	       				}
-	           		}
-	            	noCompletion += "</tr>";
-	           		noCompletion += "</table>";
-	               	$("#noCompletion").html(noCompletion);
+					// default
+					if ($('#'+idValue+'').attr('class') === 'default') {
+	
+			        }
+		            var completion = "";
+		            // 진행완료된 예약
+		            if (completionDate.length > 0) {
+		            	completion += "<table border='1'>";
+		            	completion += "	<tr>";
+		            	completion += "		<td colspan='10'>케어 진행완료</td>";	
+		           		completion += "	</tr>";	            	
+		           		completion += "	<tr>";            			
+		           		completion += "		<td>예약일</td>";	
+		           		completion += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
+		           		completion += "	</tr>";	            	
+		           		completion += "	<tr>";
+		        		for(var i=0; i<completionDate.length; i++){
+		        			completion += "	<td>예약된 일정</td>";
+		       				completion += "	<td>"+completionDate[i].reserve_hour+"시</td>";
+		       				completion += "	<td>케어 종목</td>";
+		       				completion += "	<td>"+completionDate[i].reserve_major+"</td>";
+		       				completion += "	<td>";
+		       				completion += "		<button type='button' onclick='viewCompletion("+completionDate[i].reserve_no+")'>예약진행내역상세보기</button>";
+		       				if(completionDate[i].reserve_review === 1){
+		       					completion += "	<button type='button' onclick='viewReview("+completionDate[i].reserve_no+")'>케어리뷰확인</button>";
+		       				}
+		       				completion += "	</td>";
+		       				completion += "</tr>";
+		       				completion += "<tr>";
+		     			}
+		           	}
+		            // 진행완료 안된 예약
+		            if (noCompletionDate.length > 0) {
+		            	completion += "<table border='1'>";
+		            	completion += "	<tr>";
+		            	completion += "		<td colspan='10'>케어 미진행 일정</td>";	
+		           		completion += "	</tr>";	            	
+		           		completion += "	<tr>";            			 
+		           		completion += "		<td>예약일</td>";	
+		           		completion += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
+		           		completion += "	</tr>";	            	
+		           		completion += "	<tr>";
+		        		for(var i=0; i<noCompletionDate.length; i++){
+		        			completion += "	<td>예약된 일정</td>";
+		       				completion += "	<td>"+noCompletionDate[i].reserve_hour+"시</td>";
+		       				completion += "	<td>케어 종목</td>";
+		       				completion += "	<td>"+noCompletionDate[i].reserve_major+"</td>";
+		       				completion += "	<td>";
+		       				completion += "		<button type='button' onclick='viewReserveInfo("+noCompletionDate[i].reserve_no+","+idValue+","+noCompletionDate[i].reserve_hour+",\""+noCompletionDate[i].reserve_major+"\")'>예약상세보기</button>";
+		       				completion += "	</td>";
+		       				completion += "	<td>";
+		       				completion += "		<button type='button' onclick='insertCompletionForm("+noCompletionDate[i].reserve_no+","+idValue+","+noCompletionDate[i].reserve_hour+",\""+noCompletionDate[i].reserve_major+"\")'>예약 진행 완료 내역 입력하기</button>";
+		       				completion += "	</td>";
+		       				completion += "</tr>";
+		       				completion += "<tr>";
+		     			}
+		           	}
+				    // select_day
+			        if ($(".custom_calendar_table .select_day").hasClass("select_day")) {
+			          	$(this).removeClass("select_day").addClass("select_day");
+			        }
+				    // completion
+			      	if ($(".custom_calendar_table .completion").hasClass("completion")) {
+			       		$(this).removeClass("completion").addClass("select_day");
+			        }
+				    // noCompletion
+			        if ($(".custom_calendar_table .noCompletion").hasClass("noCompletion")) {
+			          	$(this).removeClass("noCompletion").addClass("select_day");
+					}
+			        if ($(".custom_calendar_table .default").hasClass("default")) {
+			           	$(this).removeClass("default").addClass("select_day");
+			        }
+		            completion += "</tr>";
+		            completion += "</table>";
+		            $("#noCompletion").html(completion);
 				}
-		        if ($(".custom_calendar_table .default").hasClass("default")) {
-		           	$(this).removeClass("default").addClass("select_day");
-		        }
 			});
 		}
 	}
@@ -447,7 +544,90 @@
 				break;
 			}
 		}
-		$('#viewReserveInfo').html(reserveInfo);
+		$('#view').html(reserveInfo);
+	}
+	
+	/** 케어진행한 예약 정보 확인
+		reserve_no = Int
+	*/
+	function viewCompletion(reserve_no) {
+		var reserveInfo = "";
+		for(var i=0; i<completionList.length; i++) {
+			console.log(completionList[i].reserve_no);
+			if(completionList[i].reserve_no === reserve_no) {
+				reserveInfo += "<table border='1'>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td colspan='4'>예약된 일정 상세보기</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>회원이름(닉네임)</td>";
+				reserveInfo += "		<td colspan='3'>"+completionList[i].user_name+"("+completionList[i].user_nick+")</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>주문자(예약당시 입력된 이름)</td>";
+				for(var j=0; j<gdPayHistoryList.length; j++) {
+					if(completionList[i].reserve_no === gdPayHistoryList[j].reserve_no) {
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_name+"</td>";
+						reserveInfo += "</tr>";
+						reserveInfo += "<tr>";
+						reserveInfo += "	<td>연락처(이메일)</td>";
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_tel+"("+gdPayHistoryList[j].buyer_email+")</td>";
+						reserveInfo += "</tr>";
+						reserveInfo += "<tr>";
+						reserveInfo += "	<td>출장요청주소</td>";
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_addr+"</td>";
+						reserveInfo += "</tr>";
+						reserveInfo += "<tr>";
+						reserveInfo += "	<td>결제번호<button id='paidReserve' type='button' onclick='thisPaidRserve("+completionList[i].reserve_no+","+gdPayHistoryList[j].merchant_uid+")'>함께 결제된 다른 예약 확인</button></td>";
+						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].merchant_uid+"</td>";
+						reserveInfo += "</tr>";
+						break;
+					}
+				}
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>예약일</td>";
+				reserveInfo += "		<td colspan='3'>"+moment(String(completionList[i].reserve_date)).format('YYYY-MM-DD')+"</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>예약시간</td>";
+				reserveInfo += "		<td colspan='3'>"+completionList[i].reserve_hour+"시</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>예약종목</td>";
+				reserveInfo += "		<td colspan='3'>"+completionList[i].reserve_major+"</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tbody id='thisPaidRserve'>";
+				reserveInfo += "	</tbody>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>케어진행 사항</td>";
+				reserveInfo += "		<td colspan='3'>"+completionList[i].completion_comment+"</td>";
+				reserveInfo += "	</tr>";
+				reserveInfo += "	<tr>";
+				reserveInfo += "		<td>케어진행사진</td>";
+				if(completionList[i].completion_picorg1 !== null && completionList[i].completion_picorg1 !== '') {
+					reserveInfo += "		<td>";
+					reserveInfo += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal1+"' style='width:90px; height:90px;' >";
+					reserveInfo += "			<p id='name' class='name'>"+completionList[i].completion_picorg1+"</p>";
+					reserveInfo += "		</td>";
+				}
+				if(completionList[i].completion_picorg2 !== null && completionList[i].completion_picorg2 !== '') {
+					reserveInfo += "		<td>";
+					reserveInfo += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal2+"' style='width:90px; height:90px;' >";
+					reserveInfo += "			<p id='name' class='name'>"+completionList[i].completion_picorg2+"</p>";
+					reserveInfo += "		</td>";
+				}
+				if(completionList[i].completion_picorg3 !== null && completionList[i].completion_picorg3 !== '') {
+					reserveInfo += "		<td>";
+					reserveInfo += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal3+"' style='width:90px; height:90px;' >";
+					reserveInfo += "			<p id='name' class='name'>"+completionList[i].completion_picorg3+"</p>";
+					reserveInfo += "		</td>";
+				}
+				reserveInfo += "	</tr>";
+				reserveInfo += "</table>";
+				break;
+			}
+		}
+		$('#view').html(reserveInfo);
 	}
 	
 	/** 결제 번호로 같이 결제한 예약리스트 불러오기
@@ -483,6 +663,24 @@
 							paidOthers += "		<td>"+noCompletionList[j].reserve_hour+"</td>";
 							paidOthers += "		<td>"+noCompletionList[j].reserve_major+"</td>";
 							paidOthers += "		<td><button type='button' onclick='move("+noCompletionList[j].reserve_date+")'>이동</button></td>";
+							paidOthers += "</tr>";
+						}
+					}
+					for(var j=0; j<completionList.length; j++) {
+						if(completionList[j].reserve_no === reserve_no) {
+							paidOthers += "<tr>";
+							paidOthers += "		<td>"+completionList[j].reserve_date+"</td>";
+							paidOthers += "		<td>"+completionList[j].reserve_hour+"</td>";
+							paidOthers += "		<td>"+completionList[j].reserve_major+"</td>";
+							paidOthers += "		<td>현재 선택된 예약건</td>";
+							paidOthers += "</tr>";
+						}
+						if(completionList[j].reserve_no !== reserve_no) {
+							paidOthers += "<tr>";
+							paidOthers += "		<td>"+completionList[j].reserve_date+"</td>";
+							paidOthers += "		<td>"+completionList[j].reserve_hour+"</td>";
+							paidOthers += "		<td>"+completionList[j].reserve_major+"</td>";
+							paidOthers += "		<td><button type='button' onclick='move("+completionList[j].reserve_date+")'>이동</button></td>";
 							paidOthers += "</tr>";
 						}
 					}
@@ -527,8 +725,18 @@
 	
 	/** 상세보기 페이지 지우기
 	*/
-	function viewReserveInfoDelete() {
-		$('#viewReserveInfo').html('<div id="viewReserveInfo"></div>');
+	function viewDelete() {
+		$('#view').html('<div id="view"></div>');
+	}
+	
+	/** 예약완료 확인 입력 페이지 지우기
+	*/
+	// 
+	// 삭제 확인을 위한 boolean
+	var flag = true;
+	function insertCompletionDelete() {
+		$('#insertCompletion').html('<div id="insertCompletion"></div>');
+		reset = true;
 	}
 	
 	/** 케어 미진행 페이지 지우기
@@ -543,13 +751,16 @@
 		reserve_hour = int
 		reserve_major = String
 	*/
+	// 예약진행완료 내역 입력을 위한 boolean
+	var reset = true;
 	function insertCompletionForm(reserve_no, date, reserve_hour, reserve_major) {
-		viewReserveInfoDelete();
+		reset = false;
+		viewDelete();
 		noCompletionDelete();
 		var insertCompletion = "";
 			insertCompletion += "<table border='1'>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<th colspan='4'>예약 완료 확인 입력</th>";
+			insertCompletion += "		<th colspan='4'>예약 완료 확인 입력<button type='button' onclick='insertCompletionDelete()'>입력창 닫기</button></th>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
 			insertCompletion += "		<td colspan='4'>예약 정보</td>";
@@ -586,30 +797,314 @@
 			insertCompletion += "		<td colspan='4'>"+gd_name+"</td>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
+			insertCompletion += "		<td>첨부파일추가</td>";			
+			insertCompletion += "		<td><input type='file' onchange='addFile(this);' multiple /></td>";			
+			insertCompletion += "		<td colspan='2'>최소 한 개 이상의 파일을 업로드해주세요 <br> (3개까지 업로드 가능합니다.)</td>";
+			insertCompletion += "	</tr>";
+			insertCompletion += "	<tr>";
 			insertCompletion += "		<td>케어 진행 내용</td>";
-			insertCompletion += "		<td colspan='3'><p><textarea cols='55' rows='10'></textarea></p></td>";
+			insertCompletion += "		<td colspan='3'>";
+			insertCompletion += "			<textarea id='completion_comment' name='completion_comment' cols='55' rows='10'></textarea>";			
+			insertCompletion += "		</td>";			
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td rowspan='4'>첨부파일</td>";
-			insertCompletion += "		<td colspan='3'>최소 한 개 이상의 파일을 업로드해주세요 (3개까지 업로드 가능합니다.)</td>";
+			insertCompletion += "		<td>첨부된 파일</td>";
+			insertCompletion += "		<td colspan='3'>";
+			insertCompletion += "			<div class='file-list'></div>";			
+			insertCompletion += "		</td>";			
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td colspan='4'><input type='file' id='file' multiple></td>";
-			insertCompletion += "	</tr>";
-			insertCompletion += "	<tr>";
-			insertCompletion += "		<td colspan='4'><input type='submit' onclick='insertCompletion();' value='저장'></td>";
+			insertCompletion += "		<td colspan='4'>";
+			insertCompletion += "			<input type='submit' onclick='insertCompletion();' value='저장'>";			
+			insertCompletion += "			<input type='hidden' id='reserve_no' name='reserve_no' value='"+reserve_no+"'>";
+			insertCompletion += "			<input type='hidden' id='gd_no' name='gd_no' value='"+Number(gd_no)+"'>";
+		for (var i = 0; i<gdPayHistoryList.length; i++) {
+			if(gdPayHistoryList[i].reserve_no === reserve_no) {
+			insertCompletion += "			<input type='hidden' id='user_no' name='user_no' value='"+gdPayHistoryList[i].user_no+"'>";
+			break;
+			}
+		}
+			insertCompletion += "		저장에 다소 시간이 걸릴 수 있으니 완료창이 뜰 때 까지 기다려주십시오. </td>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "</table>";
 		$('#insertCompletion').html(insertCompletion);
 	}
+	
+	// 첨부파일 추가
+	var fileNo = 0;
+	var filesArr = new Array();
+
+	/** 첨부파일 추가
+	*/
+	function addFile(obj){
+	    var maxFileCnt = 3;   // 첨부파일 최대 개수
+	    var attFileCnt = document.querySelectorAll('.filebox').length;    // 기존 추가된 첨부파일 개수
+	    var remainFileCnt = maxFileCnt - attFileCnt;    // 추가로 첨부가능한 개수
+	    var curFileCnt = obj.files.length;  // 현재 선택된 첨부파일 개수
+		
+	    
+	    // 첨부파일 개수 확인
+	    if (curFileCnt > remainFileCnt) {
+	        alert("첨부파일은 최대 " + maxFileCnt + "개 까지 첨부 가능합니다.");
+	    } 
+	 
+	    for (var i = 0; i < Math.min(curFileCnt, remainFileCnt); i++) {
+	    	
+	        const file = obj.files[i];
+	        
+	        // 첨부파일 검증
+	        if (validation(file)) {
+	            // 파일 배열에 담기
+	            var reader = new FileReader();
+	            reader.onload = function (event) {
+	            	// 파일 이미지 src 담기
+	            	var imgsrc = event.target.result;
+					
+					let htmlData = '';
+					htmlData += '<div id="file' + fileNo + '" class="filebox">';
+		            htmlData += '	<img src="'+imgsrc+'" style="width:90px; height=90px;" >';
+		            htmlData += '   <p id="name" class="name">' + file.name + '</p>';
+		            htmlData += '   <a class="delete" onclick="deleteFile(' + fileNo + ');"><button type="button" class="far fa-minus-square">삭제</button></a>';
+		            htmlData += '</div>';
+		            $('.file-list').append(htmlData);
+		            fileNo++;
+					
+					filesArr.push(file);
+	            };
+	            reader.readAsDataURL(file);
+	            
+	        } else {
+	            continue;
+	        }
+	    }
+	    // 초기화
+	    document.querySelector("input[type=file]").value = "";
+	}
+
+	/** 첨부파일 검증
+	*/
+	function validation(obj){
+	    const fileTypes = ['application/pdf', 'image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/tif', 'application/haansofthwp', 'application/x-hwp'];
+	    if (obj.name.length > 100) {
+	        alert("파일명이 100자 이상인 파일은 제외되었습니다.");
+	        return false;
+	    } else if (obj.size > (100 * 1024 * 1024)) {
+	        alert("최대 파일 용량인 100MB를 초과한 파일은 제외되었습니다.");
+	        return false;
+	    } else if (obj.name.lastIndexOf('.') == -1) {
+	        alert("확장자가 없는 파일은 제외되었습니다.");
+	        return false;
+	    } else if (!fileTypes.includes(obj.type)) {
+	        alert("첨부가 불가능한 파일은 제외되었습니다.");
+	        return false;
+	    } else {
+	        return true;
+	    }
+	}
+
+	/** 첨부파일 삭제
+	*/
+	function deleteFile(num) {
+	    document.querySelector("#file" + num).remove();
+	    filesArr[num].is_delete = true;
+	}
+
+	/** 완료내역 비동기송신하여 내역 입력
+		reserve_no = int
+		date = int
+		reserve_hour = int
+		reserve_major = int
+	*/
 	function insertCompletion() {
-		var fileInput = ('#file').files // fileClass 선택
-		console.log(fileInput[0]);
-		console.log(fileInput[1]);
-		if( fileInput.length > 0 ){
-			for( var i = 0; i < fileInput.length; i++ ){
-				console.log(fileInput.files[i].name); // 파일명 출력
+	    // 첨부파일이 없을 때 
+		var form = $(".filebox").val();
+	    if (form == null) {
+	    	alert("최소 케어진행사진을 1장이상 등록해 주세요");
+	    	return fales;
+	    	
+	    } else {
+	    	var form = $('#frm')[0];
+	    	var formData = new FormData(form);
+	    	for (var i = 0; i < filesArr.length; i++) {
+				if (!filesArr[i].is_delete) {
+					formData.append("file", filesArr[i]); // 삭제되지 않은 파일만 폼데이터에 담기
+				}
 			}
+	    	    	    	    
+			$.ajax({
+				method: 'POST'
+				, url: 'completion.do'
+				, dataType: 'json'
+				, data: formData
+				, async: true
+				, contentType: false
+				, processData: false
+				, success: function () {
+					alert("예약확인내역입력이 완료되었습니다.");
+					location.reload();
+				}
+				, error: function (xhr, desc, err) { 
+					alert('에러가 발생 하였습니다.');
+					console.log(err);
+					return;
+				}
+			});
+	    }
+	}
+	
+	/** 리뷰 확인하기
+		reserve_no = Int
+	*/
+	function viewReview(reserve_no) {
+		var reviewForm = "";
+			reviewForm += "<div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span>케어진행 정보</span>";
+			reviewForm += "	</div>";
+		for(var i=0; i<completionList.length; i++) {
+			if(completionList[i].reserve_no == reserve_no){
+				reviewForm += "	<div>";
+				reviewForm += "		<span>예약자</span>";
+				reviewForm += "		<span>"+completionList[i].user_nick.replace(/(?<=.{1})./gi, "*");+"</span>";
+				reviewForm += "	</div>";
+				break;
+			}	
+		}
+			reviewForm += "	<div>";
+			reviewForm += "		<span>Review</span>";
+			reviewForm += "	</div>";
+			reviewForm += "	<div>";
+		for(var i=0; i<reviewList.length; i++){
+			if(reviewList[i].reserve_no === reserve_no){
+				reviewForm += "		<span><textarea id='review' name='review' cols='55' rows='10' readonly>"+reviewList[i].review+"</textarea></span>";
+				reviewForm += "	</div>";
+				reviewForm += "	<div>";
+				reviewForm += "		<span>Star</span>";
+				reviewForm += "	</div>";
+				reviewForm += "	<div>";
+				reviewForm += "		<span>";
+				reviewForm += "			<form>";
+				if(0 <= reviewList[i].star && reviewList[i].star < 2) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)' checked='checked'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(2 <= reviewList[i].star && reviewList[i].star < 3) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)' checked='checked'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(3 <= reviewList[i].star && reviewList[i].star < 4) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)' checked='checked'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(4 <= reviewList[i].star && reviewList[i].star < 5) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)' checked='checked'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(5 <= reviewList[i].star && reviewList[i].star < 10) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)' checked='checked'/>5점";
+				}
+				reviewForm += "			</form>";
+				reviewForm += "		<span>";1
+				reviewForm += "	</div>";
+				reviewForm += "	<div id='answerForm'></div>";
+				if(reviewList[i].review_answer !== null && reviewList[i].review_answer !== ''){
+					reviewForm += "	<div>";
+					reviewForm += "		<span>답글</span>";
+					reviewForm += "	</div>";
+					reviewForm += "	<div>";
+					reviewForm += "		<span><textarea id='review' name='review' cols='55' rows='10' readonly>"+reviewList[i].review_answer+"</textarea></span>";
+					reviewForm += "	</div>";
+					break;
+				}
+			}
+		}
+			reviewForm += "</div>";
+		var submit = "";
+			submit += "<div style='cursor:pointer; background-color:#FFB6C1; text-align: center; padding-bottom: 10px; padding-top: 10px;' onClick='closeModal()'>";
+			submit += "		<span class='pop_bt modalCloseBtn' style='font-size: 13pt;'>닫기</span>"
+			submit += "</div>"
+		for(var i=0; i<reviewList.length; i++){
+			if(reviewList[i].reserve_no === reserve_no){
+				if(reviewList[i].review_answer === '' || reviewList[i].review_answer === null){
+					submit += "<div style='cursor:pointer; background-color:#98FB98; text-align: center; padding-bottom: 10px; padding-top: 10px;' onClick='answerForm("+reviewList[i].review_no+")'>";
+					submit += "		<span class='pop_bt modalCloseBtn' style='font-size: 13pt;'>답글쓰기</span>"
+					submit += "</div>"
+				}
+			}
+		}
+		$("#reviewForm").html(reviewForm);
+		$("#submitForm").html(submit);
+		$("#modal").show();
+	}
+	
+	/** 모달창 닫기
+	*/
+    function closeModal() { 
+    	$("#reviewForm").html("<div id='reviewForm' class='col-sm-12'></div>");
+		$('.searchModal').hide();    
+	};
+	
+	/** review_no로 답글 입력하기
+		review_no = Int
+	*/
+	function answerForm(review_no) {
+		var answer ="";
+			answer +="<div>";
+			answer +="		<span>답변달기</span>";
+			answer +="</div>";
+			answer +="<div>";
+			answer +="		<span><textarea id='answer' name='answer' cols='55' rows='10'></textarea></span>";
+			answer +="</div>";
+		$("#answerForm").html(answer);
+		var submit = "<div style='cursor:pointer; background-color:#FFB6C1; text-align: center; padding-bottom: 10px; padding-top: 10px;' onClick='closeModal()'>";
+			submit += "		<span class='pop_bt modalCloseBtn' style='font-size: 13pt;'>닫기</span>"
+			submit += "</div>"
+			submit += "<div style='cursor:pointer; background-color:#98FB98; text-align: center; padding-bottom: 10px; padding-top: 10px;' onClick='updateAnswer("+review_no+")'>";
+			submit += "		<span class='pop_bt modalCloseBtn' style='font-size: 13pt;'>저장</span>"
+			submit += "</div>"
+		$("#submitForm").html(submit);
+	}
+	
+	/** review_no로 답글 저장
+		review_no = Int
+	*/
+	function updateAnswer(review_no) {
+		var answer = $('#answer').val();
+		var defind = confirm("답글 내용은 입력시 수정이 불가능합니다. \n 내용 :"+answer+"\n으로 입력하시겠습니까?");
+		if(defind) {
+			$.ajax({
+		    		url : "updateAnswer.do"
+		    		, method : "POST"
+		   			, data : ({
+		   				review_no : review_no
+		   				, review_answer : answer
+		    		})
+		    		, success : function(res) {
+		    			console.log(res);
+		    			alert("답글이 정상적으로 등록되었습니다.");
+		    			$("#reviewForm").html("<div id='reviewForm' class='col-sm-12'></div>");
+		    			location.reload();
+		   			}
+		    		, error : function(res) {
+		    			alert("답글등록에 실패했습니다.");
+		    		}
+		   	});
 		}
 	}
 </script>
@@ -637,14 +1132,32 @@
 		<div>
 			<!-- 예약상세보기 -->
 			<div>
-				<div id="viewReserveInfo"></div>
+				<div id="view"></div>
 			</div>
 			<!-- 예약입력 -->
 			<div>
-				<form id="frm" method="post" onsubmit="return false;" enctype="multipart/form-data" >
+				<form id="frm" method="post" onsubmit="return false;" enctype="multipart/form-data">
 					<div id="insertCompletion"></div>
 				</form>
 			</div>
+			<!-- modal insertReview -->
+			<div id="modal" class="searchModal">
+				<div class="search-modal-content"> 
+					<div class="page-header">
+						<h1>Review</h1>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row">
+								<div id='reviewForm' class="col-sm-12"></div>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div id='submitForm'></div>
+				</div>
+			</div>
+			<!-- modal -->
 		</div>
 	</div>
 </body>

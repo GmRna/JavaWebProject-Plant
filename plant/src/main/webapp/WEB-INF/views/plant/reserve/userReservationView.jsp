@@ -69,19 +69,44 @@
 	color: #fff;
 }
 
+/* The Modal (background) */    
+.searchModal {       
+	display: none; /* Hidden by default */        
+	position: fixed; /* Stay in place */        
+	z-index: 10; /* Sit on top */       
+	left: 0;        
+	top: 0;        
+	width: 100%; /* Full width */       
+	height: 100%; /* Full height */        
+	overflow: auto; /* Enable scroll if needed */        
+	background-color: rgb(0,0,0); /* Fallback color */        
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */    
+}     
+/* Modal Content/Box */    
+.search-modal-content {        
+	background-color: #fefefe;        
+	margin: 15% auto; /* 15% from the top and centered */       
+	padding: 20px;        
+	border: 1px solid #888;        
+	width: 70%; /* Could be more or less, depending on screen size */    
+}
 
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://momentjs.com/downloads/moment.js"></script>
 <script>
 	// 예약확인 일자 확인 버튼 클릭 이벤트
+	// 케어진행완료 리스트 출력
 	$(function(){
 		calendarMaker($("#calendarForm"), new Date());
+		completion();
 	})
 	
 	// user_no
 	var urlParams = new URL(location.href).searchParams;
 	var user_no = urlParams.get('user_no');
+	// contextPath
+	var contextPath = "<%=request.getContextPath()%>";
 	
 	// 달력 출력
 	var nowDate = new Date();
@@ -110,6 +135,7 @@
 			, merchant_uid : "${p.merchant_uid}"
 			, pay_method : "${p.pay_method}"
 			, reserve_cancel : ${p.reserve_cancel}
+			, reserve_completion : ${p.reserve_completion}
 		});
 	</c:forEach>
 	
@@ -152,6 +178,71 @@
 			, reserve_etc : "${r.reserve_etc}"
 			, reserve_time : "${r.reserve_time}"
 			, major : "${r.major}"
+			, gd_hp : ${r.gd_hp}
+			, gd_name : "${r.gd_name}"
+		});
+	</c:forEach>
+	
+	// 케어진행 완료 내역
+	var completionList = new Array();
+	<c:forEach items = "${completion}" var = "c">
+		completionList.push({
+			reserve_no : ${c.reserve_no}
+			, gd_no : ${c.gd_no}
+			, user_no : ${c.user_no}
+			, gd_name : "${c.gd_name}"
+			, user_name : "${c.user_name}"
+			, user_nick : "${c.user_nick}"
+			, reserve_major : "${c.major}"
+			, reserve_date : ${c.reserve_date}
+			, reserve_hour : ${c.reserve_hour}
+			, reserve_review : ${c.reserve_review}
+			, completion_date : "${c.completion_date}"
+			, completion_comment : "${c.completion_comment}"
+			, completion_picorg1 : "${c.completion_picorg1}"
+			, completion_picreal1 : "${c.completion_picreal1}"
+			, completion_picorg2 : "${c.completion_picorg2}"
+			, completion_picreal2 : "${c.completion_picreal2}"
+			, completion_picorg3 : "${c.completion_picorg3}"
+			, completion_picreal3 : "${c.completion_picreal3}"
+		});
+	</c:forEach>
+	
+	// 예약된 날짜, 시간, 종목
+	var userPayHistoryDeduplicationList = new Array();
+	<c:forEach items = "${userPayHistoryDeduplication}" var = "pd">
+		userPayHistoryDeduplicationList.push({
+			reserve_no : ${pd.reserve_no}
+			, pay_no : ${pd.pay_no}
+			, gd_no : ${pd.gd_no}
+			, user_no : ${pd.user_no}
+			, pay_date : "${pd.pay_date}"
+			, pay_size : ${pd.pay_size}
+			, buyer_name : "${pd.buyer_name}"
+			, buyer_addr : "${pd.buyer_addr}"
+			, buyer_postcode : "${pd.buyer_postcode}"
+			, buyer_email : "${pd.buyer_email}"
+			, buyer_tel : "${pd.buyer_tel}"
+			, merchant_uid : "${pd.merchant_uid}"
+			, pay_method : "${pd.pay_method}"
+			, reserve_cancel : ${pd.reserve_cancel}
+		});
+	</c:forEach>
+	
+	// 리뷰
+	var reviewList = new Array();
+	<c:forEach items = "${reviewList}" var = "rv">
+		reviewList.push({
+			reserve_no : ${rv.reserve_no}
+			, gd_no : ${rv.gd_no}
+			, gd_name : "${rv.gd_name}"
+			, user_no : ${rv.user_no}
+			, review_no : ${rv.review_no}
+			, review_date : "${rv.review_date}"
+			, review : "${rv.review}"
+			, review_answer : "${rv.review_answer}"
+			, review_answerdate : "${rv.review_answerdate}"
+			, star : ${rv.star}
 		});
 	</c:forEach>
 	
@@ -293,12 +384,7 @@
 	        $(".custom_calendar_table").on("click", ".next", function () {
 	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
 	            calendarMaker($(target), nowDate);
-	        });
-	        // 년월 클릭
-	        $(".custom_calendar_table").on("click", ".next", function () {
-	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
-	            calendarMaker($(target), nowDate);
-	        });	        
+	        });      
 	        //일자 선택 클릭
 	        $(".custom_calendar_table").on("click", "td", function () {
 				// 클릭한 id값 찾기
@@ -361,9 +447,9 @@
 		            	res += "	<tr>";
 		            	res += "		<td>출장요청주소</td>"
 		            	var addr = false;
-            			for(var i=0; i<userPayHistory.length; i++){
-            				for(var j=0; j<reservedDate.length; j++){
-            					if(userPayHistory[i].reserve_cancel === 0 && userPayHistory[i].reserve_no === reservedDate[j].reserve_no){
+            			for(var i=0; i<reservedDate.length; i++){
+            				for(var j=0; j<userPayHistory.length; j++){
+            					if(userPayHistory[j].reserve_cancel === 0 && userPayHistory[j].reserve_no === reservedDate[i].reserve_no){
             						addr = true
             						break;
             					}
@@ -376,9 +462,9 @@
 		            	res += "	<tr>";
 		            	res += "		<td>구매자</td>"
 		            	var buyer = false;
-            			for(var i=0; i<userPayHistory.length; i++){
-            				for(var j=0; j<reservedDate.length; j++){
-            					if(userPayHistory[i].reserve_cancel === 0 && userPayHistory[i].reserve_no === reservedDate[j].reserve_no){
+		            	for(var i=0; i<reservedDate.length; i++){
+            				for(var j=0; j<userPayHistory.length; j++){
+            					if(userPayHistory[j].reserve_cancel === 0 && userPayHistory[j].reserve_no === reservedDate[i].reserve_no){
             						buyer = true
             						break;
             					}
@@ -390,18 +476,25 @@
 		            	res += "	</tr>";	
 		            	res += "	<tr>";
 		            	res += "		<td>가드너 이름 및 연락처</td>";
-		            	for(var i=0; i<gdList.length; i++){
-		            		res += "	<td>"
-			            	res += "		"+gdList[i].gd_name+"("+gdList[i].gd_hp+")";
-			            	res += "	</td>";
+		            	for(var i=0; i<reservedDate.length; i++){
+				            res += "	<td>"
+					        res += "		"+reservedDate[i].gd_name+"("+reservedDate[i].gd_hp+")";
+					        res += "	</td>";
             			}
             			res += "	</tr>"; 
 		            	res += "	<tr>";
 		            	res += "		<td>결제번호</td>";
-		            	for(var i=0; i<userPayHistory.length; i++){
-		            		res += "	<td>"
-			            	res += "		"+userPayHistory[i].merchant_uid+"";
-			            	res += "	</td>";
+		            	var uid = false;
+		            	for(var i=0; i<reservedDate.length; i++){
+            				for(var j=0; j<userPayHistory.length; j++){
+            					if(userPayHistory[j].reserve_cancel === 0 && userPayHistory[j].reserve_no === reservedDate[i].reserve_no){
+            						uid = true
+            						break;
+            					}
+            				}
+            				if(uid) {
+            					res += "<td>"+userPayHistory[j].merchant_uid+"</td>";
+            				}
             			}
             			res += "	</tr>"; 
 
@@ -416,7 +509,9 @@
 	    }
 	}
 	
-	// 결제 내역 상세보기
+	/** 결제내역 상세보기
+		merchant_uid = Int
+	*/
 	function payHistory(merchant_uid) {
 		// if문 실행을 위한 boolean
 		var check = false;
@@ -448,7 +543,10 @@
 				for(var j=0; j<reserved.length; j++){
 					if(userPayHistory[i].reserve_no === reserved[j].reserve_no){
 						res += "<div> 예약일:<span>"+reserved[j].reserve_date+"</span>";
-						res += "시간:<span>"+reserved[j].reserve_hour+"</span></div>";
+						res += "시간:<span>"+reserved[j].reserve_hour+"</span>&nbsp";
+						if(userPayHistory[i].reserve_completion === 1) {
+							res += "<span id='completionCheck'>[케어진행 완료]</span></div>";
+						}
 					}
 				}
 				check = false;
@@ -541,7 +639,7 @@
 			if(check) {
 				for(var j=0; j<reserved.length; j++){
 					if(userPayHistory[i].reserve_no === reserved[j].reserve_no){
-						res += ", "+reserved[j].gd_no+")'>취소 및 환불</button>";
+						res += ", "+reserved[j].gd_no+")'>취소 및 환불</button><button type='button' onclick='payHistoryDelete()'>결제 상세보기 닫기</button>";
 						check = false;
 						break;
 					}
@@ -552,7 +650,6 @@
 			res += "	</div>";
 			res += "</div>";
 		$('#payHistory').html(res);
-		
 	}
 	
 	// 예약취소
@@ -573,71 +670,77 @@
 		// 결제 가격
 		var pay_size = 0;
 		var check = false;
-		for(var i=0; i<userPayHistory.length; i++) {
-			if(userPayHistory[i].merchant_uid === merchant_uid) {
-				check = true;
+		console.log(document.getElementById("completionCheck"));
+		// 케어진행 완료 여부 체크
+		if(document.getElementById("completionCheck")) {
+			alert("해당하는 계약건에 케어진행이 1회 이상 진행되었기 때문에 환불 불가능합니다. \n 자세한 사항은 문의사항으로 남겨주세요");
+		}
+		if(document.getElementById("completionCheck") == null) {
+			console.log(2);
+			for(var i=0; i<userPayHistory.length; i++) {
+				if(userPayHistory[i].merchant_uid === merchant_uid) {
+					check = true;
+				}
+				if(check) {							
+					pay_size += userPayHistory[i].pay_size;
+					check = false;
+					break;
+				} 
 			}
-			if(check) {							
-				pay_size += userPayHistory[i].pay_size;
-				check = false;
-				break;
-			} 
-		}
-		// 유저번호 int로 만들기
-		var intUserNo = parseInt(user_no);
-		if (Number(dateStr)+7 > Number(reserveDateStr)) {
-			alert("예약일이 현재일로부터 7일 이상 남아야 예약 취소가 가능합니다.")
-		}
-		if (Number(dateStr)+7 <= Number(reserveDateStr)) {
-		
-			var defind = confirm(""+name+"\n해당하는 예약을 정말로 취소하시겠습니까?\n(취소완료창이 보일때까 기다려주세요)");
-		
-			// if문 탈출을 위한 flag
-			var flag = true;
-		
-			if(defind == true) {
-				var cancelComment = prompt( '취소사유를 입력해주십시오.\n사유가 없으시면 확인을 눌러주시고 취소를 원치 않으시면 취소를 눌러주세요.', '' );
-				if(cancelComment == null ) {
-					flag = false;
-					alert("예약이 취소되지 않았습니다.");
+			// 유저번호 int로 만들기
+			var intUserNo = parseInt(user_no);
+			if (Number(dateStr)+7 > Number(reserveDateStr)) {
+				alert("예약일이 현재일로부터 7일 이상 남아야 예약 취소가 가능합니다.")
+			}
+			if (Number(dateStr)+7 <= Number(reserveDateStr)) {
+			
+				var defind = confirm(""+name+"\n해당하는 예약을 정말로 취소하시겠습니까?\n(취소완료창이 보일때까 기다려주세요)");
+			
+				// if문 탈출을 위한 flag
+				var flag = true;
+			
+				if(defind == true) {
+					var cancelComment = prompt( '취소사유를 입력해주십시오.\n사유가 없으시면 확인을 눌러주시고 취소를 원치 않으시면 취소를 눌러주세요.', '' );
+					if(cancelComment == null ) {
+						flag = false;
+						alert("예약이 취소되지 않았습니다.");
+					}
+					if(cancelComment == '' ) {
+						cancelComment = "없음";
+					}
+				/* cancelPay(merchant_uid, pay_size); */
+					if(flag == true) {
+						$.ajax({
+		        			type : "POST"
+		        			, url : "/plant/reserve/cancel.do"
+		        			, data : {
+		        				selectReserve : value
+		        				, user_no : intUserNo
+		        				, gd_no : gd_no
+		        				, cancel_comment : cancelComment
+		        				, pay_size : pay_size
+		        				, merchant_uid : merchant_uid
+		        			}
+		        			, success : function(res) {
+		    	    			alert('예약이 취소 완료되었습니다. 감사합니다.');
+			        			console.log(res);
+			    			}
+		        			, error	: function(error) {
+		        				alert("예약 취소중 오류가 발생했습니다.")
+		        			}
+		      	  		})
+					}
+				} else if(defind == false || flag == false) {
+					alert('예약이 취소되지 않았습니다.')
 				}
-				if(cancelComment == '' ) {
-					cancelComment = "없음";
-				}
-			/* cancelPay(merchant_uid, pay_size); */
-				if(flag == true) {
-					$.ajax({
-	        			type : "POST"
-	        			, url : "/plant/reserve/cancel.do"
-	        			, data : {
-	        				selectReserve : value
-	        				, user_no : intUserNo
-	        				, gd_no : gd_no
-	        				, cancel_comment : cancelComment
-	        				, pay_size : pay_size
-	        				, merchant_uid : merchant_uid
-	        			}
-	        			, success : function(res) {
-	    	    			alert('예약이 취소 완료되었습니다. 감사합니다.');
-		        			console.log(res);
-		        			location.reload();
-		    			}
-	        			, error	: function(error) {
-	        				alert("예약 취소중 오류가 발생했습니다.")
-	        			}
-	      	  		})
-				}
-			} else if(defind == false || flag == false) {
-				alert('예약이 취소되지 않았습니다.')
 			}
 		}
 		
 	}
-		
 
-	  
-	// 결제번호 검색
-    function filter(){
+	/** 결제내역 검색엔진
+	*/
+	function filter(){
 		var value, name, item, i;
 		value = document.getElementById("value").value.toUpperCase();
 		item = document.getElementsByClassName("item");
@@ -650,10 +753,347 @@
 	        	item[i].style.display = "none";
 	        }
 	    }
-	 }
+	}
+	
+	/** 완료 내역 출력(클릭하여 리뷰달기 기능 제공)
+	*/
+	function completion() {
+		var completion ="";
+			completion +="<table border='1'>";
+			completion +="		<tr>";
+			completion +="			<th>케어진행완료내역</th>";
+			completion +="		</tr>";
+			completion +="		<tr>";
+			completion +="			<td>예약번호</td>";
+			completion +="			<td>예약일</td>";
+			completion +="			<td>예약시간</td>";
+			completion +="			<td>케어종목</td>";
+			completion +="			<td>케어진행가드너</td>";
+			completion +="			<td>케어내용상세보기</td>";
+			completion +="		</tr>";
+		for(var i=0; i<completionList.length; i++) {
+			completion +="		<tr>";
+			completion +="			<td>"+completionList[i].reserve_no+"</td>";
+			completion +="			<td>"+moment(String(completionList[i].reserve_date)).format('YYYY-MM-DD')+"</td>";
+			completion +="			<td>"+completionList[i].reserve_hour+"시</td>";
+			completion +="			<td>"+completionList[i].reserve_major+"</td>";
+			completion +="			<td>"+completionList[i].gd_name+"</td>";
+			completion +="			<td><button type='button' onclick='completionView("+completionList[i].reserve_no+")'>케어내용상세보기</button></td>";
+			completion +="		</tr>";
+		}
+			completion +="</table>";
+		$('#completion').html(completion);
+	}
+	
+	/** 완료 내역 출력(클릭하여 리뷰달기 기능 제공)
+		reserve_no = Int
+	*/
+	function completionView(reserve_no) {
+		var view = "";
+		for(var i=0; i<completionList.length; i++) {
+			if(completionList[i].reserve_no === reserve_no) {
+				view +="<table border='1'>";
+				view +="		<tr>";
+				view +="			<th colspan='6'>케어내용상세보기 <button type='button' onclick='completionViewDelete()'>상세보기 닫기</button></th>";
+				view +="		</tr>";
+				view +="		<tr>";
+				view +="			<td>예약자(닉네임)</td>";
+				view +="			<td colspan='2'>"+completionList[i].user_name+"("+completionList[i].user_nick+")</td>";
+				view +="			<td>리뷰남기기</td>";
+				if(completionList[i].reserve_review == 0){
+					view +="			<td colspan='2'><button type='button' onclick='writeReview("+completionList[i].reserve_no+","+completionList[i].gd_no+","+completionList[i].user_no+")'>리뷰쓰기</button></td>";
+				}
+				if(completionList[i].reserve_review == 1){
+					view +="			<td colspan='2'><button type='button' onclick='reviewView("+completionList[i].reserve_no+","+completionList[i].gd_no+","+completionList[i].user_no+")'>리뷰확인</button>";
+					for(var j=0; j<reviewList.length; j++) {
+						if(completionList[i].reserve_no === reviewList[j].reserve_no) {
+							if(reviewList[j].review_answer !== null && reviewList[j].review_answer !== ''){
+								view +="  가드너 답글입력!";
+							}
+						}
+					}
+					view +="			</td>";
+				}
+				view +="		</tr>";
+				view +="		<tr>";
+				view +="			<td>가드너</td>";
+				view +="			<td colspan='5'>"+completionList[i].gd_name+"</td>";
+				view +="		</tr>";
+				view +="		<tr>";
+				view +="			<td>예약일</td>";
+				view +="			<td>"+moment(String(completionList[i].reserve_date)).format('YYYY-MM-DD')+"</td>";
+				view +="			<td>예약시간</td>";
+				view +="			<td>"+completionList[i].reserve_hour+"시</td>";
+				view +="			<td>예약시간</td>";
+				view +="			<td>"+completionList[i].reserve_hour+"</td>";
+				view +="		</tr>";
+				view += "	<tr>";
+				view += "		<td>케어진행 사항</td>";
+				view += "		<td colspan='5'>"+completionList[i].completion_comment+"</td>";
+				view += "	</tr>";
+				view += "	<tr>";
+				view += "		<td>케어진행사진</td>";
+				if(completionList[i].completion_picorg1 !== null && completionList[i].completion_picorg1 !== '') {
+					if((completionList[i].completion_picorg3 === null || completionList[i].completion_picorg3 === '')
+							&& (completionList[i].completion_picorg2 === null || completionList[i].completion_picorg2 === '')) {
+						view += "		<td colspan='5'>";
+						view += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal1+"' style='width:90px; height:90px;' >";
+						view += "			<p id='name' class='name'>"+completionList[i].completion_picorg1+"</p>";
+						view += "		</td>";
+					}
+					if((completionList[i].completion_picorg3 === null || completionList[i].completion_picorg3 === '')
+							&& (completionList[i].completion_picorg2 !== null && completionList[i].completion_picorg2 !== '')) {
+						view += "		<td colspan='3'>";
+						view += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal1+"' style='width:90px; height:90px;' >";
+						view += "			<p id='name' class='name'>"+completionList[i].completion_picorg1+"</p>";
+						view += "		</td>";
+					}
+					if(completionList[i].completion_picorg3 !== null && completionList[i].completion_picorg3 !== ''
+							&& completionList[i].completion_picorg2 !== null && completionList[i].completion_picorg2 !== '') {
+						view += "		<td colspan='1'>";
+						view += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal1+"' style='width:90px; height:90px;' >";
+						view += "			<p id='name' class='name'>"+completionList[i].completion_picorg1+"</p>";
+						view += "		</td>";
+					}
+				}
+				if(completionList[i].completion_picorg2 !== null && completionList[i].completion_picorg2 !== '') {
+					view += "		<td colspan='2'>";
+					view += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal2+"' style='width:90px; height:90px;' >";
+					view += "			<p id='name' class='name'>"+completionList[i].completion_picorg2+"</p>";
+					view += "		</td>";
+				}
+				if(completionList[i].completion_picorg3 !== null && completionList[i].completion_picorg3 !== '') {
+					view += "		<td colspan='2'>";
+					view += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal3+"' style='width:90px; height:90px;' >";
+					view += "			<p id='name' class='name'>"+completionList[i].completion_picorg3+"</p>";
+					view += "		</td>";
+				}
+				view += "	</tr>";
+				view +="</table>";
+				break;
+			}
+		}
+		$('#completionView').html(view);
+	}
+	
+	/** 결제내역 상세보기 지우기
+	*/
+	function payHistoryDelete() {
+		$('#payHistory').html("<div id='payHistory'></div>");
+	}
+	
+	/** 결제내역 상세보기 지우기
+	*/
+	function completionViewDelete() {
+		$('#completionView').html("<div id='completionView'></div>");
+	}
+	
+	/** 리뷰 입력
+		reserve_no = Int
+		gd_no = Int
+		user_no = Int
+	*/
+	function writeReview(reserve_no, gd_no, user_no) {
+		var reviewForm = "";
+			reviewForm += "<div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span>케어진행 일시</span>";
+			reviewForm += "	</div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span>예약번호 : "+reserve_no+"</span>";
+			reviewForm += "	</div>";
+		for(var i=0; i<completionList.length; i++) {
+			if(completionList[i].reserve_no == reserve_no){
+				reviewForm += "	<div>";
+				reviewForm += "		<span>예약일 : "+completionList[i].reserve_date+"</span>";
+				reviewForm += "		<span>예약시간: "+completionList[i].reserve_hour+"  케어종목: "+completionList[i].reserve_major+"</span>";
+				reviewForm += "	</div>";
+				break;
+			}
+		}
+			reviewForm += "	<div>";
+			reviewForm += "		<span>Review</span>";
+			reviewForm += "	</div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span><textarea id='review' name='review' cols='55' rows='10'></textarea></span>";
+			reviewForm += "	</div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span>Star</span>";
+			reviewForm += "	</div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span>";
+			reviewForm += "			<form>";
+			reviewForm += "				<input type='radio' name='star' value='1'/>1점";
+			reviewForm += "				<input type='radio' name='star' value='2'/>2점";
+			reviewForm += "				<input type='radio' name='star' value='3'/>3점";
+			reviewForm += "				<input type='radio' name='star' value='4'/>4점";
+			reviewForm += "				<input type='radio' name='star' value='5' checked='checked'/>5점";
+			reviewForm += "			</form>";
+			reviewForm += "		<span>";
+			reviewForm += "		<input type='hidden' id='reviewReserveNo' value='"+reserve_no+"'>";
+			reviewForm += "		<input type='hidden' id='reviewGdNo' value='"+gd_no+"'>";
+			reviewForm += "		<input type='hidden' id='reviewUserNo' value='"+user_no+"'>";
+			reviewForm += "	</div>";
+			reviewForm += "</div>";
+		var submit = "";
+			submit += "<div style='cursor:pointer; background-color:#98FB98; text-align: center; padding-bottom: 10px; padding-top: 10px;' onClick='insertReview()'>";
+			submit += "		<span class='pop_bt modalCloseBtn' style='font-size: 13pt;'>저장</span>"
+			submit += "</div>"
+			submit += "<div style='cursor:pointer; background-color:#FFB6C1; text-align: center; padding-bottom: 10px; padding-top: 10px;' onClick='closeModal()'>";
+			submit += "		<span class='pop_bt modalCloseBtn' style='font-size: 13pt;'>닫기</span>"
+			submit += "</div>"
+		$("#reviewForm").html(reviewForm);
+		$("#submitForm").html(submit);
+		$("#modal").show();
+	}
+	
+	/** 정보 가져와 review 등록
+		reserve_no = String
+		gd_no = Int
+		user_no = Int
+		star = Double
+		review = String
+	*/
+	function insertReview() {
+		var reserve_no = $('#reviewReserveNo').val();
+		var gd_no = Number($('#reviewGdNo').val());
+		var user_no = Number($('#reviewUserNo').val());
+		var star = Number($('input[name=star]:checked').val());
+		var review = $('#review').val();
+		var defind = confirm("댓글 내용은 입력시 수정이 불가능합니다. \n 내용 :"+review+"\n 별점 : "+star+"점\n으로 입력하시겠습니까?");
+		if(defind) {
+			$.ajax({
+		    		url : "insertReview.do"
+		    		, method : "POST"
+		   			, data : ({
+		   				reserve_no : reserve_no
+		   				, gd_no : gd_no
+		   				, user_no : user_no
+		   				, star : star
+		   				, review : review
+		    		})
+		    		, success : function(res) {
+		    			console.log(res);
+		    			alert("리뷰가 정상적으로 등록되었습니다.");
+		    			$("#reviewForm").html("<div id='reviewForm' class='col-sm-12'></div>");
+		    			location.reload();
+		   			}
+		    		, error : function(res) {
+		    			alert("리뷰등록에 실패했습니다.");
+		    		}
+		   	});
+		}
+	}
+	
+	/** 모달창 닫기
+	*/
+    function closeModal() { 
+    	$("#reviewForm").html("<div id='reviewForm' class='col-sm-12'></div>");
+		$('.searchModal').hide();    
+	};
+	
+	/** 나의 리뷰 확인
+	*/
+	function reviewView(reserve_no, gd_no, user_no) {
+		var reviewForm = "";
+			reviewForm += "<div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span>케어진행 일시</span>";
+			reviewForm += "	</div>";
+			reviewForm += "	<div>";
+			reviewForm += "		<span>예약번호 : "+reserve_no+"</span>";
+			reviewForm += "	</div>";
+		for(var i=0; i<completionList.length; i++) {
+			if(completionList[i].reserve_no == reserve_no){
+				reviewForm += "	<div>";
+				reviewForm += "		<span>예약일 : "+completionList[i].reserve_date+"</span>";
+				reviewForm += "		<span>예약시간: "+completionList[i].reserve_hour+"  케어종목: "+completionList[i].reserve_major+"</span>";
+				reviewForm += "	</div>";
+				break;
+			}
+		}
+			reviewForm += "	<div>";
+			reviewForm += "		<span>Review</span>";
+			reviewForm += "	</div>";
+			reviewForm += "	<div>";
+		for(var i=0; i<reviewList.length; i++){
+			if(reviewList[i].reserve_no === reserve_no){
+				reviewForm += "		<span><textarea id='review' name='review' cols='55' rows='10' readonly>"+reviewList[i].review+"</textarea></span>";
+				reviewForm += "	</div>";
+				reviewForm += "	<div>";
+				reviewForm += "		<span>Star</span>";
+				reviewForm += "	</div>";
+				reviewForm += "	<div>";
+				reviewForm += "		<span>";
+				reviewForm += "			<form>";
+				if(0 <= reviewList[i].star && reviewList[i].star < 2) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)' checked='checked'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(2 <= reviewList[i].star && reviewList[i].star < 3) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)' checked='checked'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(3 <= reviewList[i].star && reviewList[i].star < 4) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)' checked='checked'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(4 <= reviewList[i].star && reviewList[i].star < 5) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)' checked='checked'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+				}
+				if(5 <= reviewList[i].star && reviewList[i].star < 10) {
+					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
+					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
+					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
+					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
+					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)' checked='checked'/>5점";
+				}
+				reviewForm += "			</form>";
+				reviewForm += "		<span>";
+				reviewForm += "		<input type='hidden' id='reviewReserveNo' value='"+reserve_no+"'>";
+				reviewForm += "		<input type='hidden' id='reviewGdNo' value='"+gd_no+"'>";
+				reviewForm += "		<input type='hidden' id='reviewUserNo' value='"+user_no+"'>";
+				reviewForm += "	</div>";
+				if(reviewList[i].review_answer !== null && reviewList[i].review_answer !== ''){
+					reviewForm += "	<div>";
+					reviewForm += "		<span>답글</span>";
+					reviewForm += "	</div>";
+					reviewForm += "	<div>";
+					reviewForm += "		<span>가드너 이름 : "+reviewList[i].gd_name+"</span>";
+					reviewForm += "	</div>";
+					reviewForm += "	<div>";
+					reviewForm += "		<span><textarea id='review' name='review' cols='55' rows='10' readonly>"+reviewList[i].review_answer+"</textarea></span>";
+					reviewForm += "	</div>";
+					break;
+				}
+			}
+		}
+			reviewForm += "</div>";
+		var submit = "";
+			submit += "<div style='cursor:pointer; background-color:#FFB6C1; text-align: center; padding-bottom: 10px; padding-top: 10px;' onClick='closeModal()'>";
+			submit += "		<span class='pop_bt modalCloseBtn' style='font-size: 13pt;'>닫기</span>"
+			submit += "</div>"
+		$("#reviewForm").html(reviewForm);
+		$("#submitForm").html(submit);
+		$("#modal").show();
+	}
 </script>
 </head>
 <body>
+	<h1>유저 예약 확인</h1>
 	<div>
 		<!-- 상단 -->
 		<div>
@@ -678,15 +1118,15 @@
 							<td colspan="4">결제내역</td>
 						</tr>
 						<tr>
-							<td colspan='4'>결제번호 검색<input onkeyup="filter()" type="text" id="value" placeholder="Type to Search"></td>
+							<td colspan='4'>결제번호 검색&nbsp&nbsp&nbsp<input onkeyup="filter()" type="text" id="value" placeholder="Type to Search"></td>
 								
 						</tr>
 						<tr>
-							<td colspan='4'>결제번호      결제일&nbsp&nbsp결제금액&nbsp&nbsp예약취소</td>
+							<td colspan='4'>결제정보</td>
 						</tr>
 						<c:forEach var="p" items="${userPayHistoryDeduplication}">
 							<c:if test='${p.reserve_cancel eq 0 }'>
-								<tr class="item">
+								<tr class="item" style="width: 100%;">
 									<td class="history">${p.merchant_uid}</td>
 									<td><fmt:formatDate pattern="yyyy-MM-dd" value="${p.pay_date}" /></td>
 									<td>${p.pay_size}</td>
@@ -699,7 +1139,7 @@
 								</tr>
 							</c:if>
 							<c:if test='${p.reserve_cancel eq 1 }'>
-								<tr class="item">
+								<tr class="item" style="width: 100%;">
 									<td class="history">${p.merchant_uid}</td>
 									<td><fmt:formatDate pattern="yyyy-MM-dd" value="${p.pay_date}" /></td>
 									<td>${p.pay_size}</td>
@@ -713,8 +1153,27 @@
 			</div>
 			<!-- 완료 예약 내역 상세정보 -->
 			<div>
-				<div></div>
+				<div id="completion"></div>
+				<div id="completionView"></div>
 			</div>
+			<!-- modal insertReview -->
+			<div id="modal" class="searchModal">
+				<div class="search-modal-content"> 
+					<div class="page-header">
+						<h1>Review</h1>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row">
+								<div id='reviewForm' class="col-sm-12"></div>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div id='submitForm'></div>
+				</div>
+			</div>
+			<!-- modal -->
 		</div>
 	</div>
 </body>

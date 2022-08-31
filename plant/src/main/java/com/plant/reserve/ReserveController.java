@@ -1,8 +1,10 @@
 package com.plant.reserve;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -29,13 +31,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.plant.user.UserVO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
-import util.getToken;
+import util.GetToken;
 
 @Controller
 public class ReserveController {
@@ -165,7 +170,14 @@ public class ReserveController {
 	
 	// 유저 예약화면
 	@GetMapping("/reserve/userReservationView.do")
-	public String userReservationView(Model model, ReserveVO vo) {
+	public String userReservationView(Model model, ReserveVO vo, HttpServletRequest req) {
+		
+//		// 유저 번호 set
+//		HttpSession sess = req.getSession();
+//		UserVO user = new UserVO();
+//		user = (UserVO) sess.getAttribute("loginInfo");
+//		vo.setUser_no(user.getUser_no());
+		
 		// 예약정보 리스트
 		List<ReserveVO> reservationList = service.userReservation(vo);
 		// 가드너 정보 리스트
@@ -181,6 +193,9 @@ public class ReserveController {
 		model.addAttribute("gdList", gdList); // 가드너 정보
 		model.addAttribute("user", service.user(vo)); // 유저정보 조회
 		model.addAttribute("userPayHistoryDeduplication", service.userPayHistoryDeduplication(vo));
+		model.addAttribute("completion", service.selectCompletionUser(vo));
+		vo.setUser_no(2);
+		model.addAttribute("reviewList", service.selectUserReview(vo));
 		return "plant/reserve/userReservationView";
 	}
 	
@@ -202,7 +217,8 @@ public class ReserveController {
 		json.put("imp_secret", imp_secret);
 		
 		// 토큰발급
-		String token = getToken.getToken(request, response, json, "https://api.iamport.kr/users/getToken");
+		String token = GetToken.getToken(request, response, json, "https://api.iamport.kr/users/getToken");
+		
 		// 환불 프로세스 
 		RestTemplate template = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
 		
@@ -216,7 +232,6 @@ public class ReserveController {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("reason", vo.getCancel_comment());
 		params.add("merchant_uid", vo.getMerchant_uid());
-		params.add("amount", vo.getPay_size()+"");
 		params.add("checksum", vo.getPay_size()+"");
 		params.add("cancel_request_amount", vo.getPay_size()+"");
 		
@@ -259,13 +274,15 @@ public class ReserveController {
 	// 가드너 예약관리
 	@GetMapping("/reserve/gdReservationView.do")
 	public String gdReservationView(Model model, ReserveVO vo) {
-		
+		vo.setGd_no(2);
 		model.addAttribute("reservableList", service.searchGdReservable(vo)); // 예약 가능한 내역
 		model.addAttribute("reservedList", service.searchGdReserved(vo)); // 예약된 내역
 		model.addAttribute("reservationList", service.gdReservation(vo)); // 예약정보
+		model.addAttribute("reservationCancelList", service.selectGdReservationCancel(vo)); // 예약정보
 		model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
 		model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
-		model.addAttribute("majorList", service.majorList(vo)); // 케어종목 리스트 조회
+		model.addAttribute("majorList", service.majorList(vo)); // 케어종목 내역
+		model.addAttribute("cancelList", service.selectGdCancel(vo)); // 취소 내역 
 		return "plant/reserve/gdReservationView";
 	}
 	
@@ -321,13 +338,74 @@ public class ReserveController {
 	// 케어진행완료페이지
 	@GetMapping("/reserve/completion.do")
 	public String completion(Model model, ReserveVO vo) {
-		model.addAttribute("completionList", service.selectCompletion(vo)); // 케어진행완료 리스트
+		model.addAttribute("completionList", service.selectCompletionGd(vo)); // 케어진행완료 리스트
 		model.addAttribute("noCompletionList", service.selectNoCompletion(vo)); // 케어미진행 리스트 
 		model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
 		model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
+		model.addAttribute("reviewList", service.selectGdReview(vo)); // 가드너 리뷰리스트
 		return "plant/reserve/completion";
 	}
 	
+	// 케어진행완료페이지
+	@PostMapping("/reserve/completion.do")
+	@ResponseBody
+	public int InsertCompletion(Model model
+			, ReserveVO vo
+			, MultipartHttpServletRequest mhsq
+			, HttpServletRequest req) throws IllegalStateException, IOException {
+
+		List<MultipartFile> fileMap = mhsq.getFiles("file");
+		
+		System.out.println("사이즈 : " + fileMap.size() + "String : " + fileMap.toString());
+		
+		for(int i=0; i<fileMap.size(); i++) {
+			
+			String org = fileMap.get(i).getOriginalFilename(); 	// 본래 파일명               
+			String ext = org.substring(org.lastIndexOf(".")); // 확장자 구하기
+			String real = new Date().getTime()+ext;	
+			
+			//파일 저장
+			String path = req.getRealPath("/upload/");
+			
+			File file = new File(path+real);
+			
+			try {
+				fileMap.get(i).transferTo(file);
+			} catch (Exception e) {
+				System.out.println("저장오류" + e);
+			}
+			
+			if(i == 0) {
+				vo.setCompletion_picorg1(org);
+				vo.setCompletion_picreal1(real);
+			} else if(i == 1) {
+				vo.setCompletion_picorg2(org);
+				vo.setCompletion_picreal2(real);
+			} else {
+				vo.setCompletion_picorg3(org);
+				vo.setCompletion_picreal3(real);
+			}
+		}
+		service.insertCompletion(vo);
+		int no = service.updateCompletion(vo);
+		return no;
+	}
 	
+	//리뷰 입력
+	@PostMapping("/reserve/insertReview.do")
+	@ResponseBody
+	public int InsertCompletion(Model model, ReserveVO vo) {
+		int no =service.insertReview(vo);
+		service.updateRservationReview(vo);
+		return no;
+	}
+	
+	//답변 입력
+	@PostMapping("/reserve/updateAnswer.do")
+	@ResponseBody
+	public int updateAnswer(Model model, ReserveVO vo) {
+		int no =service.answerReview(vo);
+		return no;
+	}
 	
 }

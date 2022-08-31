@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class getToken {
+public class GetToken {
 
 	// 토큰발급
 	public static String getToken(

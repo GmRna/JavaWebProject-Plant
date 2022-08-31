@@ -97,6 +97,7 @@
 	var nowDay = ('0' + nowDate.getDay()).slice(-2);
 	var dateStr = nowYear + nowMonth + nowDay;
 	
+	console.log(nowDate.getMonth() + 1);
 	// 결제 내역
 	var gdPayHistoryList = new Array();
 	<c:forEach items = "${gdPayHistoryList}" var = "p">
@@ -122,6 +123,24 @@
 	var reservationList = new Array();
 	<c:forEach items = "${reservationList}" var = "r">
 		reservationList.push({
+			reserve_no : ${r.reserve_no}
+			, gd_no : ${r.gd_no}
+			, user_no : ${r.user_no}
+			, reservable_no : ${r.reservable_no}
+			, reserve_date : ${r.reserve_date}
+			, reserve_hour : ${r.reserve_hour}
+			, reserve_etc : "${r.reserve_etc}"
+			, reserve_time : "${r.reserve_time}"
+			, major : "${r.major}"
+			, user_name : "${r.user_name}"
+			, user_nick : "${r.user_nick}"
+		});
+	</c:forEach>
+	
+	// 예약내역
+	var reservationCancelList = new Array();
+	<c:forEach items = "${reservationCancelList}" var = "r">
+		reservationCancelList.push({
 			reserve_no : ${r.reserve_no}
 			, gd_no : ${r.gd_no}
 			, user_no : ${r.user_no}
@@ -168,6 +187,21 @@
 		});
 	</c:forEach>
 	
+	// 취소 리스트
+	var cancelList = new Array();
+	<c:forEach items = "${cancelList}" var = "c">
+		cancelList.push({
+			cancel_no : ${c.cancel_no}
+			, user_no : ${c.user_no}
+			, gd_no : ${c.gd_no}
+			, reserve_no : ${c.reserve_no}
+			, cancel_date : "${c.cancel_date}"
+			, cancel_comment : "${c.cancel_comment}"
+			, user_name : "${c.user_name}"
+			, user_nick : "${c.user_nick}"
+		});
+	</c:forEach>
+	
 	// 달력 호출
 	function calendarMaker(target, date) {
 	    if (date == null || date == undefined) {
@@ -176,7 +210,7 @@
 	    nowDate = date;
 	    if ($(target).length > 0) {
 	        var year = nowDate.getFullYear();
-	        var month = nowDate.getMonth() + 1;
+	        var month = nowDate.getMonth()+1;
 	        $(target).empty().append(assembly(year, month));
 	    } else {
 	        console.error("custom_calendar Target is empty!!!");
@@ -324,12 +358,7 @@
 			$(".custom_calendar_table").on("click", ".next", function () {
 				nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
 				calendarMaker($(target), nowDate);
-			});
-			// 년월 클릭
-			$(".custom_calendar_table").on("click", ".next", function () {
-				nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
-				calendarMaker($(target), nowDate);
-			});	        
+			});    
 			//일자 선택 클릭
 			$(".custom_calendar_table").on("click", "td", function () {
 				$('#reservedView').html('<div id="reservedView"></div>'); // 예약상세보기 초기화
@@ -383,16 +412,23 @@
 							return true;
 						}
 					}
+					// 클릭한 td id값에 맞는 예약된 일자 true 처리
+					function rDate(reservationCancelList) {
+						if(reservationCancelList.reserve_date === Number(idValue)) {
+							return true;
+						}
+					}
 					// true인 객체 배열화
 		        	var reservableDate = reservableList.filter(rbDate); // 예약 가능일자
 					var reservedDate = reservedList.filter(rdDate); // 예약 된 일자
-						
-		    			
+					var reservationCancelDate = reservationCancelList.filter(rDate); // 예약 된 일자
+							    			
 			        // select_day 클래스 삭제
 					$(".custom_calendar_table .select_day").removeClass("select_day");
 		    			
 					// 삭제 후 예약데이터와 비교하여 다시 클래스 변경       	
 					classChange();
+					
 					// default
 					if ($('#'+idValue+'').attr('class') === 'default') {
 						var noReserve = "";
@@ -484,6 +520,40 @@
 		            if ($(".custom_calendar_table .default").hasClass("default")) {
 		           		$(this).removeClass("default").addClass("select_day");
 		           	}
+					// 취소 내역
+					var cancel = "";
+					if (reservationCancelDate.length > 0) {
+							cancel += "<table border='1'>";
+							cancel += "		<tr>";
+							cancel += "			<td colspan='5'>예약취소내역</td>";	
+							cancel += "		</tr>";	            	
+							cancel += "		<tr>";            			
+							cancel += "			<td colspan='2'>선택일</td>";	
+		        			cancel += "			<td colspan='3'>"+date.format('YYYY-MM-DD')+"</td>";	
+		        			cancel += "		</tr>";	            	
+							cancel += "		<tr>";            			
+							cancel += "			<td>예약시간</td>";	
+		        			cancel += "			<td>케어종목</td>";	
+		        			cancel += "			<td>취소한 닉네임</td>";	
+		        			cancel += "			<td>취소시간</td>";	
+		        			cancel += "			<td>취소사유</td>";		
+		        			cancel += "		</tr>";	            	
+						for(var i=0; i<reservationCancelDate.length; i++) {
+							for(var j=0; j<cancelList.length; j++){
+								if(reservationCancelDate[i].reserve_no == cancelList[j].reserve_no){
+									cancel += "		<tr>"; 
+									cancel += "			<td>"+reservationCancelDate[i].reserve_hour+"</td>";	
+		        					cancel += "			<td>"+reservationCancelDate[i].major+"</td>";	
+		        					cancel += "			<td>"+cancelList[j].user_nick+"</td>";	
+		        					cancel += "			<td>"+cancelList[j].cancel_date.substr(0,16)+"</td>";	
+		        					cancel += "			<td>"+cancelList[j].cancel_comment+"</td>";	
+		        					cancel += "		</tr>";	            	
+								}
+							}
+						}
+		        			cancel += "</table>"; 
+					}
+		        	$('#reserveCancel').html(cancel);
 				}
 			});
 		}
@@ -660,7 +730,7 @@
 	/** 수정된 Text를 기반으로 예약가능 정보 수정
 	*/
 	function updateConfirm() {
-		// url 송신을 위한 boolean
+		// url 송신을 위한 boolean 
 		var flag = false;
 		// 잘못 입력된 부분 캐치를 위한 log
 		var log = "";
@@ -849,19 +919,17 @@
 	*/
 	function addReservableListSubmit() {
 		var trLength = $('#addReservableSchedule tr').length;
-		console.log(trLength);
 		var excute = false;
 		var check = false;
-		var go = false;
+		var go = true;
 		var log = "";
 		var num = 0;
 		var result = "";
 		var dateData = $('#selectDate tr').eq(0).find("td:eq(1)").attr("id");
+		console.log(1);
 		for(var i=0; i<trLength; i++) {
 			var hourData = $('#addReservableSchedule tr').eq(i).find("td:eq(0)").find("input").val();
 			var majorData = $('#addReservableSchedule tr').eq(i).find("td:eq(1)").find("select").val();
-			console.log(hourData);
-			console.log(majorData);
 			if(Number(hourData) >= 9 && Number(hourData) <= 20) { // 9시 ~20시 일때만 실행
 				excute = true;
 			} else { // 9시~20시가 아닐 때 for문 중지후 오류난 부분값 저장
@@ -886,21 +954,22 @@
 				}
 				if(check) {
 					for(var j=0; j<reservedList.length; j++) {
+						console.log(Number(dateData));
+						console.log(reservedList[j].reservable_date);						
 						if(Number(dateData) == reservedList[j].reservable_date) {
 							if(Number(hourData) == reservedList[j].reservable_hour){
 								go = false;
 								num += i+1;
 								log += "예약가능시간 :"+hourData+" \n 케어종목 : "+majorData+"";
 								break;
-							} else {
-								go = true;	
 							}
 						}
 					}
-				}
-				// false일때 for문 탈출
-				if(go == false) {
-					break;
+					// false일때 for문 탈출
+					if(go == false) {
+						console.log(2);
+						break;
+					}
 				}
 				if(go) {
 					$.ajax({
@@ -926,7 +995,7 @@
 			alert("9시~20시 사이의 숫자를 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"")
 		}
 		// 중복시간이 있을 때
-		if(check == false) {
+		if(check == false || go == false) {
 			alert("이미 예약된 시간입니다. 확인 후 다른 시간을 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"")
 		}
 		if(excute && check && go) {
@@ -1078,6 +1147,7 @@
 </script>
 </head>
 <body>
+	<h1>가드너 예약 관리</h1>
 	<div>
 		<!-- 상단 -->
 		<div>
@@ -1093,6 +1163,10 @@
 			<div>
 				<div id="reservableSchedule"></div>
 			</div>
+			<!-- 결제취소 내역 확인 -->
+			<div>
+				<div id="reserveCancel"></div> 
+			</div>
 			<!-- 예약된 내역 상세보기 -->
 			<div>
 				<div id="reservedView"></div> 
@@ -1100,6 +1174,10 @@
 			<!-- 예약된 내역 상세보기 -->
 			<div>
 				<div id="noReserve"></div> 
+			</div>
+			<!-- 결제취소 내역 상세보기 -->
+			<div>
+				<div id="reserveCancelView"></div> 
 			</div>
 		</div>
 		

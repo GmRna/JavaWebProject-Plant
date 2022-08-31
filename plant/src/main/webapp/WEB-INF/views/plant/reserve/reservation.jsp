@@ -77,13 +77,13 @@
 	$(function(){
 		calendarMaker($("#calendarForm"), new Date());	
 	})
-
+	// 시간 변수
 	var nowDate = new Date();
 	
 	// 현재 시간
-	var nowYear = nowDate.getFullYear();
-	var nowMonth = ('0' + (nowDate.getMonth() + 1)).slice(-2);
-	var nowDay = ('0' + nowDate.getDay()).slice(-2);
+	var nowYear = moment(nowDate).format('YYYY-MM-DD').substr(0,4);
+	var nowMonth = moment(nowDate).format('YYYY-MM-DD').slice(5,7);
+	var nowDay = moment(nowDate).format('YYYY-MM-DD').slice(8,10);
 	var dateStr = nowYear + nowMonth + nowDay;
 
 	// 예약가능 날짜, 시간, 종목 가져오기
@@ -117,29 +117,29 @@
 	</c:forEach>
 
 	function calendarMaker(target, date) {
-    	if (date == null || date == undefined) {
-        	date = new Date();
-    	}
-    	nowDate = date;
-    	if ($(target).length > 0) {
-        	var year = nowDate.getFullYear();
-        	var month = nowDate.getMonth() + 1;
-        	$(target).empty().append(assembly(year, month));
-    	} else {
+	    if (date == null || date == undefined) {
+	        date = new Date();
+	    }
+	    nowDate = date;
+	    if ($(target).length > 0) {
+	        var year = nowDate.getFullYear();
+	        var month = nowDate.getMonth() + 1;
+	        $(target).empty().append(assembly(year, month));
+	    } else {
 	        console.error("custom_calendar Target is empty!!!");
-    	    return;
+	        return;
 	    }
 
-    	var thisMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
-    	var thisLastDay = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0);
+	    var thisMonth = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1);
+	    var thisLastDay = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0);
 
-    	var tag = "<tr>";
-    	var cnt = 0;
-    	//빈 공백 만들어주기
-    	for (i = 0; i < thisMonth.getDay(); i++) {
-        	tag += "<td></td>";
-        	cnt++;
-    	}
+	    var tag = "<tr>";
+	    var cnt = 0;
+	    //빈 공백 만들어주기
+	    for (i = 0; i < thisMonth.getDay(); i++) {
+	        tag += "<td></td>";
+	        cnt++;
+	    }
 	
     	//날짜 채우기
     	for (i = 1; i <= thisLastDay.getDate(); i++) {
@@ -254,21 +254,16 @@
     	}
     
     	function calMoveEvtFn() {
-        	// 전달 클릭
-        	$(".custom_calendar_table").on("click", ".prev", function () {
-            	nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() - 1, nowDate.getDate());
-            	calendarMaker($(target), nowDate);
-        	});
-        	// 다음날 클릭
-        	$(".custom_calendar_table").on("click", ".next", function () {
-            	nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
-            	calendarMaker($(target), nowDate);
-        	});
-        	// 년월 클릭
-        	$(".custom_calendar_table").on("click", ".next", function () {
-            	nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
-            	calendarMaker($(target), nowDate);
-        	});	        
+	        // 전달 클릭
+	        $(".custom_calendar_table").on("click", ".prev", function () {
+	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() - 1, nowDate.getDate());
+	            calendarMaker($(target), nowDate);
+	        });
+	        // 다음날 클릭
+	        $(".custom_calendar_table").on("click", ".next", function () {
+	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
+	            calendarMaker($(target), nowDate);
+	        });    
 			//일자 선택 클릭
         	$(".custom_calendar_table").on("click", "td", function () {
 				// 클릭한 id값 찾기
@@ -323,7 +318,7 @@
         					res += "	<td>"+reservableDate[i].reservable_hour+"</td>";
         					res += "	<td>"+reservableDate[i].reservable_major+"</td>";
         					res += "	<td>";
-        					res += "		<button type='button' onclick='javascript:reserveSelect(this.value, "+reservableDate[i].reservable_no+")' value='"+idValue+"_"+reservableDate[i].reservable_hour+"_"+reservableDate[i].reservable_major+"'>예약</button>";
+        					res += "		<button type='button' onclick='reserveSelect(this.value, "+reservableDate[i].reservable_no+")' value='"+idValue+"_"+reservableDate[i].reservable_hour+"_"+reservableDate[i].reservable_major+"'>예약</button>";
         					res += "	</td>";
         					res += "</tr>";
         					res += "<tr>";
@@ -338,7 +333,7 @@
         				for(var i=0; i<reservedDate.length; i++){
         					res += "	<td>"+reservedDate[i].reserved_hour+"</td>";
         					res += "	<td>"+reservedDate[i].reserved_major+"</td>";
-        					res += "	<td>예약중</td>";	
+        					res += "	<td>예약완료</td>";	
         					res += "</tr>";
         					res += "<tr>";
         				}
@@ -355,7 +350,7 @@
 	}
 
 	// 예약 일정 선택하기
-	function reserveSelect(value, id, date) {
+	function reserveSelect(value, id) {
 		var reservableNo = id;
 		// value값 '_' 구분자로 3등분
 		var select = value.split('_', 3);
@@ -384,7 +379,7 @@
 			time = true;
 		}	
 		if(Number(dateStr)+1 > Number(newReservableDate)) {
-			alert("현재일과 예약일이 1일 차이가 나야 예약가능합니다.");
+			alert("현재일 : "+nowYear+"년 "+nowMonth+"월 "+nowDay+"일 \n현재일로부터 1일 이후 날짜만 예약 가능합니다.");
 			flag = false;
 		}	
 		

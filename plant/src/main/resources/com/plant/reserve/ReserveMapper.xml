@@ -348,6 +348,22 @@
 				WHERE
 					major_no = r.major_no
 			) AS major
+			, (
+				SELECT
+					gd_name
+				FROM
+					gd
+				WHERE
+					gd_no = r.gd_no
+			) AS gd_name
+			, (
+				SELECT
+					gd_hp
+				FROM
+					gd
+				WHERE
+					gd_no = r.gd_no
+			) AS gd_hp
 		FROM
 			reservation r
 		WHERE				
@@ -395,6 +411,48 @@
 			gd_no = #{gd_no} AND reserve_pay = 1 AND reserve_cancel = 0
 	</select>
 	
+	<!-- 가드너 취소 확인 -->
+	<select id="selectGdReservationCancel" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			reserve_no
+			, gd_no
+			, user_no
+			, reservable_no
+			, reserve_date
+			, reserve_hour
+			, reserve_etc
+			, reserve_time
+			, (
+				SELECT
+					major
+				FROM
+					major
+				WHERE
+					major_no = r.major_no
+			) AS major
+			, (
+				SELECT
+					user_name
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_name
+			, (
+				SELECT
+					user_nick
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_nick
+		FROM
+			reservation r
+		WHERE				
+			gd_no = #{gd_no} 
+			AND reserve_cancel = 1
+	</select>
+	
 	<!-- 유저 결제 내역 -->
 	<select id="userPayHistory" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT
@@ -412,8 +470,16 @@
 			, merchant_uid
 			, pay_method
 			, reserve_cancel
+			, (
+				SELECT
+					reserve_completion
+				FROM
+					reservation
+				WHERE
+					reserve_no = p.reserve_no
+			) AS reserve_completion
 		FROM
-			pay
+			pay p
 		WHERE 
 			user_no = #{user_no}
 	</select>
@@ -443,24 +509,26 @@
 	
 	<!-- 유저 결제 내역 중복제거-->
 	<select id="userPayHistoryDeduplication" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
-		SELECT DISTINCT
-			pay_date
-			, pay_size
-			, gd_no
-			, user_no
-			, buyer_name
-			, buyer_addr
-			, buyer_postcode
-			, buyer_email
-			, buyer_tel
-			, merchant_uid
-			, pay_method
-			, reserve_cancel
+		SELECT
+			merchant_uid
+			, ANY_VALUE(pay_no) as pay_no
+			, ANY_VALUE(pay_date) as pay_date
+			, ANY_VALUE(pay_size) as pay_size
+			, ANY_VALUE(gd_no) as gd_no
+  			, ANY_VALUE(user_no) as user_no
+			, ANY_VALUE(buyer_name) as buyer_name
+			, ANY_VALUE(buyer_addr) as buyer_addr
+			, ANY_VALUE(buyer_postcode) as buyer_postcode
+			, ANY_VALUE(buyer_email) as buyer_email
+			, ANY_VALUE(buyer_tel) as buyer_tel
+			, ANY_VALUE(pay_method) as pay_method
+			, ANY_VALUE(reserve_cancel) as reserve_cancel
 		FROM
 			pay
 		WHERE
 			user_no = #{user_no}
-		ORDER BY pay_date
+		GROUP BY merchant_uid
+		ORDER BY ANY_VALUE(pay_date) DESC
 	</select>
 	
 	<!-- 예약가능 일자 입력 -->
@@ -766,11 +834,11 @@
 	</delete>
 	
 	<!-- 케어 진행된 종목 찾기 -->
-	<select id="selectCompletion" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+	<select id="selectCompletionGd" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT 
-			reserve_no
-			, gd_no
-			, user_no
+			r.reserve_no
+			, r.gd_no
+			, r.user_no
 			, (
 				SELECT
 					user_name
@@ -795,16 +863,92 @@
 				WHERE
 					major_no = r.major_no
 			) AS major
-			, reserve_date
-			, reserve_hour
-			, reserve_time
+			, r.reserve_date
+			, r.reserve_hour
+			, r.reserve_time
+			, r.reserve_review
+			, c.completion_date
+			, c.completion_comment
+			, c.completion_picorg1
+			, c.completion_picreal1
+			, c.completion_picorg2
+			, c.completion_picreal2
+			, c.completion_picorg3
+			, c.completion_picreal3
 		FROM 
 			reservation r
+		INNER JOIN 
+			completion c 
+		ON 
+			r.reserve_no = c.reserve_no 
 		WHERE 
-			gd_no = #{gd_no}
-			AND reserve_pay = 1
-			AND reserve_cancel = 0
-			AND reserve_completion = 1
+			r.gd_no = #{gd_no}
+			AND r.reserve_pay = 1
+			AND r.reserve_cancel = 0
+			AND r.reserve_completion = 1
+	</select>
+	
+	<!-- 케어 진행된 종목 찾기 -->
+	<select id="selectCompletionUser" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			r.reserve_no
+			, r.gd_no
+			, (
+				SELECT
+					gd_name
+				FROM
+					gd
+				WHERE
+					gd_no = r.gd_no
+			) AS gd_name
+			, r.user_no
+			, (
+				SELECT
+					user_name
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_name
+			, (
+				SELECT
+					user_nick
+				FROM
+					user
+				WHERE
+					user_no = r.user_no
+			) AS user_nick
+			, (
+				SELECT
+					major
+				FROM
+					major
+				WHERE
+					major_no = r.major_no
+			) AS major
+			, r.reserve_date
+			, r.reserve_hour
+			, r.reserve_time
+			, c.completion_date
+			, c.completion_comment
+			, c.completion_picorg1
+			, c.completion_picreal1
+			, c.completion_picorg2
+			, c.completion_picreal2
+			, c.completion_picorg3
+			, c.completion_picreal3
+			, r.reserve_review
+		FROM 
+			reservation r
+		INNER JOIN 
+			completion c 
+		ON 
+			r.reserve_no = c.reserve_no 
+		WHERE 
+			r.user_no = #{user_no}
+			AND r.reserve_pay = 1
+			AND r.reserve_cancel = 0
+			AND r.reserve_completion = 1
 	</select>
 	
 	<!-- 케어 진행되지 않은 종목 찾기 -->
@@ -897,4 +1041,89 @@
 				</if>
 			)
 	</insert>
+	
+	<!-- 리뷰 등록 여부 업데이트 -->
+	<update id="updateRservationReview" parameterType="com.plant.reserve.ReserveVO">
+		UPDATE
+			reservation 
+		SET
+			reserve_review = 1
+		WHERE 
+			reserve_no = #{reserve_no}
+			AND user_no = #{user_no}
+	</update>
+	
+	<!-- 유저 리뷰 검색 -->
+	<select id="selectUserReview" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			review_no
+			, reserve_no
+			, review_date
+			, review
+			, review_answer
+			, review_answerdate
+			, star
+			, user_no
+			, gd_no
+			, (
+				SELECT
+					gd_name
+				FROM
+					gd
+				WHERE
+					gd_no = r.gd_no
+			) AS gd_name
+		FROM
+			review r
+		WHERE
+			user_no = #{user_no}
+	</select>
+	
+	<!-- 가드너 리뷰 검색 -->
+	<select id="selectGdReview" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT 
+			review_no
+			, reserve_no
+			, review_date
+			, review
+			, review_answer
+			, review_answerdate
+			, star
+			, user_no
+			, gd_no
+		FROM
+			review r
+		WHERE
+			gd_no = #{gd_no}
+	</select>
+	
+	<select id="selectGdCancel" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			cancel_no
+			, user_no
+			,(
+				SELECT
+					user_nick
+				FROM
+					user
+				WHERE
+					user_no = c.user_no
+			) AS user_nick
+			,(
+				SELECT
+					user_name
+				FROM
+					user
+				WHERE
+					user_no = c.user_no
+			) AS user_name
+			, gd_no
+			, reserve_no
+			, cancel_date
+			, cancel_comment
+		FROM
+			cancel c
+		WHERE 
+			gd_no = #{gd_no}
+	</select>
 </mapper>
