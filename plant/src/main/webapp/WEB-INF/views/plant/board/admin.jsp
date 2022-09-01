@@ -397,6 +397,8 @@ function test() {
 					<dd class="gnb_submenu">
 						<ul>	
 							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '식물도감', '/plantbook/plantbook.do', false)">식물 도감</li>
+							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '식물 도감 요청 게시판', '/plantbookreq/listBookreq.do', false)">식물 도감 요청 게시판</li>
+							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '식물 도감 요청 게시판', '/plantbookreq/writeBookreq.do', false)">식물 도감 요청 답변 작성</li>
 						</ul>
 					</dd>
 				</dl>

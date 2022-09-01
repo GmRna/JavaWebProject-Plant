@@ -11,4 +11,6 @@ public interface PlantBookreqService {
 
 	PlantBookreqVO viewBookreq(PlantBookreqVO vo);
 
+	int insertadmin(PlantBookreqVO vo);
+
 }

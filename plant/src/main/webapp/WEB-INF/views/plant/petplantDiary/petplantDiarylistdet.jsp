@@ -15,6 +15,10 @@
 }
 </style>
 <script type="text/javascript">
+function edit(diary_no) {
+	location.href = "/plant/petplantDiary/editDiary.do?diary_no="+diary_no;
+}
+
 </script>
 
 </head>
@@ -50,7 +54,7 @@
 								<input type="hidden" name="user_planttype" value="${diarylist.user_planttype }">
 								<input type="hidden" name="diary_gno" value="${diarylist.diary_gno }">
 							</section>
-							<button onclick="(${diarylist.diary_no})">수정하기</button>
+							<button onclick="edit(${diarylist.diary_no})">수정하기</button>
 							<button onclick="(${diarylist.diary_no})">삭제하기</button>
 						</div>
 					</c:forEach>

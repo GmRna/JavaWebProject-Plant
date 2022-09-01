@@ -58,5 +58,18 @@ public class PetplantDiaryServiceImpl implements PetplantDiaryService {
 		return map;
 	}
 
+	// 반려 식물 관찰일지 - 수정 폼
+	@Override
+	public PetplantDiaryVO editDiary(int diary_no) {
+		return mapper.editDiary(diary_no);
+	}
+
+	// 반려 식물 관찰일지 - 수정하기
+	@Override
+	public int updateDiary(PetplantDiaryVO vo) {
+		return mapper.updateDiary(vo);
+
+	}
+
 	
 }

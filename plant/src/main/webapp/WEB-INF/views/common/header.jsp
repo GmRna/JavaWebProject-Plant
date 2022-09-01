@@ -92,8 +92,9 @@
          </c:if>
       </ul>
    </nav>
-
 </div>
+
+
 
    <script src="/plant/js/header/jquery.min.js"></script>
    <script src="/plant/js/header/jquery.dropotron.min.js"></script>
@@ -102,6 +103,5 @@
    <script src="/plant/js/header/breakpoints.min.js"></script>
    <script src="/plant/js/header/util.js"></script>
    <script src="/plant/js/header/main.js"></script>
-   
 </body>
 </html>

@@ -25,6 +25,11 @@ public interface PetplantDiaryMapper {
 
 	int insertTwoDiary(PetplantDiaryVO vo);
 	
+	// 반려 식물 관찰일지 - 수정 폼
+	PetplantDiaryVO editDiary(int diary_no);
+	// 반려 식물 관찰일지 - 수정하기
+	int updateDiary(PetplantDiaryVO vo);
+	
 	
 
 }

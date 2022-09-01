@@ -22,27 +22,21 @@ function save() {
 
 
 <div class="pad">
-	<form id="frm" method="post" action="insertBookreq.do" enctype="multipart/form-data">
-		<c:if test="${!empty loginUserInfo}">
-			<input type="hidden" name="pbreq_status" value="1">
-		</c:if>
-		<c:if test="${!empty loginAdminInfo}">
-			<select name="pbreq_status">
-				<option value="2">완료</option>
-				<option value="3">반려</option>
-			</select>		
-		</c:if>
+	<form id="frm" method="post" action="insertAdminBookreq.do" enctype="multipart/form-data">
+	<input type="hidden" name="pbreq_no" value="${reqlist.pbreq_no}">
+	
+		<select name="pbreq_status">
+			<option value="2">완료</option>
+			<option value="3">반려</option>
+		</select>		
 		<c:if test="${!empty loginAdminInfo}">
 			제목 <input type="text" name="pbreq_title" value="답변완료" readonly="readonly">
-		</c:if>
-		<c:if test="${!empty loginUserInfo}">
-			제목 <input type="text" name="pbreq_title" value="요청합니다." readonly="readonly">
 		</c:if>
 		품종 <input type="text" name="pbreq_type" >
 		내용 <textarea name="pbreq_content"></textarea>
 		사진 <input type="file" name="file">
 		
-		<button onclick="save()">작성완료</button>
+		<button onclick="save()">답변작성완료</button>
 	</form>
 </div>
 </body>

@@ -70,4 +70,11 @@ public class PlantBookreqServiceImpl implements PlantBookreqService {
 		return mapper.viewBookreq(vo);
 	}
 
+
+
+	@Override
+	public int insertadmin(PlantBookreqVO vo) {
+		return mapper.insertadmin(vo);
+	}
+
 }

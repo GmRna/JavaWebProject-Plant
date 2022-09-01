@@ -16,4 +16,6 @@ public interface PlantBookreqMapper {
 
 	int count(PlantBookreqVO vo);
 
+	int insertadmin(PlantBookreqVO vo);
+
 }
