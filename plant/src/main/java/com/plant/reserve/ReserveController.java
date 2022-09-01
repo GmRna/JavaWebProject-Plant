@@ -60,19 +60,19 @@ public class ReserveController {
 	// 초기화면
 	@GetMapping("/reserve/reserve.do")
 	public String reserve(Model model, ReserveVO vo, HttpServletRequest req) {
-//		// 가드너 번호 set
-//		HttpSession sess = req.getSession();
-//		GdVO gd = new GdVO();
-//		gd = (GdVO) sess.getAttribute("loginGdInfo");
-//		if(gd == null) {
-//			model.addAttribute("msg", "가드너로 로그인 해주십시오.");
-//			model.addAttribute("url", "/plant/gd/login.do");
-//			return "common/alert";
-//		} else {
+		// 가드너 번호 set
+		HttpSession sess = req.getSession();
+		GdVO gd = new GdVO();
+		gd = (GdVO) sess.getAttribute("loginGdInfo");
+		if(gd == null) {
+			model.addAttribute("msg", "가드너로 로그인 해주십시오.");
+			model.addAttribute("url", "/plant/gd/login.do");
+			return "common/alert";
+		} else {
 		vo.setGd_no(2);
 			model.addAttribute("loginGdInfo", vo); // gd세션값
 			return "plant/reserve/reserve";
-//
+		}
 	}
 	
 	// 가드너 검색 사이트
@@ -251,7 +251,7 @@ public class ReserveController {
 			
 		JSONObject json = new JSONObject();
 			
-		json.put("imp_key", imp_key);
+//		json.put("imp_key", imp_key);
 			
 		json.put("imp_secret", imp_secret);
 		
@@ -387,22 +387,22 @@ public class ReserveController {
 	// 케어진행완료페이지
 	@GetMapping("/reserve/completion.do")
 	public String completion(Model model, ReserveVO vo, HttpServletRequest req) {
-//		// 가드너 번호 set
-//		HttpSession sess = req.getSession();
-//		GdVO gd = new GdVO();
-//		gd = (GdVO) sess.getAttribute("loginGdInfo");
-//		if(gd == null) {
-//			model.addAttribute("msg", "가드너만 접근 가능합니다. 가드너로 로그인해주세요.");
-//			model.addAttribute("url", "/plant/gd/login.do");
-//			return "common/alert";
-//		} else {
+		// 가드너 번호 set
+		HttpSession sess = req.getSession();
+		GdVO gd = new GdVO();
+		gd = (GdVO) sess.getAttribute("loginGdInfo");
+		if(gd == null) {
+			model.addAttribute("msg", "가드너만 접근 가능합니다. 가드너로 로그인해주세요.");
+			model.addAttribute("url", "/plant/gd/login.do");
+			return "common/alert";
+		} else {
 			model.addAttribute("completionList", service.selectCompletionGd(vo)); // 케어진행완료 리스트
 			model.addAttribute("noCompletionList", service.selectNoCompletion(vo)); // 케어미진행 리스트 
 			model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
 			model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
 			model.addAttribute("reviewList", service.selectGdReview(vo)); // 가드너 리뷰리스트
 			return "plant/reserve/completion";
-//		}
+		}
 	}
 	
 	// 케어진행완료페이지

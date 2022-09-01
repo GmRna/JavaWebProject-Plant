@@ -197,7 +197,7 @@ public class GdController {
 			model.addAttribute("msg", "승인대기 중입니다.");
 			return "common/alert";
 		}else if (vo.getGd_acc() == 1) {
-			return "redirect:/plant/board/gd.do";
+			return "redirect:/main/index.do";
 		}else if(vo.getGd_acc() == 2){
 			model.addAttribute("msg", "가입 요청이 거절된 아이디입니다.");
 			return "common/alert";
