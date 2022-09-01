@@ -192,7 +192,6 @@ public class GdController {
 		//GdVO dbData = service.getInfo(vo.getGd_id());
 		vo = (GdVO) sess.getAttribute("loginGdInfo");
 		
-		System.out.println("승인여부"+vo.getGd_acc());
 		if(vo.getGd_acc() == 0) {
 			model.addAttribute("msg", "승인대기 중입니다.");
 			return "common/alert";
@@ -235,7 +234,7 @@ public class GdController {
 		}
 		return "common/return";
 	}
-	
+	  
 	@GetMapping("/gd/findPwd.do")
 	public String findPwd() {
 		return "/plant/gd/findPwd";
