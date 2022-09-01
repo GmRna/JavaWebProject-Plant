@@ -29,16 +29,18 @@
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #288CFF;
+	background-color: #b1ddaa;
 	color: #fff;
 }
 
@@ -60,7 +62,7 @@
 }
 
 .custom_calendar_table tbody td.reserved {
-	background-color: #81F781;
+	background-color: #73d5ac;
 	color: #000000;
 }
 
@@ -333,6 +335,9 @@
 						"<th><button type='button' class='next'>></button></th>" +
 	            	"</thead>" +
 	            	"<thead  class='cal_week'>" +
+            			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약된날을  나타냅니다.</th>" +
+            		"</thead>" +
+	            	"<thead  class='cal_week'>" +
 	            		"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
 	            	"</thead>" +
 	            	"<tbody id='custom_set_date'>" +
@@ -403,7 +408,7 @@
 	            $(".custom_calendar_table .select_day").removeClass("select_day");
 	        	// 삭제 후 예약데이터와 비교하여 다시 클래스 변경
 	            classChange();
-            	res += "<table border='1'>";
+            	res += "<table border='1' class='default'>";
             	res += "	<tr>";
             	res += "		<td colspan='3'>예약일정 확인</td>";	
             	res += "	</tr>";	            	
@@ -759,7 +764,7 @@
 	*/
 	function completion() {
 		var completion ="";
-			completion +="<table border='1'>";
+			completion +="<table border='1' class='default'>";
 			completion +="		<tr>";
 			completion +="			<th>케어진행완료내역</th>";
 			completion +="		</tr>";
@@ -792,7 +797,7 @@
 		var view = "";
 		for(var i=0; i<completionList.length; i++) {
 			if(completionList[i].reserve_no === reserve_no) {
-				view +="<table border='1'>";
+				view +="<table border='1' class='default'>";
 				view +="		<tr>";
 				view +="			<th colspan='6'>케어내용상세보기 <button type='button' onclick='completionViewDelete()'>상세보기 닫기</button></th>";
 				view +="		</tr>";

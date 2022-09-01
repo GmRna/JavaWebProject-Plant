@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,80 +64,102 @@
 			
 		$("#reserveInfo").html(res);
 	}
+	
+	/** 가드너 검색창으로 이동
+	*/
+	function goSearchGardener() {
+		location.href="/plant/reserve/searchGardener.do";
+	}
+	
+	/** 가드너 프로필 상세보기로 이동
+	*/
+	function goProfileView(gd_no) {
+		location.href="/plant/reserve/profileView.do?gd_no="+gd_no+"";
+	}
+	
+	/** 유저 예약확인으로 이동
+	*/
+	function goUserReservationView(user_no) {
+		location.href="/plant/reserve/userReservationView.do?user_no="+user_no+"";
+	}
+	
+	/** 메인 화면으로 이동
+	*/
+	function goMain() {
+		location.href="/plant/main/index.do";
+	}
 </script>
 </head>
 <body>
 	<div>
-		<h1>예약완료 페이지</h1>
-		<div>
-			<table border="1">
-				<tbody>
-					<tr>
-						<td colspan="100">예약정보</td>
-					</tr>
-					<tr>
-						<td>예약자</td>
-						<td colspan="100">${vo.buyer_name}</td>
-					</tr>
-					<tr>
-						<td>닉네임</td>
-						<td colspan="100">${user.user_nick}</td>
-					</tr>
-					<tr>
-						<td>주소</td>
-						<td colspan="100">${vo.buyer_addr}</td>
-					</tr>
-					<tr>
-						<td>연락처</td>
-						<td colspan="100">${vo.buyer_tel}</td>
-					</tr>
-					<tr>
-						<td>가드너 이름</td>
-						<td colspan="100">${gd.gd_name}</td>
-					</tr>
-					<tr>
-						<td>가드너 연락처</td>
-						<td colspan="100">${gd.gd_hp}</td>
-					</tr>
-				</tbody>
-				<tbody id="reserveInfo">
-				</tbody>
-				<tbody>
-					<tr>
-						<td colspan="100">결제 정보</td>
-					</tr>
-					<tr>
-						<td>결제번호(예약번호)</td>
-						<td colspan="100">${vo.merchant_uid}</td>
-					</tr>
-					<tr>
-						<td>결제수단</td>
-						<td colspan="100">${vo.pay_method}</td>
-					</tr>
-					<tr>
-						<td>총 결제액</td>
-						<td colspan="100">${vo.pay_size}</td>
-					</tr>
-				</tbody>				
-			</table>
-		</div>
-		<div>
-			<div>
-				<!-- 가드너 검색창으로 이동 -->
-				<a href="searchGardener.do">가드너 검색창</a>	
-			</div>
-			<div>
-				<!-- 가드너 프로필카드 상세페이지 이동 -->
-				<a href="profileView.do?gd_no=${gd.gd_no}">가드너 프로필카드 상세페이지</a>	
-			</div>
-			<div>
-				<!-- 홈페이지 이동 -->
-				<a href="#">메인페이지</a>	
-			</div>
-			<div>
-				<!-- 나의 예약확인 페이지 이동 -->
-				<a href='userReservationView.do?user_no=${user.user_no}'>나의 예약확인 페이지</a>	
-			</div>
+		<table border="1" class='default'>
+			<tr>
+				<th style='text-align: center;'>예약 상세 페이지</th>
+			</tr>
+		</table>
+	</div>
+	<div>
+		<table border="1" class='default'>
+			<tbody>
+				<tr>
+					<td colspan="100">예약정보</td>
+				</tr>
+				<tr>
+					<td>예약자</td>
+					<td colspan="100">${vo.buyer_name}</td>
+				</tr>
+				<tr>
+					<td>닉네임</td>
+					<td colspan="100">${user.user_nick}</td>
+				</tr>
+				<tr>
+					<td>주소</td>
+					<td colspan="100">${vo.buyer_addr}</td>
+				</tr>
+				<tr>
+					<td>연락처</td>
+					<td colspan="100">${vo.buyer_tel}</td>
+				</tr>
+				<tr>
+					<td>가드너 이름</td>
+					<td colspan="100">${gd.gd_name}</td>
+				</tr>
+				<tr>
+					<td>가드너 연락처</td>
+					<td colspan="100">${gd.gd_hp}</td>
+				</tr>
+			</tbody>
+			<tbody id="reserveInfo">
+			</tbody>
+			<tbody>
+				<tr>
+					<td colspan="100">결제 정보</td>
+				</tr>
+				<tr>
+					<td>결제번호(예약번호)</td>
+					<td colspan="100">${vo.merchant_uid}</td>
+				</tr>
+				<tr>
+					<td>결제수단</td>
+					<td colspan="100">${vo.pay_method}</td>
+				</tr>
+				<tr>
+					<td>총 결제액</td>
+					<td colspan="100">${vo.pay_size}</td>
+				</tr>
+			</tbody>				
+		</table>
+	</div>
+	<div>
+		<div style='margin: auto;'>
+			<!-- 홈페이지 이동 -->
+			<button type='button' onclick='goMain()'>홈페이지로 이동</button>
+			<!-- 가드너 검색창으로 이동 -->
+			<button type='button' onclick='goSearchGardener()'>가드너 검색으로 이동</button>
+			<!-- 가드너 프로필카드 상세페이지 이동 -->
+			<button type='button' onclick='goProfileView(${gd.gd_no})'>가드너 프로필카드 상세페이지</button>
+			<!-- 나의 예약확인 페이지 이동 -->
+			<button type='button' onclick='goUserReservationView(${user.user_no})'>나의 예약확인 페이지</button>
 		</div>
 	</div>
 </body>

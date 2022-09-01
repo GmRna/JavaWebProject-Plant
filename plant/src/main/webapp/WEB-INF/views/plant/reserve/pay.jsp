@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,13 +10,11 @@
 </style>
 <meta charset="UTF-8">
 <title>가드너 예약 결제</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- moment.js -->
 <script src="https://momentjs.com/downloads/moment.js"></script>
 <!-- postCode api -->
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!-- iamport.payment.js -->
 <script type="text/javascript"
 	src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
@@ -208,13 +207,19 @@
 </script>
 </head>
 <body>
-	<h1>결제 페이지</h1>
+	<div>
+		<table border="1" class='default'>
+			<tr>
+				<th style='text-align: center;'>결제페이지</th>
+			</tr>
+		</table>
+	</div>
 	<!-- 결제페이지 상단 -->
-	<div style="float: left; width: 100%; margin: 30px;">
+	<div>
 		<!-- 결제 정보 -->
-		<div style="float: left; width: 80%;">
+		<div>
 			<h3>예약자 정보</h3>
-			<table style="width: 100%;" border="1">
+			<table class='default'>
 				<tbody>
 					<tr>
 						<td>예약자</td>
@@ -236,12 +241,10 @@
 					</tr>
 					<tr>
 						<td rowspan="3">주소</td>
-						<td><input type="text" name="postCode" id="postCode"
-							class="inNextBtn" style="float: left;"
-							value="${user.user_postcode}" readonly> <span> <a
-								href="javascript:postCode();"
-								style="float: left; width: auto; clear: none;">우편번호 검색</a>
-						</span></td>
+						<td>
+							<input type="text" name="postCode" id="postCode"class="inNextBtn" style="float: left;" value="${user.user_postcode}" readonly>
+							<button type='button' onclick='postCode()'>우편번호 검색</button>
+						</td>
 					</tr>
 					<tr>
 						<td>
@@ -256,37 +259,34 @@
 				</tbody>
 			</table>
 			<h3>예약정보</h3>
-			<table style="width: 100%;" border="1">
-				<tbody>
-					<tr>
-						<td>가드너= 이름</td>
-						<td colspan="100">${gd.gd_name}</td>
-					</tr>
-					<tr>
-						<td>가드너 연락처</td>
-						<td colspan="100">${gd.gd_hp}</td>
-					</tr>
-				</tbody>
+			<table class='default'>
+				<tr>
+					<td>가드너= 이름</td>
+					<td colspan="100">${gd.gd_name}</td>
+				</tr>
+				<tr>
+					<td>가드너 연락처</td>
+					<td colspan="100">${gd.gd_hp}</td>
+				</tr>
 				<tbody id="reserveInfo">
 				</tbody>
-				<tbody>
-					<tr>
-						<td>요청사항</td>
-						<td colspan="100">
-							<input type="text" id="etc" style="height:20px; width:400px;">
-						</td>
-					</tr>
-					<tr>
-						<td>총 합계 금액</td>
-						<td colspan="100"><div id="total"></div></td>
-					</tr>
-					<tr>
-						<td>카드 결제</td>
-						<td colspan="100"><button onclick="requestPay()">결제하기</button></td>
-					</tr>
-					<tr>
-						<td colspan="100">* 본 버전은 테스트 버전이기 때문에 테스트하여도 다음날 00시에 자동환불처리됩니다. *</td>
-					</tr>
+				<tr>
+					<td>요청사항</td>
+					<td colspan="100">
+						<input type="text" id="etc" style="height:20px; width:400px;">
+					</td>
+				</tr>
+				<tr>
+					<td>총 합계 금액</td>
+					<td colspan="100"><div id="total"></div></td>
+				</tr>
+				<tr>
+					<td>카드 결제</td>
+					<td colspan="100"><button onclick="requestPay()">결제하기</button></td>
+				</tr>
+				<tr>
+					<td colspan="100">* 본 버전은 테스트 버전이기 때문에 테스트하여도 다음날 00시에 자동환불처리됩니다. *</td>
+				</tr>
 				</tbody>
 			</table>
 		</div>

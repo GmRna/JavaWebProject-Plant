@@ -14,6 +14,8 @@ public interface ReserveMapper {
 	ReserveVO viewGd(ReserveVO vo); // 가드너 상세보기
 	List<ReserveVO> searchGdReservable(ReserveVO vo); // 가드너 예약 가능 시간 조회
 	List<ReserveVO> searchGdReserved(ReserveVO vo); // 가드너 예약된 내역 조회
+	List<ReserveVO> selectGdCertificate(ReserveVO vo); // 가드너 자격증 조회
+	List<ReserveVO> selectGdCareer(ReserveVO vo); // 가드너 이력 조회
 	ReserveVO completionCount(ReserveVO vo); // 가드너 케어완료 수 조회
 	
 	// 유저 조회

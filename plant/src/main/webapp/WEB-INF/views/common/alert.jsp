@@ -4,9 +4,9 @@
 <script>
 	alert('${msg}');
 	<c:if test="${!empty url}">
-	location.href='${url}';
+		location.href='${url}';
 	</c:if>
 	<c:if test="${empty url}">
-	history.back();
+		history.back();
 	</c:if>
 </script>

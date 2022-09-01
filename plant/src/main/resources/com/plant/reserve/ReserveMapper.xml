@@ -1097,6 +1097,7 @@
 			gd_no = #{gd_no}
 	</select>
 	
+	<!-- 가드너 취소 내역 -->
 	<select id="selectGdCancel" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
 		SELECT
 			cancel_no
@@ -1124,6 +1125,28 @@
 		FROM
 			cancel c
 		WHERE 
+			gd_no = #{gd_no}
+	</select>
+	
+	<!-- 가드너 자격사항 -->
+	<select id="selectGdCertificate" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			gd_no
+			, gd_certificate
+		FROM
+			cer
+		WHERE
+			gd_no = #{gd_no}
+	</select>
+	
+	<!-- 가드너 이력 -->
+	<select id="selectGdCareer" resultType="com.plant.reserve.ReserveVO" parameterType="com.plant.reserve.ReserveVO">
+		SELECT
+			gd_no
+			, gd_career
+		FROM
+			car
+		WHERE
 			gd_no = #{gd_no}
 	</select>
 </mapper>

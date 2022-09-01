@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,16 +30,19 @@
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
+	color: #B1DDAA;
+	
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #288CFF;
+	background-color: #b1ddaa;
 	color: #fff;
 }
 
@@ -60,12 +64,12 @@
 }
 
 .custom_calendar_table tbody td.noCompletion {
-	background-color: #FA5858;
+	background-color: #ff255d;
 	color: #fff;
 }
 
 .custom_calendar_table tbody td.completion {
-	background-color: #81F781;
+	background-color: #73d5ac;
 	color: #000000;
 }
 
@@ -103,7 +107,7 @@
 	height: 100%; /* Full height */        
 	overflow: auto; /* Enable scroll if needed */        
 	background-color: rgb(0,0,0); /* Fallback color */        
-	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */    
+	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */ 
 }     
 /* Modal Content/Box */    
 .search-modal-content {        
@@ -111,7 +115,7 @@
 	margin: 15% auto; /* 15% from the top and centered */       
 	padding: 20px;        
 	border: 1px solid #888;        
-	width: 70%; /* Could be more or less, depending on screen size */    
+	width: 70%; /* Could be more or less, depending on screen size */ 
 }
 
 </style>
@@ -304,6 +308,9 @@
 				"<th><button type='button' class='next'>></button></th>" +
 				"</thead>" +
 				"<thead  class='cal_week'>" +
+        			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 진행완료된 날을 빨간색은 진료되지 않은 날을 나타냅니다.</th>" +
+        		"</thead>" +
+				"<thead  class='cal_week'>" +
 					"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
 				"</thead>" +
 				// 달력검색을 위한 클래스 생성
@@ -413,7 +420,7 @@
 		            var completion = "";
 		            // 진행완료된 예약
 		            if (completionDate.length > 0) {
-		            	completion += "<table border='1'>";
+		            	completion += "<table border='1' class='default'>";
 		            	completion += "	<tr>";
 		            	completion += "		<td colspan='10'>케어 진행완료</td>";	
 		           		completion += "	</tr>";	            	
@@ -439,7 +446,7 @@
 		           	}
 		            // 진행완료 안된 예약
 		            if (noCompletionDate.length > 0) {
-		            	completion += "<table border='1'>";
+		            	completion += "<table border='1' class='default'>";
 		            	completion += "	<tr>";
 		            	completion += "		<td colspan='10'>케어 미진행 일정</td>";	
 		           		completion += "	</tr>";	            	
@@ -497,7 +504,7 @@
 		for(var i=0; i<noCompletionList.length; i++) {
 			console.log(noCompletionList[i].reserve_no);
 			if(noCompletionList[i].reserve_no === reserve_no) {
-				reserveInfo += "<table border='1'>";
+				reserveInfo += "<table border='1' class='default'>";
 				reserveInfo += "	<tr>";
 				reserveInfo += "		<td colspan='4'>예약된 일정 상세보기</td>";
 				reserveInfo += "	</tr>";
@@ -555,7 +562,7 @@
 		for(var i=0; i<completionList.length; i++) {
 			console.log(completionList[i].reserve_no);
 			if(completionList[i].reserve_no === reserve_no) {
-				reserveInfo += "<table border='1'>";
+				reserveInfo += "<table border='1' class='default'>";
 				reserveInfo += "	<tr>";
 				reserveInfo += "		<td colspan='4'>예약된 일정 상세보기</td>";
 				reserveInfo += "	</tr>";
@@ -660,10 +667,12 @@
 						if(noCompletionList[j].reserve_no !== reserve_no) {
 							paidOthers += "<tr>";
 							paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
+							paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
 							paidOthers += "		<td>"+noCompletionList[j].reserve_hour+"</td>";
 							paidOthers += "		<td>"+noCompletionList[j].reserve_major+"</td>";
 							paidOthers += "		<td><button type='button' onclick='move("+noCompletionList[j].reserve_date+")'>이동</button></td>";
 							paidOthers += "</tr>";
+							
 						}
 					}
 					for(var j=0; j<completionList.length; j++) {
@@ -758,7 +767,7 @@
 		viewDelete();
 		noCompletionDelete();
 		var insertCompletion = "";
-			insertCompletion += "<table border='1'>";
+			insertCompletion += "<table border='1' class='default'>";
 			insertCompletion += "	<tr>";
 			insertCompletion += "		<th colspan='4'>예약 완료 확인 입력<button type='button' onclick='insertCompletionDelete()'>입력창 닫기</button></th>";
 			insertCompletion += "	</tr>";
@@ -1110,7 +1119,13 @@
 </script>
 </head>
 <body>
-	<h1>예약 진행 완료</h1>
+	<div>
+		<table border="1" class='default'>
+			<tr>
+				<th style='text-align: center;'>예약 상세 페이지</th>
+			</tr>
+		</table>
+	</div>
 	<div>
 		<!-- 상단 -->
 		<div>

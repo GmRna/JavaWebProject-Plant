@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>   
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -147,12 +148,13 @@
 						<div class="search">
 							<!-- 향후 자바스크립트 처리로 달력 뜰 수 있게 하기 -->
 							<!-- 검색 시작 일자 ~ 종료 일자 -->
-							<h3>검색 일자</h3>
+							<h2>예약일로 가드너 검색</h2>
+							<h4>원하는 예약일</h4>
 							<input type="text" id="dateStart" name="dateStart">-
 							<input type="text" id="dateEnd" name="dateEnd">
 							<br>
 							<!-- 예약가능 종목, 출장주소, 이름으로 검색 -->
-							<h3>검색 옵션</h3>
+							<h2>검색 옵션</h2>
 							<h4>케어종목</h4>
 							<!-- 케어가능 종목 -->
 							<select id="searchMajor" name="searchMajor" class="dSelect">
@@ -188,21 +190,22 @@
 							<h4>가드너 이름</h4>
 							<!-- 가드너 이름 -->
 							<input type="text" id="searchName" name="searchName" value=""><br>
+							<!-- 정렬기능 -->
+							<div class="category">
+								<select id="category" name="category" title="정렬">
+									<option value="manyReview">리뷰 많은 순</option>
+									<option value="littleReview">리뷰 적은 순</option>
+									<option value="highStar">평균 별점 높은 순</option>
+									<option value="lowStar">평균 별점 낮은 순</option>
+									<option value="manyCancel">예약 취소 많은 순</option>
+									<option value="littleCancel">예약 취소 적은 순</option>
+									<option value="manyReserve">예약 많은 순</option>
+									<option value="littleReserve">예약 적은 순</option>
+								</select>
+							</div>
 							<!-- 검색 버튼 -->>
 							<input type="button" onClick="javascript:btnClick()" value="검색">
-						</div>
-						<!-- 정렬기능 -->
-						<div class="category">
-							<select id="category" name="category" title="정렬">
-								<option value="manyReview">리뷰 많은 순</option>
-								<option value="littleReview">리뷰 적은 순</option>
-								<option value="highStar">평균 별점 높은 순</option>
-								<option value="lowStar">평균 별점 낮은 순</option>
-								<option value="manyCancel">예약 취소 많은 순</option>
-								<option value="littleCancel">예약 취소 적은 순</option>
-								<option value="manyReserve">예약 많은 순</option>
-								<option value="littleReserve">예약 적은 순</option>
-							</select>
+							<div> 프로필 카드 눌러서 예약상세보기 가능합니다.</div>
 						</div>
 					</form>
 					<!-- 프로필카드 -->

@@ -34,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.plant.gd.GdVO;
 import com.plant.user.UserVO;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -55,11 +56,6 @@ public class ReserveController {
 	@Autowired
 	ReserveService service;
 	 
-	// 예약페이지
-	@GetMapping("/reserve/reserve.do")
-	public String reserve(Model model, ReserveVO vo) {
-		return "plant/reserve/reserve";
-	}
 	
 	// 가드너 검색 사이트
 	@GetMapping("/reserve/searchGardener.do")
@@ -86,23 +82,45 @@ public class ReserveController {
 	// 가드너 상세보기
 	@GetMapping("/reserve/profileView.do")
 	public String profileView(Model model, ReserveVO vo) {
-		model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
-		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
-		model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 조회
-		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 조회
-		return "plant/reserve/profileView";
+		if(vo.getGd_no() == 0 ) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "common/alert";
+		} else {
+			model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
+			model.addAttribute("certificate", service.selectGdCertificate(vo)); // 가드너 상세 정보 조회
+			model.addAttribute("career", service.selectGdCareer(vo)); // 가드너 상세 정보 조회
+			model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
+			model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 조회
+			model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 조회
+			return "plant/reserve/profileView";
+		}
 	}
 	
 	// 예약하기
 	@GetMapping("/reserve/reservation.do")
-	public String reservation(Model model, ReserveVO vo) {
-		model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
-		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
-		model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 조회
-		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 조회
-		model.addAttribute("completion", service.completionCount(vo)); // 예약 완료 내역 조회
-		model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
-		return "plant/reserve/reservation";
+	public String reservation(Model model, ReserveVO vo, HttpServletRequest req) {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		if(user == null) {
+			model.addAttribute("msg", "로그인하셔야 예약 가능합니다. 유저로 로그인 해주세요");
+			model.addAttribute("url", "/plant/user/login.do");
+			return "common/alert";
+		} else if(vo.getGd_no() == 0 ) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "common/alert";
+		} else {
+			model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
+			model.addAttribute("certificate", service.selectGdCertificate(vo)); // 가드너 상세 정보 조회
+			model.addAttribute("career", service.selectGdCareer(vo)); // 가드너 상세 정보 조회
+			model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
+			model.addAttribute("reservable", service.searchGdReservable(vo)); // 가드너 예약시간 조회
+			model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 조회
+			model.addAttribute("completion", service.completionCount(vo)); // 예약 완료 내역 조회
+			model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
+			return "plant/reserve/reservation";
+		}
 	}
 	
 	// 결제 하기
@@ -171,32 +189,35 @@ public class ReserveController {
 	// 유저 예약화면
 	@GetMapping("/reserve/userReservationView.do")
 	public String userReservationView(Model model, ReserveVO vo, HttpServletRequest req) {
-		
-//		// 유저 번호 set
-//		HttpSession sess = req.getSession();
-//		UserVO user = new UserVO();
-//		user = (UserVO) sess.getAttribute("loginInfo");
-//		vo.setUser_no(user.getUser_no());
-		
-		// 예약정보 리스트
-		List<ReserveVO> reservationList = service.userReservation(vo);
-		// 가드너 정보 리스트
-		List<ReserveVO> gdList = new ArrayList<ReserveVO>();	
-		
-		for(int i=0; i<reservationList.size(); i++) {
-			vo.setGd_no(reservationList.get(i).getGd_no());
-			gdList.add(service.viewGd(vo));
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		if(user == null) {
+			model.addAttribute("msg", "먼저 로그인을 해주세요");
+			model.addAttribute("url", "/plant/user/login.do");
+			return "common/alert";
+		} else {
+			vo.setUser_no(user.getUser_no());
+			// 예약정보 리스트
+			List<ReserveVO> reservationList = service.userReservation(vo);
+			// 가드너 정보 리스트
+			List<ReserveVO> gdList = new ArrayList<ReserveVO>();	
+				
+			for(int i=0; i<reservationList.size(); i++) {
+				vo.setGd_no(reservationList.get(i).getGd_no());
+				gdList.add(service.viewGd(vo));
+			}
+				
+			model.addAttribute("userPayHistory", service.userPayHistory(vo)); // 유저 결제정보
+			model.addAttribute("reservationList", reservationList); // 유저 예약정보
+			model.addAttribute("gdList", gdList); // 가드너 정보
+			model.addAttribute("user", service.user(vo)); // 유저정보 조회
+			model.addAttribute("userPayHistoryDeduplication", service.userPayHistoryDeduplication(vo));
+			model.addAttribute("completion", service.selectCompletionUser(vo));
+			model.addAttribute("reviewList", service.selectUserReview(vo));
+			return "plant/reserve/userReservationView";
 		}
-		
-		model.addAttribute("userPayHistory", service.userPayHistory(vo)); // 유저 결제정보
-		model.addAttribute("reservationList", reservationList); // 유저 예약정보
-		model.addAttribute("gdList", gdList); // 가드너 정보
-		model.addAttribute("user", service.user(vo)); // 유저정보 조회
-		model.addAttribute("userPayHistoryDeduplication", service.userPayHistoryDeduplication(vo));
-		model.addAttribute("completion", service.selectCompletionUser(vo));
-		vo.setUser_no(2);
-		model.addAttribute("reviewList", service.selectUserReview(vo));
-		return "plant/reserve/userReservationView";
 	}
 	
 	// 예약취소
@@ -273,17 +294,27 @@ public class ReserveController {
 	
 	// 가드너 예약관리
 	@GetMapping("/reserve/gdReservationView.do")
-	public String gdReservationView(Model model, ReserveVO vo) {
-		vo.setGd_no(2);
-		model.addAttribute("reservableList", service.searchGdReservable(vo)); // 예약 가능한 내역
-		model.addAttribute("reservedList", service.searchGdReserved(vo)); // 예약된 내역
-		model.addAttribute("reservationList", service.gdReservation(vo)); // 예약정보
-		model.addAttribute("reservationCancelList", service.selectGdReservationCancel(vo)); // 예약정보
-		model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
-		model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
-		model.addAttribute("majorList", service.majorList(vo)); // 케어종목 내역
-		model.addAttribute("cancelList", service.selectGdCancel(vo)); // 취소 내역 
-		return "plant/reserve/gdReservationView";
+	public String gdReservationView(Model model, ReserveVO vo, HttpServletRequest req) {
+		// 가드너 번호 set
+		HttpSession sess = req.getSession();
+		GdVO gd = new GdVO();
+		gd = (GdVO) sess.getAttribute("loginGdInfo");
+		if(gd == null) {
+			model.addAttribute("msg", "가드너만 접근 가능합니다. 가드너로 로그인해주세요.");
+			model.addAttribute("url", "/plant/gd/login.do");
+			return "common/alert";
+		} else {
+			vo.setGd_no(gd.getGd_no());
+			model.addAttribute("reservableList", service.searchGdReservable(vo)); // 예약 가능한 내역
+			model.addAttribute("reservedList", service.searchGdReserved(vo)); // 예약된 내역
+			model.addAttribute("reservationList", service.gdReservation(vo)); // 예약정보
+			model.addAttribute("reservationCancelList", service.selectGdReservationCancel(vo)); // 예약정보
+			model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
+			model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
+			model.addAttribute("majorList", service.majorList(vo)); // 케어종목 내역
+			model.addAttribute("cancelList", service.selectGdCancel(vo)); // 취소 내역 
+			return "plant/reserve/gdReservationView";
+		}
 	}
 	
 	// 가드너 예약가능일정 삭제
@@ -337,13 +368,23 @@ public class ReserveController {
 	
 	// 케어진행완료페이지
 	@GetMapping("/reserve/completion.do")
-	public String completion(Model model, ReserveVO vo) {
-		model.addAttribute("completionList", service.selectCompletionGd(vo)); // 케어진행완료 리스트
-		model.addAttribute("noCompletionList", service.selectNoCompletion(vo)); // 케어미진행 리스트 
-		model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
-		model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
-		model.addAttribute("reviewList", service.selectGdReview(vo)); // 가드너 리뷰리스트
-		return "plant/reserve/completion";
+	public String completion(Model model, ReserveVO vo, HttpServletRequest req) {
+//		// 가드너 번호 set
+//		HttpSession sess = req.getSession();
+//		GdVO gd = new GdVO();
+//		gd = (GdVO) sess.getAttribute("loginGdInfo");
+//		if(gd == null) {
+//			model.addAttribute("msg", "가드너만 접근 가능합니다. 가드너로 로그인해주세요.");
+//			model.addAttribute("url", "/plant/gd/login.do");
+//			return "common/alert";
+//		} else {
+			model.addAttribute("completionList", service.selectCompletionGd(vo)); // 케어진행완료 리스트
+			model.addAttribute("noCompletionList", service.selectNoCompletion(vo)); // 케어미진행 리스트 
+			model.addAttribute("gd", service.viewGd(vo)); // 가드너 정보 조회
+			model.addAttribute("gdPayHistoryList", service.gdPayHistory(vo)); // 결제정보
+			model.addAttribute("reviewList", service.selectGdReview(vo)); // 가드너 리뷰리스트
+			return "plant/reserve/completion";
+//		}
 	}
 	
 	// 케어진행완료페이지

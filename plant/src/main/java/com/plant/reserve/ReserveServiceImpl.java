@@ -287,5 +287,17 @@ public class ReserveServiceImpl implements ReserveService {
 		return mapper.selectGdReservationCancel(vo);
 	}
 
+	@Override
+	public List<ReserveVO> selectGdCertificate(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectGdCertificate(vo);
+	}
+
+	@Override
+	public List<ReserveVO> selectGdCareer(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectGdCareer(vo);
+	}
+
 
 }

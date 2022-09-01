@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,16 +30,18 @@
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #288CFF;
+	background-color: #b1ddaa;
 	color: #fff;
 }
 
@@ -59,11 +62,11 @@
 	color: #fff;
 }
 .custom_calendar_table tbody td.reserved {
-	background-color: #FA5858;
+	background-color: #ff255d;
 	color: #fff;
 }
 .custom_calendar_table tbody td.reservable {
-	background-color: #81F781;
+	background-color: #73d5ac;
 	color: #000000;
 }
 
@@ -184,6 +187,9 @@
 						"<th><button type='button' class='next'>></button></th>" +
 	            	"</thead>" +
 	            	"<thead  class='cal_week'>" +
+	            		"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약가능한 날을 빨간색은 예약 불가능한 날을 나타냅니다.</th>" +
+	            	"</thead>" +
+	            	"<thead  class='cal_week'>" +
 	            		"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
 	            	"</thead>" +
 	            	"<tbody id='custom_set_date'>" +
@@ -272,7 +278,7 @@
 	        	// 삭제 후 예약데이터와 비교하여 다시 클래스 변경
 	            classChange();
             	res += "<h3>예약가능 스케줄</h3>";
-            	res += "<table border='1'>";
+            	res += "<table border='1' class='default'>";
             	res += "	<tr>";
             	res += "		<td colspan='3'>";
             	res += "			"+date.format('YYYY-MM-DD')+"";
@@ -335,21 +341,23 @@
 		});
 		
 		$("#goBack").on('click',function(){ 
-			location.href="/plant/reserve/reservation.do"+location.search+""+"";
+			location.href="/plant/reserve/searchGardener.do";
 		});
 	});
 </script>
 </head>
 <body>
 	<div>
-		<h1>가드너 프로필 카드</h1>
 		<!-- 가드너 상세 프로필 -->
 		<div>
-			<table border="1">
+			<table border="1" class='default'>
 				<tr>
-					<td rowspan="7" style="width: 300px;">사진(${data.gd_picorg},
-						${data.gd_picreal})</td>
-					<!-- 사진 미리보기 기능은 추후 구현 -->
+					<th colspan='6' style='text-align: center;'>가드너 프로필 카드</th>
+				</tr>
+				<tr>
+					<td rowspan="7" style="width: 300px;">
+						<img src='<%=request.getContextPath()%>/upload/${data.gd_picreal}' style='width:90px; height:90px;' >
+					</td>
 					<td>이름</td>
 					<td>&nbsp${data.gd_name}&nbsp(만 ${data.gd_age}세)&nbsp</td>
 					<td>연락처</td>
@@ -397,12 +405,9 @@
 					<td>이력</td>
 					<td colspan="3">
 						<div style="overflow: auto; width: 100%; height: 70px;">
-							<p>${data.gd_career}</p>
-							<p>더미 커리어</p>
-							<p>더미 커리어</p>
-							<p>더미 커리어</p>
-							<p>더미 커리어</p>
-							<p>더미 커리어</p>
+							<c:forEach var="c" items="${career}">
+								<p>${c.gd_career}</p>
+							</c:forEach>
 						</div>
 					</td>
 				</tr>
@@ -410,24 +415,23 @@
 					<td>자격 사항</td>
 					<td colspan="3">
 						<div style="overflow: auto; width: 100%; height: 70px;">
-							<p>${data.gd_certificate}</p>
-							<p>더미 자격사항</p>
-							<p>더미 자격사항</p>
-							<p>더미 자격사항</p>
-							<p>더미 자격사항</p>
-							<p>더미 자격사항</p>
+							<c:forEach var="c" items="${certificate}">
+								<p>${c.gd_certificate}</p>
+							</c:forEach>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>후기 & 별점</td>
 					<td colspan="3">
-						<div style="overflow: auto; width: 100%; height: 70px;">
+						<div style="overflow: auto; width: 100%; height: 150px;">
 							<div>평균 별점 : ${data.starAverage}점</div>
+							<br>
+							<br>
 							<c:forEach var="r" items="${review}">
-								<div class="review" id="review">
-									<p>${r.review}</p>
-									<p>${r.user_nick}&nbsp&nbsp${r.star}</p>
+								<div id="review">
+									<p>닉네임 : ${r.user_nick} 별점: ${r.star} <br>
+										후기: ${r.review}</p>
 								</div>
 							</c:forEach>
 						</div>
@@ -435,16 +439,22 @@
 				</tr>
 			</table>
 		</div>
-		<div style="float:left; margin-right:10px;">
+		<div>
 			<div id="calendarForm"></div>
 			<div id="reservableSchedule"></div>
 		</div>
 		<br>
 		<div>
-			<!-- 미구현 -->
-			<div onclick="javascript:goBack()">뒤로가기</div>
-			<!-- 예약페이지로 넘어가기 -->
-			<div id="goReservation">예약하기</div>
+			<table class='default'>
+				<tr>
+					<td>
+						<button onclick="javascript:goBack()">뒤로가기</button>
+					</td>
+					<td>
+						<button id="goReservation">이 가드너로 예약하기</button>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </body>

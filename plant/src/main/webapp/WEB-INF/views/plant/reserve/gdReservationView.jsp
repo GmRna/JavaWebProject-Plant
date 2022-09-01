@@ -29,16 +29,18 @@
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #288CFF;
+	background-color: #b1ddaa;
 	color: #fff;
 }
 
@@ -60,12 +62,12 @@
 }
 
 .custom_calendar_table tbody td.reserved {
-	background-color: #FA5858;
+	background-color: #ff255d;
 	color: #fff;
 }
 
 .custom_calendar_table tbody td.reservable {
-	background-color: #81F781;
+	background-color: #73d5ac;
 	color: #000000;
 }
 
@@ -84,7 +86,7 @@
 		calendarMaker($("#calendarForm"), new Date());
 	});
 	
-	// user_no
+	// gd_no
 	var urlParams = new URL(location.href).searchParams;
 	var gd_no = urlParams.get('gd_no');
 	
@@ -292,6 +294,9 @@
 				"<th><button type='button' class='next'>></button></th>" +
 				"</thead>" +
 				"<thead  class='cal_week'>" +
+        			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약가능한 날을 빨간색은 예약 불가능한 날을 나타냅니다.</th>" +
+        		"</thead>" +
+				"<thead  class='cal_week'>" +
 					"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
 				"</thead>" +
 				// 달력검색을 위한 클래스 생성
@@ -432,7 +437,7 @@
 					// default
 					if ($('#'+idValue+'').attr('class') === 'default') {
 						var noReserve = "";
-							noReserve += "<table border='1'>";
+							noReserve += "<table border='1' class='default'>";
 							noReserve += "	<tr>";
 							noReserve += "		<td colspan='2'>예약이 없는 일정</td>";	
 							noReserve += "	</tr>";	            	
@@ -458,7 +463,7 @@
 		        		// 예약가능 시간	
 		        		if (reservableDate.length > 0) {
 		        			$("#noReserve").html("<div id='noReserve'></div>");
-		        			reservable += "<table border='1'>";
+		        			reservable += "<table border='1' class='default'>";
 		        			reservable += "	<tr>";
 		        			reservable += "		<td colspan='10'>예약가능 일정</td>";	
 		            		reservable += "	</tr>";	            	
@@ -491,7 +496,7 @@
 		            	// 예약된 시간
 		            	if (reservedDate.length > 0) {
 		            		$("#noReserve").html("<div id='noReserve'></div>");
-		            		reserved += "<table border='1'>";
+		            		reserved += "<table border='1' class='default'>";
 		            		reserved += "	<tr>";
 		        			reserved += "		<td colspan='10'>예약된 일정</td>";	
 		        			reserved += "	</tr>";	            	
@@ -523,7 +528,7 @@
 					// 취소 내역
 					var cancel = "";
 					if (reservationCancelDate.length > 0) {
-							cancel += "<table border='1'>";
+							cancel += "<table border='1' class='default'>";
 							cancel += "		<tr>";
 							cancel += "			<td colspan='5'>예약취소내역</td>";	
 							cancel += "		</tr>";	            	
@@ -591,7 +596,7 @@
 				, reserve_major : valueList[2]
 			});
 			var choose = "";
-				choose += "<table border='1'>";
+				choose += "<table border='1' class='default'>";
 				choose += "		<tr>";
 				choose += "			<td colspan='10'>시간수정 및 삭제 선택 내역</td>";	
 				choose += "		</tr>";	            	
@@ -645,7 +650,7 @@
 		reservableChooseList.splice(a, 1); // a부터 1만큼 삭제 ( 자기자신 )
 		
 		var choose = "";
-		choose += "<table border='1'>";
+		choose += "<table border='1' class='default'>";
 		choose += "		<tr>";
 		choose += "			<td colspan='10'>시간수정 및 삭제 선택 내역</td>";	
 		choose += "		</tr>";	            	
@@ -1012,7 +1017,7 @@
 		var reserveInfo = "";
 		for(var i=0; i<reservationList.length; i++) {
 			if(reservationList[i].reservable_no === reserved_no) {
-				reserveInfo += "<table border='1'>";
+				reserveInfo += "<table border='1' class='default'>";
 				reserveInfo += "	<tr>";
 				reserveInfo += "		<td colspan='4'>예약된 일정 상세보기</td>";
 				reserveInfo += "	</tr>";
@@ -1190,7 +1195,7 @@
 			<!-- 예약 추가 하기 -->
 			<div>
 				<div>
-					<table border="1">
+					<table border="1" class='default'>
 						<tr>
 							<td colspan='3'>예약가능일 추가하기</td>
 						</tr>

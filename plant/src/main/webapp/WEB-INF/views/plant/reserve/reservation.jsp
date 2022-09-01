@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,16 +28,18 @@
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
+	color: #B1DDAA;
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #288CFF;
+	background-color: #b1ddaa;
 	color: #fff;
 }
 
@@ -58,12 +61,12 @@
 }
 
 .custom_calendar_table tbody td.reserved {
-	background-color: #FA5858;
+	background-color: #ff255d;
 	color: #fff;
 }
 
 .custom_calendar_table tbody td.reservable {
-	background-color: #81F781;
+	background-color: #73d5ac;
 	color: #000000;
 }
 </style>
@@ -77,6 +80,11 @@
 	$(function(){
 		calendarMaker($("#calendarForm"), new Date());	
 	})
+	
+	// gd_no
+	var urlParams = new URL(location.href).searchParams;
+	var gd_no = urlParams.get('gd_no');
+	
 	// 시간 변수
 	var nowDate = new Date();
 	
@@ -201,6 +209,9 @@
 			calendar_html_code += "<span>" + year + "</span>년 <span>" + month + "</span>월</p></th>" +
 						"<th><button type='button' class='next'>></button></th>" +
             		"</thead>" +
+	            	"<thead  class='cal_week'>" +
+            			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약가능한 날을 빨간색은 예약 불가능한 날을 나타냅니다.</th>" +
+            		"</thead>" +
             		"<thead  class='cal_week'>" +
             			"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
             		"</thead>" +
@@ -290,7 +301,7 @@
         		// 삭제 후 예약데이터와 비교하여 다시 클래스 변경
     	        classChange();
 	        		res += "<h3>예약가능 스케줄</h3>";
-        			res += "<table border='1'>";
+        			res += "<table border='1' class='default'>";
     	    		res += "	<tr>";
 	        		res += "		<td colspan='3'>";
         			res += "			"+date.format('YYYY-MM-DD')+"";
@@ -564,20 +575,34 @@
 			frm.submit();
 		}
 	}
+	
+	// 결제 페이지로 이동
+	function goBack() {
+		location.href="/plant/reserve/profileView.do?gd_no"+gd_no+"";
+	}
 
 </script>
 </head>
 <body>
-	<h1>예약 상세 페이지</h1>
+	<div>
+		<table border="1" class='default'>
+			<tr>
+				<th style='text-align: center;'>예약 상세 페이지</th>
+			</tr>
+		</table>
+	</div>
 	<!-- 예약페이지 상단 -->
 	<div>
 		<!-- 가드너 프로필 -->
-		<div style="float: left; margin-right: 10px;">
-			<table border="1" id="top">
+		<div>
+			<table border="1" id="top" class='default'>
 				<tr>
-					<td rowspan="7" style="width: 100px;">사진(${data.gd_picorg},
-						${data.gd_picreal})</td>
-					<!-- 사진 미리보기 기능은 추후 구현 -->
+					<th colspan='6' style='text-align: center;'>가드너 프로필 카드</th>
+				</tr>
+				<tr>
+					<td rowspan="7" style="width: 300px; text-align: center;">
+						<img src='<%=request.getContextPath()%>/upload/${data.gd_picreal}' style='width:90px; height:90px;' >
+					</td>
 					<td>이름</td>
 					<td>&nbsp${data.gd_name}&nbsp(만 ${data.gd_age}세)&nbsp</td>
 					<td>연락처</td>
@@ -617,7 +642,19 @@
 					<td>이력</td>
 					<td colspan="3">
 						<div style="overflow: auto; width: 100%; height: 70px;">
-							<p>${data.gd_career}</p>
+							<c:forEach var="c" items="${career}">
+								<p>${c.gd_career}</p>
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>자격 사항</td>
+					<td colspan="3">
+						<div style="overflow: auto; width: 100%; height: 70px;">
+							<c:forEach var="c" items="${certificate}">
+								<p>${c.gd_certificate}</p>
+							</c:forEach>
 						</div>
 					</td>
 				</tr>
@@ -628,7 +665,7 @@
 		<div>
 			<div id="reservableSchedule"></div>
 			<div>
-				<table border='1'>
+				<table border='1' class='default'>
 					<tbody>
 						<tr>
 							<td colspan='5'>선택한 예약 정보</td>
@@ -646,7 +683,7 @@
 					<tbody id="select">
 					</tbody>
 				</table>
-				<table border='1'>
+				<table border='1' class='default'>
 					<!-- 소계 가격 -->
 					<tbody>
 						<tr>
@@ -666,7 +703,7 @@
 					<tbody id="price">
 					</tbody>
 				</table>
-				<table border='1'>
+				<table border='1' class='default'>
 					<!-- 합산 가격 -->
 					<tbody>
 						<tr>
@@ -689,10 +726,17 @@
 						type="hidden" name="user_no" value=""> <input
 						type="hidden" name="selectReserve" value="noSelect">
 				</div>
-				<button type="button" onClick="">뒤로가기</button>
-				<!-- 미구현 -->
-				<button type="button" onClick="javascript:goPay();">결제하기</button>
 			</form>
+			<table class='default'>
+				<tr>
+					<td>
+						<button onclick="javascript:goBack()">뒤로가기</button>
+					</td>
+					<td>
+						<button onClick="javascript:goPay()">이 일정으로 예약하기</button>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</div>
 </body>
