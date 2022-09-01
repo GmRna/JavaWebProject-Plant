@@ -64,6 +64,8 @@ public class ReserveVO {
 	private String selectReserve; // 선택한 예약번호
 	private List<Integer> selectReserveSubTotal; // 소계 금액
 	private int reserve_cancel; // 취소 여부
+	private int reserve_completion; // 진행 여부
+	private int reserve_review; // 댓글 등록 여부
 	
 	
 	//케어종목가격
@@ -107,6 +109,14 @@ public class ReserveVO {
 	// 케어진행완료
 	private int completion_no; // 케어진행 번호
 	private int completion_count; // 케어진행 수 세기
+	private Timestamp completion_date; // 저장시간
+	private String completion_comment; // 완료사항
+	private String completion_picorg1; // 사진1
+	private String completion_picreal1; // 사진1 
+	private String completion_picorg2; // 사진2
+	private String completion_picreal2; // 사진2 
+	private String completion_picorg3; // 사진3
+	private String completion_picreal3; // 사진3 
 	
 	// 체크박스
 	private String searchMajor; // 검색조건 : 케어종목

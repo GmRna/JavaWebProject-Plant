@@ -46,7 +46,7 @@ var filesArr = new Array();
 
 /* 첨부파일 추가 */
 function addFile(obj){
-    var maxFileCnt = 5;   // 첨부파일 최대 개수
+    var maxFileCnt = 3;   // 첨부파일 최대 개수
     var attFileCnt = document.querySelectorAll('.filebox').length;    // 기존 추가된 첨부파일 개수
     var remainFileCnt = maxFileCnt - attFileCnt;    // 추가로 첨부가능한 개수
     var curFileCnt = obj.files.length;  // 현재 선택된 첨부파일 개수
@@ -125,9 +125,8 @@ function filecheck() {
     	return fales;
     	
     } else {
-		
     		
-    	var form = document.querySelector("form");
+    	var form = $('form')[0];
     	var formData = new FormData(form);
 
     	    for (var i = 0; i < filesArr.length; i++) {
@@ -171,7 +170,7 @@ function filecheck() {
 
 
 <div class="insert">
-    <form method="post" onsubmit="return false;"  enctype="multipart/form-data" >
+    <form id="form" method="post" onsubmit="return false;"  enctype="multipart/form-data" >
         내용 <textarea name="pet_content" id="pet_content"></textarea>
         	<input type="file" onchange="addFile(this);"  multiple />
         	<div class="file-list"></div>

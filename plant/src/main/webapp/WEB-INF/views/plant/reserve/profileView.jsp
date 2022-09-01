@@ -245,12 +245,7 @@
 	        $(".custom_calendar_table").on("click", ".next", function () {
 	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
 	            calendarMaker($(target), nowDate);
-	        });
-	        // 년월 클릭
-	        $(".custom_calendar_table").on("click", ".next", function () {
-	            nowDate = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, nowDate.getDate());
-	            calendarMaker($(target), nowDate);
-	        });	        
+	        });   
 	        //일자 선택 클릭
 	        $(".custom_calendar_table").on("click", "td", function () {
 				// 클릭한 id값 찾기

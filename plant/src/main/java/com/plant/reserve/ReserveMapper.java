@@ -35,17 +35,23 @@ public interface ReserveMapper {
 	ReserveVO viewReservation(ReserveVO vo); // 예약내역 조회
 	List<ReserveVO> userReservation(ReserveVO vo); // 유저예약 내역 확인
 	List<ReserveVO> gdReservation(ReserveVO vo); // 가드너 내역 확인
+	List<ReserveVO> selectGdReservationCancel(ReserveVO vo); // 가드너 예약 취소 내역 확인
 	int insertReservation(ReserveVO vo); // 예약 insert
 	int changeReservation(ReserveVO vo); // 예약 변경
 	int updateReservation(ReserveVO vo); // 결제시 결제 컬럼값 변경
 	int updateReservationCancel(ReserveVO vo); // 예약 취소 여부 업데이트
+	int updateRservationReview(ReserveVO vo); // 리뷰 등록 여부 업데이트
 	
 	// 취소
 	int insertCancel(ReserveVO vo); // 취소 insert
+	List<ReserveVO> selectGdCancel(ReserveVO vo); // 가드너 취소내역 조회
 	
 	// 리뷰
 	int insertReview(ReserveVO vo); // 리뷰 insert
 	int answerReview(ReserveVO vo); // 리뷰 답변 update
+	List<ReserveVO> selectUserReview(ReserveVO vo); // 유저 리뷰 내역
+	List<ReserveVO> selectGdReview(ReserveVO vo); // 가드너 리뷰 내역
+	
 	
 	// 1:1문의
 	int insertInquiry(ReserveVO vo); // 1:1문의 insert
@@ -61,6 +67,7 @@ public interface ReserveMapper {
 	// 케어진행
 	int insertCompletion(ReserveVO vo); // 케어진행내용 입력
 	int updateCompletion(ReserveVO vo); // 케어진행완료 여부 입력
-	List<ReserveVO> selectCompletion(ReserveVO vo); // 케어진행된 내역 불러오기
+	List<ReserveVO> selectCompletionGd(ReserveVO vo); // 가드너 케어진행된 내역 불러오기
+	List<ReserveVO> selectCompletionUser(ReserveVO vo); // 유저 케어진행된 내역 불러오기
 	List<ReserveVO> selectNoCompletion(ReserveVO vo); // 케어진행되지 않은 내역 불러오기 
 }

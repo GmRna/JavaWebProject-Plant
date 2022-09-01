@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import util.DeduplicationUtils;
+
 @Service
 public class ReserveServiceImpl implements ReserveService {
 
@@ -197,11 +199,12 @@ public class ReserveServiceImpl implements ReserveService {
 	}
 
 	@Override
-	public List<ReserveVO> userPayHistoryDeduplication(ReserveVO vo) {
-		// TODO Auto-generated method stub
+	public List<ReserveVO> userPayHistoryDeduplication(ReserveVO vo) { 
+		
 		return mapper.userPayHistoryDeduplication(vo);
 	}
-
+	
+	// pay 프로세스 트랜잭션 처리
 	@Override
 	@Transactional
 	public int payProcess(ReserveVO vo) {
@@ -237,9 +240,15 @@ public class ReserveServiceImpl implements ReserveService {
 	}
 
 	@Override
-	public List<ReserveVO> selectCompletion(ReserveVO vo) {
+	public List<ReserveVO> selectCompletionGd(ReserveVO vo) {
 		// TODO Auto-generated method stub
-		return mapper.selectCompletion(vo);
+		return mapper.selectCompletionGd(vo);
+	}
+	
+	@Override
+	public List<ReserveVO> selectCompletionUser(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectCompletionUser(vo);
 	}
 
 	@Override
@@ -247,6 +256,36 @@ public class ReserveServiceImpl implements ReserveService {
 		// TODO Auto-generated method stub
 		return mapper.selectNoCompletion(vo);
 	}
+
+	@Override
+	public int updateRservationReview(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.updateRservationReview(vo);
+	}
+
+	@Override
+	public List<ReserveVO> selectUserReview(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectUserReview(vo);
+	}
 	
+	@Override
+	public List<ReserveVO> selectGdReview(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectGdReview(vo);
+	}
+
+	@Override
+	public List<ReserveVO> selectGdCancel(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectGdCancel(vo);
+	}
+
+	@Override
+	public List<ReserveVO> selectGdReservationCancel(ReserveVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.selectGdReservationCancel(vo);
+	}
+
 
 }
