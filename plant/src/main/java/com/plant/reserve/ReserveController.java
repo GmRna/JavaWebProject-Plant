@@ -57,6 +57,24 @@ public class ReserveController {
 	ReserveService service;
 	 
 	
+	// 초기화면
+	@GetMapping("/reserve/reserve.do")
+	public String reserve(Model model, ReserveVO vo, HttpServletRequest req) {
+//		// 가드너 번호 set
+//		HttpSession sess = req.getSession();
+//		GdVO gd = new GdVO();
+//		gd = (GdVO) sess.getAttribute("loginGdInfo");
+//		if(gd == null) {
+//			model.addAttribute("msg", "가드너로 로그인 해주십시오.");
+//			model.addAttribute("url", "/plant/gd/login.do");
+//			return "common/alert";
+//		} else {
+		vo.setGd_no(2);
+			model.addAttribute("loginGdInfo", vo); // gd세션값
+			return "plant/reserve/reserve";
+//
+	}
+	
 	// 가드너 검색 사이트
 	@GetMapping("/reserve/searchGardener.do")
 	public String searchGdGet(Model model, ReserveVO vo) {
