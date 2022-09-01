@@ -522,25 +522,25 @@
 		// if문 실행을 위한 boolean
 		var check = false;
 		var res = "";
-			res += "<div>";
-			res += "	<div>";
-			res += "	<span>결제번호</span>";
-			res += "	<span>"+merchant_uid+"</span>";
-			res += "	</div>";
-			res += "	<div>";
-			res += "	<span>예약번호</span>";
+			res += "<table class='default'>";
+			res += "	<tr>";
+			res += "		<td>결제번호</td>";
+			res += "		<td>"+merchant_uid+"</td>";
+			res += "	</tr>";
+			res += "	<tr>";
+			res += "		<td>예약번호</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
 			}
 			if(check) {
-				res += "<div><span>"+userPayHistory[i].reserve_no+"</span></div>";
+				res += "	<td>"+userPayHistory[i].reserve_no+"</td>";
 				check = false;
 			}
 		}
-			res += "	</div>";
-			res += "	<div>";
-			res += "	<span>예약일시</span>";
+			res += "	</tr>";
+			res += "	<tr>";
+			res += "		<td>예약일시</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -548,19 +548,19 @@
 			if(check) {
 				for(var j=0; j<reserved.length; j++){
 					if(userPayHistory[i].reserve_no === reserved[j].reserve_no){
-						res += "<div> 예약일:<span>"+reserved[j].reserve_date+"</span>";
-						res += "시간:<span>"+reserved[j].reserve_hour+"</span>&nbsp";
+						res += "<td> 예약일:"+reserved[j].reserve_date+"";
+						res += "	&nbsp시간:"+reserved[j].reserve_hour+"</td>";
 						if(userPayHistory[i].reserve_completion === 1) {
-							res += "<span id='completionCheck'>[케어진행 완료]</span></div>";
+							res += "<td id='completionCheck'>[케어진행 완료]</td>";
 						}
 					}
 				}
 				check = false;
 			}
 		}
-			res += "	</div>";
-			res += "	<div>";
-			res += "	<span>케어종목</span>";
+			res += "	</tr>";
+			res += "	<tr>";
+			res += "		<td>케어종목</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -568,15 +568,15 @@
 			if(check) {
 				for(var j=0; j<reserved.length; j++){
 					if(userPayHistory[i].reserve_no === reserved[j].reserve_no){								
-							res += "<div><span>"+reserved[j].major+"</span</div>";
+							res += "<td>"+reserved[j].major+"</td>";
 					}
 				}
 			}
 				check = false;
 		}
-			res += "	</div>";
-			res += "	<div>";
-			res += "	<span>가드너 이름</span>";
+			res += "	</tr>";
+			res += "	<tr>";
+			res += "		<td>가드너 이름</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -586,32 +586,30 @@
 					if(userPayHistory[i].reserve_no === reserved[j].reserve_no){
 						for(var k=0; k<gdList.length; k++){
 							if(reserved[j].gd_no === gdList[k].gd_no){
-								res += "<div><span>"+gdList[k].gd_name+"</span></div>";
+								res += "<td>"+gdList[k].gd_name+"</td>";
 								check = false;
 								break;
 							} 
 						}
 					}
-					break;
 				}
-				break;
 			}
 		}
-			res += "	</div>";
-			res += "	<div>";
-			res += "	<span>결제가격</span>";
+			res += "	</tr>";
+			res += "	<tr>";
+			res += "		<td>결제가격</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
 			}
 			if(check) {							
-				res += "<div><span>"+userPayHistory[i].pay_size+"</span></div>";
+				res += "	<td>"+userPayHistory[i].pay_size+"</td>";
 				check = false;
 				break;
 			} 
 		}
-			res += "<div>";
-			res += "<button type='button' name='결제번호 : "+merchant_uid+"\n";
+			res += "	<tr>";
+			res += "		<td><button type='button' name='결제번호 : "+merchant_uid+"\n";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -645,7 +643,7 @@
 			if(check) {
 				for(var j=0; j<reserved.length; j++){
 					if(userPayHistory[i].reserve_no === reserved[j].reserve_no){
-						res += ", "+reserved[j].gd_no+")'>취소 및 환불</button><button type='button' onclick='payHistoryDelete()'>결제 상세보기 닫기</button>";
+						res += ", "+reserved[j].gd_no+")'>취소 및 환불</button></td><td><button type='button' onclick='payHistoryDelete()'>결제 상세보기 닫기</button></td>";
 						check = false;
 						break;
 					}
@@ -653,8 +651,8 @@
 				break;
 			}
 		}
-			res += "	</div>";
-			res += "</div>";
+			res += "	</tr>";
+			res += "</table>";
 		$('#payHistory').html(res);
 	}
 	
@@ -1099,7 +1097,13 @@
 </script>
 </head>
 <body>
-	<h1>유저 예약 확인</h1>
+	<table class='default'>
+		<tr>
+			<th style='text-align: center;'>
+				유저 예약 확인
+			</th>
+		</tr>
+	</table>
 	<div>
 		<!-- 상단 -->
 		<div>
