@@ -85,7 +85,7 @@ public class GdController {
 			service.insertcar(vo);
 			service.insertcer(vo);
 			model.addAttribute("msg", "정상적으로 회원가입되었습니다.");
-			model.addAttribute("url", "/plant/gd/welcome.do");
+			model.addAttribute("url", "/plant/main/index.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "회원가입오류");
@@ -112,6 +112,38 @@ public class GdController {
 	public String login() {
 		return "/plant/gd/login";
 	}
+	
+	@PostMapping("/gd/login.do")
+	public String login(GdVO vo, HttpSession sess, Model model) {
+		if (service.loginCheck(vo, sess)) {
+			return "redirect:/reserve/reserve.do";
+		} else {
+			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
+			return "common/alert";
+		}
+		
+	}
+	
+	@PostMapping("/gd/login")
+	public String login(GdVO vo, HttpSession sess, Model model, HttpServletRequest req) {		
+		if (service.loginCheck(vo, sess)) {
+			vo = (GdVO) sess.getAttribute("loginGdInfo");
+			if(vo.getGd_acc() == 0) {
+				model.addAttribute("msg", "승인대기 중입니다.");
+			}else if(vo.getGd_acc() == 1) {
+				return "redirect:/main/index.do";
+			}else if(vo.getGd_acc() == 2){
+				model.addAttribute("msg", "가입 요청이 거절된 아이디입니다.");
+
+			}else if(vo.getGd_acc() == 3){
+				model.addAttribute("msg", "사용 정지된 아이디입니다.");
+			}
+			return "common/alert";
+		}else {
+			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
+			return "common/alert";
+		}		
+	}	
 	
 	@RequestMapping("/gd/myInfo")
 	public String myInfo(GdVO vo, Model model, HttpServletRequest req) {
@@ -184,32 +216,6 @@ public class GdController {
 		model.addAttribute("vo", data);
 		return "/plant/gd/access";
 	}
-
-	
-	@PostMapping("/gd/login")
-	public String login(GdVO vo, HttpSession sess, Model model, HttpServletRequest req) {		
-		service.loginCheck(vo, sess);
-		//GdVO dbData = service.getInfo(vo.getGd_id());
-		vo = (GdVO) sess.getAttribute("loginGdInfo");
-		
-		if(vo.getGd_acc() == 0) {
-			model.addAttribute("msg", "승인대기 중입니다.");
-			return "common/alert";
-		}else if (vo.getGd_acc() == 1) {
-			return "redirect:/main/index.do";
-		}else if(vo.getGd_acc() == 2){
-			model.addAttribute("msg", "가입 요청이 거절된 아이디입니다.");
-			return "common/alert";
-		}else if(vo.getGd_acc() == 3){
-			model.addAttribute("msg", "사용 정지된 아이디입니다.");
-			return "common/alert";
-		} else {
-		model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
-		return "common/alert";
-		}
-
-
-	}	
 	
 	@GetMapping("/gd/logout.do")
 	public String logout(Model model, HttpServletRequest req) {
@@ -234,7 +240,7 @@ public class GdController {
 		}
 		return "common/return";
 	}
-	  
+	
 	@GetMapping("/gd/findPwd.do")
 	public String findPwd() {
 		return "/plant/gd/findPwd";
