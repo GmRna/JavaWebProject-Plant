@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@page import="java.net.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file ="../../common/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
 
@@ -181,7 +183,7 @@ function filecheck() {
     	        //headers: {'cache-control': 'no-cache', 'pragma': 'no-cache'},
     	        success: function () {
     	            alert("성공");
-    	            //location.href="list.do";
+    	            location.href="list.do";
     	        },
     	        error: function (xhr, desc, err) { 
     	            alert('에러가 발생 하였습니다.');
@@ -193,6 +195,10 @@ function filecheck() {
     }
 }
 
+
+function petlist() {
+	location.href = "list.do";
+}
 </script>
 </head>
 <body>
@@ -210,12 +216,13 @@ function filecheck() {
 				<div id="file${status.index}" class="filebox">
 		        	<img src="<%=request.getContextPath()%>/upload/${flist.filename_real}" style="width:90px; height:90px;" >
 		            <p id="name" class="name"> ${flist.filename_org}</p>
-		            <a class="delete" onclick="deleteFileDB(${status.index},${flist.file_no},'${flist.filename_real}');"><button type="button" class="far fa-minus-square">삭제</button></a>
+		            <a class="delete" onclick="deleteFileDB(${status.index},${flist.file_no},'${flist.filename_real}');">삭제</a>
 				</div>
 	        </c:forEach>   
         	</div>
 	</form>
 	<input type="submit" onclick="filecheck();" value="수정완료">
+	<input type="submit" onclick="petlist();" value="목록으로">
 </div>
 
 </body>

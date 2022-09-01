@@ -61,7 +61,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		
 		if (user != null) {
 			vo.setUser_no(user.getUser_no());
@@ -82,7 +82,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		vo.setUser_no(user.getUser_no());
 
 		int no = service.insert(vo);
@@ -129,7 +129,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		vo.setUser_no(user.getUser_no());
 
 		int no = service.update(vo);
@@ -203,7 +203,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		
 		System.out.println("pet_no 이랑 넘어오니? : " + vo.getPet_no());
 		
@@ -224,11 +224,12 @@ public class PetplantController {
 		// 유저번호 set 해주면 user_no 똑같아 져서 새로 vo 추가해서 set해줌
 		//vo.setUser_writeNo(vo.getUser_no());
 		model.addAttribute("petboard", vo);
+		System.out.println("vo : " + vo.getUser_plantfile_real());
 		
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		
 		if(user != null) {
 			vo.setUser_no(user.getUser_no());
@@ -249,7 +250,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		vo.setUser_no(user.getUser_no());
 				
 		model.addAttribute("comment", service.reply(vo));
@@ -270,7 +271,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		vo.setUser_no(user.getUser_no());
 		
 		model.addAttribute("comment", service.rereply(vo));
@@ -287,7 +288,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		
 		vo.setUser_no(user.getUser_no());
 		vo.setPet_no(no);
@@ -313,7 +314,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		vo.setUser_no(user.getUser_no());
 		
 		int like = service.checkLikeReply(vo);
@@ -347,7 +348,7 @@ public class PetplantController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		vo.setUser_no(user.getUser_no());
 		
 		int no = service.selectsavepetplant(vo);

@@ -18,4 +18,8 @@ public interface PetplantDiaryService {
 	// 디테일
 	Map listdetDiary(PetplantDiaryVO vo);
 
+	PetplantDiaryVO editDiary(int diary_no);
+
+	int updateDiary(PetplantDiaryVO vo);
+
 }

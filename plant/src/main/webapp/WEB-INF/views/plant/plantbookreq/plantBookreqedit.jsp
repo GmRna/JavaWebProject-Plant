@@ -8,6 +8,11 @@
 <head>
 <meta charset="UTF-8">
 <title>식물 도감 요청 게시판 view</title>
+<style type="text/css">
+.pad{
+	padding-top: 60px;
+}
+</style>
 </head>
 <script type="text/javascript">
 function modifyReq(pbreq_no) {
@@ -18,11 +23,12 @@ function deleteReq(pbreq_no) {
 }
 </script>
 <body>
-<div>
+
+<div id="pad">
 	<form id="frm" method="post" action="modifyBookreq.do" enctype="multipart/form-data">
 		<input type="hidden" name="pbreq_no" value="${reqlist.pbreq_no}">
 		<input type="hidden" name="user_no" value="${reqlist.user_no}">
-		
+		요청 상황 : 
 		<c:if test="${reqlist.pbreq_status == 1}">
 			요청중
 		</c:if>

@@ -15,15 +15,12 @@
 <div id="page-wrapper">
 <!-- Header -->
 	<section id="header">
-	
 		<h1><a href="/plant/main/index.do">P L A N T</a></h1>
 		
 		<nav id="nav">
 		<ul>
 			<li class="current"><a href="/plant/main/index.do">HOME</a></li>
-			
 			<li><a href="right-sidebar.html">예약하기</a></li>
-			
 			<li>
 				<a href="#">반려식물</a>
 				<ul>
@@ -32,6 +29,7 @@
 			        <li><a href="/plant/plantbookreq/writeBookreq.do">식물 도감 요청 리스트 글쓰기</a></li>
 			        <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
 			    	<li><a href="/plant/petplantDiary/writeDiary.do">관찰일지 쓰기</a></li>
+			    	<li><a href="/plant/petplantDiary/listDiary.do">관찰일지</a></li>
 				</ul>
 			</li>
 			
@@ -62,9 +60,8 @@
 					<a href="/plant/user/myInfo.do" class="mypage">My page</a>
 					<ul>
 				        <li><a href="/plant/user/myInfo.do">마이페이지</a></li>
-				    	<li><a href="/plant/petplantDiary/writeDiary.do">관찰일지 쓰기</a></li>
+				    	<li><a href="/plant/petplantDiary/listDiary.do">관찰일지</a></li>
 					</ul>
-				
 				</li>
 				<li>
 					<a href="/plant/user/logout.do">로그아웃</a>
@@ -85,7 +82,7 @@
 	<!-- Banner -->
 	<section id="banner">
 		<header>
-			<h2>안녕하세요 반가워요 잘 있어요 다시 만나요</h2>
+			<h2>P L A N T</h2>
 			<p>P L A N T</p>
 		</header>
 	</section>

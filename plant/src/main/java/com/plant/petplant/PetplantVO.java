@@ -17,6 +17,7 @@ public class PetplantVO {
 	private String pet_content;
 	private String user_nick;
 	private int user_writeNo;
+	private String user_plantfile_real;
 	
 	// 파일 저장
 	private int file_no;

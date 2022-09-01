@@ -19,7 +19,9 @@ img {
 	width: 24px;
 	height: 24px;
 }
-
+.bbs{
+	padding-top: 60px;
+}
 </style>
 </head>
 
@@ -30,10 +32,10 @@ function view(pbreq_no) {
 </script>
 
 
-<body>
+<body >
 
 
-<div class="bbs">
+<div class="bbs" >
 	<table class="list">
 		<colgroup>
 		    <col width="80px" />

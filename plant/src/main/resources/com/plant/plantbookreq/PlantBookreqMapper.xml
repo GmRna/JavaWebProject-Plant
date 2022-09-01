@@ -34,6 +34,7 @@
 			</if>
 		</where>		
 	</select>
+	
 	<select id="viewBookreq"  resultType="com.plant.plantbookreq.PlantBookreqVO" >
 		SELECT * ,
 			(SELECT user_nick FROM user WHERE user_no = a.user_no ) AS user_nick
@@ -59,14 +60,37 @@
 			, #{pbreq_content}
 			, #{pbreq_status}
 			, #{pbreq_gno}
-			, #{pbreq_admin}
+			, 1
 			, NOW()
 			, #{filename_org}
 			, #{filename_real}
 		)
-		<selectKey keyProperty="pbreq_no" resultType="int" order="AFTER">
-			SELECT LAST_INSERT_ID()			
-		</selectKey>
 	</insert>
+		
+	<insert id="insertadmin">
+		INSERT INTO plantbookreq (
+				 pbreq_title
+				, pbreq_content
+				, pbreq_status
+				, pbreq_gno
+				, pbreq_ono
+				, pbreq_admin
+				, pbreq_regdate
+				, filename_org
+				, filename_real
+			) VALUES ( 
+				 #{pbreq_title}
+				, #{pbreq_content}
+				, #{pbreq_status}
+				, #{pbreq_gno}
+				, 1
+				, #{pbreq_admin}
+				, NOW()
+				, #{filename_org}
+				, #{filename_real}
+			)
+	</insert>
+	
+	
 	
 </mapper>

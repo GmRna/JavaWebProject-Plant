@@ -85,16 +85,28 @@
 		)
 	</insert>
 	
-	
-	
 	<update id="gnoUpdate" parameterType="int">
 		UPDATE petplantdiary SET diary_gno=#{diary_gno} WHERE diary_no=#{diary_no}
 	</update>
-	
 	
 	<update id="onoUpdate" parameterType="int">
 		UPDATE petplantdiary SET diary_ono=diary_ono+1 WHERE diary_no=#{diary_no} AND diary_ono > #{diary_ono}
 	</update>
 	
+	<select id="editDiary" parameterType="int" resultType="com.plant.petplantDiary.PetplantDiaryVO">
+		SELECT * FROM petplantdiary WHERE diary_no=#{diary_no}
+	</select>
 	
+	
+	<update id="updateDiary" parameterType="com.plant.petplantDiary.PetplantDiaryVO">
+		UPDATE petplantdiary 
+			SET 
+				user_plantname = #{user_plantname}
+				, user_plantfile_org = #{user_plantfile_org}
+				, user_plantfile_real = #{user_plantfile_real}
+				, diary_title = #{diary_title}
+				, diary_weather = #{diary_weather}
+				, diary_content = #{diary_content}
+		WHERE diary_no=#{diary_no}
+	</update>
 </mapper>

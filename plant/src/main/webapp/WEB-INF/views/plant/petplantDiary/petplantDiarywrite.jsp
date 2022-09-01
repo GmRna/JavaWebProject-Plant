@@ -100,7 +100,7 @@ body {
 
 <div>
 	<form id="frm" method="post" action="insertDiary.do"  enctype="multipart/form-data" >
-		<span>기르기 시작한 날짜 <input type="text" id="datepicker" name="pet_regdate"></span> 
+		<span>기르기 시작한 날짜 <input type="text" id="datepicker" name="pet_regdate" title="저장하면 수정 불가"></span> 
 		<span id="todaypet"></span>    일째
 		<input type="hidden" name="diary_day">
 		<br><br>

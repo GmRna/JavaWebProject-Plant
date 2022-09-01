@@ -21,6 +21,8 @@ import com.plant.plantbookreq.PlantBookreqService;
 import com.plant.plantbookreq.PlantBookreqVO;
 import com.plant.user.UserVO;
 
+import retrofit2.http.POST;
+
 @Controller
 public class PetplantDiaryController {
 
@@ -173,5 +175,54 @@ public class PetplantDiaryController {
 		}
 	}
 		
+	// 반려 식물 관찰일지 - 수정
+	@GetMapping("/petplantDiary/editDiary.do")
+	public String editDiary (PetplantDiaryVO vo , Model model) {
+		model.addAttribute("diary", service.editDiary(vo.getDiary_no()));
+		return "plant/petplantDiary/petplantDiaryEdit";
+	}
+	
+	// 반려 식물 관찰일지 - 수정
+	@PostMapping("/petplantDiary/updateDiary.do")
+	public String updateDiary (PetplantDiaryVO vo, Model model, @RequestParam MultipartFile file, HttpServletRequest req) {
+		//유저 번호 set 
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		vo.setUser_no(user.getUser_no());
+		
+		System.out.println("vo = " + vo.getDiary_content() + vo.getDiary_title());
+		
+		if(!file.isEmpty()) {
+			String fileorg = file.getOriginalFilename();
+			System.out.println("파일 이름 : " + fileorg);
+			String fileext = fileorg.substring(fileorg.lastIndexOf("."));
+			String filereal = new Date().getTime()+fileext;
+			
+			String path = req.getRealPath("/upload");
+			
+			try {
+				System.out.println("파일저장");
+				file.transferTo(new File(path+filereal));
+			
+			} catch (Exception e) {
+				System.out.println("파일 저장 실패" + e);
+			}
+			
+			vo.setUser_plantfile_org(fileorg);
+			vo.setUser_plantfile_real(filereal);
+		}
+		
+		int no = service.updateDiary(vo);
+		
+		if(no == 1) {
+			model.addAttribute("msg", "정상적으로 수정되었습니다.");
+			model.addAttribute("url", "listDiary.do");
+			return "common/alert";
+		}else {
+			model.addAttribute("msg", "수정 실패.");
+			return "common/alert";
+		}
+	}
 	
 }

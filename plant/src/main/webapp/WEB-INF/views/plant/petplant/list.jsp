@@ -3,7 +3,7 @@
 <%@page import="java.net.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
- <%@include file ="../../common/petplantheader.jsp" %>
+ <%@include file ="petplantheader.jsp" %>
  
 <!DOCTYPE html>
 <html>
@@ -37,7 +37,7 @@ var listIdx = 0;
 $(function () {
 	
 	// 반려식물 TR 클릭 시 
-	$("#petplant #petplantImgDiv, #petplant #petreplydiv").click(function(){
+	$("#petplant #petplantImgDiv, #petplant .icons-react").click(function(){
 			
 		listIdx = $(this).index("#petplant #petplantImgDiv");
 		
@@ -45,13 +45,12 @@ $(function () {
 		var pet_no = petplant.find("input[name='pet_no']").val();
 		var user_writeNo = petplant.find("input[name='user_writeNo']").val();
 		var like_check = petplant.find("input[name='like_check']").val();
-		
 		//var countLike = petplant.find("input[name='countLike']").val();
-		
 		var countLike = petplant.find("#countLike").text(); 
 		var pet_content = petplant.find("p[name='pet_content']").text();
 		var user_nick = petplant.find("input[name='user_nick']").val();
 		var count_reply = petplant.find("input[name='count_reply']").val();
+		var user_plantfile_real = petplant.find("input[name='user_plantfile_real']").val();
 		
 		petboard = { 
 				"pet_no" : pet_no, 
@@ -60,7 +59,8 @@ $(function () {
 				"like_check" : like_check,
 				"countLike" : countLike,
 				"count_reply" : count_reply,
-				"user_nick" : user_nick 
+				"user_nick" : user_nick,
+				"user_plantfile_real" : user_plantfile_real
 		}; 
 		
 		console.log("게시판 번호 내용 : "+petboard.pet_no +" : "+ petboard.pet_content +" : "); 
@@ -76,7 +76,8 @@ $(function () {
 				like_check : like_check,
 				user_nick : user_nick,
 				count_reply : count_reply,
-				user_writeNo : user_writeNo
+				user_writeNo : user_writeNo,
+				user_plantfile_real : user_plantfile_real
 			},
 			//dataType : 'json',
 			success : function (data) {
@@ -113,7 +114,7 @@ $(function () {
 	// 게시판 좋아요 클릭
 	$("#petlikediv #petlike").click(function(){ 
 		
-		<c:if test="${empty loginInfo}">
+		<c:if test="${empty loginUserInfo}">
 			alert('로그인 후 이용해주세요');
 			location.href="/plant/user/login.do";
 			return false;
@@ -134,11 +135,11 @@ $(function () {
 			dataType : 'json',
 			success : function (like) {
 				if (like == 1 ){
-					$(likesrc).attr('src','/plant/img/plant/seedLike.png');
+					$(likesrc).attr('src','/plant/img/petplant/seedLike.png');
 					countlike = parseInt(countlike) + 1;
 					$(spanlike).text(countlike);
 				} else {
-					$(likesrc).attr('src','/plant/img/plant/seednotLike.png');
+					$(likesrc).attr('src','/plant/img/petplant/seednotLike.png');
 					countlike = parseInt(countlike) - 1;
 					$(spanlike).text(countlike);
 				}
@@ -201,7 +202,7 @@ $(function () {
 	
 	
 	$(".icons-react #petputDiv").click(function () {
-		<c:if test="${empty loginInfo}">
+		<c:if test="${empty loginUserInfo}">
 			alert('로그인 후 이용해주세요');
 			location.href="/plant/user/login.do";
 			return false;
@@ -223,9 +224,9 @@ $(function () {
 			success : function(no) {
 				if(no == 1){
 					console.log("no : " +no);
-					$(petputDiv).attr('src','/plant/img/plant/save2.png');
+					$(petputDiv).attr('src','/plant/img/petplant/save2.png');
 				} else {
-					$(petputDiv).attr('src','/plant/img/plant/save1.png');
+					$(petputDiv).attr('src','/plant/img/petplant/save1.png');
 				}
 			}, error: function (xhr, desc, err) {
 	            alert('에러가 발생');
@@ -247,7 +248,7 @@ $(function () {
 //댓글 저장
 function addreply() {
 	
-	<c:if test="${empty loginInfo}">
+	<c:if test="${empty loginUserInfo}">
 		alert('로그인 후 이용해주세요');
 		location.href="/plant/user/login.do";
 		return false;
@@ -313,7 +314,7 @@ function delreplyfrm(replyno) {
 
 // 답글 저장
 function addrereply(replyno) {
-	<c:if test="${empty loginInfo}">
+	<c:if test="${empty loginUserInfo}">
 		alert('로그인 후 이용해주세요');
 		location.href="/plant/user/login.do";
 		return false; 
@@ -395,7 +396,7 @@ function modfrmreply(replyno,replyuserno,replycont,replycheck) {
 
 // 댓글, 답글 수정 
 function modreply(replyno) {
-	<c:if test="${empty loginInfo}">
+	<c:if test="${empty loginUserInfo}">
 		alert('로그인 후 이용해주세요');
 		location.href="/plant/user/login.do";
 		return false;
@@ -445,7 +446,7 @@ function replyload() {
 
 </head>
 <body>
-<h2>반려식물 게시판 ${loginInfo.user_id}</h2>
+<h2>반려식물 게시판 ${loginUserInfo.user_id}</h2>
 
 <div class="popup_layer" id="popup_layer" style="display: none;">
 	<div class="popup_box">
@@ -457,109 +458,101 @@ function replyload() {
     	</div>
 	</div>
 </div>
-	<main>
-      <div class="feeds" id="petplant" >
-      	<c:forEach items="${list}" var="list">
-       
-        <!-- article 프로필 사진 및 아이디-->
-	        <article>
-	          <header>
-	            <div class="profile-of-article">
-	              <img class="img-profile pic" src="" >
-	              <span class="userID main-id point-span" >${list.user_nick }</span>
-	            </div>
-	            <!-- 더보기 버튼  -->
-	            <div id="icon-react">
-	            	<img class="icon-react icon-more" id="icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" >
-	            	<div id="reportList${list.pet_no}"></div>
-	            	
-	            	<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
-	            	<div class="moreDiv" id="moreDiv${list.pet_no}" style="display:none;" >
-						<c:if test="${loginInfo.user_no eq list.user_writeNo }">
-							<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/plant/edit.png" >수정하기</span>
-						</c:if>
-						<c:if test="${empty loginInfo or loginInfo.user_no ne list.user_writeNo}">
-						<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/plant/siren.png" >신고하기</span>
-						</c:if>
+<main>
+	<div class="feeds" id="petplant" >
+		<c:forEach items="${list}" var="list">
+    	<!-- article 프로필 사진 및 아이디-->
+     		<article>
+				<header>
+					<div class="profile-of-article">
+						<img class="img-profile pic" src="<%=request.getContextPath()%>/upload/${list.user_plantfile_real}" >
+						<span class="userID main-id point-span" >${list.user_nick }</span>
 					</div>
-	            </div>
-	          </header>
-	          
-	          <!-- 넘겨줘야할 vo -->
-		      <input type="hidden" name="pet_no" value="${list.pet_no }">
-		      <input type="hidden" name="user_writeNo" value="${list.user_writeNo }">
-			  <input type="hidden" name="like_check" value="${list.like_check }">
-		      
-		      <%-- <input type="hidden" name="countLike" value="${list.countLike }"> --%>
-		      
-		      <input type="hidden" name="user_nick" value="${list.user_nick }">
-		      <input type="hidden" name="count_reply" value="${list.count_reply }">
-		          
-	          <!-- 상세 페이지 창 띄우는 이미지 petplantImgDiv -->
-	          <div id="petplantImgDiv">
-				  <!-- 이미지 -->		       
-		          <div class="main-image">
-		          <c:set var="pets" value="${fn:split(list.filename_real,',')}"></c:set>
-				  	<c:forEach items="${pets}" var="pets" begin="0" end="0">
-						<img class="pet_img"  src="<%=request.getContextPath()%>/upload/${pets}">
-					</c:forEach>
-		          </div>
-			  </div>
-		     	  
-		          <div class="icons-react">
-		            <div class="icons-left" id="petlikediv">
-		            	<div id="petlike">
-			           		<c:choose>	
+					<!-- 더보기 버튼  -->
+					<div id="icon-react">
+						<img class="icon-react icon-more" id="icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" >
+						<div id="reportList${list.pet_no}"></div>
+						<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
+						<div class="moreDiv" id="moreDiv${list.pet_no}" style="display:none;" >
+							<c:if test="${loginUserInfo.user_no eq list.user_writeNo }">
+								<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
+							</c:if>
+							<c:if test="${empty loginUserInfo or loginUserInfo.user_no ne list.user_writeNo}">
+								<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>
+							</c:if>
+						</div>
+					</div>
+				</header>
+       
+				<!-- 넘겨줘야할 vo -->
+				<input type="hidden" name="pet_no" value="${list.pet_no }">
+				<input type="hidden" name="user_writeNo" value="${list.user_writeNo }">
+				<input type="hidden" name="like_check" value="${list.like_check }">
+			    <input type="hidden" name="user_nick" value="${list.user_nick }">
+			    <input type="hidden" name="count_reply" value="${list.count_reply }">
+			    <input type="hidden" name="user_plantfile_real" value="${list.user_plantfile_real}">
+        
+				<!-- 상세 페이지 창 띄우는 이미지 petplantImgDiv -->
+				<div id="petplantImgDiv">
+  					<!-- 이미지 -->		       
+			        <div class="main-image">
+						<c:set var="pets" value="${fn:split(list.filename_real,',')}"></c:set>
+							<c:forEach items="${pets}" var="pets" begin="0" end="0">
+								<img class="pet_img"  src="<%=request.getContextPath()%>/upload/${pets}">
+							</c:forEach>
+			        </div>
+		 		</div> 
+		 		
+   	  			<!-- 아이콘들 -->
+				<div class="icons-react">
+			        <div class="icons-left" id="petlikediv">
+			        	<!-- 좋아요 아이콘 -->
+						<div id="petlike">
+							<c:choose>	
 								<c:when test="${list.like_check == 1}">
-									<img id="likeicon" class="icon-react seedImage" src="/plant/img/plant/seedLike.png" >
+									<img id="likeicon" class="icon-react seedImage" src="/plant/img/petplant/seedLike.png" >
 								</c:when>
-								<c:otherwise>
-									<img id="likeicon" class="icon-react seedImage" src="/plant/img/plant/seednotLike.png" >
-								</c:otherwise>
+							<c:otherwise>
+								<img id="likeicon" class="icon-react seedImage" src="/plant/img/petplant/seednotLike.png" >
+							</c:otherwise>
 							</c:choose>
 						</div>
-					  <!-- 댓글 아이콘 -->
-					  <div id="petreplydiv">
-		              	<img class="icon-react" src="/plant/img/plant/speech-bubble.png" >
-		              </div>
-		            </div>
-		              <!-- 담기 아이콘 -->
-		              <div class="icon-react" id="petputDiv">
-		              	<c:if test="${list.ppp_check == 0 }">
-					  		<img class="icon-react save" src="/plant/img/plant/save1.png" >
-					  	</c:if>
-		              	<c:if test="${list.ppp_check == 1 }">
-					  		<img class="icon-react save" src="/plant/img/plant/save2.png" >
-					  	</c:if>
-					  </div>
-		          </div>
-		          
-		          <!-- article text data -->
-		          <div class="reaction">
-			          <div class="liked-people">
-			          	<p><span class="point-span countLike" id="countLike">${list.countLike}</span>명이 좋아합니다</p>
-			          </div>
-		            <!-- 내용 -->
-		          	<div class="description">
-		            	<span class="point-span userID">${list.user_nick }</span><p name="pet_content">${list.pet_content }</p>
-		          	</div>
-		            <br>
-
-		             <!-- 댓글 수 -->
-		             <div class="comment-section" id="reply">
-			         	<div class="time-log">
-		                	<span>댓글 수 ${list.count_reply}개</span>
-		              	</div>
-		             </div>
-		             <br>
-		          </div>
-		    	
-	        </article>
-	        
-	       
-        </c:forEach>
-      </div>
-    </main>
+						<!-- 댓글 아이콘 -->
+				        <img class="icon-react" src="/plant/img/petplant/speech-bubble.png" >
+					</div>
+						<!-- 담기 아이콘 -->
+						<div class="icon-react" id="petputDiv">
+				          	<c:if test="${list.ppp_check == 0 }">
+						 		<img class="icon-react save" src="/plant/img/petplant/save1.png" >
+						 	</c:if>
+				          	<c:if test="${list.ppp_check == 1 }">
+						 		<img class="icon-react save" src="/plant/img/petplant/save2.png" >
+						 	</c:if>
+						 </div>
+				</div>
+        
+		        <!-- article text data -->
+		        <div class="reaction">
+					<div class="liked-people">
+						<p><span class="point-span countLike" id="countLike">${list.countLike}</span>명이 좋아합니다</p>
+					</div>
+		          	<!-- 내용 -->
+		        	<div class="description">
+		          		<span class="point-span userID">${list.user_nick }</span><p name="pet_content">${list.pet_content }</p>
+		        	</div>
+		          	<br>
+					<!-- 댓글 수 -->
+					<div class="comment-section" id="reply">
+						<div class="time-log">
+		              		<span>댓글 수 ${list.count_reply}개</span>
+		            	</div>
+					</div>
+					<br>
+		        </div>
+		</article>
+    </c:forEach>
+	</div>
+</main>
     
 
 </body>

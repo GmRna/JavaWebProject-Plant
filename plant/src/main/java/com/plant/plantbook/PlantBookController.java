@@ -10,6 +10,10 @@ public class PlantBookController {
 	public String main () {
 		return "plant/plantbook/plantbook";
 	}
+	@GetMapping("/plant/plantbook3.do")
+	public String main3 () {
+		return "plant/plantbook/plantbook2";
+	}
 
 	@GetMapping("/plant/plantbook2.do")
 	public String main2 () {
