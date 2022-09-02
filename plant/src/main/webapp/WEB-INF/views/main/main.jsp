@@ -1,3 +1,4 @@
+<%@page import="com.plant.gd.GdVO"%>
 <%@page import="com.plant.user.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -34,19 +35,19 @@
 				</ul>
 			</li>
 			<li>
-				<a href="#">반려식물</a>
+				<a href="/plant/plant/list.do">반려식물</a>
+			</li>
+			
+			<li>
+				<a href="">식물 도감</a>
 				<ul>
-					<li><a href="/plant/plant/write.do">반려 식물 게시판 글쓰기</a></li>
-			        <li><a href="/plant/plant/list.do">반려 식물 게시판</a></li>
-			        <li><a href="/plant/plantbookreq/writeBookreq.do">식물 도감 요청 리스트 글쓰기</a></li>
+			        <li><a href="/plant/plantbook/search.do">식물 도감</a></li>
 			        <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
-			    	<li><a href="/plant/petplantDiary/writeDiary.do">관찰일지 쓰기</a></li>
-			    	<li><a href="/plant/petplantDiary/listDiary.do">관찰일지</a></li>
 				</ul>
 			</li>
 			
 			<li>
-				<a href="/plant/free/index.do">게시판</a>
+				<a href="">커뮤니티</a>
 				<ul>
 			    	<li><a href="/plant/free/index.do">자유 게시판</a></li>
 			    	<li><a href="/plant/quest/index.do">질문 게시판</a></li>
@@ -54,13 +55,12 @@
 			</li>
 			
 			<li>
-				<a href="/plant/notice/index2.do">공지/문의 사항</a>
+				<a href="">공지/문의 사항</a>
 				<ul>
 					<li><a href="/plant/notice/index2.do">공지 사항</a></li>
-               		<li><a href="/plant/ask/index.do">문의 사항</a></li>
+               		<li><a href="/plant/askreply/index.do">문의 사항</a></li>
 				</ul>
 			</li>
-			
 			
 			<c:if test="${!empty loginUserInfo}"> 
 				<li>
@@ -72,7 +72,7 @@
 					<a href="/plant/user/myInfo.do" class="mypage">My page</a>
 					<ul>
 				        <li><a href="/plant/user/myInfo.do">마이페이지</a></li>
-				    	<li><a href="/plant/petplantDiary/listDiary.do">관찰일지</a></li>
+				    	<li><a href="/plant/petplantDiary/listDiary.do">반려식물 관찰일지</a></li>
 					</ul>
 				</li>
 				<li>
@@ -80,9 +80,30 @@
 				</li>			
 			</c:if>
 			
-			<c:if test="${empty loginUserInfo}"> 
+			<c:if test="${!empty loginGdInfo}"> 
 				<li>
-					<a href="/plant/user/login.do">로그인</a>
+					<% 
+			     	HttpSession sess = request.getSession();
+			     	GdVO gd = new GdVO();
+			     	gd = (GdVO)sess.getAttribute("loginGdInfo");
+			     	%>
+					<a href="" class="mypage">Gardener page</a>
+					<ul>
+				        <li><a href="/plant/gd/myInfo.do">Gardener 정보 수정</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="/plant/gd/logout.do">로그아웃</a>
+				</li>			
+			</c:if>
+			
+			<c:if test="${empty loginUserInfo or empty loginGdInfo}"> 
+				<li>
+					<a href="">로그인</a>
+					<ul>
+				        <li><a href="/plant/user/login.do">일반 회원 로그인</a></li>
+				    	<li><a href="/plant/gd/login.do">가드너 로그인</a></li>
+					</ul>
 				</li>
 			</c:if>
 		</ul>
