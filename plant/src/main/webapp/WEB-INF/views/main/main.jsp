@@ -75,9 +75,6 @@
 				    	<li><a href="/plant/petplantDiary/listDiary.do">반려식물 관찰일지</a></li>
 					</ul>
 				</li>
-				<li>
-					<a href="/plant/user/logout.do">로그아웃</a>
-				</li>			
 			</c:if>
 			
 			<c:if test="${!empty loginGdInfo}"> 
@@ -92,20 +89,24 @@
 				        <li><a href="/plant/gd/myInfo.do">Gardener 정보 수정</a></li>
 					</ul>
 				</li>
-				<li>
-					<a href="/plant/gd/logout.do">로그아웃</a>
-				</li>			
 			</c:if>
 			
-			<c:if test="${empty loginUserInfo or empty loginGdInfo}"> 
-				<li>
-					<a href="">로그인</a>
-					<ul>
-				        <li><a href="/plant/user/login.do">일반 회원 로그인</a></li>
-				    	<li><a href="/plant/gd/login.do">가드너 로그인</a></li>
-					</ul>
-				</li>
-			</c:if>
+			<c:choose>
+				<c:when test="${empty loginUserInfo and empty loginGdInfo}"> 
+					<li>
+						<a href="">로그인</a>
+						<ul>
+							<li><a href="/plant/user/login.do">일반 회원 로그인</a></li>
+						   	<li><a href="/plant/gd/login.do">가드너 로그인</a></li>
+						</ul>
+					</li>
+				</c:when>
+				<c:otherwise> 
+					<li>
+						<a href="/plant/gd/logout.do">로그아웃</a>
+					</li>
+				</c:otherwise>
+			</c:choose>
 		</ul>
 		</nav>
 		
@@ -115,8 +116,12 @@
 	<!-- Banner -->
 	<section id="banner">
 		<header>
-			<h2>P L A N T</h2>
-			<p>P L A N T</p>
+			<div class="search-mode">
+			    <input type="text" class="searchtext" placeholder="   식물도감 검색">
+			    <div class="searicon">
+					<img class="searchimg"src="/plant/img/petplant/search.png">
+				</div>
+		    </div>
 		</header>
 	</section>
 	
