@@ -499,7 +499,7 @@
 		            		$("#noReserve").html("<div id='noReserve'></div>");
 		            		reserved += "<table border='1' class='default'>";
 		            		reserved += "	<tr>";
-		        			reserved += "		<td colspan='10'>예약된 일정</td>";	
+		        			reserved += "		<th colspan='10' style='text-align: center;'>예약된 일정()</th>";	
 		        			reserved += "	</tr>";	            	
 		        			reserved += "	<tr>";            			
 		        			reserved += "		<td>예약일</td>";	
@@ -1153,7 +1153,9 @@
 </script>
 </head>
 <body>
-	<h1>가드너 예약 관리</h1>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>가드너 예약 확인 및 관리</th></tr>
+	</table>
 	<div>
 		<!-- 상단 -->
 		<div>

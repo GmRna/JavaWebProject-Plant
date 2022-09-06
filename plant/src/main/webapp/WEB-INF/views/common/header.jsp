@@ -20,14 +20,14 @@
          
          <li><a>예약</a>
 				<ul>
-			        <li><a href="/plant/reserve/searchGardener.do">예약 시스템 소개</a></li>
+			        <li><a href="/plant/reserve/explainReserve.do">예약 시스템 소개</a></li>
 					<li><a href="/plant/reserve/searchGardener.do">가드너 검색</a></li>
 					<c:if test="${!empty loginUserInfo}"> 
-			        	<li><a href="/plant/reserve/userReservationView.do">나의 예약 관리</a></li>
+			        	<li><a href="/plant/reserve/userReservationView.do?user_no=${loginUserInfo.user_no}">나의 예약 관리</a></li>
 					</c:if>
 					<c:if test="${!empty loginGdInfo}">
-						<li><a href="/plant/reserve/gdReservationView.do">나의 예약일정 관리</a></li>
-						<li><a href="/plant/reserve/completion.do">예약 완료 내역 입력 및 리뷰관리</a></li>
+						<li><a href="/plant/reserve/gdReservationView.do?gd_no=${loginGdInfo.gd_no}">나의 예약일정 관리</a></li>
+						<li><a href="/plant/reserve/completion.do?gd_no=${loginGdInfo.gd_no}">예약 완료 내역 입력 및 리뷰관리</a></li>
 					</c:if> 
 				</ul>
 			</li>

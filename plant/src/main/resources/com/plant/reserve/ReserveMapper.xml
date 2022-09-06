@@ -1015,12 +1015,18 @@
 				, reserve_no
 				, completion_date
 				, completion_comment
-				, completion_picorg1
-				, completion_picreal1
-				, completion_picorg2
-				, completion_picreal2
-				, completion_picorg3
-				, completion_picreal3
+				<if test="completion_picreal1 != null and completion_picreal1 !=''">
+					, completion_picorg1
+					, completion_picreal1
+				</if>
+				<if test="completion_picreal2 != null and completion_picreal2 !=''">
+					, completion_picorg2
+					, completion_picreal2
+				</if>
+				<if test="completion_picreal3 != null and completion_picreal3 !=''">
+					, completion_picorg3
+					, completion_picreal3
+				</if>
 			) VALUES (
 				#{user_no}
 				, #{gd_no}

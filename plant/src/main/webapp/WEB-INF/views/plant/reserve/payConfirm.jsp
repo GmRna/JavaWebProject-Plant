@@ -91,18 +91,15 @@
 </script>
 </head>
 <body>
-	<div>
-		<table border="1" class='default'>
-			<tr>
-				<th style='text-align: center;'>예약 상세 페이지</th>
-			</tr>
-		</table>
-	</div>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>결제 내역</th></tr>
+		<tr><th style='font-size: 10pt; text-align: center;'>예약에 성공하였습니다.</th></tr>
+	</table>
 	<div>
 		<table border="1" class='default'>
 			<tbody>
 				<tr>
-					<td colspan="100">예약정보</td>
+					<th colspan='100' style='font-size: 15pt; text-align: center;'>예약 정보</th>
 				</tr>
 				<tr>
 					<td>예약자</td>
@@ -133,7 +130,7 @@
 			</tbody>
 			<tbody>
 				<tr>
-					<td colspan="100">결제 정보</td>
+					<th colspan='100' style='font-size: 15pt; text-align: center;'>결제 정보</th>
 				</tr>
 				<tr>
 					<td>결제번호(예약번호)</td>
@@ -147,20 +144,22 @@
 					<td>총 결제액</td>
 					<td colspan="100">${vo.pay_size}</td>
 				</tr>
-			</tbody>				
+			</tbody>
 		</table>
-	</div>
-	<div>
-		<div style='margin: auto;'>
-			<!-- 홈페이지 이동 -->
-			<button type='button' onclick='goMain()'>홈페이지로 이동</button>
-			<!-- 가드너 검색창으로 이동 -->
-			<button type='button' onclick='goSearchGardener()'>가드너 검색으로 이동</button>
-			<!-- 가드너 프로필카드 상세페이지 이동 -->
-			<button type='button' onclick='goProfileView(${gd.gd_no})'>가드너 프로필카드 상세페이지</button>
-			<!-- 나의 예약확인 페이지 이동 -->
-			<button type='button' onclick='goUserReservationView(${user.user_no})'>나의 예약확인 페이지</button>
-		</div>
+		<table class='default'>
+			<tr>
+				<td style='text-align: center;'>
+					<!-- 홈페이지 이동 -->
+					<button type='button' onclick='goMain()'>홈페이지로 이동</button>
+					<!-- 가드너 검색창으로 이동 -->
+					<button type='button' onclick='goSearchGardener()'>가드너 검색으로 이동</button>
+					<!-- 가드너 프로필카드 상세페이지 이동 -->
+					<button type='button' onclick='goProfileView(${gd.gd_no})'>가드너 프로필카드 상세페이지</button>
+					<!-- 나의 예약확인 페이지 이동 -->
+					<button type='button' onclick='goUserReservationView(${user.user_no})'>나의 예약확인 페이지</button>
+					</td>
+				</tr>
+		</table>				
 	</div>
 </body>
 </html>

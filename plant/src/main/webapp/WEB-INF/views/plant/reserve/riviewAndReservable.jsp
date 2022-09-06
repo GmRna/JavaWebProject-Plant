@@ -15,7 +15,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td>예약시간</td>
+		<td>예약 가능 시간</td>
 	</tr>
 	<tr>
 		<c:forEach var="ra" items="${reservable}">

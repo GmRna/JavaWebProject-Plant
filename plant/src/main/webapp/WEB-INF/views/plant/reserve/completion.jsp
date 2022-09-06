@@ -873,7 +873,7 @@
 					htmlData += '<div id="file' + fileNo + '" class="filebox">';
 		            htmlData += '	<img src="'+imgsrc+'" style="width:90px; height=90px;" >';
 		            htmlData += '   <p id="name" class="name">' + file.name + '</p>';
-		            htmlData += '   <a class="delete" onclick="deleteFile(' + fileNo + ');"><button type="button" class="far fa-minus-square">삭제</button></a>';
+		            htmlData += '   <a onclick="deleteFile(' + fileNo + ');"><button type="button">삭제</button></a>';
 		            htmlData += '</div>';
 		            $('.file-list').append(htmlData);
 		            fileNo++;
@@ -1119,13 +1119,9 @@
 </script>
 </head>
 <body>
-	<div>
-		<table border="1" class='default'>
-			<tr>
-				<th style='text-align: center;'>예약 상세 페이지</th>
-			</tr>
-		</table>
-	</div>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>가드너 케어 진행 입력 및 리뷰관리</th></tr>
+	</table>
 	<div>
 		<!-- 상단 -->
 		<div>

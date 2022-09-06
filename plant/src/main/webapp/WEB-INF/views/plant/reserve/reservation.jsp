@@ -584,13 +584,9 @@
 </script>
 </head>
 <body>
-	<div>
-		<table border="1" class='default'>
-			<tr>
-				<th style='text-align: center;'>예약 상세 페이지</th>
-			</tr>
-		</table>
-	</div>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>예약 상세정보</th></tr>
+	</table>
 	<!-- 예약페이지 상단 -->
 	<div>
 		<!-- 가드너 프로필 -->

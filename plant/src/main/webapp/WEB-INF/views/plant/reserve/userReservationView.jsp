@@ -94,6 +94,33 @@
 	width: 70%; /* Could be more or less, depending on screen size */    
 }
 
+/* radio box */
+.form-chek, .form-radio{
+	display: inline-block; 
+	line-height: 20px; 
+	vertical-align: middle;
+}
+.form-chek::before, .form-radio::before{
+	content: ""; 
+	display: inline-block; 
+	width: 10px; 
+	height: 10px; 
+	background: #ffffff; 
+	border: 1px solid #e0e0e0; 
+	margin-right: 8px;
+}
+.form-radio::before{
+	border-radius: 50%;
+}
+.input-chek, .input-radio{
+	display: none;
+}
+.input-chek:checked + .form-chek::before, .input-radio:checked + .form-radio::before{
+	background: #749fbb;
+}
+.input-chek:checked + .form-chek, .input-radio:checked + .form-radio{
+	color: #749fbb;
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://momentjs.com/downloads/moment.js"></script>
@@ -603,13 +630,16 @@
 				check = true;
 			}
 			if(check) {							
-				res += "	<td>"+userPayHistory[i].pay_size+"</td>";
+				res += "	<td colspan='5' style='font-size: 15pt; text-align: center;'>"+userPayHistory[i].pay_size+"</td>";
 				check = false;
 				break;
 			} 
 		}
+			res += "	</tr>";
+			res += "</table>";
+			res += "<table class='default'>";
 			res += "	<tr>";
-			res += "		<td><button type='button' name='결제번호 : "+merchant_uid+"\n";
+			res += "		<td style='text-align: center;'><button type='button' name='결제번호 : "+merchant_uid+"\n";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -643,7 +673,7 @@
 			if(check) {
 				for(var j=0; j<reserved.length; j++){
 					if(userPayHistory[i].reserve_no === reserved[j].reserve_no){
-						res += ", "+reserved[j].gd_no+")'>취소 및 환불</button></td><td><button type='button' onclick='payHistoryDelete()'>결제 상세보기 닫기</button></td>";
+						res += ", "+reserved[j].gd_no+")'>취소 및 환불</button></td><td style='text-align: center;'><button type='button' onclick='payHistoryDelete()'>결제 상세보기 닫기</button></td>";
 						check = false;
 						break;
 					}
@@ -919,21 +949,29 @@
 			reviewForm += "		<span>Review</span>";
 			reviewForm += "	</div>";
 			reviewForm += "	<div>";
-			reviewForm += "		<span><textarea id='review' name='review' cols='55' rows='10'></textarea></span>";
+			reviewForm += "		<span><textarea id='review' name='review' cols='95' rows='10'></textarea></span>";
 			reviewForm += "	</div>";
 			reviewForm += "	<div>";
 			reviewForm += "		<span>Star</span>";
 			reviewForm += "	</div>";
+			reviewForm += "	<div class='form-checkbox-wrap'>";
+			reviewForm += "		<span class='form-inline'>";
+			reviewForm += "				<input class='input-radio' type='radio' name='star' value='1'/><label for='1' class='form-radio'>1점</label>";
+			reviewForm += "		<span>";
+			reviewForm += "		<span class='form-inline'>";
+			reviewForm += "				<input class='input-radio' type='radio' name='star' value='2'/><label for='2' class='form-radio'>2점</label>";
+			reviewForm += "		<span>";
+			reviewForm += "		<span class='form-inline'>";
+			reviewForm += "				<input class='input-radio' type='radio' name='star' value='3'/><label for='3' class='form-radio'>3점</label>";
+			reviewForm += "		<span>";
+			reviewForm += "		<span class='form-inline'>";
+			reviewForm += "				<input class='input-radio' type='radio' name='star' value='4'/><label for='4' class='form-radio'>4점</label>";
+			reviewForm += "		<span>";
+			reviewForm += "		<span class='form-inline'>";
+			reviewForm += "				<input class='input-radio' type='radio' name='star' value='5' checked='checked'/><label for='5' class='form-radio'>5점</label>";
+			reviewForm += "		<span>";
+			reviewForm += "	</div>";
 			reviewForm += "	<div>";
-			reviewForm += "		<span>";
-			reviewForm += "			<form>";
-			reviewForm += "				<input type='radio' name='star' value='1'/>1점";
-			reviewForm += "				<input type='radio' name='star' value='2'/>2점";
-			reviewForm += "				<input type='radio' name='star' value='3'/>3점";
-			reviewForm += "				<input type='radio' name='star' value='4'/>4점";
-			reviewForm += "				<input type='radio' name='star' value='5' checked='checked'/>5점";
-			reviewForm += "			</form>";
-			reviewForm += "		<span>";
 			reviewForm += "		<input type='hidden' id='reviewReserveNo' value='"+reserve_no+"'>";
 			reviewForm += "		<input type='hidden' id='reviewGdNo' value='"+gd_no+"'>";
 			reviewForm += "		<input type='hidden' id='reviewUserNo' value='"+user_no+"'>";
@@ -1098,11 +1136,7 @@
 </head>
 <body>
 	<table class='default'>
-		<tr>
-			<th style='text-align: center;'>
-				유저 예약 확인
-			</th>
-		</tr>
+		<tr><th style='font-size: 20pt; text-align: center;'>나의 예약 확인 및 관리</th></tr>
 	</table>
 	<div>
 		<!-- 상단 -->
