@@ -71,5 +71,22 @@ public class PetplantDiaryServiceImpl implements PetplantDiaryService {
 
 	}
 
+
+	@Override
+	public Map plantStypeF(String stype) {
+		List<PetplantDiaryVO> list = mapper.plantStypeF(stype);
+		Map map = new HashMap();  
+		map.put("stype", list);
+		return map;
+	}
+
+	@Override
+	public Map plantStypeS(String stype) {
+		List<PetplantDiaryVO> list = mapper.plantStypeS(stype);
+		Map map = new HashMap();  
+		map.put(stype, list);
+		return map;
+	}
+
 	
 }

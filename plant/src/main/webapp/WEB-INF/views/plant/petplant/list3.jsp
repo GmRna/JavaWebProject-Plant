@@ -25,6 +25,69 @@ var petboard;	// 반려식물 게시판 pk, content 배열
 var replyLikeno;
 
 $(function () {
+	$("#petplant #petplantImgDiv, .icons-react #petreplydiv").click(function (){
+		
+		listIdx = $(this).index("#petplant #petplantImgDiv");
+		
+		var petplant = $(this).parent();
+		var pet_no = petplant.find("input[name='pet_no']").val();
+		var user_writeNo = petplant.find("input[name='user_writeNo']").val();
+		var like_check = petplant.find("input[name='like_check']").val();
+		//var countLike = petplant.find("input[name='countLike']").val();
+		var countLike = petplant.find("#countLike").text(); 
+		var pet_content = petplant.find("p[name='pet_content']").text();
+		var user_nick = petplant.find("input[name='user_nick']").val();
+		var count_reply = petplant.find("input[name='count_reply']").val();
+		var user_plantfile_real = petplant.find("input[name='user_plantfile_real']").val();
+		
+		petboard = { 
+				"pet_no" : pet_no, 
+				"pet_content" : pet_content,
+				"user_writeNo" : user_writeNo,
+				"like_check" : like_check,
+				"countLike" : countLike,
+				"count_reply" : count_reply,
+				"user_nick" : user_nick,
+				"user_plantfile_real" : user_plantfile_real
+		}; 
+		
+		console.log("게시판 번호 내용 : "+petboard.pet_no +" : "+ petboard.pet_content +" : "); 
+
+		var imgsrc = "<%=request.getContextPath()%>"; 
+		 
+		$.ajax ({
+			url : 'findpetplant.do',
+			data : { 
+				pet_no : pet_no,
+				pet_content : pet_content,
+				countLike: countLike,
+				like_check : like_check,
+				user_nick : user_nick,
+				count_reply : count_reply,
+				user_writeNo : user_writeNo,
+				user_plantfile_real : user_plantfile_real
+			},
+			//dataType : 'json',
+			success : function (data) {
+				$("#pet").html(data);
+				
+				// Swiper 함수 
+				var swiper = new Swiper(".mySwiper", {
+			        navigation: {
+			          nextEl: ".swiper-button-next",
+			          prevEl: ".swiper-button-prev",
+			        },
+			      });
+				
+				document.getElementById("popup_layer").style.display = "block";
+				
+			}, error: function (xhr, desc, err) {
+	            alert('에러가 발생');
+	            console.log(err);
+	            return; 
+	        }
+		}); 
+		
 	// 반려식물 TR 클릭 시 
 	$("#petplant td").click(function(){
 		var pettd = $(this);

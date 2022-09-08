@@ -197,16 +197,21 @@ header {
     padding: 0 16px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+   /*  justify-content: space-between; */
 }
 .icon-react {
     width: 24px;
     height: 24px;
 }
+#petreplydiv {
+	width: 24px;
+    height: 24px;
+}
+
 .icons-left {
     display: flex;
     align-items: center;
-}
+}s
 .icons-left .icon-react {
     margin-right: 12px;
 }

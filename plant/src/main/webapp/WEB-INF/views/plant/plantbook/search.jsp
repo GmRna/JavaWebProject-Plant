@@ -9,6 +9,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <input type="search"> 검색
 </body>
 </html>

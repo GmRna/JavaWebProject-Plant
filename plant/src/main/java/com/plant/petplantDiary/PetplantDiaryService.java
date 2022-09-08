@@ -22,4 +22,11 @@ public interface PetplantDiaryService {
 
 	int updateDiary(PetplantDiaryVO vo);
 
+	
+	
+	Map plantStypeF(String stype);
+
+	Map plantStypeS(String stype);
+
+
 }

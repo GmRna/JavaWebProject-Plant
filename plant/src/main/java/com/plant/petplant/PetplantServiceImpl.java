@@ -206,6 +206,11 @@ public class PetplantServiceImpl implements PetplantService {
 	@Override
 	public int minuspetplant(PetplantVO vo) {
 		return mapper.minuspetplant(vo);
+	}
+
+	@Override
+	public PetplantVO listpop(PetplantVO vo) {
+		return mapper.listpop(vo);
 	} 
 	
 

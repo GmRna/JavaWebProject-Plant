@@ -54,7 +54,7 @@ $(function() {
 		           alert('에러가 발생');
 		           console.log(err);
 		           return; 
-		       }
+		    }
 		})
 	});
   
@@ -80,6 +80,29 @@ function checkday(petdate) {
 
 function save() {
 	$("#frm").submit();
+}
+
+function plantTypelist(stype) {
+	$.ajax ({
+		url : 'plantStypeF.do',  
+		method : 'POST',
+		dataTpye : 'json',
+		data : { stype : stype },
+		success : function(list) {
+			//console.log(list.stype.length);
+			var h = '';
+				h += '<select>';
+				for(var i =0; i<list.stype.length; i++){ 
+					h += '	<option id="'+list.stype[i].svcCodeNm+'">'+list.stype[i].svcCodeNm+'</option>'
+				}
+				h += '</select>'
+				$("#selectplantType").append(h);
+		}, error: function (xhr, desc, err) {
+	           alert('에러가 발생');
+	           console.log(err);
+	           return; 
+	    }
+	})
 }
 </script>
 
@@ -107,6 +130,14 @@ body {
 		<span id="selectBtn">가입시 등록한 반려식물 데이터 불러오기</span> <br>
 		이름 <input type="text" name="user_plantname" ><br>
 		품종 <input type="text" name="user_planttype" ><br>
+			<ul id="selectplantType">
+				<li><a id="FC" onclick="plantTypelist('FC')">식량 작물</a></li>
+				<li><a id="IC" onclick="plantTypelist('IC')">특용 작물</a></li>
+				<li><a id="VC" onclick="plantTypelist('VC')">채소</a></li>
+				<li><a id="FT" onclick="plantTypelist('FT')">과수</a></li>
+				<li><a id="FL" onclick="plantTypelist('FL')">화훼</a></li>
+				<li><a id="FG" onclick="plantTypelist('FG')">녹비작물</a></li>
+			</ul>
 		사진 <input type="file" name="file" id="user_plantfile_org"><br>
 		
 		<br><br><br>

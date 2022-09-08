@@ -29,6 +29,12 @@ public interface PetplantDiaryMapper {
 	PetplantDiaryVO editDiary(int diary_no);
 	// 반려 식물 관찰일지 - 수정하기
 	int updateDiary(PetplantDiaryVO vo);
+
+	
+	
+	List<PetplantDiaryVO> plantStypeF(String stype);
+
+	List<PetplantDiaryVO> plantStypeS(String stype);
 	
 	
 

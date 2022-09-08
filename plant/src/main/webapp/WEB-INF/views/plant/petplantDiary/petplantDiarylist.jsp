@@ -20,7 +20,9 @@ $(function() {
 })
 
 function getnameDiary() {
-	
+}
+function gowrite() {
+	location.href = "/plant/petplantDiary/writeDiary.do";
 }
 </script>
 
@@ -35,6 +37,7 @@ function getnameDiary() {
 			<div class="container">
 				<header>
 					<h2>관찰일지</h2>
+					<button onclick="gowrite()">새로 쓰기</button>
 				</header>
 				<div class="row">
 					<c:forEach items="${diarylist}" var="diarylist">

@@ -24,4 +24,6 @@ public class PetplantDiaryVO {
 	private int diary_ono;
 	private int diary_day;
 	
+	private String svcCodeNm;
+	
 }

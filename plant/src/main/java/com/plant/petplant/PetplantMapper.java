@@ -83,6 +83,8 @@ public interface PetplantMapper {
 
 	int minuspetplant(PetplantVO vo);
 
+	PetplantVO listpop(PetplantVO vo);
+
 	
 
 	

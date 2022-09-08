@@ -23,10 +23,10 @@
 				<div id="reportList${petboard.pet_no}"></div>
 				<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
 				<div class="moreDiv" id="moreDiv${petboard.pet_no}" style="display:none;" >
-					<c:if test="${loginInfo.user_no eq petboard.user_writeNo }">
+					<c:if test="${loginUserInfo.user_no eq petboard.user_writeNo }">
 						<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
 					</c:if>
-					<c:if test="${empty loginInfo or loginInfo.user_no ne petboard.user_writeNo}">
+					<c:if test="${empty loginUserInfo or loginUserInfo.user_no ne petboard.user_writeNo}">
 						<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>
 					</c:if>
 				</div>
@@ -101,10 +101,10 @@
 					</span>
 			       	<input id="input-comment2" name="ppr_content" class="input-comment" type="text" placeholder="댓글 달기..." >
 			       	<input type="hidden" name="pet_no" value="${petboard.pet_no }">
-			       	<c:if test="${empty loginInfo}">
+			       	<c:if test="${empty loginUserInfo}">
 			      	 	<button type="button" class="submit-comment" onclick="addreplylogin()" >게시</button>
 			       	</c:if>
-			       	<c:if test="${!empty loginInfo}">
+			       	<c:if test="${!empty loginUserInfo}">
 			       		<button type="button" class="submit-comment" onclick="addreply()" >게시</button>
 			       	</c:if>
 				</div>
@@ -137,14 +137,14 @@
 				               			${rlist.ppr_content}
 				               		</c:if>
 				               		<c:if test="${rlist.ppr_secretCheck eq 'on'}">
-				               			<c:if test="${loginInfo.user_no eq petboard.user_writeNo}">
+				               			<c:if test="${loginUserInfo.user_no eq petboard.user_writeNo}">
 				               				<img class="comment-lock" src="/plant/img/petplant/padlock.png" > ${rlist.ppr_content}
 				               			</c:if>
-				               			<c:if test="${loginInfo.user_no ne petboard.user_writeNo}">
-				               				<c:if test="${loginInfo.user_no eq rlist.user_no}">
+				               			<c:if test="${loginUserInfo.user_no ne petboard.user_writeNo}">
+				               				<c:if test="${loginUserInfo.user_no eq rlist.user_no}">
 				               					<img class="comment-lock" src="/plant/img/petplant/padlock.png" > ${rlist.ppr_content}
 				               				</c:if>
-				               				<c:if test="${loginInfo.user_no ne rlist.user_no}">
+				               				<c:if test="${loginUserInfo.user_no ne rlist.user_no}">
 				               					<img class="comment-lock" src="/plant/img/petplant/padlock.png" > 비밀 댓글 입니다.
 				               				</c:if>
 				               			</c:if>
@@ -168,7 +168,7 @@
 							    </c:if>
 									<span><fmt:formatDate value="${rlist.ppr_regdate}" pattern="yyyy MM dd" /></span>
 									<c:choose>
-										<c:when test="${rlist.user_no == loginInfo.user_no}">
+										<c:when test="${rlist.user_no == loginUserInfo.user_no}">
 											<c:if  test="${rlist.ppr_content eq '삭제된 댓글입니다' }">
 											</c:if>
 											<c:if  test="${rlist.ppr_content ne '삭제된 댓글입니다' }">
@@ -177,7 +177,7 @@
 												<span id="delreplyBtn" onclick="delfrmreply(${rlist.ppr_no})">&nbsp;&nbsp;&nbsp;삭제</span>
 											</c:if>
 										</c:when>
-										<c:when test="${petboard.user_writeNo eq loginInfo.user_no}">
+										<c:when test="${petboard.user_writeNo eq loginUserInfo.user_no}">
 											<span id="addrereplyBtn" onclick="addfrmrereply(${rlist.ppr_no},${rlist.ppr_gno},${rlist.ppr_order},${rlist.ppr_nested})">&nbsp;&nbsp;&nbsp;답글쓰기</span>
 											<span id="delreplyBtn" onclick="delfrmreply(${rlist.ppr_no})">&nbsp;&nbsp;&nbsp;삭제</span>
 										</c:when>
@@ -203,11 +203,11 @@ console.log("petboard.like_check : " +petboard.like_check);
 // 좋아요 클릭
 $(function () {
 	
-	// 게시판 좋아요 클릭
+	/* // 게시판 좋아요 클릭
 	$(".icons-left #likeicon").click(function(){ 
 		
-		<c:if test="${empty loginInfo}">
-			alert('로그인 후 이용해주세요');
+		<c:if test="${empty loginUserInfo}">
+			alert('로그인 후 이용해주세요 팝업 좋아요');
 			location.href="/plant/user/login.do";
 			return false;
 		</c:if>
@@ -255,13 +255,13 @@ $(function () {
 	            return; 
 	        }
 		})
-	});
+	}); */
 	
 	// 댓글 좋아요
 	$(".comments #hearticon").click(function(){ 
 		
-		<c:if test="${empty loginInfo}">
-			alert('로그인 후 이용해주세요');
+		<c:if test="${empty loginUserInfo}">
+			alert('로그인 후 이용해주세요 댓글 좋아요');
 			location.href="/plant/user/login.do";
 		</c:if>
 

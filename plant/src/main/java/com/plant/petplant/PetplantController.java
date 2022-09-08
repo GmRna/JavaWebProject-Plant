@@ -222,9 +222,6 @@ public class PetplantController {
 	@GetMapping("/plant/findpetplant.do")
 	public String findpetfile (Model model, PetplantVO vo,  HttpServletRequest req) {
 		// 유저번호 set 해주면 user_no 똑같아 져서 새로 vo 추가해서 set해줌
-		//vo.setUser_writeNo(vo.getUser_no());
-		model.addAttribute("petboard", vo);
-		System.out.println("vo : " + vo.getUser_plantfile_real());
 		
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
@@ -234,7 +231,7 @@ public class PetplantController {
 		if(user != null) {
 			vo.setUser_no(user.getUser_no());
 		}
-		
+		model.addAttribute("petboard", service.listpop(vo));
 		model.addAttribute("pppcheck", service.selectsavepetplant(vo));
 		model.addAttribute("list",service.findpetfile(vo));
 	

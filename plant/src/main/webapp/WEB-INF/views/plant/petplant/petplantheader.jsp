@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,10 @@ function goHome() {
 
 function goMypage() {
 	location.href = "/plant/user/myInfo.do";
+}
+
+function goLogin() {
+	location.href = "/plant/user/login.do";
 }
 </script>
 </head>
@@ -31,7 +36,12 @@ function goMypage() {
 	    <div class="nav-2">
 	      <img src="/plant/img/common/house2.png" alt="홈" onclick="goHome()"><span id="txt" onclick="goHome()">&nbsp;&nbsp;HOME</span>
 	      <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/explore.png" alt="탐색">
-	      <img src="/plant/img/common/user.png" alt="마이페이지" onclick="goMypage()"><span onclick="goMypage()">&nbsp;&nbsp;My page</span>
+	      <c:if test="${!empty loginUserInfo}">
+	      	<img src="/plant/img/common/user.png" alt="마이페이지" onclick="goMypage()"><span onclick="goMypage()">&nbsp;&nbsp;My page</span>
+	      </c:if>
+	      <c:if test="${empty loginUserInfo }">
+	      	<img src="/plant/img/login/login.png" alt="로그인이 필요합니다"><span onclick="goLogin()">&nbsp;&nbsp;로그인</span>
+	      </c:if>
 	    </div>
 	</div>
 </nav>

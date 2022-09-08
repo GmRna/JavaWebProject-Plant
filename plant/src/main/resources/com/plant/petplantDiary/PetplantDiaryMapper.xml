@@ -25,6 +25,17 @@
 		WHERE user_no = #{user_no}
 	</select>
 	
+	<select id="plantStypeF" parameterType="String" resultType="com.plant.petplantDiary.PetplantDiaryVO">
+		SELECT DISTINCT svcCodeNm 
+		FROM plantType 
+		WHERE prdlstCtgCode LIKE '${stype}%' AND svcCodeNm NOT LIKE '%>%';
+	</select>
+	 
+	<select id="plantStypeS" parameterType="String" resultType="com.plant.petplantDiary.PetplantDiaryVO">
+	
+	</select>
+	
+	
 	<insert id="insertDiary" parameterType="com.plant.petplantDiary.PetplantDiaryVO">
 		INSERT INTO petplantdiary (
 			user_no 

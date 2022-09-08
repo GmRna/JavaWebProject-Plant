@@ -28,7 +28,7 @@
 
 <!-- 전체 css -->
 <!-- <link rel="stylesheet" href="/plant/css/petplant.css"/> -->
-<link href="/plant/css/instagram.css" rel="stylesheet" type="text/css" />
+<link href="/plant/css/petplant/instagram.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 // 전역 변수로 선언 - 함수에 계속 담아서 이동 시키기 때문에 & 그때 그때 마다 저장되는 변수값이 변해서
@@ -37,30 +37,16 @@ var listIdx = 0;
 $(function () {
 	
 	// 반려식물 TR 클릭 시 
-	$("#petplant #petplantImgDiv, #petplant .icons-react").click(function(){
-			
+	$("#petplant #petplantImgDiv, .icons-react #petreplydiv").click(function (){
 		listIdx = $(this).index("#petplant #petplantImgDiv");
 		
 		var petplant = $(this).parent();
 		var pet_no = petplant.find("input[name='pet_no']").val();
 		var user_writeNo = petplant.find("input[name='user_writeNo']").val();
-		var like_check = petplant.find("input[name='like_check']").val();
-		//var countLike = petplant.find("input[name='countLike']").val();
-		var countLike = petplant.find("#countLike").text(); 
-		var pet_content = petplant.find("p[name='pet_content']").text();
-		var user_nick = petplant.find("input[name='user_nick']").val();
-		var count_reply = petplant.find("input[name='count_reply']").val();
-		var user_plantfile_real = petplant.find("input[name='user_plantfile_real']").val();
 		
 		petboard = { 
 				"pet_no" : pet_no, 
-				"pet_content" : pet_content,
-				"user_writeNo" : user_writeNo,
-				"like_check" : like_check,
-				"countLike" : countLike,
-				"count_reply" : count_reply,
-				"user_nick" : user_nick,
-				"user_plantfile_real" : user_plantfile_real
+				"user_writeNo" : user_writeNo
 		}; 
 		
 		console.log("게시판 번호 내용 : "+petboard.pet_no +" : "+ petboard.pet_content +" : "); 
@@ -71,13 +57,7 @@ $(function () {
 			url : 'findpetplant.do',
 			data : { 
 				pet_no : pet_no,
-				pet_content : pet_content,
-				countLike: countLike,
-				like_check : like_check,
-				user_nick : user_nick,
-				count_reply : count_reply,
-				user_writeNo : user_writeNo,
-				user_plantfile_real : user_plantfile_real
+				user_writeNo : user_writeNo
 			},
 			//dataType : 'json',
 			success : function (data) {
@@ -112,15 +92,14 @@ $(function () {
 	});
 	
 	// 게시판 좋아요 클릭
-	$("#petlikediv #petlike").click(function(){ 
+	$("#petlike #likeicon").click(function(){ 
 		
 		<c:if test="${empty loginUserInfo}">
-			alert('로그인 후 이용해주세요');
-			location.href="/plant/user/login.do";
+			alert('로그인 후 이용해주세요like');
 			return false;
 		</c:if>
 		
-		var petlike = $(this).parent().parent().parent();
+		var petlike = $(this).parent().parent().parent().parent();
 		var no =  petlike.find("input[name='pet_no']").val();
 		var likesrc = petlike.find("#likeicon");
 		var spanlike = petlike.children().find("#countLike"); 
@@ -200,11 +179,10 @@ $(function () {
 		
 	}) 
 	
-	
+	// 담기
 	$(".icons-react #petputDiv").click(function () {
 		<c:if test="${empty loginUserInfo}">
-			alert('로그인 후 이용해주세요');
-			location.href="/plant/user/login.do";
+			alert('로그인 후 이용해주세요 put');
 			return false;
 		</c:if>
 		
@@ -249,7 +227,7 @@ $(function () {
 function addreply() {
 	
 	<c:if test="${empty loginUserInfo}">
-		alert('로그인 후 이용해주세요');
+		alert('로그인 후 이용해주세요 댓글저장');
 		location.href="/plant/user/login.do";
 		return false;
 	</c:if>
@@ -315,7 +293,7 @@ function delreplyfrm(replyno) {
 // 답글 저장
 function addrereply(replyno) {
 	<c:if test="${empty loginUserInfo}">
-		alert('로그인 후 이용해주세요');
+		alert('로그인 후 이용해주세요 답글저장');
 		location.href="/plant/user/login.do";
 		return false; 
 	</c:if>
@@ -397,7 +375,7 @@ function modfrmreply(replyno,replyuserno,replycont,replycheck) {
 // 댓글, 답글 수정 
 function modreply(replyno) {
 	<c:if test="${empty loginUserInfo}">
-		alert('로그인 후 이용해주세요');
+		alert('로그인 후 이용해주세요 수정');
 		location.href="/plant/user/login.do";
 		return false;
 	</c:if>
@@ -459,8 +437,8 @@ function replyload() {
 	</div>
 </div>
 <main>
+	<c:forEach items="${list}" var="list">
 	<div class="feeds" id="petplant" >
-		<c:forEach items="${list}" var="list">
     	<!-- article 프로필 사진 및 아이디-->
      		<article>
 				<header>
@@ -517,18 +495,18 @@ function replyload() {
 							</c:otherwise>
 							</c:choose>
 						</div>
-						<!-- 댓글 아이콘 -->
-				        <img class="icon-react" src="/plant/img/petplant/speech-bubble.png" >
 					</div>
-						<!-- 담기 아이콘 -->
-						<div class="icon-react" id="petputDiv">
-				          	<c:if test="${list.ppp_check == 0 }">
-						 		<img class="icon-react save" src="/plant/img/petplant/save1.png" >
-						 	</c:if>
-				          	<c:if test="${list.ppp_check == 1 }">
-						 		<img class="icon-react save" src="/plant/img/petplant/save2.png" >
-						 	</c:if>
-						 </div>
+					<!-- 댓글 아이콘 -->
+				    <img class="icons-left" id="petreplydiv" src="/plant/img/petplant/speech-bubble.png" >
+					<!-- 담기 아이콘 -->
+					<div class="icon-react" id="petputDiv" >
+			          	<c:if test="${list.ppp_check == 0 }">
+					 		<img class="icon-react save" src="/plant/img/petplant/save1.png" >
+					 	</c:if>
+			          	<c:if test="${list.ppp_check == 1 }"> 
+					 		<img class="icon-react save" src="/plant/img/petplant/save2.png" >
+					 	</c:if>
+					 </div>
 				</div>
         
 		        <!-- article text data -->
@@ -550,8 +528,8 @@ function replyload() {
 					<br>
 		        </div>
 		</article>
-    </c:forEach>
 	</div>
+    </c:forEach>
 </main>
     
 
