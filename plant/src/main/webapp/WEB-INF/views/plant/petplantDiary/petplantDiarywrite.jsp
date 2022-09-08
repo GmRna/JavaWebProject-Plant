@@ -117,9 +117,9 @@ body {
 
 </style>
 
-
+                 
 </head>
-<body>
+<body> 
 
 <div>
 	<form id="frm" method="post" action="insertDiary.do"  enctype="multipart/form-data" >
