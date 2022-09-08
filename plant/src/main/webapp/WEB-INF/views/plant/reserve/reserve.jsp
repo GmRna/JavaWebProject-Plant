@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +17,12 @@
 	function goGdReservationView(gd_no) {
 		location.href='/plant/reserve/gdReservationView.do?gd_no='+gd_no+''
 	}
-	
 </script>
 </head>
 <body>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>가드너 메뉴 </th></tr>
+	</table>
 	<div>
 		<table class='default'>
 			<tr>

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="/WEB-INF/views/common/header.jsp" %> 
+<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -347,6 +347,9 @@
 </script>
 </head>
 <body>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>가드너 상세 프로필</th></tr>
+	</table>
 	<div>
 		<!-- 가드너 상세 프로필 -->
 		<div>
@@ -355,7 +358,7 @@
 					<th colspan='6' style='text-align: center;'>가드너 프로필 카드</th>
 				</tr>
 				<tr>
-					<td rowspan="7" style="width: 300px;">
+					<td rowspan="7" style="text-align: center; width: 300px;">
 						<img src='<%=request.getContextPath()%>/upload/${data.gd_picreal}' style='width:90px; height:90px;' >
 					</td>
 					<td>이름</td>

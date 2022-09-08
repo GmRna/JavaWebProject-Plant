@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %> 
+<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -207,61 +207,63 @@
 </script>
 </head>
 <body>
-	<div>
-		<table border="1" class='default'>
-			<tr>
-				<th style='text-align: center;'>결제페이지</th>
-			</tr>
-		</table>
-	</div>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>결제 하기</th></tr>
+	</table>
 	<!-- 결제페이지 상단 -->
 	<div>
 		<!-- 결제 정보 -->
 		<div>
-			<h3>예약자 정보</h3>
 			<table class='default'>
+				<tr>
+					<th colspan='100' style='font-size: 15pt; text-align: center;'>예약자 정보</th>
+				</tr>
 				<tbody>
 					<tr>
 						<td>예약자</td>
 						<td>
-							<input type="text" id="user_name" value="${user.user_name}">
+							<input style='width: 400px;' type="text" id="user_name" value="${user.user_name}">
 						</td>
 					</tr>
 					<tr>
 						<td>연락처</td>
 						<td>
-							<input type="text" id="user_hp" value="${user.user_hp}">
+							<input style='width: 400px;' type="text" id="user_hp" value="${user.user_hp}">
 						</td>
 					</tr>
 					<tr>
 						<td>이메일</td>
 						<td>
-							<input type="text" id="user_email" value="${user.user_email}">
+							<input style='width: 400px;' type="text" id="user_email" value="${user.user_email}">
 						</td>
 					</tr>
 					<tr>
-						<td rowspan="3">주소</td>
+						<td>주소</td>
 						<td>
 							<input type="text" name="postCode" id="postCode"class="inNextBtn" style="float: left;" value="${user.user_postcode}" readonly>
-							<button type='button' onclick='postCode()'>우편번호 검색</button>
+							&nbsp<button type='button' onclick='postCode()'>우편번호 검색</button>
 						</td>
 					</tr>
 					<tr>
+						<td>기본주소</td>
 						<td>
-							<input type="text" id="addr1" readonly value="${user.user_addr1}">
+							<input style='width: 400px;' type="text" id="addr1" readonly value="${user.user_addr1}">
 						</td>
 					</tr>
 					<tr>
+						<td>상세주소</td>
 						<td>
-							<input type="text" id="addr2" value="${user.user_addr2}">
+							<input style='width: 400px;' type="text" id="addr2" value="${user.user_addr2}">
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<h3>예약정보</h3>
 			<table class='default'>
 				<tr>
-					<td>가드너= 이름</td>
+					<th colspan='100' style='font-size: 15pt; text-align: center;'>예약 정보</th>
+				</tr>
+				<tr>
+					<td>가드너 이름</td>
 					<td colspan="100">${gd.gd_name}</td>
 				</tr>
 				<tr>
@@ -273,19 +275,19 @@
 				<tr>
 					<td>요청사항</td>
 					<td colspan="100">
-						<input type="text" id="etc" style="height:20px; width:400px;">
+						<input style='width: 80%; hight:height 50px;' type="text" id="etc">
 					</td>
 				</tr>
 				<tr>
 					<td>총 합계 금액</td>
-					<td colspan="100"><div id="total"></div></td>
+					<td colspan="100" style='font-size: 13pt;text-align: center;'><div id="total"></div></td>
 				</tr>
 				<tr>
 					<td>카드 결제</td>
-					<td colspan="100"><button onclick="requestPay()">결제하기</button></td>
+					<td colspan="100" style='text-align: center;'><button onclick="requestPay()">결제하기</button></td>
 				</tr>
 				<tr>
-					<td colspan="100">* 본 버전은 테스트 버전이기 때문에 테스트하여도 다음날 00시에 자동환불처리됩니다. *</td>
+					<td colspan="100">* 본 버전은 테스트 버전이기 때문에 결제액은 100원으로 설정되어있고 다음달 자정에 환불됩니다. *</td>
 				</tr>
 				</tbody>
 			</table>

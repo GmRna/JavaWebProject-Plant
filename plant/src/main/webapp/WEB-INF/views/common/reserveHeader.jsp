@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>메뉴 바</title>
 
-<link rel="stylesheet" href="/plant/css/header/header.css"  type="text/css"/>
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
 
 </head>
 

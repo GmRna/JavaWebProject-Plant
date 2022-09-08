@@ -75,6 +75,12 @@ public class ReserveController {
 		}
 	}
 	
+	// 예약서비스 설명
+	@GetMapping("/reserve/explainReserve.do")
+	public String explainReserve(Model model, ReserveVO vo) {
+		return "plant/reserve/explainReserve";
+	}
+	
 	// 가드너 검색 사이트
 	@GetMapping("/reserve/searchGardener.do")
 	public String searchGdGet(Model model, ReserveVO vo) {

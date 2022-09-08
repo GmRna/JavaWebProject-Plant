@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>   
+<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -110,6 +110,7 @@
     			$("#profile").html(res); // profile에 프로필 카드 호출
     		}
     	});
+    	document.getElementById('profile').scrollIntoView();
     }
   	
   	// 대표후기 및 예약가능시간과 해당하는 시간의 예약가능 종목 보기
@@ -139,6 +140,9 @@
 </script>
 </head>
 <body>
+	<table class='default'>
+		<tr><th style='font-size: 20pt; text-align: center;'>가드너 검색 페이지</th></tr>
+	</table>
 	<div class="sub">
 		<div class="size">
 			<div class="subtitle">
@@ -189,7 +193,8 @@
 							</select>
 							<h4>가드너 이름</h4>
 							<!-- 가드너 이름 -->
-							<input type="text" id="searchName" name="searchName" value=""><br>
+							<input type="text" id="searchName" name="searchName" value="">
+							<h4>정렬 옵션</h4>
 							<!-- 정렬기능 -->
 							<div class="category">
 								<select id="category" name="category" title="정렬">
@@ -203,9 +208,8 @@
 									<option value="littleReserve">예약 적은 순</option>
 								</select>
 							</div>
-							<!-- 검색 버튼 -->>
-							<input type="button" onClick="javascript:btnClick()" value="검색">
-							<div> 프로필 카드 눌러서 예약상세보기 가능합니다.</div>
+								<!-- 검색 버튼 -->
+								<input style='width:100px; margin:auto; display:block;' type="button" onClick="javascript:btnClick()" value="검색">
 						</div>
 					</form>
 					<!-- 프로필카드 -->
