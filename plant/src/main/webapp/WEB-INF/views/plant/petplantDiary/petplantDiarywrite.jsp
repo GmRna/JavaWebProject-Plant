@@ -80,8 +80,8 @@ function checkday(petdate) {
 
 function save() {
 	$("#frm").submit();
-}
-
+}      
+ 
 function plantTypelist(stype) {
 	$.ajax ({
 		url : 'plantStypeF.do',  
