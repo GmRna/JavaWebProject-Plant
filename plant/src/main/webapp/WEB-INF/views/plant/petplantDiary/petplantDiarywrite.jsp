@@ -85,7 +85,7 @@ function save() {
 function plantTypelist(stype) {
 	$.ajax ({
 		url : 'plantStypeF.do',  
-		method : 'POST',
+		method : 'POST', 
 		dataTpye : 'json',
 		data : { stype : stype },
 		success : function(list) {
