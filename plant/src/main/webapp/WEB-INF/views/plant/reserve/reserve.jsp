@@ -21,26 +21,15 @@
 </head>
 <body>
 	<table class='default'>
-		<tr><th style='font-size: 20pt; text-align: center;'>가드너 메뉴 </th></tr>
+		<tr><th colspan="4" style='font-size: 20pt; text-align: center;'>가드너 메뉴 </th></tr>
+		<tr>
+			<td style='text-align: center;'>
+				<button type='button' onclick='goGdReservationView(${loginGdInfo.gd_no})'>나의 예약 스케줄 관리</button>
+			<td>
+			<td style='text-align: center;'>
+				<button type='button' onclick='goCompletion(${loginGdInfo.gd_no})'>케어진행 내용 및 리뷰 관리</button>
+			</td>	
+		</tr>
 	</table>
-	<div>
-		<table class='default'>
-			<tr>
-				<th style='text-align: center;'>
-					가드너 페이지
-				</th>
-			</tr>
-			<tr>
-				<td style='text-align: center;'>
-					<button type='button' onclick='goGdReservationView(${loginGdInfo.gd_no})'>나의 예약 스케줄 관리</button>
-				<td>
-			</tr>
-			<tr>
-				<td style='text-align: center;'>
-					<button type='button' onclick='goCompletion(${loginGdInfo.gd_no})'>케어진행 내용 및 리뷰 관리</button>
-				</td>	
-			</tr>
-		</table>
-	</div>
 </body>
 </html>

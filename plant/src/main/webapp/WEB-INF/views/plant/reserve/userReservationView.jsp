@@ -94,6 +94,7 @@
 	width: 70%; /* Could be more or less, depending on screen size */    
 }
 
+
 /* radio box */
 .form-chek, .form-radio{
 	display: inline-block; 
@@ -102,7 +103,7 @@
 }
 .form-chek::before, .form-radio::before{
 	content: ""; 
-	display: inline-block; 
+	display: inline-block;
 	width: 10px; 
 	height: 10px; 
 	background: #ffffff; 
@@ -115,6 +116,7 @@
 .input-chek, .input-radio{
 	display: none;
 }
+
 .input-chek:checked + .form-chek::before, .input-radio:checked + .form-radio::before{
 	background: #749fbb;
 }
@@ -177,7 +179,7 @@
 			, gd_email : "${g.gd_email}"
 			, gd_name : "${g.gd_name}"
 			, gd_age : ${g.gd_age}
-			, gd_hp : ${g.gd_hp}
+			, gd_hp : "${g.gd_hp}"
 			, gd_regdate : "${g.gd_regdate}"
 			, gd_ableaddr : "${g.gd_ableaddr}"
 			, gd_career : "${g.gd_career}"
@@ -208,7 +210,7 @@
 			, reserve_etc : "${r.reserve_etc}"
 			, reserve_time : "${r.reserve_time}"
 			, major : "${r.major}"
-			, gd_hp : ${r.gd_hp}
+			, gd_hp : "${r.gd_hp}"
 			, gd_name : "${r.gd_name}"
 		});
 	</c:forEach>
@@ -931,9 +933,6 @@
 		var reviewForm = "";
 			reviewForm += "<div>";
 			reviewForm += "	<div>";
-			reviewForm += "		<span>케어진행 일시</span>";
-			reviewForm += "	</div>";
-			reviewForm += "	<div>";
 			reviewForm += "		<span>예약번호 : "+reserve_no+"</span>";
 			reviewForm += "	</div>";
 		for(var i=0; i<completionList.length; i++) {
@@ -956,20 +955,20 @@
 			reviewForm += "	</div>";
 			reviewForm += "	<div class='form-checkbox-wrap'>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "				<input class='input-radio' type='radio' name='star' value='1'/><label for='1' class='form-radio'>1점</label>";
-			reviewForm += "		<span>";
+			reviewForm += "			<input class='input-radio' type='radio' name='star' value='1'/><label for='1' class='form-radio'>1점</label>";
+			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "				<input class='input-radio' type='radio' name='star' value='2'/><label for='2' class='form-radio'>2점</label>";
-			reviewForm += "		<span>";
+			reviewForm += "			<input class='input-radio' type='radio' name='star' value='2'/><label for='2' class='form-radio'>2점</label>";
+			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "				<input class='input-radio' type='radio' name='star' value='3'/><label for='3' class='form-radio'>3점</label>";
-			reviewForm += "		<span>";
+			reviewForm += "			<input class='input-radio' type='radio' name='star' value='3'/><label for='3' class='form-radio'>3점</label>";
+			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "				<input class='input-radio' type='radio' name='star' value='4'/><label for='4' class='form-radio'>4점</label>";
-			reviewForm += "		<span>";
+			reviewForm += "			<input class='input-radio' type='radio' name='star' value='4'/><label for='4' class='form-radio'>4점</label>";
+			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "				<input class='input-radio' type='radio' name='star' value='5' checked='checked'/><label for='5' class='form-radio'>5점</label>";
-			reviewForm += "		<span>";
+			reviewForm += "			<input class='input-radio' type='radio' name='star' value='5' checked='checked'/><label for='5' class='form-radio'>5점</label>";
+			reviewForm += "		</span>";
 			reviewForm += "	</div>";
 			reviewForm += "	<div>";
 			reviewForm += "		<input type='hidden' id='reviewReserveNo' value='"+reserve_no+"'>";
@@ -1040,9 +1039,6 @@
 		var reviewForm = "";
 			reviewForm += "<div>";
 			reviewForm += "	<div>";
-			reviewForm += "		<span>케어진행 일시</span>";
-			reviewForm += "	</div>";
-			reviewForm += "	<div>";
 			reviewForm += "		<span>예약번호 : "+reserve_no+"</span>";
 			reviewForm += "	</div>";
 		for(var i=0; i<completionList.length; i++) {
@@ -1065,46 +1061,44 @@
 				reviewForm += "	<div>";
 				reviewForm += "		<span>Star</span>";
 				reviewForm += "	</div>";
-				reviewForm += "	<div>";
-				reviewForm += "		<span>";
-				reviewForm += "			<form>";
+				reviewForm += "	<div class='form-checkbox-wrap'>";
 				if(0 <= reviewList[i].star && reviewList[i].star < 2) {
-					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)' checked='checked'/>1점";
-					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
-					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
-					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
-					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)' checked='checked'/><label for='1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
 				}
 				if(2 <= reviewList[i].star && reviewList[i].star < 3) {
-					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
-					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)' checked='checked'/>2점";
-					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
-					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
-					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)' checked='checked'/><label for='2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
 				}
 				if(3 <= reviewList[i].star && reviewList[i].star < 4) {
-					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
-					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
-					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)' checked='checked'/>3점";
-					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
-					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)' checked='checked'/><label for='3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
 				}
 				if(4 <= reviewList[i].star && reviewList[i].star < 5) {
-					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
-					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
-					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
-					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)' checked='checked'/>4점";
-					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)'/>5점";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)' checked='checked'/><label for='4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
 				}
 				if(5 <= reviewList[i].star && reviewList[i].star < 10) {
-					reviewForm += "				<input type='radio' name='star' value='1' onclick='return(false)'/>1점";
-					reviewForm += "				<input type='radio' name='star' value='2' onclick='return(false)'/>2점";
-					reviewForm += "				<input type='radio' name='star' value='3' onclick='return(false)'/>3점";
-					reviewForm += "				<input type='radio' name='star' value='4' onclick='return(false)'/>4점";
-					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)' checked='checked'/>5점";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)' checked='checked'/><label for='5' class='form-radio'>5점</label></span>";
 				}
-				reviewForm += "			</form>";
-				reviewForm += "		<span>";
+				reviewForm += "	</div>";
+				reviewForm += "	<div>";
 				reviewForm += "		<input type='hidden' id='reviewReserveNo' value='"+reserve_no+"'>";
 				reviewForm += "		<input type='hidden' id='reviewGdNo' value='"+gd_no+"'>";
 				reviewForm += "		<input type='hidden' id='reviewUserNo' value='"+user_no+"'>";
@@ -1132,6 +1126,7 @@
 		$("#submitForm").html(submit);
 		$("#modal").show();
 	}
+	
 </script>
 </head>
 <body>

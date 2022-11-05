@@ -184,6 +184,7 @@
 			, completion_picreal2 : "${c.completion_picreal2}"
 			, completion_picorg3 : "${c.completion_picorg3}"
 			, completion_picreal3 : "${c.completion_picreal3}"
+			, merchant_uid : ${c.merchant_uid}
 		});
 	</c:forEach>
 	
@@ -199,6 +200,7 @@
 			, reserve_major : "${nc.major}"
 			, reserve_date : ${nc.reserve_date}
 			, reserve_hour : ${nc.reserve_hour}
+			, merchant_uid : ${nc.merchant_uid}
 		});
 	</c:forEach>
 	
@@ -560,7 +562,6 @@
 	function viewCompletion(reserve_no) {
 		var reserveInfo = "";
 		for(var i=0; i<completionList.length; i++) {
-			console.log(completionList[i].reserve_no);
 			if(completionList[i].reserve_no === reserve_no) {
 				reserveInfo += "<table border='1' class='default'>";
 				reserveInfo += "	<tr>";
@@ -656,41 +657,44 @@
 					paidOthers += "		<td>해당 날짜로 이동</td>";
 					paidOthers += "</tr>";
 					for(var j=0; j<noCompletionList.length; j++) {
-						if(noCompletionList[j].reserve_no === reserve_no) {
-							paidOthers += "<tr>";
-							paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
-							paidOthers += "		<td>"+noCompletionList[j].reserve_hour+"</td>";
-							paidOthers += "		<td>"+noCompletionList[j].reserve_major+"</td>";
-							paidOthers += "		<td>현재 선택된 예약건</td>";
-							paidOthers += "</tr>";
-						}
-						if(noCompletionList[j].reserve_no !== reserve_no) {
-							paidOthers += "<tr>";
-							paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
-							paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
-							paidOthers += "		<td>"+noCompletionList[j].reserve_hour+"</td>";
-							paidOthers += "		<td>"+noCompletionList[j].reserve_major+"</td>";
-							paidOthers += "		<td><button type='button' onclick='move("+noCompletionList[j].reserve_date+")'>이동</button></td>";
-							paidOthers += "</tr>";
-							
+						if(noCompletionList[j].merchant_uid === merchant_uid){
+							if(noCompletionList[j].reserve_no === reserve_no) {
+								paidOthers += "<tr>";
+								paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
+								paidOthers += "		<td>"+noCompletionList[j].reserve_hour+"</td>";
+								paidOthers += "		<td>"+noCompletionList[j].reserve_major+"</td>";
+								paidOthers += "		<td>현재 선택된 예약건</td>";
+								paidOthers += "</tr>";
+							}
+							if(noCompletionList[j].reserve_no !== reserve_no) {
+								paidOthers += "<tr>";
+								paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
+								paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
+								paidOthers += "		<td>"+noCompletionList[j].reserve_hour+"</td>";
+								paidOthers += "		<td>"+noCompletionList[j].reserve_major+"</td>";
+								paidOthers += "		<td><button type='button' onclick='move("+noCompletionList[j].reserve_date+")'>이동</button></td>";
+								paidOthers += "</tr>";
+							}
 						}
 					}
 					for(var j=0; j<completionList.length; j++) {
-						if(completionList[j].reserve_no === reserve_no) {
-							paidOthers += "<tr>";
-							paidOthers += "		<td>"+completionList[j].reserve_date+"</td>";
-							paidOthers += "		<td>"+completionList[j].reserve_hour+"</td>";
-							paidOthers += "		<td>"+completionList[j].reserve_major+"</td>";
-							paidOthers += "		<td>현재 선택된 예약건</td>";
-							paidOthers += "</tr>";
-						}
-						if(completionList[j].reserve_no !== reserve_no) {
-							paidOthers += "<tr>";
-							paidOthers += "		<td>"+completionList[j].reserve_date+"</td>";
-							paidOthers += "		<td>"+completionList[j].reserve_hour+"</td>";
-							paidOthers += "		<td>"+completionList[j].reserve_major+"</td>";
-							paidOthers += "		<td><button type='button' onclick='move("+completionList[j].reserve_date+")'>이동</button></td>";
-							paidOthers += "</tr>";
+						if(completionList[j].merchant_uid === merchant_uid){
+							if(completionList[j].reserve_no === reserve_no) {
+								paidOthers += "<tr>";
+								paidOthers += "		<td>"+completionList[j].reserve_date+"</td>";
+								paidOthers += "		<td>"+completionList[j].reserve_hour+"</td>";
+								paidOthers += "		<td>"+completionList[j].reserve_major+"</td>";
+								paidOthers += "		<td>현재 선택된 예약건</td>";
+								paidOthers += "</tr>";
+							}
+							if(completionList[j].reserve_no !== reserve_no) {
+								paidOthers += "<tr>";
+								paidOthers += "		<td>"+completionList[j].reserve_date+"</td>";
+								paidOthers += "		<td>"+completionList[j].reserve_hour+"</td>";
+								paidOthers += "		<td>"+completionList[j].reserve_major+"</td>";
+								paidOthers += "		<td><button type='button' onclick='move("+completionList[j].reserve_date+")'>이동</button></td>";
+								paidOthers += "</tr>";
+							}
 						}
 					}
 				}
@@ -1029,7 +1033,7 @@
 					reviewForm += "				<input type='radio' name='star' value='5' onclick='return(false)' checked='checked'/>5점";
 				}
 				reviewForm += "			</form>";
-				reviewForm += "		<span>";1
+				reviewForm += "		<span>";
 				reviewForm += "	</div>";
 				reviewForm += "	<div id='answerForm'></div>";
 				if(reviewList[i].review_answer !== null && reviewList[i].review_answer !== ''){

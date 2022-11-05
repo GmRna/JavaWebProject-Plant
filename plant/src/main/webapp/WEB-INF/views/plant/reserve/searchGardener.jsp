@@ -31,6 +31,7 @@
     <script src="../js/datepicker.min.js"></script>
     <script src="../js/lang/datepicker.ko.js"></script>
     <script>
+    	
   	//두개짜리 제어 연결된거 만들어주는 함수
   	$(function(){
     	datePickerSet($("#dateStart"), $("#dateEnd"), true); //다중은 시작하는 달력 먼저, 끝달력 2번째
@@ -110,10 +111,12 @@
     			$("#profile").html(res); // profile에 프로필 카드 호출
     		}
     	});
-    	document.getElementById('profile').scrollIntoView();
+    	setTimeout(function() {document.getElementById('profile').scrollIntoView();}, 500); // 프로필 카드로 이동
     }
   	
+
   	// 대표후기 및 예약가능시간과 해당하는 시간의 예약가능 종목 보기
+  	/*
   	function riviewAndReservable(e){
   	   	$.ajax({
   	    	url : "/plant/reserve/riviewAndReservable.do"
@@ -124,19 +127,16 @@
   	   			, searchMajor : $("#searchMajor").val()
   	    	}
   	    	, success : function(res) {
-  	    		console.log("성공");
   	   			$("#riviewAndReservable").html(res);
   	   		}
-  	   	})
+  	   	});
   	}
+  	*/
   	
 	// 가드너 프로필 상세보기 화면으로 이동
-	function profileView() {
-		$(".profileView").click(function(){
-	   		var no = $(this).attr("id");
-			location.href="/plant/reserve/profileView.do?gd_no="+no+"";
-		})
-	}
+	function profileView(id) {
+		location.href="/plant/reserve/profileView.do?gd_no="+id+"";
+  	}
 </script>
 </head>
 <body>
@@ -150,7 +150,6 @@
 				<div class="bbsSearch">
 					<form method="get" name="search" id="search" action="">
 						<div class="search">
-							<!-- 향후 자바스크립트 처리로 달력 뜰 수 있게 하기 -->
 							<!-- 검색 시작 일자 ~ 종료 일자 -->
 							<h2>예약일로 가드너 검색</h2>
 							<h4>원하는 예약일</h4>
@@ -208,8 +207,8 @@
 									<option value="littleReserve">예약 적은 순</option>
 								</select>
 							</div>
-								<!-- 검색 버튼 -->
-								<input style='width:100px; margin:auto; display:block;' type="button" onClick="javascript:btnClick()" value="검색">
+							<!-- 검색 버튼 -->
+							<input style='width:100px; margin:auto; display:block;' type="button" onClick="javascript:btnClick();" value="검색">
 						</div>
 					</form>
 					<!-- 프로필카드 -->

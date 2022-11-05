@@ -17,6 +17,7 @@
 			, gd_major6
 			, gd_major7
 			, g.gd_picorg
+			, g.gd_picreal
 			, (
 				SELECT
 					(sum(star)/count(star))
@@ -405,6 +406,14 @@
 				WHERE
 					user_no = r.user_no
 			) AS user_nick
+			, (
+                SELECT
+                    merchant_uid
+                FROM
+                	pay
+                WHERE
+                	reserve_no = r.reserve_no
+            ) AS merchant_uid
 		FROM
 			reservation r
 		WHERE				
@@ -863,6 +872,14 @@
 				WHERE
 					major_no = r.major_no
 			) AS major
+			, (
+                SELECT
+                    merchant_uid
+                FROM
+                	pay
+                WHERE
+                	reserve_no = r.reserve_no
+            ) AS merchant_uid
 			, r.reserve_date
 			, r.reserve_hour
 			, r.reserve_time
@@ -981,6 +998,14 @@
 				WHERE
 					major_no = r.major_no
 			) AS major
+			, (
+                SELECT
+                    merchant_uid
+                FROM
+                	pay
+                WHERE
+                	reserve_no = r.reserve_no
+            ) AS merchant_uid
 			, reserve_date
 			, reserve_hour
 			, reserve_time
