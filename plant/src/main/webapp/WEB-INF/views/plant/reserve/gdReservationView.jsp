@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,7 +100,6 @@
 	var nowDay = ('0' + nowDate.getDay()).slice(-2);
 	var dateStr = nowYear + nowMonth + nowDay;
 	
-	console.log(nowDate.getMonth() + 1);
 	// 결제 내역
 	var gdPayHistoryList = new Array();
 	<c:forEach items = "${gdPayHistoryList}" var = "p">
@@ -137,6 +136,7 @@
 			, major : "${r.major}"
 			, user_name : "${r.user_name}"
 			, user_nick : "${r.user_nick}"
+			, merchant_uid : "${r.merchant_uid}"
 		});
 	</c:forEach>
 	
@@ -295,7 +295,7 @@
 				"<th><button type='button' class='next'>></button></th>" +
 				"</thead>" +
 				"<thead  class='cal_week'>" +
-        			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약가능한 날을 빨간색은 예약 불가능한 날을 나타냅니다.</th>" +
+        			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약되지 않은 날을 빨간색은 예약완료된 날을 나타냅니다.</th>" +
         		"</thead>" +
 				"<thead  class='cal_week'>" +
 					"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +
@@ -499,7 +499,7 @@
 		            		$("#noReserve").html("<div id='noReserve'></div>");
 		            		reserved += "<table border='1' class='default'>";
 		            		reserved += "	<tr>";
-		        			reserved += "		<th colspan='10' style='text-align: center;'>예약된 일정()</th>";	
+		        			reserved += "		<th colspan='10' style='text-align: center;'>예약된 일정</th>";	
 		        			reserved += "	</tr>";	            	
 		        			reserved += "	<tr>";            			
 		        			reserved += "		<td>예약일</td>";	
@@ -932,7 +932,6 @@
 		var num = 0;
 		var result = "";
 		var dateData = $('#selectDate tr').eq(0).find("td:eq(1)").attr("id");
-		console.log(1);
 		for(var i=0; i<trLength; i++) {
 			var hourData = $('#addReservableSchedule tr').eq(i).find("td:eq(0)").find("input").val();
 			var majorData = $('#addReservableSchedule tr').eq(i).find("td:eq(1)").find("select").val();
@@ -946,22 +945,25 @@
 			}
 			// 겹치는 시간 없는지 확인
 			if(excute) {
+				if(reservableList.length == 0){
+					check = true;
+				}
 				for(var j=0; j<reservableList.length; j++) {
 					if(Number(dateData) == reservableList[j].reservable_date) {
 						if(Number(hourData) == reservableList[j].reservable_hour){
 							check = false;
+							go = false;
 							num += i+1;
 							log += "예약가능시간 :"+hourData+" \n 케어종목 : "+majorData+"";
 							break;
 						} 
-					} else {
-						check = true;	
 					}
 				}
+				if(log == ""){
+					check = true;
+				}
 				if(check) {
-					for(var j=0; j<reservedList.length; j++) {
-						console.log(Number(dateData));
-						console.log(reservedList[j].reservable_date);						
+					for(var j=0; j<reservedList.length; j++) {					
 						if(Number(dateData) == reservedList[j].reservable_date) {
 							if(Number(hourData) == reservedList[j].reservable_hour){
 								go = false;
@@ -973,10 +975,10 @@
 					}
 					// false일때 for문 탈출
 					if(go == false) {
-						console.log(2);
 						break;
 					}
 				}
+				console.log(go);
 				if(go) {
 					$.ajax({
 		  	    		url : "addReservableSchedule.do"
@@ -998,11 +1000,13 @@
 		}
 		// 시간값 잘못 입력했을 때
 		if(excute == false) {
-			alert("9시~20시 사이의 숫자를 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"")
+			alert("9시~20시 사이의 숫자를 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"");
 		}
 		// 중복시간이 있을 때
 		if(check == false || go == false) {
-			alert("이미 예약된 시간입니다. 확인 후 다른 시간을 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"")
+			alert("이미 예약된 시간입니다. 확인 후 다른 시간을 입력해주세요. \n 잘못 입력한 부분: "+num+"행 \n "+log+"");
+			console.log(check);
+			console.log(go);
 		}
 		if(excute && check && go) {
 			alert("정상적으로 일정추가 되었습니다.");
@@ -1100,12 +1104,14 @@
 							paidOthers += "</tr>";
 						}
 						if(reservationList[j].reserve_no !== reserve_no) {
-							paidOthers += "<tr>";
-							paidOthers += "		<td>"+reservationList[j].reserve_date+"</td>";
-							paidOthers += "		<td>"+reservationList[j].reserve_hour+"</td>";
-							paidOthers += "		<td>"+reservationList[j].major+"</td>";
-							paidOthers += "		<td><button type='button' onclick='move("+reservationList[j].reserve_date+")'>이동</button></td>";
-							paidOthers += "</tr>";
+							if(Number(reservationList[j].merchant_uid) === Number(merchant_uid)){
+								paidOthers += "<tr>";
+								paidOthers += "		<td>"+reservationList[j].reserve_date+"</td>";
+								paidOthers += "		<td>"+reservationList[j].reserve_hour+"</td>";
+								paidOthers += "		<td>"+reservationList[j].major+"</td>";
+								paidOthers += "		<td><button type='button' onclick='move("+reservationList[j].reserve_date+")'>이동</button></td>";
+								paidOthers += "</tr>";
+							}
 						}
 					}
 				}
@@ -1153,6 +1159,7 @@
 </script>
 </head>
 <body>
+	<jsp:include page="/WEB-INF/views/common/reserveHeader.jsp"></jsp:include>
 	<table class='default'>
 		<tr><th style='font-size: 20pt; text-align: center;'>가드너 예약 확인 및 관리</th></tr>
 	</table>

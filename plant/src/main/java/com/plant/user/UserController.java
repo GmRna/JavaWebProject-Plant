@@ -160,7 +160,7 @@ public class UserController {
 	// 로그인 창
 	@GetMapping("/user/login.do")
 	public String login() {
-		return "/plant/user/login";
+		return "plant/user/login";
 	}
 	
 	@PostMapping("/user/login.do")

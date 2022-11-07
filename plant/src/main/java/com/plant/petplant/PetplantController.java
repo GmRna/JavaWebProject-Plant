@@ -73,6 +73,24 @@ public class PetplantController {
 		return "plant/petplant/list";
 	}
 	
+	// 반려식물 검색기능 
+	@GetMapping("/plant/searchpet.do")
+	public String searchpet (@RequestParam String sword , Model model, HttpServletRequest req , PetplantVO vo) {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		
+		if (user != null) {
+			vo.setUser_no(user.getUser_no());
+			System.out.println("@@@@@@@@@@  " + vo.getUser_no());
+		}
+		
+		vo.setSword(sword);
+		model.addAttribute("list", service.searchpet(vo));
+		
+		return "plant/petplant/list";
+	}
 	
 	// 반려 식물 게시판 저장 (다중첨부파일)
 	@PostMapping("/plant/insert.do")

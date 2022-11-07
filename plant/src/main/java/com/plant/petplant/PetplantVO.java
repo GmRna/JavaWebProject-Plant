@@ -48,5 +48,5 @@ public class PetplantVO {
 
 	private int ppp_check;
 	
-	
+	private String sword;
 }

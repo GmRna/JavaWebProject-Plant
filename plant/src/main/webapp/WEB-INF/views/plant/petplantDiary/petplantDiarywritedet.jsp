@@ -49,6 +49,10 @@ function getToday(){
 function save() {
 	$("#frm").submit();
 }
+
+function list() {
+	
+}
 </script>
 
 <style type="text/css">
@@ -82,7 +86,7 @@ body {
 		<br><br><br>
 		제목 <input type="text" name="diary_title"><br>
 		날씨 <br>
-				<input type="checkbox" name="diary_weather" value="1"checked="checked"> 맑음
+				<input type="checkbox" name="diary_weather" value="1"> 맑음
 				<input type="checkbox" name="diary_weather" value="2" > 비
 			  	<input type="checkbox" name="diary_weather" value="3" > 구름
 			  	<input type="checkbox" name="diary_weather" value="4" > 눈
@@ -90,6 +94,8 @@ body {
 		관찰 내용 <textarea name="diary_content"></textarea>
 	</form>
 	<button onclick="save()">작성완료</button>
+	<button onclick="javascript:history.back();">목록으로</button>
+	
 </div>
 
 

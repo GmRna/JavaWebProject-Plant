@@ -18,8 +18,14 @@ public class PetplantServiceImpl implements PetplantService {
 	
 	// 반려식물 전체 리스트 (첫화면)
 	@Override
-	public List<PetplantVO> list(PetplantVO vo) {
-		return mapper.list(vo);
+	public Map list(PetplantVO vo) {
+		Map map = new HashMap();
+		
+		List<PetplantVO> list = mapper.list(vo);
+		
+		map.put("list", list);
+		
+		return map;
 		
 	}
 
@@ -211,6 +217,19 @@ public class PetplantServiceImpl implements PetplantService {
 	@Override
 	public PetplantVO listpop(PetplantVO vo) {
 		return mapper.listpop(vo);
+	}
+	
+	
+	// 검색기능
+	@Override
+	public Map searchpet(PetplantVO vo) {
+		Map map = new HashMap();
+		List<PetplantVO> list = mapper.searchpet(vo);
+		
+		map.put("list", list);
+		
+		
+		return map;
 	} 
 	
 

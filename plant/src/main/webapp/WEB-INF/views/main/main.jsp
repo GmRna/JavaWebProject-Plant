@@ -41,7 +41,7 @@
 			<li>
 				<a href="">식물 도감</a>
 				<ul>
-			        <li><a href="/plant/plantbook/search.do">식물 도감</a></li>
+			        <li><a href="/plant/plantbook/main.do">식물 도감</a></li>
 			        <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
 				</ul>
 			</li>

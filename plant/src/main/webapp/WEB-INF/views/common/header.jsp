@@ -25,11 +25,11 @@
 					<li><a href="/plant/reserve/searchGardener.do">가드너 검색</a></li>
 					
 					<c:if test="${!empty loginUserInfo}"> 
-						<li><a href="/plant/reserve/userReservationView.do">나의 예약 관리</a></li>
+						<li><a href="/plant/reserve/userReservationView.do?user_no=${loginUserInfo.user_no}">나의 예약 관리</a></li>
 					</c:if>
 					<c:if test="${!empty loginGdInfo}">
-						<li><a href="/plant/reserve/gdReservationView.do">나의 예약일정 관리</a></li>
-						<li><a href="/plant/reserve/completion.do">예약 완료 내역 입력 및 리뷰관리</a></li>
+						<li><a href="/plant/reserve/gdReservationView.do?gd_no=${loginGdInfo.gd_no}">나의 예약일정 관리</a></li>
+						<li><a href="/plant/reserve/completion.do?gd_no=${loginGdInfo.gd_no}">예약 완료 내역 입력 및 리뷰관리</a></li>
 					</c:if> 
 				</ul>
 			</li>
@@ -41,7 +41,7 @@
 			<li>
 				<a href="">식물 도감</a>
 				<ul>
-					<li><a href="/plant/plantbook/search.do">식물 도감</a></li>
+					<li><a href="/plant/plantbook/main.do">식물 도감</a></li>
 					<li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
 				</ul>
 			</li>

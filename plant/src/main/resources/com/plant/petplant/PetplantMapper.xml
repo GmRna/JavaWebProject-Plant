@@ -20,6 +20,27 @@
 		ON (a.pet_no = b.pet_no) ORDER BY a.pet_no DESC
 	</select>
 	
+	<!-- 검색기능 -->
+	<select id="searchpet"  parameterType="com.plant.petplant.PetplantVO"  resultType="com.plant.petplant.PetplantVO">
+		select *,
+			(select user_nick FROM user WHERE user_no=a.user_no) AS user_nick,
+			(select user_plantfile_real FROM user WHERE user_no=a.user_no) AS user_plantfile_real,
+			(select user_no FROM user WHERE user_no=a.user_no) AS user_writeNo,
+			(select count(*) from ppLike where pet_no=a.pet_no and user_no= #{user_no} and ppreply_no=0) like_check,
+		    (select count(*) from ppLike where pet_no=a.pet_no and ppreply_no=0) countLike,
+    		(select count(*) from ppReply where pet_no=a.pet_no) count_reply,
+    		(select count(*) from petplantput where pet_no=a.pet_no and user_no = #{user_no} ) ppp_check
+		from petplant AS a
+		INNER JOIN ( 
+			SELECT pet_no, group_concat(filename_real) AS filename_real
+			FROM plant_file group by pet_no
+		) AS b
+		ON (a.pet_no = b.pet_no) 
+		 WHERE a.pet_content like '%${sword}%'
+		ORDER BY a.pet_no DESC
+	</select>
+	
+	
 	<!-- 상세보기에 넘겨줄 내용  -->
 	<select id="listpop" resultType="com.plant.petplant.PetplantVO">
 		select *,
@@ -37,7 +58,8 @@
 	
 	<!-- 반려식물 게시판 등록 -->
 	<insert id="insert" parameterType="com.plant.petplant.PetplantVO"  >
-		INSERT INTO petplant ( user_no 
+		INSERT INTO petplant ( 
+			user_no 
 			, pet_content
 			, pet_regdate
 		) 
@@ -56,14 +78,12 @@
 		INSERT INTO plant_file ( 
 			user_no 
 			,pet_no
-			,file_tablename
 			,filename_org
 			,filename_real
 			,file_regdate 
 		) VALUES (
 			#{user_no}
 			, #{pet_no}
-			, #{file_tablename}
 			, #{filename_org}
 			, #{filename_real}
 			, NOW()

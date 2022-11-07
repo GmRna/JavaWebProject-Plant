@@ -1,17 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 <link href="/plant/css/instagram.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript">
 
-	 
+<script type="text/javascript">
 </script>
-</head>
-<body>
+
 <div id="report_popup_layer" >
 	<div class="reportDiv" id="reportDiv" >
 		<form method="post" action="report.do">
@@ -52,6 +45,3 @@ $(function () {
 	
 });
 </script>
-
-</body>
-</html>

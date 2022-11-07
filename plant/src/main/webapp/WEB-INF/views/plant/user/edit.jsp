@@ -275,7 +275,7 @@
                 <div class="btnSet clear">	
                     <div>
                     <a href="javascript:;" class="btn" onclick="goSave();">저장</a> 
-                    <a href="/plant/user/login.do" class="btn">취소</a></div>
+                    <a href="/plant/user/myInfo.do" class="btn">취소</a></div>
                     <div>별표가 있는 항목은 필수 항목입니다.</div>
                 </div>
             </div>

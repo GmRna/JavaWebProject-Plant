@@ -48,7 +48,7 @@ header, nav, menu, section, article {
 fieldset, img {
  border:0 none
 }
-dl, ul, ol, menu, li {
+dl,  ol, menu {
  list-style:none; 
  vertical-align: middle
 }
