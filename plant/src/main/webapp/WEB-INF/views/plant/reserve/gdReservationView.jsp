@@ -295,7 +295,7 @@
 				"<th><button type='button' class='next'>></button></th>" +
 				"</thead>" +
 				"<thead  class='cal_week'>" +
-        			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약가능한 날을 빨간색은 예약 불가능한 날을 나타냅니다.</th>" +
+        			"<th colspan='7'>좌우 화살표로 다음(이전월)로 이동 가능하며 초록색은 예약되지 않은 날을 빨간색은 예약완료된 날을 나타냅니다.</th>" +
         		"</thead>" +
 				"<thead  class='cal_week'>" +
 					"<th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th>" +

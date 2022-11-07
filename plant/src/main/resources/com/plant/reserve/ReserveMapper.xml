@@ -341,6 +341,7 @@
 			, reserve_date
 			, reserve_hour 
 			, reserve_time
+			, reserve_etc
 			, (
 				SELECT
 					major
