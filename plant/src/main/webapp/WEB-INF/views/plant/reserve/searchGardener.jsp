@@ -227,10 +227,11 @@ select {
     			$("#profile").html(res); // profile에 프로필 카드 호출
     		}
     	});
-    	document.getElementById('profile').scrollIntoView();
+    	setTimeout(function() {document.getElementById('profile').scrollIntoView();}, 500); // 프로필 카드로 이동
     }
   	
   	// 대표후기 및 예약가능시간과 해당하는 시간의 예약가능 종목 보기
+    /*
   	function riviewAndReservable(e){
   	   	$.ajax({
   	    	url : "/plant/reserve/riviewAndReservable.do"
@@ -246,14 +247,12 @@ select {
   	   		}
   	   	})
   	}
+  	*/
   	
 	// 가드너 프로필 상세보기 화면으로 이동
-	function profileView() {
-		$(".profileView").click(function(){
-	   		var no = $(this).attr("id");
-			location.href="/plant/reserve/profileView.do?gd_no="+no+"";
-		})
-	}
+	function profileView(id) {
+		location.href="/plant/reserve/profileView.do?gd_no="+id+"";
+  	}
 </script>
 </head>
 <body>
@@ -266,7 +265,6 @@ select {
 				<div class="bbsSearch">
 					<form method="get" name="search" id="search" action="">
 						<div class="search">
-							<!-- 향후 자바스크립트 처리로 달력 뜰 수 있게 하기 -->
 							<!-- 검색 시작 일자 ~ 종료 일자 -->
 							<h2>예약일로 가드너 검색</h2>
 							<h4>원하는 예약일</h4>
