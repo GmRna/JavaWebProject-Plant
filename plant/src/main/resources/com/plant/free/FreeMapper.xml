@@ -10,9 +10,9 @@
 	
 	<insert id="insert" parameterType="com.plant.free.FreeVO">
 		INSERT INTO free (
-			free_title, free_content, free_viewcount, free_regdate, user_no, free_filenameorg, free_filenamereal 
+			free_title, free_content, free_viewcount, free_regdate, user_no, user_name, free_filenameorg, free_filenamereal 
 			) VALUES (
-			#{free_title}, #{free_content}, 0, NOW(), #{user_no},  #{free_filenameorg}, #{free_filenamereal} 
+			#{free_title}, #{free_content}, 0, NOW(), #{user_no}, #{user_name},  #{free_filenameorg}, #{free_filenamereal} 
 		)
 		
 	
@@ -37,8 +37,9 @@
 	
 	<select id="list" parameterType="com.plant.free.FreeVO" resultType="com.plant.free.FreeVO">
 		SELECT *,
+       		(select user_name FROM user WHERE user_no=free.user_no) AS user_name,
 			(SELECT COUNT(*) FROM free_comment WHERE free_no=free.free_no AND tablename='free') AS comment_count
-			FROM free
+			FROM free 
 		<where>
 			<if test="stype != null and stype != ''">
 				<if test="stype != 'all'">
@@ -50,7 +51,9 @@
 		    </if>
 		</where>
 		ORDER BY free_regdate DESC
-		LIMIT  ${startIdx},${pageRow};	</select>
+		LIMIT  ${startIdx},${pageRow};	
+	
+	</select>
 	 
 	
 	<update id="update" parameterType="com.plant.free.FreeVO">

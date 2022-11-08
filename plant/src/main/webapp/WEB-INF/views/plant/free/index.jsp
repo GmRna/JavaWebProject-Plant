@@ -37,6 +37,7 @@
     
                 <div class="bbs">
                     <table class="list">
+                           <h3 class="logconfirm" style="text-align:right;">로그인 중인 아이디 : ${loginUserInfo.user_email }</h3>
                      
                         <caption>자유게시판 목록</caption>
                         <colgroup>
@@ -74,7 +75,7 @@
                                 	${vo.free_viewcount }
                                 </td>
                                 <td class="writer">
-                                    ${vo.user_no }
+                                   ${vo.user_nick }
                                 </td>
                                 <td class="date"><fmt:formatDate value="${vo.free_regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             </tr>

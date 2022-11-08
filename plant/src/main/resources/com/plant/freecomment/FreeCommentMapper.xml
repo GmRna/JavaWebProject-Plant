@@ -16,10 +16,15 @@
 	</select>
 	
 	<select id="list" parameterType="com.plant.freecomment.FreeCommentVO" resultType="com.plant.freecomment.FreeCommentVO">
-		SELECT * FROM free_comment
+		SELECT *,
+			(SELECT user_nick FROM user WHERE user_no = free_comment.user_no) AS user_nick
+		FROM free_comment
+		
 		WHERE free_no = #{free_no} AND tablename = #{tablename}
 		ORDER BY regdate DESC
-		LIMIT  ${startIdx},${pageRow};
+		LIMIT ${startIdx}, ${pageRow};
+		
+		
 	</select>
 	
 	<delete id="delete" parameterType="int">

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.plant.member.MemberVO;
+import com.plant.user.UserVO;
 
 
 @Controller
@@ -57,8 +58,9 @@ public class AskReplyController {
 					vo.setFilename_real(real);
 				}
 		HttpSession sess = req.getSession();
-		MemberVO mv = (MemberVO)sess.getAttribute("logininfo");
-		if(mv != null) vo.setUser_no(mv.getNo());
+		UserVO mv = (UserVO)sess.getAttribute("loginUserInfo");
+		
+		if(mv != null) vo.setUser_no(mv.getUser_no());
 		
 		if(service.insert(vo)) {
 			model.addAttribute("msg", "정상적으로 저장되었습니다.");

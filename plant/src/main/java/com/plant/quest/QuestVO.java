@@ -14,7 +14,6 @@ public class QuestVO {
 	
 	private int quest_no;
 	private int user_no;
-	private int member_no;
 	private String quest_title;
 	private String quest_content;
 	private int quest_viewcount;
@@ -23,6 +22,7 @@ public class QuestVO {
 	private String quest_filenamereal;
 	private int comment_count;
 	private int quest_level;
+	private String user_nick;
 	
 	private int page;
 	private String stype;

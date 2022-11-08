@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.plant.member.MemberVO;
 import com.plant.questcomment.QuestCommentService;
+import com.plant.user.UserVO;
 
 @Controller
 public class QuestController {
@@ -38,8 +38,23 @@ public class QuestController {
 		
 		return "/plant/quest/write";
 	}
-	
 	@PostMapping("/quest/write.do")
+	public String insert(QuestVO vo, Model model) {
+		//System.out.println("타이틀 : " + vo.getfree_title());
+		if (service.insert(vo)) {
+			model.addAttribute("msg", "저장완료");
+			model.addAttribute("url", "index.do");
+			
+			return "common/alert";
+		} else {
+			model.addAttribute("msg", "저장실패");
+			
+			return "common/alert";
+		}
+		
+	}
+	
+	@PostMapping("/quest/insert.do")
 	public String insert(QuestVO vo, Model model,
 			@RequestParam MultipartFile filename,
 			HttpServletRequest req) {
@@ -61,9 +76,9 @@ public class QuestController {
 			vo.setQuest_filenamereal(real);
 		}
 		HttpSession sess = req.getSession();
-		MemberVO mv = (MemberVO)sess.getAttribute("loginInfo");
+		UserVO mv = (UserVO)sess.getAttribute("loginUserInfo");
 		
-		vo.setUser_no(mv.getNo());
+		if(mv != null) vo.setUser_no(mv.getUser_no());
 		
 		if(service.insert(vo)) {
 			model.addAttribute("msg", "저장되었습니다.");
@@ -124,7 +139,7 @@ public class QuestController {
 		} else {
 			model.addAttribute("msg", "삭제실패");
 			return "common/alert";
-			
+			 
 		}
 	}
 

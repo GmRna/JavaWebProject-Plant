@@ -44,7 +44,8 @@
                         <tr>
                         	<th>첨부파일</th>
                         	<td>
-                        		<input type="file" name="filename">
+                        		${data.quest_filenameorg }
+                        		<input type="file" name="filename" id="quest_filenameorg">
                         	</td>
                         </tr>
                         </tbody>

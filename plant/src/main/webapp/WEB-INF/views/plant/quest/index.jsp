@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.net.*" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -14,10 +15,12 @@
     <title>질문게시판 목록</title>
     <link rel="stylesheet" href="/plant/css/reset.css"/>
     <link rel="stylesheet" href="/plant/css/contents.css"/>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
    	<script>
   	
   		function goWrite(){
   			<c:if test="${empty loginUserInfo}">
+  				alert('로그인 후 글작성이 가능합니다.')
   				alert('사용자 로그인 후 글작성이 가능합니다.')
   				location.href = '/plant/user/login.do';
   			</c:if>
@@ -37,6 +40,8 @@
     
                 <div class="bbs">
                     <table class="list">
+                           <h3 class="logconfirm" style="text-align:right;">로그인 중인 아이디 : ${loginUserInfo.user_email	 }</h3>
+
                         <caption>질문게시판 목록</caption>
                         <colgroup>
                             <col width="80px" />
@@ -70,7 +75,7 @@
                                 	${vo.quest_viewcount }
                                 </td>
                                 <td class="writer">
-                                    ${vo.user_no }
+                                    ${vo.user_nick }
                                 </td>
                                 <td class="date"><fmt:formatDate value="${vo.quest_regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             </tr>
