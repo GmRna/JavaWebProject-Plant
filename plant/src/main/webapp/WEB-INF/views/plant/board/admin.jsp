@@ -322,11 +322,11 @@ function test() {
 					</dl>
 					<dl style="width:12.5%;">
 						<dt><a href="javascript:;">질문 게시판</a></dt>
-						<dd class="frist"><a href="javascript:;" onclick="clickMenu('back1', '질문 게시판', '/quest/index.do', false)">질문 게시판</a></dd>
+						<dd class="frist"><a href="javascript:;" onclick="clickMenu('back1', '질문 게시판', '/quest/index2.do', false)">질문 게시판</a></dd>
 					</dl>
 					<dl style="width:12.5%;">
 						<dt><a href="javascript:;">문의사항</a></dt>
-						<dd class="frist"><a href="javascript:;" onclick="clickMenu('back1', '문의사항', '/ask/index.do', false)">문의사항</a></dd>
+						<dd class="frist"><a href="javascript:;" onclick="clickMenu('back1', '문의사항', '/ask/index2.do', false)">문의사항</a></dd>
 					</dl>
 					<dl style="width:12.5%;">
 						<dt><a href="javascript:;">예약 게시판</a></dt>
@@ -343,7 +343,7 @@ function test() {
 					</dl>
 					<dl style="width:12.5%;">
 						<dt><a href="javascript:;">자유게시판</a></dt>
-						<dd class="frist"><a href="javascript:;" onclick="clickMenu('back1', '자유게시판', '/free/index.do', false)">문의사항</a></dd>
+						<dd class="frist"><a href="javascript:;" onclick="clickMenu('back1', '자유게시판', '/free/index2.do', false)">자유게시판</a></dd>
 					</dl>
 				</div>
 			</div>
@@ -365,13 +365,13 @@ function test() {
 					<dt id="front" class="gnb_menu">질문 게시판</dt>
 					<dd class="gnb_submenu">
 						<ul>	
-							<li id="front1_submenu" onclick="clickMenu('front1', '질문 게시판', '/quest/index.do', false)">질문 게시판</li>
+							<li id="front1_submenu" onclick="clickMenu('front1', '질문 게시판', '/quest/index2.do', false)">질문 게시판</li>
 						</ul>
 					</dd>
 					<dt id="back" class="gnb_menu">문의사항</dt>
 					<dd class="gnb_submenu">
 						<ul>	
-							<li id="back1_submenu" onclick="clickMenu('back1', '문의사항', '/ask/index.do', false)">문의사항</li>
+							<li id="back1_submenu" onclick="clickMenu('back1', '문의사항', '/ask/index2.do', false)">문의사항</li>
 						</ul>
 					</dd>
 					<dt id="bigdata" class="gnb_menu">예약 게시판</dt>
@@ -384,7 +384,7 @@ function test() {
 					<dt id="portfolio" class="gnb_menu">자유 게시판</dt>
 					<dd class="gnb_submenu">
 						<ul>	
-							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '자유 게시판', '/free/index.do', false)">자유 게시판</li>
+							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '자유 게시판', '/free/index2.do', false)">자유 게시판</li>
 						</ul>
 					</dd>
 					<dt id="portfolio" class="gnb_menu">신고 게시판</dt>
@@ -397,8 +397,6 @@ function test() {
 					<dd class="gnb_submenu">
 						<ul>	
 							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '식물도감', '/plantbook/plantbook.do', false)">식물 도감</li>
-							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '식물 도감 요청 게시판', '/plantbookreq/listBookreq.do', false)">식물 도감 요청 게시판</li>
-							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '식물 도감 요청 게시판', '/plantbookreq/writeBookreq.do', false)">식물 도감 요청 답변 작성</li>
 						</ul>
 					</dd>
 				</dl>
