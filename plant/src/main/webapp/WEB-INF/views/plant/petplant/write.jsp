@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@include file ="../../common/header.jsp" %>
+<%@include file ="petplantheader.jsp" %>
 
 <!DOCTYPE html>
 <html>
@@ -9,35 +9,99 @@
 <meta charset="UTF-8">
 <title>반려식물 게시판 등록</title>
 
+<link href="/plant/css/petplant/instagram.css" rel="stylesheet" type="text/css" />
 <style>
 .insert {
-    padding: 20px 30px;
+    padding: 60px 30px;
     display: block;
-    width: 600px;
-    margin: 5vh auto;
-    height: 90vh;
+    width: 700px;
+    height: 65vh;
+    margin: 12vh auto;
     border: 1px solid #dbdbdb;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    background-color: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,10%);
 }
+
 .insert .file-list {
-    height: 200px;
     overflow: auto;
-    border: 1px solid #989898;
     padding: 10px;
+    display: flex;
+	box-shadow: 0 1px 1px rgb(0 0 0 / 5%);    
+    
 }
-.insert .file-list .filebox p {
+
+/* .insert .file-list .filebox span {
     font-size: 14px;
     margin-top: 10px;
-    display: inline-block;
 }
-.insert .file-list .filebox .delete button{
+ */
+
+.insert .file-list .filebox .delete .Ximg{
     color: #ff5353;
     margin-left: 5px;
-    width: 50px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
+    position: fixed;
 }
+
+.write{
+	position: relative;
+}
+
+.content{
+ 	width: 640px;
+	height: 200px;
+/*     margin: 5vh auto;*/    
+	border-radius:8px;
+	border-color : #dbdbdb;
+	padding: 10px;
+	box-shadow: 0 1px 1px rgb(0 0 0 / 5%);    
+	
+}
+
+.filebox{
+	width: 120px;
+	height: 100px;
+	justify-content: space-between;
+}
+
+.save{
+	float: right;
+	color : #fff;
+	background-color: #0095f6;
+	border: 0;
+    width: 60px;
+    height: 28px;
+    border-radius: 6px;
+	box-shadow: 0 3px 3px rgb(0 0 0 / 5%);    
+}
+
+.img{
+	width:90px; 
+	height:90px; 
+	box-shadow: 0 3px 3px rgb(0 0 0 / 5%);    
+	
+}
+
+.list{
+	float: right;
+    color: #fff;
+    background-color: #afacac;
+    border: 0;
+    width: 70px;
+    height: 28px;
+    border-radius: 6px;
+    box-shadow: 0 3px 3px rgb(0 0 0 / 5%);
+    margin-right: 10px;    
+}
+
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
@@ -46,7 +110,7 @@ var filesArr = new Array();
 
 /* 첨부파일 추가 */
 function addFile(obj){
-    var maxFileCnt = 3;   // 첨부파일 최대 개수
+    var maxFileCnt = 5;   // 첨부파일 최대 개수
     var attFileCnt = document.querySelectorAll('.filebox').length;    // 기존 추가된 첨부파일 개수
     var remainFileCnt = maxFileCnt - attFileCnt;    // 추가로 첨부가능한 개수
     var curFileCnt = obj.files.length;  // 현재 선택된 첨부파일 개수
@@ -71,9 +135,12 @@ function addFile(obj){
 				
 				let htmlData = '';
 				htmlData += '<div id="file' + fileNo + '" class="filebox">';
-	            htmlData += '	<img src="'+imgsrc+'" style="width:90px; height=90px;" >';
-	            htmlData += '   <p id="name" class="name">' + file.name + '</p>';
-	            htmlData += '   <a class="delete" onclick="deleteFile(' + fileNo + ');"><button type="button" class="far fa-minus-square">삭제</button></a>';
+	            htmlData += '	<img class="img" src="'+imgsrc+'">';
+	            // 파일이름
+	            //htmlData += '   <span id="name" class="name">' + file.name + '</span>';
+	            htmlData += '   <a class="delete" onclick="deleteFile(' + fileNo + ');">';
+	            htmlData += '		<span type="button" class="far fa-minus-square"><img class="Ximg" src="/plant/img/petplant/X.png"></span>';
+	            htmlData += '	</a>';
 	            htmlData += '</div>';
 	            $('.file-list').append(htmlData);
 	            fileNo++;
@@ -92,7 +159,7 @@ function addFile(obj){
 
 /* 첨부파일 검증 */
 function validation(obj){
-    const fileTypes = ['application/pdf', 'image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/tif', 'application/haansofthwp', 'application/x-hwp'];
+    const fileTypes = [ 'image/gif', 'image/jpeg', 'image/png', 'image/bmp', 'image/tif'];
     if (obj.name.length > 100) {
         alert("파일명이 100자 이상인 파일은 제외되었습니다.");
         return false;
@@ -164,19 +231,26 @@ function filecheck() {
     	    });
     }
 }
+
+function petlist() {
+	location.href = "list.do";	
+}
+
 </script>
 </head>
 <body>
 
-
-<div class="insert">
-    <form id="form" method="post" onsubmit="return false;"  enctype="multipart/form-data" >
-        내용 <textarea name="pet_content" id="pet_content"></textarea>
-        	<input type="file" onchange="addFile(this);"  multiple />
-        	<div class="file-list"></div>
-    </form>
-			<input type="submit" onclick="filecheck();" value="저장">
+<div class="write">
+	<div class="insert">
+	    <form id="form" method="post" onsubmit="return false;"  enctype="multipart/form-data" >
+	        
+	        	<input type="file" onchange="addFile(this);"  multiple />
+	        	<div class="file-list"></div>
+	    <textarea name="pet_content" id="pet_content" class="content" placeholder="내용을 작성해주세요"></textarea>
+	    </form>
+	    <input type="submit" onclick="filecheck();" class="save" value="저장">
+	    <input type="submit" onclick="petlist();" class="list" value="목록으로">
+	</div>
 </div>
-
 </body>
 </html>

@@ -57,9 +57,19 @@ $(function() {
 		    }
 		})
 	});
-  
 	
+	// 중분류
+	$("#selectType").change(function(){
+		stype = $("#selectType").val();
+		console.log("@@@@@"+ stype);
+		plantTypelist2(stype);
+	});
 	
+	// 소분류 -- 완전히 작물이름
+	$("#selectType2").change(function () {
+		console.log("@@@@@2");
+		$("#user_planttype").val( $("#selectType2").val());
+	})
 	
 });
  
@@ -84,26 +94,42 @@ function save() {
  
 function plantTypelist(stype) {
 	$.ajax ({
-		url : 'plantStypeF.do',  
-		method : 'POST', 
+		url : '/plant/plantType/plantStypeF.do',   
+		method : 'GET', 
 		dataTpye : 'json',
 		data : { stype : stype },
 		success : function(list) {
-			//console.log(list.stype.length);
-			var h = '';
-				h += '<select>';
-				for(var i =0; i<list.stype.length; i++){ 
-					h += '	<option id="'+list.stype[i].svcCodeNm+'">'+list.stype[i].svcCodeNm+'</option>'
-				}
-				h += '</select>'
-				$("#selectplantType").append(h);
+			$("#selectType").html(list);
 		}, error: function (xhr, desc, err) {
-	           alert('에러가 발생');
-	           console.log(err);
-	           return; 
+			alert('에러가 발생');
+			console.log(err);
+			return; 
 	    }
 	})
 }
+
+
+function plantTypelist2(stype) {
+	console.log("@@@@@2"+stype);
+	$.ajax ({
+		url : '/plant/plantType/plantStypeF2.do',   
+		method : 'GET', 
+		dataTpye : 'json',
+		data : { stype : stype },
+		success : function(list) {
+			$("#selectType2").html(list);
+		}, error: function (xhr, desc, err) {
+			alert('에러가 발생');
+			console.log(err);
+			return; 
+	    }
+	})
+}
+
+function list() {
+	location.href = "/plant/petplantDiary/listDiary.do";
+}
+
 </script>
 
 <style type="text/css">
@@ -122,6 +148,7 @@ body {
 <body> 
 
 <div>
+	<header>처음 등록하는 관찰일지</header>
 	<form id="frm" method="post" action="insertDiary.do"  enctype="multipart/form-data" >
 		<span>기르기 시작한 날짜 <input type="text" id="datepicker" name="pet_regdate" title="저장하면 수정 불가"></span> 
 		<span id="todaypet"></span>    일째
@@ -129,8 +156,8 @@ body {
 		<br><br>
 		<span id="selectBtn">가입시 등록한 반려식물 데이터 불러오기</span> <br>
 		이름 <input type="text" name="user_plantname" ><br>
-		품종 <input type="text" name="user_planttype" ><br>
-			<ul id="selectplantType">
+		작물명 <input type="text" name="user_planttype" id="user_planttype" readonly="readonly"><br>
+			<ul>
 				<li><a id="FC" onclick="plantTypelist('FC')">식량 작물</a></li>
 				<li><a id="IC" onclick="plantTypelist('IC')">특용 작물</a></li>
 				<li><a id="VC" onclick="plantTypelist('VC')">채소</a></li>
@@ -138,6 +165,17 @@ body {
 				<li><a id="FL" onclick="plantTypelist('FL')">화훼</a></li>
 				<li><a id="FG" onclick="plantTypelist('FG')">녹비작물</a></li>
 			</ul>
+			
+			<select id="selectType">
+				<option>선택해주십시오</option>
+			</select>
+			
+			<select id="selectType2">
+				<option>선택해주십시오</option>
+			</select>
+			
+			<br>
+			<br>
 		사진 <input type="file" name="file" id="user_plantfile_org"><br>
 		
 		<br><br><br>
@@ -151,6 +189,7 @@ body {
 		관찰 내용 <textarea name="diary_content"></textarea>
 	</form>
 	<button onclick="save()">작성완료</button>
+	<button onclick="list()">목록으로</button>
 </div>
 
 

@@ -27,28 +27,25 @@ public class ReportController {
 		// 신고 한 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");
 		
 		if(user == null) {
-			model.addAttribute("msg", "로그인 후 이용해 주십시오 reportcontroller");
+			model.addAttribute("msg", "로그인 후 이용해 주십시오");
 			model.addAttribute("url", "/plant/user/login.do");
 			return "common/alert";
-		}	
-		
-		vo.setUser_no(user.getUser_no());
-		vo.setReport_tablename(report_tablename);
-		vo.setBoard_no(board_no);
-		
-		model.addAttribute("reportList" , vo);
-		
-		return "common/report";
+		} else {
+			vo.setUser_no(user.getUser_no());
+			vo.setReport_tablename(report_tablename);
+			vo.setBoard_no(board_no);
+			
+			model.addAttribute("reportList" , vo);
+			
+			return "common/report";
+		}
 	}
 	
 	@PostMapping("/plant/report.do")
 	public String addreport (Model model, ReportVO vo) {
-		
-		
-		
 		
 		if (service.insert(vo) > 0) {
 			model.addAttribute("msg", "신고 완료 되었습니다.");

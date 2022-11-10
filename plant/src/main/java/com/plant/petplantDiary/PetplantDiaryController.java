@@ -94,7 +94,7 @@ public class PetplantDiaryController {
 		return plant;
 	}
 	
-	
+/*	
 	// 반려식물 관찰일지 - 품종 소분류 
 	@PostMapping(value="/petplantDiary/plantStypeF.do" ,  produces = "application/json; charset=utf8")
 	@ResponseBody
@@ -104,13 +104,13 @@ public class PetplantDiaryController {
 	}
 	
 	// 반려식물 관찰일지 - 품종 소분류 -> 선택
-	@PostMapping("/petplantDiary/plantStypeS.do")
+	@PostMapping("/petplantDiary/plantStypeF2.do")
 	@ResponseBody
 	public Map plantStypeS (PetplantDiaryVO vo , @RequestParam String stype,HttpServletRequest req) {
 		Map map = service.plantStypeS(stype);
 		return map;
 	}
-	
+*/
 	
 	// 반려식물 관찰일지 - 첫 저장
 	@PostMapping("/petplantDiary/insertDiary.do")

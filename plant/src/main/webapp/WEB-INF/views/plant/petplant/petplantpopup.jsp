@@ -22,7 +22,7 @@
 				<img class="icon-react icon-more" id="icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" >
 				<div id="reportList${petboard.pet_no}"></div>
 				<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
-				<div class="moreDiv" id="moreDiv${petboard.pet_no}" style="display:none;" >
+				<div class="moreDivPop" id="moreDivPop${petboard.pet_no}" style="display:none;" >
 					<c:if test="${loginUserInfo.user_no eq petboard.user_writeNo }">
 						<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
 					</c:if>
@@ -61,6 +61,7 @@
 						</c:otherwise>
 					</c:choose>
 			</div>
+			<!-- 담았는지 아닌지 -->
 			<div class="icon-react" id="petputDiv">
             	<c:if test="${pppcheck == 0 }">
 			  		<img class="icon-react save" src="/plant/img/petplant/save1.png" >
@@ -78,8 +79,8 @@
 				<p><span class="point-span" id="countlike"> ${petboard.countLike} </span>명이 좋아합니다</p> 
 			</div>
 			<!-- 내용 -->
-			<div class="description">
-				<span class="point-span userID">${petboard.user_nick}</span><p name="pet_content">${petboard.pet_content}</p>
+			<div class="descriptionPop" id="descriptionPop">
+				<p id="pet_contentPop" class="pet_contentPop"><span class="point-span userID">${petboard.user_nick}</span>${petboard.pet_content}</p>
 			</div>
 		</div>    
 		
@@ -102,7 +103,7 @@
 			       	<input id="input-comment2" name="ppr_content" class="input-comment" type="text" placeholder="댓글 달기..." >
 			       	<input type="hidden" name="pet_no" value="${petboard.pet_no }">
 			       	<c:if test="${empty loginUserInfo}">
-			      	 	<button type="button" class="submit-comment" onclick="addreplylogin()" >게시</button>
+			      	 	<button type="button" class="submit-comment" >게시</button>
 			       	</c:if>
 			       	<c:if test="${!empty loginUserInfo}">
 			       		<button type="button" class="submit-comment" onclick="addreply()" >게시</button>
@@ -116,6 +117,9 @@
 			<div class="reaction reply">        
 				<!-- 댓글 내용 반복 -->
 				<div class="comment-section">
+				<!-- 댓글 있을 때 없을 때 -->
+				<c:choose>
+					<c:when test="${!empty list.rlist}">
 				    <c:forEach items="${list.rlist}" var="rlist">
 						<ul class="comments" id="comments${rlist.ppr_no}">
 							<li>
@@ -125,11 +129,10 @@
 								        	<span>&nbsp;&nbsp;&nbsp;${rlist.ppr_nested}</span>
 								    	</c:forEach>
 								    </c:if>
-									<span class="point-span userID">${rlist.user_nick}</span>
+								    <c:if test="${rlist.ppr_content ne '삭제된 댓글입니다' }">
+										<span class="point-span userID">${rlist.user_nick}</span>
+									</c:if>
 									<input type="hidden" name="ppr_no" value="${rlist.ppr_no}">
-				               		<c:if test="${empty list.rlist}">
-				               			등록된 댓글이 없습니다.
-				            		</c:if>
 				               		<c:if test="${rlist.ppr_secretCheck eq '0'}">
 				               			${rlist.ppr_content}
 				               		</c:if>
@@ -150,14 +153,16 @@
 				               			</c:if>
 				               		</c:if>
 								</span> 
-								<c:choose>	
-							  		<c:when test="${rlist.like_replycheck == 1}">
-										<img id="hearticon" class="comment-heart" src="/plant/img/petplant/redheart.png" >
-									</c:when>
-									<c:otherwise>
-				                   		<img id="hearticon" class="comment-heart" src="/plant/img/petplant/heart.png">
-									</c:otherwise>
-							  	</c:choose>
+								<c:if test="${rlist.ppr_content ne '삭제된 댓글입니다' }">
+									<c:choose>	
+								  		<c:when test="${rlist.like_replycheck == 1}">
+											<img id="hearticon" class="comment-heart" src="/plant/img/petplant/redheart.png" >
+										</c:when>
+										<c:otherwise>
+					                   		<img id="hearticon" class="comment-heart" src="/plant/img/petplant/heart.png">
+										</c:otherwise>
+							  		</c:choose>
+								</c:if>
 							</li>
 			                <li>
 				                <span class="time-log">
@@ -191,6 +196,11 @@
 			               </li>
 						</ul>
 					</c:forEach>
+					</c:when>
+					<c:otherwise>
+               			<span class="nullreply">등록된 댓글이 없습니다.</span>
+               		</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>  
@@ -202,9 +212,8 @@ console.log("petboard.like_check : " +petboard.like_check);
 
 // 좋아요 클릭
 $(function () {
-	var board_no = 0;
 	
-	/* // 게시판 좋아요 클릭
+	// 게시판 좋아요 클릭
 	$(".icons-left #likeicon").click(function(){ 
 		
 		<c:if test="${empty loginUserInfo}">
@@ -222,9 +231,10 @@ $(function () {
 		var spanlike = $(this).parents().find("#countlike");
 		
 		var update_bottom =$(".countLike").eq(listIdx);
-		var update_bottom_count =$(".countLike").eq(listIdx).text();
-		
-		console.log("no : " + no + " countlike : " + countlike + " update_bottom_count : " + update_bottom_count);	
+		var update_bottom_count = $(".countLike").eq(listIdx).text();
+
+		console.log("no : " + no + " countlike : " + countlike);	
+		console.log("update_bottom : " + update_bottom + " update_bottom_count : " + update_bottom_count);	
 		
 		$.ajax({
 			url : 'checkLike.do',
@@ -238,7 +248,7 @@ $(function () {
 					$(spanlike).text(countlike);
 					
 					$(".seedImage").eq(listIdx).attr('src','/plant/img/petplant/seedLike.png');
-					update_bottom_count = update_bottom_count + 1;
+					update_bottom_count = parseInt(update_bottom_count) + 1;
 					$(update_bottom).text(update_bottom_count);
 					
 				} else {
@@ -247,7 +257,7 @@ $(function () {
 					$(spanlike).text(countlike);
 					
 					$(".seedImage").eq(listIdx).attr('src','/plant/img/petplant/seednotLike.png');
-					update_bottom_count = update_bottom_count - 1;
+					update_bottom_count = parseInt(update_bottom_count) - 1;
 					$(update_bottom).text(update_bottom_count);
 				} 
 			}, error: function (xhr, desc, err) {
@@ -256,7 +266,7 @@ $(function () {
 	            return; 
 	        }
 		})
-	}); */
+	});
 	
 	// 댓글 좋아요
 	$(".comments #hearticon").click(function(){ 
@@ -298,22 +308,22 @@ $(function () {
 	});
 	
 	
+	
 	// 게시판 더보기 버튼 - 수정 및 신고 
 	$("#icon-view-view #icon-more").click(function () {
-		
+		console.log("popup창 신고 수정");
 		
 		var petplant = $(this).parent().parent().parent();
-		board_no = petplant.find("input[name='pet_no']").val();
+		var board_no = petplant.find("input[name='pet_no']").val();
+		var report_tablename = "petplant";
 		
-		document.getElementById("moreDiv"+board_no).style.display = "";
+		document.getElementById("moreDivPop"+board_no).style.display = "";
 		
 		console.log("board_no : " + board_no + " 이건 상세보기");
 		
-<<<<<<< HEAD
-=======
 		// 신고 레이어 뜸
-		$(".moreDiv #icon-siren").click(function() {
-			document.getElementById("moreDiv"+board_no).style.display = "none";
+		$(".moreDivPop #icon-siren").click(function() {
+			document.getElementById("moreDivPop"+board_no).style.display = "none";
 			
 			$.ajax ({
 				url : 'report.do',
@@ -333,66 +343,226 @@ $(function () {
 		})
 		
 		// 수정 하는 jsp로 넘어감 
-		$(".moreDiv #icon-edit").click(function () {
+		$(".moreDivPop #icon-edit").click(function () {
 			location.href = "editpet.do?pet_no="+board_no;
 		})
 		
 		// 레이어 창 꺼짐
 		$(document).mouseup(function (e){
-			var LayerPopup = $(".moreDiv"+board_no);
+			var LayerPopup = $(".moreDivPop"+board_no);
 			if(LayerPopup.has(e.target).length === 0){
-				document.getElementById("moreDiv"+board_no).style.display = "none";
+				document.getElementById("moreDivPop"+board_no).style.display = "none";
 			}
 		});
 		
->>>>>>> branch 'Project' of https://github.com/GmRna/JavaWebProject-Plant.git
 	}) 
 	
-<<<<<<< HEAD
+	$(".input-comment").click(function () {
+		$(".submit-comment").css('color','#0095f6');
+	})
 	
-	// 신고 레이어 뜸
-	$(".moreDivPop #icon-siren").click(function() {
-		document.getElementById("moreDivPop"+board_no).style.display = "none";
-		var report_tablename = "petplant";
+	
+});
+
+
+
+//댓글 저장
+function addreply() {
+	
+	<c:if test="${empty loginUserInfo}">
+		alert('로그인 후 이용해주세요 댓글저장');
+		location.href="/plant/user/login.do";
+	</c:if>
+	
+	var frm = $("#replyfrm")[0];
+	var formData = new FormData(frm);
+
+	
+	$.ajax ({
+		method : 'post',
+		url : 'insertReply.do', 
+		data : formData,
+		processData: false,
+      contentType: false,
+		success : function (res) {
+			alert("댓글 작성 완료");
+			replyload();
+		}, error: function (xhr, desc, err) {
+          alert('에러가 발생');
+          console.log("에러 err : "+err);
+          console.log("에러 xhr : "+xhr);
+          return; 
+      }
+	}); 
+	
+}
+
+
+
+//댓글-답글 달기폼
+function addfrmrereply(replyno,replygno,replyono,replynested){
+	<c:if test="${empty loginUserInfo}">
+		alert('로그인 후 이용해주세요');
+		location.href="/plant/user/login.do";
+	</c:if>
+	
+	$(".addfrmrereply").remove();
+	
+	var h ='';
+		h += '<div class="addfrmrereply " id="replyfrm'+replyno+'">';
+		h += '	<form method="post" name="reply" action="insertreReply.do">';		
+		h += '		<div class="comment">';
+		h += '			<input type="checkbox" name="ppr_secretCheck" id="check"> <label for="check">비밀댓글</label>';
+		h += ' 			<input type="hidden" name="pet_no" value="'+petboard.pet_no+'"> ';
+		h += ' 			<input type="hidden" name="ppr_gno" value="'+replygno+'"> ';
+		h += ' 			<input type="hidden" name="ppr_order" value="'+replyono+'"> ';
+		h += ' 			<input type="hidden" name="ppr_nested" value="'+replynested+'"> ';
+		h += ' 			<input id="input-comment2" name="ppr_content" class="input-comment" type="text" placeholder="답글 달기...">';
+		h += '			<button type="button" class="addrereply" onclick="addrereply('+replyno+')">완료</button>';
+		h += '			<button type="button" onclick="delreplyfrm('+replyno+')">답글창닫기</button>';
+		h += '	</div></form>';
+		h += '</div>';
 		
+	$("#comments"+replyno).after(h);
+	console.log("댓글 그룹 번호 : " + replygno);
+	console.log("댓글 번호 번호 : " + replyno);
+	
+	$("#ppr_content").focus();
+	
+} 
+
+//답글 달기 창 삭제
+function delreplyfrm(replyno) {
+	var frm = document.getElementById("replyfrm" +replyno); 
+	frm.remove();
+} 
+
+
+//답글 저장
+function addrereply(replyno) {
+	<c:if test="${empty loginUserInfo}">
+		alert('로그인 후 이용해주세요 답글저장');
+		location.href="/plant/user/login.do";
+		return false; 
+	</c:if>
+	
+	var frm = $("form[name='reply']")[0];
+	var formData = new FormData(frm);
+	//console.log(frm);
+	
+		
+	$.ajax ({
+		method : 'post',
+		url : 'insertRereply.do', 
+		data : formData,
+		processData: false,
+      contentType: false,
+		success : function (res) {
+			alert("답글 작성 완료");
+			replyload();
+		}, error: function (xhr, desc, err) { 
+          alert('에러가 발생');
+          console.log("에러 err : "+err);
+          console.log("에러 xhr : "+xhr);
+          return; 
+      }
+	}); 
+}
+
+
+//댓글, 답글 삭제
+function delfrmreply(replyno,petboardno) {
+	if(confirm("댓글을 삭제 하시겠습니까?")) {
 		$.ajax ({
-			url : 'report.do',
-			method : 'get',
-			data : {
-				board_no : board_no,
-				report_tablename : report_tablename,
-			},
+			url : 'delreply.do',
+			method: 'post',
+			data : {ppr_no : replyno, pet_no : petboardno},
 			success : function (data) {
-				$("#reportList"+board_no).after(data);
+				alert("댓글이 삭제 되었습니다.");
+				replyload();
 			}, error: function (xhr, desc, err) {
 	            alert('에러가 발생');
 	            console.log(err);
 	            return; 
 	        }
-		})		
-	})
+		})
+	}
+}
+
+
+//댓글, 답글 수정
+function modfrmreply(replyno,replyuserno,replycont,replycheck) {
 	
-	// 수정 하는 jsp로 넘어감 
-	$(".moreDivPop #icon-edit").click(function () {
-		location.href = "editpet.do?pet_no="+board_no;
-	})
-	
-	// 레이어 창 꺼짐
-	$(document).mouseup(function (e){
-		var LayerPopup = $(".moreDivPop"+board_no);
-		if(LayerPopup.has(e.target).length === 0){
-			document.getElementById("moreDivPop"+board_no).style.display = "none";
+	var h ='';
+		h += '<div class="modfrmreply " id="replyfrm'+replyno+'">';
+		h += '	<form method="post" name="reply" action="modReply.do">';		
+		h += '		<div class="comment">';
+		if(replycheck == 'on'){
+			h += '		<span class="check"><input type="checkbox" name="ppr_secretCheck" id="check" value="on" checked><label for="check">비밀댓글</label></span>';
 		}
+		
+		if(replycheck == '0'){
+			h += '		<span class="check"><input type="checkbox" name="ppr_secretCheck" id="check" value="on"><label for="check">비밀댓글</label></span>';
+		}
+		
+		h += ' 			<input type="hidden" name="pet_no" value="'+petboard.pet_no+'"> ';
+		h += ' 			<input type="hidden" name="ppr_no" value="'+replyno+'"> ';
+		h += ' 			<input type="text" id="input-comment2" name="ppr_content" class="input-comment" value="'+replycont+'" >';
+		h += '			<button type="button" class="addrereply" onclick="modreply('+replyno+')">수정</button>';
+		h += '			<button type="button" onclick="delreplyfrm('+replyno+')">답글창닫기</button>';
+		h += '		</div>';
+		h += '	</form>';
+		h += '</div>'; 
+		
+	$("#comments"+replyno).after(h);
+	
+	$("#ppr_content").focus();
+}
+
+
+//댓글, 답글 수정 
+function modreply(replyno) {
+	<c:if test="${empty loginUserInfo}">
+		alert('로그인 후 이용해주세요 수정');
+		location.href="/plant/user/login.do";
+		return false;
+	</c:if>
+	
+	var frm = $("form[name='reply']")[0];
+	var formData = new FormData(frm);
+	
+		
+	$.ajax ({
+		method : 'post',
+		url : 'modreply.do', 
+		data : formData,
+		processData: false,
+      contentType: false,
+		success : function (res) {
+			alert("댓글 수정 완료");
+			replyload();
+		}, error: function (xhr, desc, err) {
+          alert('에러가 발생');
+          console.log("에러 err : "+err);
+          console.log("에러 xhr : "+xhr);
+          return; 
+      }
+	}); 
+}
+
+
+
+function replyload() {
+  $(function () {
+		$.ajax ({
+			url : 'findpetplant.do',
+			data : petboard,
+			dataTpye : 'json',
+			success : function(res) {
+				$("#pet").html(res);
+			}
+		});
 	});
-	
-	
-	$(".input-comment").click(function () {
-		$(".submit-comment").css('color','#0095f6');
-	})
-=======
->>>>>>> branch 'Project' of https://github.com/GmRna/JavaWebProject-Plant.git
-	
-	
-	
-})
+}
+
 </script>

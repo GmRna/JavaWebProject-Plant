@@ -81,13 +81,6 @@ nav img {
 .nav-2 img {
     margin-left: 20px;
 }
-
-.headerpic{
-	width: 24px;
-	height: 25px;
-	border-radius: 100%;	
-}
-
 .input-search {
     width: 200px;
     height: 12px;
@@ -344,8 +337,6 @@ button.submit-comment:focus {
     width: 56px;
     height: 56px;
 }
-
-
 .myProfile div {
     display: inline-block;
     margin-left: 14px;
@@ -503,23 +494,6 @@ ul.story-list .profile-text {
     text-align: center;
     z-index: 2;
 }
-	.moreDivPop {
-	position: absolute;
-	font-size: 15px;
-    width: 110px;
-    height: auto;
-    display: block;
-    padding: 8px 8px 8px 8px;
-    box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
-    -webkit-box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 15%); 
-    -moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);
-    color: var(--paper-listbox-color, var(--primary-text-color));
-    border: var(--paper-listbox-border);
-    background: #fff;
-    text-align: center;
-    z-index: 2;
-}
-
 
 .icon-siren {
     width: 24px;
@@ -551,9 +525,6 @@ h1 {
 	width: 490px;
 
 }
-	.descriptionPop{
-		width: 490px;
-	}
 
 
 .pet_content {
@@ -566,9 +537,6 @@ h1 {
 .pet_contentopen {
   width: 560px;
 }
-	.pet_contentPop {
-	  width: 560px;
-	}
 
 
 .pet_contentmore {

@@ -41,7 +41,7 @@
 			<li>
 				<a href="">식물 도감</a>
 				<ul>
-			        <li><a href="/plant/plantbook/search.do">식물 도감</a></li>
+			        <li><a href="/plant/plantbook/main.do">식물 도감</a></li>
 			        <li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
 				</ul>
 			</li>
@@ -136,6 +136,8 @@
 								<h3>Address</h3>
 								<p>
 									Untitled Incorporated<br />
+									1234 Somewhere Road Suite<br />
+									Nashville, TN 00000-0000
 								</p>
 							</li>
 						</ul>

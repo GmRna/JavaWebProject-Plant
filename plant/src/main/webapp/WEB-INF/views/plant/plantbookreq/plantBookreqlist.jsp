@@ -12,7 +12,13 @@
 <title>식물 도감 요청 리스트</title>
 
 <link rel="stylesheet" href="/plant/css/reset.css"/>
+<link rel="stylesheet" href="/plant/css/common.css"/>
+<link rel="stylesheet" href="/plant/css/style.css"/>
 <link rel="stylesheet" href="/plant/css/contents.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  
     
 <style type="text/css">
 img {
@@ -20,8 +26,44 @@ img {
 	height: 24px;
 }
 .bbs{
-	padding-top: 60px;
+	padding-top: 12%;
+	width: 85%;
+    margin: auto;
 }
+
+body {
+	padding-top: 70px;
+	background: #f2f5f3;
+}
+th {
+	text-align: center;
+}
+tr:nth-child(even) {
+  background-color: #e7eae89c;
+}
+tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+#trthList th {
+  background-color: #7c957c;
+  color: white;
+}
+
+.noBorder {
+    border:none !important;
+}
+
+.btnDiv{
+    margin-bottom: 10px;
+    float: right;
+}
+
+#ulBtn li a{
+	background: white;
+	border-radius : 5px;
+}
+
 </style>
 </head>
 
@@ -29,6 +71,18 @@ img {
 function view(pbreq_no) {
 	location.href = "viewBookreq.do?pbreq_no="+pbreq_no;
 }
+
+function reqWrite(){
+	<c:if test="${empty loginUserInfo}">
+		alert('로그인 후 이용해주세요');
+		location.href = "/plant/user/login.do";
+	</c:if>
+	<c:if test="${!empty loginUserInfo}">
+		location.href = "/plant/plantbookreq/writeBookreq.do";
+	</c:if> 
+}
+
+
 </script>
 
 
@@ -36,6 +90,13 @@ function view(pbreq_no) {
 
 
 <div class="bbs" >
+	<div class="btnDiv">
+		<c:if test="${!empty loginAdminInfo}">
+			<button class="btn" onclick="reqWrite()" > 답변 작성하기 </button> 
+		</c:if>
+		<button class="btn" onclick="reqWrite()" > 작성하기</button> 
+	</div>
+	
 	<table class="list">
 		<colgroup>
 		    <col width="80px" />
@@ -45,12 +106,12 @@ function view(pbreq_no) {
 			<col width="100px" />
 		</colgroup>
 		<thead>
-			<tr>
+			<tr id="trthList">
 				<th>글번호</th>
 				<th>요청상황</th>
 				<th>제목</th>
-				<th>작성자</th>
-				<th>작성일</th>
+				<th class="writer">작성자</th>
+				<th class="date">작성일</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -76,8 +137,9 @@ function view(pbreq_no) {
 					</td>
 					<td>
 						<span class="txt_l" style="text-align:left;" onclick="view(${reqlist.pbreq_no})" >
+						
 							<c:if test="${reqlist.pbreq_admin == 1 }">
-								<img class="icon" src="/plant/img/petplant/pQnA_answer.png">
+								<span style="padding: 0px 80px 0px 0px;"></span><img class="icon" src="/plant/img/petplant/pQnA_answer.png">
 							</c:if>
 							${reqlist.pbreq_title}
 						</span>
@@ -98,6 +160,24 @@ function view(pbreq_no) {
 			</c:forEach>
 		</tbody>
 	</table>
+	
+	<!-- 페이징 처리 -->
+	<div class="pagenate clear">
+		<div class="paging">
+			<ul id="ulBtn">
+				<c:if test="${list.prev == true }">
+					<li><a href="listBookreq.do?page=${list.startPage }"><</a>
+				</c:if>
+				<c:forEach var="p" begin="${list.startPage }" end="${list.endPage }">
+					<li><a href='listBookreq.do?page=${p }' <c:if test="${plantBookreqVO.page == p }">class='current'</c:if>>${p }</a></li>
+				</c:forEach>
+				<c:if test="${list.next == true }">
+					<li><a href="listBookreq.do?page=${list.endPage+1 }">></a>
+				</c:if>
+			</ul> 
+		</div>
+	</div>
+                		
 </div>
 
 

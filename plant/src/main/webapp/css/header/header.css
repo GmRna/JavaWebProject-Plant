@@ -66,6 +66,7 @@ mark {
 
 	body {
 		background: #f2f5f3;
+		font-size : 13px;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -79,13 +80,6 @@ mark {
 			transition: none !important;
 		}
 
-	body, input, textarea, select {
-		font-family: 'Open Sans', sans-serif;
-		font-weight: 400;
-		color: #6b7770;
-		font-size: 13pt;
-		line-height: 2em;
-	}
 
 	h1, h2, h3, h4, h5, h6 {
 		font-family: 'Open Sans Condensed', sans-serif;
@@ -129,6 +123,7 @@ mark {
 	a {
 		color: #006376;
 		text-decoration: underline;
+		font-size: 12px;
 	}
 
 		a:hover {
@@ -163,7 +158,7 @@ mark {
 	hr {
 		border: 0;
 		border-top: solid 2px #E7EAE8;
-		margin: 0 0 3em 0;
+		margin: 0 0 1em 0;
 	}
 
 	blockquote {
@@ -172,7 +167,7 @@ mark {
 		font-style: italic;
 	}
 
-	p, ul, ol, dl, table {
+	p, ul, ol, dl {
 		margin-bottom: 3em;
 	}
 
@@ -389,7 +384,7 @@ mark {
 				border-bottom-left-radius: 6px;
 				border-bottom-right-radius: 6px;
 				outline: 0;
-				font-size:13px;
+				font-size:12px;
 			}
 
 			#nav li:hover, #nav li.active {
@@ -533,18 +528,6 @@ mark {
 
 /* Main */
 
-	#main {
-		background: #fff;
-		border-top: solid 5px #b1ddab;
-		
-		/*
-		border-bottom: solid 5px #c1cac5;
-		*/
-		
-		border-top-width: 35px;
-		border-bottom-width: 10px;
-		padding: 6em 0 6em 0;
-	}
 
 /* Sidebar + Content */
 
