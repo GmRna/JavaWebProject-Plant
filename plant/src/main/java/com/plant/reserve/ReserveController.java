@@ -126,7 +126,8 @@ public class ReserveController {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
 		UserVO user = new UserVO();
-		user = (UserVO) sess.getAttribute("loginUserInfo");
+		user = (UserVO) sess.getAttribute("loginUserInfo");		
+		
 		if(user == null) {
 			model.addAttribute("msg", "로그인하셔야 예약 가능합니다. 유저로 로그인 해주세요");
 			model.addAttribute("url", "/plant/user/login.do");
@@ -135,6 +136,7 @@ public class ReserveController {
 			model.addAttribute("msg", "잘못된 접근입니다.");
 			return "common/alert";
 		} else {
+			vo.setUser_no(user.getUser_no());
 			model.addAttribute("data", service.viewGd(vo)); // 가드너 상세 정보 조회
 			model.addAttribute("certificate", service.selectGdCertificate(vo)); // 가드너 상세 정보 조회
 			model.addAttribute("career", service.selectGdCareer(vo)); // 가드너 상세 정보 조회
@@ -149,7 +151,7 @@ public class ReserveController {
 	
 	// 결제 하기
 	@PostMapping("/reserve/pay.do")
-	public String pay(Model model, ReserveVO vo) {
+	public String pay(Model model, ReserveVO vo, HttpServletRequest req) {
 		// 선택한 예약가능한 번호
 		String selectReserve = vo.getSelectReserve();
 		// 구분자로 분리
@@ -160,15 +162,30 @@ public class ReserveController {
 			// 예약가능번호 리스트에 담기
 			list.add(service.selectReserveVal(Integer.parseInt(reservable_no[i])));
 		}
-		model.addAttribute("total", vo.getSelectReserveSubTotal()); // 소계 금액
-		model.addAttribute("user", service.user(vo)); // 유저정보 조회
-		model.addAttribute("gd", service.viewGd(vo)); // 가드너 상세 정보 조회
-		model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
-		model.addAttribute("selectReserve", list); // 선택된 예약내용
-		model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 가져오기
-		model.addAttribute("completion", service.completionCount(vo)); // 예약 완료 내역 조회
-		model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
-		return "plant/reserve/pay";
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");		
+		
+		if(user == null) {
+			model.addAttribute("msg", "로그인하셔야 예약 가능합니다. 유저로 로그인 해주세요");
+			model.addAttribute("url", "/plant/user/login.do");
+			return "common/alert";
+		} else if(vo.getGd_no() == 0 ) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			return "common/alert";
+		} else {
+			vo.setUser_no(user.getUser_no());
+			model.addAttribute("total", vo.getSelectReserveSubTotal()); // 소계 금액
+			model.addAttribute("user", service.user(vo)); // 유저정보 조회
+			model.addAttribute("gd", service.viewGd(vo)); // 가드너 상세 정보 조회
+			model.addAttribute("review", service.searchGdReview(vo)); // 가드너 리뷰 조회
+			model.addAttribute("selectReserve", list); // 선택된 예약내용
+			model.addAttribute("reserved", service.searchGdReserved(vo)); // 가드너 예약된 내역 가져오기
+			model.addAttribute("completion", service.completionCount(vo)); // 예약 완료 내역 조회
+			model.addAttribute("major", service.majorList(vo)); // 케어종목 리스트 조회
+			return "plant/reserve/pay";
+		}
 	}
 	
 	// 결제내용 검증
@@ -257,7 +274,7 @@ public class ReserveController {
 			
 		JSONObject json = new JSONObject();
 			
-//		json.put("imp_key", imp_key);
+		json.put("imp_key", imp_key);
 			
 		json.put("imp_secret", imp_secret);
 		
