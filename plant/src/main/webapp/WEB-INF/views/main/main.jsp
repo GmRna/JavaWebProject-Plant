@@ -136,8 +136,6 @@
 								<h3>Address</h3>
 								<p>
 									Untitled Incorporated<br />
-									1234 Somewhere Road Suite<br />
-									Nashville, TN 00000-0000
 								</p>
 							</li>
 						</ul>

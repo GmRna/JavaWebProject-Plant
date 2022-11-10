@@ -33,6 +33,7 @@
 // 전역 변수로 선언 - 함수에 계속 담아서 이동 시키기 때문에 & 그때 그때 마다 저장되는 변수값이 변해서
 var petboard;	// 반려식물 게시판 pk, content 배열
 var listIdx = 0;
+var board_no = 0;
 $(function () {
 	
 	infiniteScroll({
@@ -41,7 +42,6 @@ $(function () {
 	    next: ".next",
 	    prev: ".prev"
 	})
-	
 	// 반려식물 TR 클릭 시 
 	$("#petplant #petplantImgDiv, .icons-react .icons-left #petreplydiv").click(function (){
 		
@@ -139,52 +139,56 @@ $(function () {
 	});
 	
 	// 게시판 더보기 버튼 - 수정 및 신고 
-	$("#icon-react #icon-more").click(function () {
-		
-		
+	$(".icon-react .icon-more").click(function () {
 		var petplant = $(this).parent().parent().parent();
-		var board_no = petplant.find("input[name='pet_no']").val();
-		var report_tablename = "petplant";
-		
+		board_no = petplant.find("input[name='pet_no']").val();
 		document.getElementById("moreDiv"+board_no).style.display = "";
-		
 		console.log("board_no : " + board_no + " 이건 그냥 리스트 ");
-		
-		// 신고 레이어 뜸
-		$(".moreDiv #icon-siren").click(function() {
-			document.getElementById("moreDiv"+board_no).style.display = "none";
-			
-			$.ajax ({
-				url : 'report.do',
-				method : 'get',
-				data : {
-					board_no : board_no,
-					report_tablename : report_tablename,
-				},
-				success : function (data) {
-					$("#reportList"+board_no).after(data);
-				}, error: function (xhr, desc, err) {
-		            alert('에러가 발생');
-		            console.log(err);
-		            return; 
-		        }
-			})		
-		})
-		
-		// 수정 하는 jsp로 넘어감 
-		$(".moreDiv #icon-edit").click(function () {
-			location.href = "editpet.do?pet_no="+board_no;
-		})
-		
-		// 레이어 창 꺼짐
-		$(document).mouseup(function (e){
-			var LayerPopup = $(".moreDiv"+board_no);
-			if(LayerPopup.has(e.target).length === 0){
-				document.getElementById("moreDiv"+board_no).style.display = "none";
-			}
-		});
-		
+
 	}) 
+	
+	// 신고 레이어 뜸
+	$(".moreDiv .siren").click(function() {
+		var report_tablename = "petplant";
+		document.getElementById("moreDiv"+board_no).style.display = "none";
+		
+		<c:if test="${empty loginUserInfo}">
+			alert('로그인 후 이용해주세요 report');
+			return false;
+		</c:if>
+		
+		$.ajax ({
+			url : 'report.do',
+			method : 'get',
+			data : {
+				board_no : board_no,
+				report_tablename : report_tablename,
+			},
+			success : function (data) {
+				$("#reportList"+board_no).after(data);
+			}, error: function (xhr, desc, err) {
+	            alert('에러가 발생');
+	            console.log(err);
+	            return; 
+	        }
+		})
+	})
+		
+	// 수정 하는 jsp로 넘어감 
+	$(".moreDiv #icon-edit").click(function () {
+		location.href = "editpet.do?pet_no="+board_no;
+	})
+	
+	
+	// 레이어 창 꺼짐
+	$(document).mouseup(function (e){
+		var LayerPopup = $(".moreDiv"+board_no);
+		if(LayerPopup.has(e.target).length === 0){
+			document.getElementById("moreDiv"+board_no).style.display = "none";
+		}
+	});
+	
+	
 	
 	// 담기
 	$(".icons-react #petputDiv").click(function () {
@@ -309,16 +313,16 @@ YesScroll() */
 						<span class="userID main-id point-span" >${list.user_nick }</span>
 					</div>
 					<!-- 더보기 버튼  -->
-					<div id="icon-react">
+					<div id="icon-react" class="icon-react" >
 						<img class="icon-react icon-more" id="icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" >
 						<div id="reportList${list.pet_no}"></div>
 						<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
 						<div class="moreDiv" id="moreDiv${list.pet_no}" style="display:none;" >
 							<c:if test="${loginUserInfo.user_no eq list.user_writeNo }">
-								<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
+								<span id="icon-edit" class="edit" ><img class="icon-edit" id="edit" src="/plant/img/petplant/edit.png" >수정하기</span>
 							</c:if>
 							<c:if test="${empty loginUserInfo or loginUserInfo.user_no ne list.user_writeNo}">
-								<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>
+								<span id="icon-siren" class="siren" ><img class="icon-siren" id="siren" src="/plant/img/petplant/siren.png" >신고하기</span>
 							</c:if>
 						</div>
 					</div>

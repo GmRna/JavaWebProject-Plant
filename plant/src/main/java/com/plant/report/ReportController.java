@@ -30,7 +30,7 @@ public class ReportController {
 		user = (UserVO) sess.getAttribute("loginUserInfo");
 		
 		if(user == null) {
-			model.addAttribute("msg", "로그인 후 이용해 주십시오");
+			model.addAttribute("msg", "로그인 후 이용해 주십시오 reportcontroller");
 			model.addAttribute("url", "/plant/user/login.do");
 			return "common/alert";
 		} else {

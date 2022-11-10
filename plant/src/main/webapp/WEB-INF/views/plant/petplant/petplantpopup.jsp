@@ -212,6 +212,7 @@ console.log("petboard.like_check : " +petboard.like_check);
 
 // 좋아요 클릭
 $(function () {
+	var board_no = 0;
 	
 	// 게시판 좋아요 클릭
 	$(".icons-left #likeicon").click(function(){ 
@@ -308,54 +309,55 @@ $(function () {
 	});
 	
 	
-	
 	// 게시판 더보기 버튼 - 수정 및 신고 
 	$("#icon-view-view #icon-more").click(function () {
 		console.log("popup창 신고 수정");
 		
 		var petplant = $(this).parent().parent().parent();
-		var board_no = petplant.find("input[name='pet_no']").val();
-		var report_tablename = "petplant";
+		board_no = petplant.find("input[name='pet_no']").val();
 		
 		document.getElementById("moreDivPop"+board_no).style.display = "";
 		
 		console.log("board_no : " + board_no + " 이건 상세보기");
 		
-		// 신고 레이어 뜸
-		$(".moreDivPop #icon-siren").click(function() {
-			document.getElementById("moreDivPop"+board_no).style.display = "none";
-			
-			$.ajax ({
-				url : 'report.do',
-				method : 'get',
-				data : {
-					board_no : board_no,
-					report_tablename : report_tablename,
-				},
-				success : function (data) {
-					$("#reportList"+board_no).after(data);
-				}, error: function (xhr, desc, err) {
-		            alert('에러가 발생');
-		            console.log(err);
-		            return; 
-		        }
-			})		
-		})
-		
-		// 수정 하는 jsp로 넘어감 
-		$(".moreDivPop #icon-edit").click(function () {
-			location.href = "editpet.do?pet_no="+board_no;
-		})
-		
-		// 레이어 창 꺼짐
-		$(document).mouseup(function (e){
-			var LayerPopup = $(".moreDivPop"+board_no);
-			if(LayerPopup.has(e.target).length === 0){
-				document.getElementById("moreDivPop"+board_no).style.display = "none";
-			}
-		});
-		
 	}) 
+	
+	
+	// 신고 레이어 뜸
+	$(".moreDivPop #icon-siren").click(function() {
+		document.getElementById("moreDivPop"+board_no).style.display = "none";
+		var report_tablename = "petplant";
+		
+		$.ajax ({
+			url : 'report.do',
+			method : 'get',
+			data : {
+				board_no : board_no,
+				report_tablename : report_tablename,
+			},
+			success : function (data) {
+				$("#reportList"+board_no).after(data);
+			}, error: function (xhr, desc, err) {
+	            alert('에러가 발생');
+	            console.log(err);
+	            return; 
+	        }
+		})		
+	})
+	
+	// 수정 하는 jsp로 넘어감 
+	$(".moreDivPop #icon-edit").click(function () {
+		location.href = "editpet.do?pet_no="+board_no;
+	})
+	
+	// 레이어 창 꺼짐
+	$(document).mouseup(function (e){
+		var LayerPopup = $(".moreDivPop"+board_no);
+		if(LayerPopup.has(e.target).length === 0){
+			document.getElementById("moreDivPop"+board_no).style.display = "none";
+		}
+	});
+	
 	
 	$(".input-comment").click(function () {
 		$(".submit-comment").css('color','#0095f6');
