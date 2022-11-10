@@ -955,19 +955,19 @@
 			reviewForm += "	</div>";
 			reviewForm += "	<div class='form-checkbox-wrap'>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "			<input class='input-radio' type='radio' name='star' value='1'/><label for='1' class='form-radio'>1점</label>";
+			reviewForm += "			<input class='input-radio' id='radio_1' type='radio' name='star' value='1'/><label for='radio_1' class='form-radio'>1점</label>";
 			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "			<input class='input-radio' type='radio' name='star' value='2'/><label for='2' class='form-radio'>2점</label>";
+			reviewForm += "			<input class='input-radio' id='radio_2' type='radio' name='star' value='2'/><label for='radio_2' class='form-radio'>2점</label>";
 			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "			<input class='input-radio' type='radio' name='star' value='3'/><label for='3' class='form-radio'>3점</label>";
+			reviewForm += "			<input class='input-radio' id='radio_3' type='radio' name='star' value='3'/><label for='radio_3' class='form-radio'>3점</label>";
 			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "			<input class='input-radio' type='radio' name='star' value='4'/><label for='4' class='form-radio'>4점</label>";
+			reviewForm += "			<input class='input-radio' id='radio_4' type='radio' name='star' value='4'/><label for='radio_4' class='form-radio'>4점</label>";
 			reviewForm += "		</span>";
 			reviewForm += "		<span class='form-inline'>";
-			reviewForm += "			<input class='input-radio' type='radio' name='star' value='5' checked='checked'/><label for='5' class='form-radio'>5점</label>";
+			reviewForm += "			<input class='input-radio' id='radio_5' type='radio' name='star' value='5' checked='checked'/><label for='radio_5' class='form-radio'>5점</label>";
 			reviewForm += "		</span>";
 			reviewForm += "	</div>";
 			reviewForm += "	<div>";
@@ -1063,39 +1063,39 @@
 				reviewForm += "	</div>";
 				reviewForm += "	<div class='form-checkbox-wrap'>";
 				if(0 <= reviewList[i].star && reviewList[i].star < 2) {
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)' checked='checked'/><label for='1' class='form-radio'>1점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_1' type='radio' name='star' value='1' onclick='return(false)' checked='checked'/><label for='radio_1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_2' type='radio' name='star' value='2' onclick='return(false)'/><label for='radio_2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_3' type='radio' name='star' value='3' onclick='return(false)'/><label for='radio_3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_4' type='radio' name='star' value='4' onclick='return(false)'/><label for='radio_4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_5' type='radio' name='star' value='5' onclick='return(false)'/><label for='radio_5' class='form-radio'>5점</label></span>";
 				}
 				if(2 <= reviewList[i].star && reviewList[i].star < 3) {
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)' checked='checked'/><label for='2' class='form-radio'>2점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_1' type='radio' name='star' value='1' onclick='return(false)'/><label for='radio_1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_2' type='radio' name='star' value='2' onclick='return(false)' checked='checked'/><label for='radio_2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_3' type='radio' name='star' value='3' onclick='return(false)'/><label for='radio_3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_4' type='radio' name='star' value='4' onclick='return(false)'/><label for='radio_4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_5' type='radio' name='star' value='5' onclick='return(false)'/><label for='radio_5' class='form-radio'>5점</label></span>";
 				}
 				if(3 <= reviewList[i].star && reviewList[i].star < 4) {
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)' checked='checked'/><label for='3' class='form-radio'>3점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_1' type='radio' name='star' value='1' onclick='return(false)'/><label for='radio_1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_2' type='radio' name='star' value='2' onclick='return(false)'/><label for='radio_2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_3' type='radio' name='star' value='3' onclick='return(false)' checked='checked'/><label for='radio_3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_4' type='radio' name='star' value='4' onclick='return(false)'/><label for='radio_4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_5' type='radio' name='star' value='5' onclick='return(false)'/><label for='radio_5' class='form-radio'>5점</label></span>";
 				}
 				if(4 <= reviewList[i].star && reviewList[i].star < 5) {
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)' checked='checked'/><label for='4' class='form-radio'>4점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)'/><label for='5' class='form-radio'>5점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_1' type='radio' name='star' value='1' onclick='return(false)'/><label for='radio_1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_2' type='radio' name='star' value='2' onclick='return(false)'/><label for='radio_2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_3' type='radio' name='star' value='3' onclick='return(false)'/><label for='radio_3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_4' type='radio' name='star' value='4' onclick='return(false)' checked='checked'/><label for='radio_4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_5' type='radio' name='star' value='5' onclick='return(false)'/><label for='radio_5' class='form-radio'>5점</label></span>";
 				}
 				if(5 <= reviewList[i].star && reviewList[i].star < 10) {
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='1' onclick='return(false)'/><label for='1' class='form-radio'>1점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='2' onclick='return(false)'/><label for='2' class='form-radio'>2점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='3' onclick='return(false)'/><label for='3' class='form-radio'>3점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='4' onclick='return(false)'/><label for='4' class='form-radio'>4점</label></span>";
-					reviewForm += "			<span class='form-inline'><input class='input-radio' type='radio' name='star' value='5' onclick='return(false)' checked='checked'/><label for='5' class='form-radio'>5점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_1' type='radio' name='star' value='1' onclick='return(false)'/><label for='radio_1' class='form-radio'>1점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_2' type='radio' name='star' value='2' onclick='return(false)'/><label for='radio_2' class='form-radio'>2점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_3' type='radio' name='star' value='3' onclick='return(false)'/><label for='radio_3' class='form-radio'>3점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_4' type='radio' name='star' value='4' onclick='return(false)'/><label for='radio_4' class='form-radio'>4점</label></span>";
+					reviewForm += "			<span class='form-inline'><input class='input-radio' id='radio_5' type='radio' name='star' value='5' onclick='return(false)' checked='checked'/><label for='radio_5' class='form-radio'>5점</label></span>";
 				}
 				reviewForm += "	</div>";
 				reviewForm += "	<div>";
