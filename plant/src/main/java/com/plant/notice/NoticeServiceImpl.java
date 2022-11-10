@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+
 @Service
 public class NoticeServiceImpl implements NoticeService{
 	
@@ -16,14 +17,13 @@ public class NoticeServiceImpl implements NoticeService{
 
 	@Override
 	public Map index(NoticeVO vo) {
-		int totalCount = mapper.count(vo);
+		int totalCount = mapper.count(vo); // 총게시물수
+		// 총페이지수
 		int totalPage = totalCount / vo.getPageRow();
+		if (totalCount % vo.getPageRow() > 0) totalPage++;
 		
-		if(totalCount % vo.getPageRow() > 0) totalPage++;
-
-		//시작 인덱스 / boardMapper.xml 쿼리문과 비교해가면서 메소드를 완성시켜야한다.
+		// 시작인덱스
 		int startIdx = (vo.getPage()-1) * vo.getPageRow();
-		// 이후 set으로 호춯	
 		vo.setStartIdx(startIdx);
 		List<NoticeVO> list = mapper.list(vo);
 		
@@ -33,7 +33,7 @@ public class NoticeServiceImpl implements NoticeService{
 		if (endPage > totalPage) endPage = totalPage;
 		boolean prev = startPage > 1 ? true : false;
 		boolean next = endPage < totalPage ? true : false;
-
+		
 		Map map = new HashMap();
 		map.put("totalCount", totalCount);
 		map.put("totalPage", totalPage);
@@ -44,8 +44,10 @@ public class NoticeServiceImpl implements NoticeService{
 		map.put("list", list);
 		
 		return map;
-		}
 
+		
+		
+	}
 	@Override
 	public NoticeVO view(int notice_no) {
 		mapper.updateViewcount(notice_no);

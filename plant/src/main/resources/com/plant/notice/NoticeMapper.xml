@@ -15,16 +15,16 @@
 		    </if>
 		</where>
 		ORDER BY notice_regdate DESC
-		LIMIT  ${startIdx},${pageRow};	
-		</select>
+		LIMIT  ${startIdx},${pageRow};
+	</select>
 	
 	
 	<insert id="insert" parameterType="com.plant.notice.NoticeVO">
 		
 		INSERT INTO notice(
-			admin_no, notice_title, notice_content, notice_viewcount, notice_regdate, noticeimg_org, noticeimg_real, notice_level
+			admin_no, notice_title, notice_content, notice_viewcount, notice_regdate, filename_org, filename_real, notice_level
 			) VALUES (
-				admin_no, #{notice_title}, #{notice_content}, 0, NOW(), #{noticeimg_org}, #{noticeimg_real}, #{notice_level}
+				admin_no, #{notice_title}, #{notice_content}, 0, NOW(), #{filename_org}, #{filename_real}, #{notice_level}
 			)
 		
 	</insert>
@@ -43,7 +43,7 @@
 		</where>
 	</select>
 	
-	<select id="view" parameterType="com.plant.notice.NoticeVO" resultType="com.plant.notice.NoticeVO">
+	<select id="view" parameterType="int" resultType="com.plant.notice.NoticeVO">
 		SELECT * FROM notice WHERE notice_no = #{xxxx}
 	</select>
 	
@@ -58,6 +58,10 @@
 		UPDATE notice SET
 			notice_title = #{notice_title}
 			, notice_content = #{notice_content}
+			<if test="filenameorg != null">
+			, filename_org = #{filename_org}
+			, filename_real = #{filename_real}
+			</if>
 			
 		WHERE notice_no = #{notice_no}
 	</update>

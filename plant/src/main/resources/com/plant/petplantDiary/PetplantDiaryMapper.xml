@@ -28,13 +28,11 @@
 	<select id="plantStypeF" parameterType="String" resultType="com.plant.petplantDiary.PetplantDiaryVO">
 		SELECT DISTINCT svcCodeNm 
 		FROM plantType 
-		WHERE prdlstCtgCode LIKE '${stype}%' AND svcCodeNm NOT LIKE '%>%'
+		WHERE prdlstCtgCode LIKE '${stype}%' AND svcCodeNm NOT LIKE '%>%';
 	</select>
 	 
 	<select id="plantStypeS" parameterType="String" resultType="com.plant.petplantDiary.PetplantDiaryVO">
-		SELECT DISTINCT cntntsSj 
-		FROM plantType 
-		WHERE svcCodeNm LIKE '${stype}%'
+	
 	</select>
 	
 	
@@ -43,7 +41,6 @@
 			user_no 
 			,  pet_regdate 
 			,  diary_day
-			,  diary_regdate
 			,  user_plantname 
 			,  user_planttype 
 			,  user_plantfile_org 
@@ -55,7 +52,6 @@
 			#{user_no} 
 			, #{pet_regdate}
 			, #{diary_day}
-			, NOW()
 			, #{user_plantname} 
 			, #{user_planttype} 
 			, #{user_plantfile_org} 
@@ -75,7 +71,6 @@
 			user_no 
 			,  pet_regdate 
 			,  diary_day
-			,  diary_regdate
 			,  user_plantname 
 			,  user_planttype 
 			,  user_plantfile_org 
@@ -89,7 +84,6 @@
 			#{user_no} 
 			, #{pet_regdate}
 			, #{diary_day}
-			, NOW()
 			, #{user_plantname} 
 			, #{user_planttype} 
 			, #{user_plantfile_org} 

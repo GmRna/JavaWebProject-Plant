@@ -10,8 +10,8 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <title>게시판 등록</title>
-    <link rel="stylesheet" href="/project/css/reset.css"/>
-    <link rel="stylesheet" href="/project/css/contents.css"/>
+    <link rel="stylesheet" href="/plant/css/reset.css"/>
+    <link rel="stylesheet" href="/plant/css/contents.css"/>
     <script>
     	function goSave() {
     		frm.submit();

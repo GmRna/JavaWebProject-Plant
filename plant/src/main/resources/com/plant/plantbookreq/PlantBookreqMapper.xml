@@ -16,7 +16,7 @@
 				</if>
 			</if>
 		</where>
-		ORDER BY pbreq_gno DESC
+		ORDER BY pbreq_gno DESC , pbreq_ono ASC
 		LIMIT ${startIdx} , ${pageRow}
 	</select>
 	
@@ -60,7 +60,7 @@
 			, #{pbreq_content}
 			, #{pbreq_status}
 			, #{pbreq_gno}
-			, 0
+			, 1
 			, NOW()
 			, #{filename_org}
 			, #{filename_real}
@@ -73,6 +73,7 @@
 				, pbreq_content
 				, pbreq_status
 				, pbreq_gno
+				, pbreq_ono
 				, pbreq_admin
 				, pbreq_regdate
 				, filename_org
@@ -82,6 +83,7 @@
 				, #{pbreq_content}
 				, #{pbreq_status}
 				, #{pbreq_gno}
+				, 1
 				, #{pbreq_admin}
 				, NOW()
 				, #{filename_org}

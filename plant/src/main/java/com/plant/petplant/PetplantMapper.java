@@ -85,8 +85,6 @@ public interface PetplantMapper {
 
 	PetplantVO listpop(PetplantVO vo);
 
-	List<PetplantVO> searchpet(PetplantVO vo);
-
 	
 
 	

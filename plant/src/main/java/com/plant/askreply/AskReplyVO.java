@@ -20,6 +20,7 @@ public class AskReplyVO {
 	private int gno;
 	private int ono;
 	private int nested;
+	private String user_nick;
 	
 	private int comment_count;
 	
@@ -39,3 +40,4 @@ public class AskReplyVO {
 		this.pageRow = pageRow;
 	}
 }
+//t

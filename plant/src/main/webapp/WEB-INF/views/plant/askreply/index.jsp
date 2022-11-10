@@ -17,28 +17,29 @@
    <script>
   	
   		function goWrite(){
-  			<c:if test="${empty loginInfo}">
-  				alert('로그인 후 글작성이 가능합니다.')
-  				location.href = '/plant/member/login.do';
-  				
-  			</c:if>
-  			<c:if test="${!empty loginInfo}">
-  				location.href = 'write.do';
-  			</c:if>
+  			<c:if test="${empty loginUserInfo}">
+				alert('로그인 후 글작성이 가능합니다!!!.')
+				location.href = '/plant/user/login.do';
+				
+			</c:if>
+			<c:if test="${!empty loginUserInfo}">
+				location.href = 'write.do';
+			</c:if>
   		}
   		
   	</script>
 </head> 
 <body>
     
-       <div class="sub">
+     <div class="sub">
             <div class="size">
-                <a href="index.do" ><h3 class="sub_title">문의사항</h3></a>
+                  <a href="index.do" ><h3 class="sub_title">문의사항</h3></a>
     
                 <div class="bbs">
                     <table class="list">
-                           <h3 class="logconfirm" style="text-align:right;">로그인 중인 아이디 : ${loginInfo.email }</h3>
-                        <caption>문의사항</caption>
+                           <h3 class="logconfirm" style="text-align:right;"></h3>
+                     
+                        <caption>문의사항 목록</caption>
                         <colgroup>
                             <col width="80px" />
                             <col width="*" />
@@ -66,22 +67,23 @@
                                 <td>${data.totalCount-status.index-(askreplyVO.page-1)*askreplyVO.pageRow }<!-- 총개수 - 인덱스-(현재페이지번호-1)*페이지당개수 --></td>
                                 <td class="txt_l" style="text-align: left;">
                                 	<c:forEach begin="1" end="${vo.nested }">&nbsp;&nbsp;&nbsp;</c:forEach>
-                                	<c:if test="${vo.nested > 0}"><img src="/plant/img/answer_icon.gif"></c:if>
                                     <a href="view.do?no=${vo.no }">${vo.title} </a>
+                                	<c:if test="${vo.nested > 0}"><img src="/plant/img/answer_icon.gif"></c:if>
+                                	<c:if test="${vo.nested > 0}">답변완료</c:if>
                                 </td>
                                 <td>
                                 	${vo.viewcount }
                                 </td>
                                 <td class="writer">
-                                    ${vo.user_no }
+	                                    ${vo.user_nick } 
                                 </td>
                                 <td class="date"><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
-                     <div class="btnSet"  style="text-align:right;">
-                      	<p><span><strong>총${data.totalCount }개</strong>  | ${askreplyVO.page }/${ data.totalPage} 페이지</span></p>     
+                      <div class="btnSet"  style="text-align:right;">
+                      	<p><span><strong>총${data.totalCount }개</strong>  | ${askReplyVO.page }/${ data.totalPage} 페이지</span></p>     
                       	<a class="btn" style="text-align:right;" href="javascript:goWrite();">글작성 </a>
                     </div>
            		

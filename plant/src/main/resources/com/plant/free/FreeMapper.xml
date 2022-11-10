@@ -37,8 +37,9 @@
 	
 	<select id="list" parameterType="com.plant.free.FreeVO" resultType="com.plant.free.FreeVO">
 		SELECT *,
+       		(select user_nick FROM user WHERE user_no=free.user_no) AS user_nick,
 			(SELECT COUNT(*) FROM free_comment WHERE free_no=free.free_no AND tablename='free') AS comment_count
-			FROM free
+			FROM free 
 		<where>
 			<if test="stype != null and stype != ''">
 				<if test="stype != 'all'">
@@ -50,7 +51,9 @@
 		    </if>
 		</where>
 		ORDER BY free_regdate DESC
-		LIMIT  ${startIdx},${pageRow};	</select>
+		LIMIT  ${startIdx},${pageRow};	
+	
+	</select>
 	 
 	
 	<update id="update" parameterType="com.plant.free.FreeVO">

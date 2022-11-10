@@ -14,7 +14,6 @@ public class FreeVO {
 	
 	private int free_no;
 	private int user_no;
-	private int member_no;
 	private String free_title;
 	private String free_content;
 	private int free_viewcount;
@@ -22,6 +21,8 @@ public class FreeVO {
 	private String free_filenameorg;
 	private String free_filenamereal;
 	private int comment_count;
+	private String user_nick;
+	
 	
 	private int page;
 	private String stype;

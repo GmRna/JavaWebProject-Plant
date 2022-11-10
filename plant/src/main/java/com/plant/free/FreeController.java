@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.plant.freecomment.FreeCommentService;
-import com.plant.member.MemberVO;
+import com.plant.user.UserVO;
 
 @Controller
 public class FreeController {
@@ -76,9 +76,9 @@ public class FreeController {
 			vo.setFree_filenamereal(real);
 		}
 		HttpSession sess = req.getSession();
-		MemberVO mv = (MemberVO)sess.getAttribute("loginInfo");
+		UserVO mv = (UserVO)sess.getAttribute("loginUserInfo");
 		
-		vo.setUser_no(mv.getNo());
+		if(mv != null) vo.setUser_no(mv.getUser_no());
 		
 		if(service.insert(vo)) {
 			model.addAttribute("msg", "저장되었습니다.");

@@ -45,7 +45,9 @@
 	</select>
 	
 	<select id="list" parameterType="com.plant.askreply.AskReplyVO" resultType="com.plant.askreply.AskReplyVO">
-		SELECT * FROM ask_reply
+		SELECT *,
+			(SELECT user_nick FROM user WHERE user_no = ask_reply.user_no) AS user_nick
+		FROM ask_reply
 		<where>
 			<if test="stype != null and stype != ''">
 				<if test="stype != 'all'">

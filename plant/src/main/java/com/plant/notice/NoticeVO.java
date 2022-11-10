@@ -18,8 +18,8 @@ public class NoticeVO {
 	private String notice_content;
 	private int notice_viewcount;
 	private Timestamp notice_regdate;
-	private String noticeimg_org;
-	private String noticeimg_real; 
+	private String filename_org;
+	private String filename_real; 
 	private int notice_level;
 	
 	//NoticeService에서 목록을 불러오는 용도
@@ -35,8 +35,9 @@ public class NoticeVO {
 	// 페이지
 	
 	public NoticeVO(){
-		this.page = 1;
-		this.pageRow = 10;
+		this(1,10);
+//		this.page = 1;
+//		this.pageRow = 10;
 	}
 	
 	public NoticeVO(int page, int pageRow){

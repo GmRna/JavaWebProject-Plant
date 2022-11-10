@@ -43,9 +43,9 @@
 				</tr>
 				<tr>
 					<td style='text-align: center;'>
-						<button  onclick='goHowUse()'>예약시스템 설명</button>
-						<button  onclick='goHowUseGd()'>가드너 회원 이용 방법</button>
-						<button  onclick='goHowUseUser()'>일반 회원 이용 방법</button>
+						<button onclick='goHowUse()'>예약시스템 설명</button>
+						<button onclick='goHowUseGd()'>가드너 회원 이용 방법</button>
+						<button onclick='goHowUseUser()'>일반 회원 이용 방법</button>
 					</td>
 				</tr>
 			</table>

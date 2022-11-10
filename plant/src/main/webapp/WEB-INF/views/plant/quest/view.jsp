@@ -40,12 +40,12 @@
     		getComment(1);
     	});
         function goSave() {
-    		<c:if test="${empty loginInfo}">
+    		<c:if test="${empty loginUserInfo}">
     		alert('댓글은 로그인 후 작성 가능합니다.')
-    		location.href = '/plant/member/login.do';
+    		location.href = '/plant/user/login.do';
     		</c:if>
     		
-    		<c:if test="${!empty loginInfo}">
+    		<c:if test="${!empty loginUserInfo}">
     		if (confirm('댓글을 저장하시겠습니까?')) {
         		$.ajax({
         			url :  "/plant/questcomment/insert.do",
@@ -53,7 +53,7 @@
         				quest_no : ${data.quest_no},
         				tablename : 'quest',
         				content : $("#contents").val(),
-        				user_no : ${loginInfo.no}
+        				user_no : ${loginUserInfo.user_no}
         			},
         			success : function(res) {
         				if (res.trim() == "1") {
@@ -108,8 +108,10 @@
                                     
                         <div class="btnSet clear">
                             <div class="fl_l">
+                       <c:if test="${loginUserInfo.user_no == data.user_no }">
                             	<a href="edit.do?quest_no=${data.quest_no}" class="btn">수정</a>
                             	<a href="delete.do?quest_no=${data.quest_no}" class="btn">삭제</a>
+                        </c:if>
                             	<a href="index.do" class="btn">목록으로</a>
                             </div>
                         </div>
@@ -125,7 +127,8 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <textarea name="contents" id="contents" style="height:50px;"><c:if test="${empty loginInfo}">로그인이 필요합니다.</c:if></textarea>
+                                    <textarea name="contents" id="contents" style="height:50px; width:1000px;">
+                                    <c:if test="${empty loginUserInfo.user_no}">로그인이 필요합니다.</c:if></textarea>
                                 </td>
                                 <td>
                                     <div class="btnSet"  style="text-align:right;">

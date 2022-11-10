@@ -23,8 +23,6 @@ public class PetplantDiaryVO {
 	private int diary_gno;
 	private int diary_ono;
 	private int diary_day;
-	private Timestamp diary_regdate;
-	
 	
 	private String svcCodeNm;
 	

@@ -48,7 +48,7 @@
     				free_no : ${data.free_no},
     				tablename : 'free',
     				content : $("#contents").val(),
-    				user_no : ${loginInfo.no}
+    				user_no : ${loginUserInfo.user_no}
     			},
     			success : function(res) {
     				if (res.trim() == "1") {
@@ -102,8 +102,10 @@
                                     
                         <div class="btnSet clear">
                             <div class="fl_l">
+                            <c:if test="${ loginUserInfo.user_no == data.user_no}">
                             	<a href="edit.do?free_no=${data.free_no}" class="btn">수정</a>
                             	<a href="delete.do?free_no=${data.free_no}" class="btn">삭제</a>
+                            </c:if>
                             	<a href="index.do" class="btn">목록으로</a>
                             </div>
                         </div>
@@ -119,7 +121,7 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <textarea name="contents" id="contents" style="height:50px;"><c:if test=" ${empty loginInfo}">로그인이 필요합니다.</c:if></textarea>
+                                    <textarea name="contents" id="contents" style="height:50px;"><c:if test=" ${empty loginUserInfo}">로그인이 필요합니다.</c:if></textarea>
                                 </td>
                                 <td>
                                     <div class="btnSet"  style="text-align:right;">

@@ -12,7 +12,7 @@
     <meta name="format-detection" content="telephone=no, address=no, email=no">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <title>게시판 상세</title>
+    <title>공지사항</title>
     <link rel="stylesheet" href="/plant/css/reset.css"/>
     <link rel="stylesheet" href="/plant/css/contents.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -32,24 +32,36 @@
                             </dl>
                         </div>
                         <div class="cont"><p>${data.notice_content } </p> </div>
-                        <div>
-	                        <dl class="file">
+	                       <dl class="file">
 	                            <dt>첨부파일 </dt>
-	                            <dd class="file">
-	                            <a href="/plant/common/download.jsp?oName=${URLEncoder.encode(data.noticeimg_org,'UTF-8')}&sName=${data.noticeimg_real}" 
-	                            target="_blank">${data.noticeimg_org } </a></dd>
-	                        </dl>
-               			</div>
+		                            <dd>
+			                            <a href="/plant/common/download.jsp?oName=${URLEncoder.encode(data.filename_org,'UTF-8')}&sName=${data.filename_real}" 
+			                            target="_blank">${data.filename_org } 
+			                            </a>
+		                            </dd>
+                           </dl>
+	                        
                         <div class="btnSet clear">
                             <div class="fl_l">
-                            <a href="/plant/notice/index.do" class="btn">목록으로</a>
-                            <a href="/plant/notice/edit.do?notice_no=${data.notice_no }" class="btn">수정</a>
-                            <a href="/plant/notice/delete.do?notice_no=${data.notice_no }" class="btn">삭제</a>
-                        	</div>                
+	                            <a href="/plant/notice/index.do" class="btn">목록으로</a>
+	                            <a href="/plant/notice/edit.do?notice_no=${data.notice_no }" class="btn">수정</a>
+	                            <a href="/plant/notice/delete.do?notice_no=${data.notice_no }" class="btn">삭제</a>
+                       		</div>                
                     	</div>
                 	</div>
+                	<div>
+                	   <form method="post" name="frm" id="frm" action="" enctype="multipart/form-data" >
+                        <table class="quest_write">
+                            <colgroup>
+                                <col width="*" />
+                                <col width="100px" />
+                            </colgroup>
+                        </table>
+                        </form>
             	</div>
         	</div>
-		</div>    
+        </div>
+        </div>
+        
 </body>
 </html>

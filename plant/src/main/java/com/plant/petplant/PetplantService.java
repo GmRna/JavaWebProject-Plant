@@ -6,10 +6,7 @@ import java.util.Map;
 
 public interface PetplantService {
 	// 반려식물 전체 리스트
-	Map list(PetplantVO vo);
-	// 반려식물 검색
-	Map searchpet(PetplantVO vo);
-	
+	List<PetplantVO> list(PetplantVO vo);
 	
 	// 반려식물 게시물 등록
 	int insert(PetplantVO vo);
@@ -69,8 +66,6 @@ public interface PetplantService {
 	int minuspetplant(PetplantVO vo);
 
 	PetplantVO listpop(PetplantVO vo);
-
-	
 
 	
 

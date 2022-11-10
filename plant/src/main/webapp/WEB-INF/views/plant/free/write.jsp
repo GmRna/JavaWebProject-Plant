@@ -1,8 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -15,12 +12,9 @@
     <title>게시판 등록</title>
     <link rel="stylesheet" href="/plant/css/reset.css"/>
     <link rel="stylesheet" href="/plant/css/contents.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
     	function goSave(){
-    		//var frm = $(".frm");
-    		//var title = $("input[name='free_title']").val();
-    		//console.log("title: "+title);
+    	
     		frm.submit();
     	}
     </script>
@@ -50,13 +44,13 @@
                         <tr>
                             <th>첨부파일</th>
                             <td>
-                                <input type="file" id="filenameorg">
+                                <input type="file" name="filename">
                             </td>
                         </tr>
                         </tbody>
                     </table>
                     <div class="btnSet"  style="text-align:right;">
-                        <a class="btn" href="javascript:goSave();">작성하기 </a><br><br>
+                        <a class="btn" href="javascript:goSave();">작성하기 </a>
                         <a class="btn" href="/plant/free/index.do">돌아가기</a>
                     </div>
                     </form>
