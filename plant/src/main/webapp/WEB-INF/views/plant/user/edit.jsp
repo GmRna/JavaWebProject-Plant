@@ -248,7 +248,8 @@
                         <tr>
                     	<th>반려식물 사진</th>
                             <td>
-                                <input type="file" name="picorg" id="user_plantfile_org" style="float:left;">
+                                <input type="file" name="picorg" style="float:left;">
+                                <input type="hidden" name="user_plantfile_org" value="${vo.user_plantfile_org }">
                             </td>
                     	</tr>
                         <tr>
