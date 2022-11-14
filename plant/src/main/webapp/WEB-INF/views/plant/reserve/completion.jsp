@@ -2,12 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>케어진행 완료 확인 페이지</title>
+
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+
 <style>
 .review {
 	margin: 1px;
@@ -30,19 +33,19 @@
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
-	color: #B1DDAA;
+	color: #6C987E;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
-	color: #B1DDAA;
+	color: #6C987E;
 	
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #b1ddaa;
+	background-color: #6C987E;
 	color: #fff;
 }
 
@@ -116,6 +119,22 @@
 	padding: 20px;        
 	border: 1px solid #888;        
 	width: 70%; /* Could be more or less, depending on screen size */ 
+}
+
+table button {
+	font-size: 13px;
+}
+
+button {
+	background: #6C987E;	
+}
+
+#noCompletion{
+	margin-top: 20px;
+}
+
+#view{
+	margin-top: 20px;
 }
 
 </style>
@@ -427,14 +446,14 @@
 		            	completion += "		<td colspan='10'>케어 진행완료</td>";	
 		           		completion += "	</tr>";	            	
 		           		completion += "	<tr>";            			
-		           		completion += "		<td>예약일</td>";	
+		           		completion += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";	
 		           		completion += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
 		           		completion += "	</tr>";	            	
 		           		completion += "	<tr>";
 		        		for(var i=0; i<completionDate.length; i++){
-		        			completion += "	<td>예약된 일정</td>";
+		        			completion += "	<td style='background-color:#89AD98; color:#fff;'>예약된 일정</td>";
 		       				completion += "	<td>"+completionDate[i].reserve_hour+"시</td>";
-		       				completion += "	<td>케어 종목</td>";
+		       				completion += "	<td style='background-color:#89AD98; color:#fff;'>케어 종목</td>";
 		       				completion += "	<td>"+completionDate[i].reserve_major+"</td>";
 		       				completion += "	<td>";
 		       				completion += "		<button type='button' onclick='viewCompletion("+completionDate[i].reserve_no+")'>예약진행내역상세보기</button>";
@@ -450,17 +469,17 @@
 		            if (noCompletionDate.length > 0) {
 		            	completion += "<table border='1' class='default'>";
 		            	completion += "	<tr>";
-		            	completion += "		<td colspan='10'>케어 미진행 일정</td>";	
+		            	completion += "		<td colspan='10' style='background-color:#89AD98; color:#fff; text-align: center;'>케어 미진행 일정</td>";	
 		           		completion += "	</tr>";	            	
 		           		completion += "	<tr>";            			 
-		           		completion += "		<td>예약일</td>";	
+		           		completion += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";	
 		           		completion += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
 		           		completion += "	</tr>";	            	
 		           		completion += "	<tr>";
 		        		for(var i=0; i<noCompletionDate.length; i++){
-		        			completion += "	<td>예약된 일정</td>";
+		        			completion += "	<td style='background-color:#89AD98; color:#fff;'>예약된 일정</td>";
 		       				completion += "	<td>"+noCompletionDate[i].reserve_hour+"시</td>";
-		       				completion += "	<td>케어 종목</td>";
+		       				completion += "	<td style='background-color:#89AD98; color:#fff;'>케어 종목</td>";
 		       				completion += "	<td>"+noCompletionDate[i].reserve_major+"</td>";
 		       				completion += "	<td>";
 		       				completion += "		<button type='button' onclick='viewReserveInfo("+noCompletionDate[i].reserve_no+","+idValue+","+noCompletionDate[i].reserve_hour+",\""+noCompletionDate[i].reserve_major+"\")'>예약상세보기</button>";
@@ -508,43 +527,43 @@
 			if(noCompletionList[i].reserve_no === reserve_no) {
 				reserveInfo += "<table border='1' class='default'>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td colspan='4'>예약된 일정 상세보기</td>";
+				reserveInfo += "		<td colspan='4'  style='background-color:#89AD98; color:#fff; text-align: center;'>예약된 일정 상세보기</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>회원이름(닉네임)</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>회원이름(닉네임)</td>";
 				reserveInfo += "		<td colspan='3'>"+noCompletionList[i].user_name+"("+noCompletionList[i].user_nick+")</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>주문자(예약당시 입력된 이름)</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>주문자(예약당시 입력된 이름)</td>";
 				for(var j=0; j<gdPayHistoryList.length; j++) {
 					if(noCompletionList[i].reserve_no === gdPayHistoryList[j].reserve_no) {
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_name+"</td>";
 						reserveInfo += "</tr>";
 						reserveInfo += "<tr>";
-						reserveInfo += "	<td>연락처(이메일)</td>";
+						reserveInfo += "	<td style='background-color:#89AD98; color:#fff;'>연락처(이메일)</td>";
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_tel+"("+gdPayHistoryList[j].buyer_email+")</td>";
 						reserveInfo += "</tr>";
 						reserveInfo += "<tr>";
-						reserveInfo += "	<td>출장요청주소</td>";
+						reserveInfo += "	<td style='background-color:#89AD98; color:#fff;'>출장요청주소</td>";
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_addr+"</td>";
 						reserveInfo += "</tr>";
 						reserveInfo += "<tr>";
-						reserveInfo += "	<td>결제번호<button id='paidReserve' type='button' onclick='thisPaidRserve("+noCompletionList[i].reserve_no+","+gdPayHistoryList[j].merchant_uid+")'>함께 결제된 다른 예약 확인</button></td>";
+						reserveInfo += "	<td style='background-color:#89AD98; color:#fff;'>결제번호&nbsp&nbsp<button id='paidReserve' class='buttonColor' type='button' onclick='thisPaidRserve("+noCompletionList[i].reserve_no+","+gdPayHistoryList[j].merchant_uid+")'>함께 결제된 다른 예약 확인</button></td>";
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].merchant_uid+"</td>";
 						reserveInfo += "</tr>";
 						break;
 					}
 				}
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>예약일</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";
 				reserveInfo += "		<td colspan='3'>"+moment(String(noCompletionList[i].reserve_date)).format('YYYY-MM-DD')+"</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>예약시간</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>예약시간</td>";
 				reserveInfo += "		<td colspan='3'>"+noCompletionList[i].reserve_hour+"시</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>예약종목</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>예약종목</td>";
 				reserveInfo += "		<td colspan='3'>"+noCompletionList[i].reserve_major+"</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tbody id='thisPaidRserve'>";
@@ -565,53 +584,53 @@
 			if(completionList[i].reserve_no === reserve_no) {
 				reserveInfo += "<table border='1' class='default'>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td colspan='4'>예약된 일정 상세보기</td>";
+				reserveInfo += "		<td colspan='4' style='background-color:#89AD98; color:#fff; text-align: center;'>예약된 일정 상세보기</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>회원이름(닉네임)</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>회원이름(닉네임)</td>";
 				reserveInfo += "		<td colspan='3'>"+completionList[i].user_name+"("+completionList[i].user_nick+")</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>주문자(예약당시 입력된 이름)</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>주문자(예약당시 입력된 이름)</td>";
 				for(var j=0; j<gdPayHistoryList.length; j++) {
 					if(completionList[i].reserve_no === gdPayHistoryList[j].reserve_no) {
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_name+"</td>";
 						reserveInfo += "</tr>";
 						reserveInfo += "<tr>";
-						reserveInfo += "	<td>연락처(이메일)</td>";
+						reserveInfo += "	<td style='background-color:#89AD98; color:#fff;'>연락처(이메일)</td>";
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_tel+"("+gdPayHistoryList[j].buyer_email+")</td>";
 						reserveInfo += "</tr>";
 						reserveInfo += "<tr>";
-						reserveInfo += "	<td>출장요청주소</td>";
+						reserveInfo += "	<td style='background-color:#89AD98; color:#fff;'>출장요청주소</td>";
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].buyer_addr+"</td>";
 						reserveInfo += "</tr>";
 						reserveInfo += "<tr>";
-						reserveInfo += "	<td>결제번호<button id='paidReserve' type='button' onclick='thisPaidRserve("+completionList[i].reserve_no+","+gdPayHistoryList[j].merchant_uid+")'>함께 결제된 다른 예약 확인</button></td>";
+						reserveInfo += "	<td style='background-color:#89AD98; color:#fff;'>결제번호<button id='paidReserve' type='button' onclick='thisPaidRserve("+completionList[i].reserve_no+","+gdPayHistoryList[j].merchant_uid+")'>함께 결제된 다른 예약 확인</button></td>";
 						reserveInfo += "	<td colspan='3'>"+gdPayHistoryList[j].merchant_uid+"</td>";
 						reserveInfo += "</tr>";
 						break;
 					}
 				}
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>예약일</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";
 				reserveInfo += "		<td colspan='3'>"+moment(String(completionList[i].reserve_date)).format('YYYY-MM-DD')+"</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>예약시간</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'s>예약시간</td>";
 				reserveInfo += "		<td colspan='3'>"+completionList[i].reserve_hour+"시</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>예약종목</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>예약종목</td>";
 				reserveInfo += "		<td colspan='3'>"+completionList[i].reserve_major+"</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tbody id='thisPaidRserve'>";
 				reserveInfo += "	</tbody>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>케어진행 사항</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>케어진행 사항</td>";
 				reserveInfo += "		<td colspan='3'>"+completionList[i].completion_comment+"</td>";
 				reserveInfo += "	</tr>";
 				reserveInfo += "	<tr>";
-				reserveInfo += "		<td>케어진행사진</td>";
+				reserveInfo += "		<td style='background-color:#89AD98; color:#fff;'>케어진행사진</td>";
 				if(completionList[i].completion_picorg1 !== null && completionList[i].completion_picorg1 !== '') {
 					reserveInfo += "		<td>";
 					reserveInfo += "			<img src='"+contextPath+"/upload/"+completionList[i].completion_picreal1+"' style='width:90px; height:90px;' >";
@@ -648,13 +667,13 @@
 			if(Number(gdPayHistoryList[i].merchant_uid) === merchant_uid) {
 				if(gdPayHistoryList[i].reserve_no === reserve_no) {
 					paidOthers += "<tr>";
-					paidOthers += "		<td colspan='4'>함께 결제된 다른 예약</td>";
+					paidOthers += "		<td style='background-color:#89AD98; color:#fff; text-align: center;' colspan='4'>함께 결제된 다른 예약</td>";
 					paidOthers += "</tr>";
 					paidOthers += "<tr>";
-					paidOthers += "		<td>예약일</td>";
-					paidOthers += "		<td>예약시간</td>";
-					paidOthers += "		<td>예약종목</td>";
-					paidOthers += "		<td>해당 날짜로 이동</td>";
+					paidOthers += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";
+					paidOthers += "		<td style='background-color:#89AD98; color:#fff;'>예약시간</td>";
+					paidOthers += "		<td style='background-color:#89AD98; color:#fff;'>예약종목</td>";
+					paidOthers += "		<td style='background-color:#89AD98; color:#fff;'>해당 날짜로 이동</td>";
 					paidOthers += "</tr>";
 					for(var j=0; j<noCompletionList.length; j++) {
 						if(noCompletionList[j].merchant_uid === merchant_uid){
@@ -663,7 +682,7 @@
 								paidOthers += "		<td>"+noCompletionList[j].reserve_date+"</td>";
 								paidOthers += "		<td>"+noCompletionList[j].reserve_hour+"</td>";
 								paidOthers += "		<td>"+noCompletionList[j].reserve_major+"</td>";
-								paidOthers += "		<td>현재 선택된 예약건</td>";
+								paidOthers += "		<td style='background-color:#89AD98; color:#fff;'>현재 선택된 예약건</td>";
 								paidOthers += "</tr>";
 							}
 							if(noCompletionList[j].reserve_no !== reserve_no) {
@@ -684,7 +703,7 @@
 								paidOthers += "		<td>"+completionList[j].reserve_date+"</td>";
 								paidOthers += "		<td>"+completionList[j].reserve_hour+"</td>";
 								paidOthers += "		<td>"+completionList[j].reserve_major+"</td>";
-								paidOthers += "		<td>현재 선택된 예약건</td>";
+								paidOthers += "		<td style='background-color:#89AD98; color:#fff;'>현재 선택된 예약건</td>";
 								paidOthers += "</tr>";
 							}
 							if(completionList[j].reserve_no !== reserve_no) {
@@ -773,22 +792,22 @@
 		var insertCompletion = "";
 			insertCompletion += "<table border='1' class='default'>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<th colspan='4'>예약 완료 확인 입력<button type='button' onclick='insertCompletionDelete()'>입력창 닫기</button></th>";
+			insertCompletion += "		<th colspan='4' style='background-color:#89AD98; color:#fff;'>예약 완료 확인 입력&nbsp&nbsp<button class='buttonColor' type='button' onclick='insertCompletionDelete()'>입력창 닫기</button></th>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td colspan='4'>예약 정보</td>";
+			insertCompletion += "		<td colspan='4' style='background-color:#89AD98; color:#fff; text-align: center;'>예약 정보</td>";
 			insertCompletion += "	</tr>";
-			insertCompletion += "		<td>예약자</td>";
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>예약자</td>";
 		for(var j=0; j<gdPayHistoryList.length; j++) {
 			if(reserve_no === gdPayHistoryList[j].reserve_no) {
 				insertCompletion += "	<td colspan='4'>"+gdPayHistoryList[j].buyer_name+"</td>";
 				insertCompletion += "</tr>";
 				insertCompletion += "<tr>";
-				insertCompletion += "	<td>연락처(이메일)</td>";
+				insertCompletion += "	<td style='background-color:#89AD98; color:#fff;'>연락처(이메일)</td>";
 				insertCompletion += "	<td colspan='4'>"+gdPayHistoryList[j].buyer_tel+"("+gdPayHistoryList[j].buyer_email+")</td>";
 				insertCompletion += "</tr>";
 				insertCompletion += "<tr>";
-				insertCompletion += "	<td>출장요청주소</td>";
+				insertCompletion += "	<td style='background-color:#89AD98; color:#fff;'>출장요청주소</td>";
 				insertCompletion += "	<td colspan='4'>"+gdPayHistoryList[j].buyer_addr+"</td>";
 				insertCompletion += "</tr>";
 				insertCompletion += "<tr>";
@@ -796,32 +815,32 @@
 			}
 		}
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td>예약일</td>";
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";
 			insertCompletion += "		<td colspan='4'>"+date+"</td>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td>예약시간</td>";
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>예약시간</td>";
 			insertCompletion += "		<td>"+reserve_hour+"</td>";
-			insertCompletion += "		<td>예약종목</td>";
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>예약종목</td>";
 			insertCompletion += "		<td>"+reserve_major+"</td>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td>케어 진행가드너</td>";
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>케어 진행가드너</td>";
 			insertCompletion += "		<td colspan='4'>"+gd_name+"</td>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td>첨부파일추가</td>";			
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>첨부파일추가</td>";			
 			insertCompletion += "		<td><input type='file' onchange='addFile(this);' multiple /></td>";			
 			insertCompletion += "		<td colspan='2'>최소 한 개 이상의 파일을 업로드해주세요 <br> (3개까지 업로드 가능합니다.)</td>";
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td>케어 진행 내용</td>";
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>케어 진행 내용</td>";
 			insertCompletion += "		<td colspan='3'>";
 			insertCompletion += "			<textarea id='completion_comment' name='completion_comment' cols='55' rows='10'></textarea>";			
 			insertCompletion += "		</td>";			
 			insertCompletion += "	</tr>";
 			insertCompletion += "	<tr>";
-			insertCompletion += "		<td>첨부된 파일</td>";
+			insertCompletion += "		<td style='background-color:#89AD98; color:#fff;'>첨부된 파일</td>";
 			insertCompletion += "		<td colspan='3'>";
 			insertCompletion += "			<div class='file-list'></div>";			
 			insertCompletion += "		</td>";			
@@ -1123,9 +1142,12 @@
 </script>
 </head>
 <body>
-	<table class='default'>
-		<tr><th style='font-size: 20pt; text-align: center;'>가드너 케어 진행 입력 및 리뷰관리</th></tr>
-	</table>
+
+<div class="sub" id="wrapper">
+	<h2>가드너 케어 진행 입력 및 리뷰관리</h2>
+	<div class="size" id="gdView">	
+	
+	
 	<div>
 		<!-- 상단 -->
 		<div>
@@ -1175,5 +1197,9 @@
 			<!-- modal -->
 		</div>
 	</div>
+
+</div>
+</div>
+
 </body>
 </html>

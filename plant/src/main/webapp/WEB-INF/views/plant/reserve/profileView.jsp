@@ -2,12 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>가드너 프로필</title>
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+
 <style>
 .review {
 	margin: 1px;
@@ -23,26 +26,32 @@
 	margin: 0;
 	padding: 0
 }
-
+.custom_calendar_table{
+    width: 100%;
+    height: 450px;
+  	border: 1px solid rgba(0,0,0,.1);
+}
 .custom_calendar_table td {
 	text-align: center;
 }
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
-	color: #B1DDAA;
+	color: #6C987E;
+	
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
-	color: #B1DDAA;
+	color: #6C987E;
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #b1ddaa;
+	background-color: #6C987E;
 	color: #fff;
+	vertical-align: middle;
 }
 
 .custom_calendar_table tbody td {
@@ -277,14 +286,15 @@
 	            $(".custom_calendar_table .select_day").removeClass("select_day");
 	        	// 삭제 후 예약데이터와 비교하여 다시 클래스 변경
 	            classChange();
-            	res += "<h3>예약가능 스케줄</h3>";
-            	res += "<table border='1' class='default'>";
+            	res += "<br>";
+            	res += "<h3 id=''>예약가능 스케줄</h3>";
+            	res += "<table border='1' class='default' id='reservedTable'>";
             	res += "	<tr>";
             	res += "		<td colspan='3'>";
             	res += "			"+date.format('YYYY-MM-DD')+"";
             	res += "		</td>";
             	res += "	</tr>";
-            	res += "	<tr>";
+            	res += "	<tr style='background-color:#89AD98; color:#fff;'>";
             	res += "		<td>예약 가능 시간</td>";
             	res += "		<td>예약 가능 종목</td>";
             	res += "		<td>예약가능여부</td>";
@@ -347,39 +357,38 @@
 </script>
 </head>
 <body>
-	<table class='default'>
-		<tr><th style='font-size: 20pt; text-align: center;'>가드너 상세 프로필</th></tr>
-	</table>
-	<div>
+	<div class="sub" id="wrapper">
+		<h2>가드너 상세 프로필</h2>
+		<div class="size" id="gdView">
 		<!-- 가드너 상세 프로필 -->
 		<div>
-			<table border="1" class='default'>
+			<table id="gdViewtable" border="1" class='default'>
 				<tr>
-					<th colspan='6' style='text-align: center;'>가드너 프로필 카드</th>
+					<th colspan='6'>가드너 프로필 카드</th>
 				</tr>
-				<tr>
-					<td rowspan="7" style="text-align: center; width: 300px;">
+				<tr >
+					<td rowspan="7" style="text-align: center; width: 250px;">
 						<img src='<%=request.getContextPath()%>/upload/${data.gd_picreal}' style='width:90px; height:90px;' >
 					</td>
-					<td>이름</td>
+					<td style='background-color:#89AD98; color:#fff;'>이름</td>
 					<td>&nbsp${data.gd_name}&nbsp(만 ${data.gd_age}세)&nbsp</td>
-					<td>연락처</td>
+					<td style='background-color:#89AD98; color:#fff;'>연락처</td>
 					<td>&nbsp${data.gd_hp}&nbsp</td>
 				</tr>
 				<tr>
-					<td>e-mail</td>
+					<td style='background-color:#89AD98; color:#fff;'>e-mail</td>
 					<td colspan="3">&nbsp${data.gd_email}</td>
 				</tr>
 				<tr>
-					<td>출장가능 지역</td>
+					<td style="width:90px;background-color:#89AD98; color:#fff;">출장가능 지역</td>
 					<td>&nbsp${data.gd_ableaddr}&nbsp</td>
-					<td>가드너 등록일</td>
+					<td style='background-color:#89AD98; color:#fff;'>가드너 등록일</td>
 					<td>&nbsp<fmt:formatDate pattern="yyyy년 MM월 dd일"
 							value="${data.gd_regdate}" />&nbsp
 					</td>
 				</tr>
 				<tr>
-					<td>주요 케어 종목</td>
+					<td style='background-color:#89AD98; color:#fff;'>주요 케어 종목</td>
 					<td colspan="3">
 						<c:if test="${!empty data.gd_major1}">
 							${data.gd_major1}
@@ -405,9 +414,9 @@
 					</td>
 				</tr>
 				<tr>
-					<td>이력</td>
+					<td style='background-color:#89AD98; color:#fff;' >이력</td>
 					<td colspan="3">
-						<div style="overflow: auto; width: 100%; height: 70px;">
+						<div style="overflow: auto; width: 100%; height: 70px;" >
 							<c:forEach var="c" items="${career}">
 								<p>${c.gd_career}</p>
 							</c:forEach>
@@ -415,7 +424,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>자격 사항</td>
+					<td style='background-color:#89AD98; color:#fff;'>자격 사항</td>
 					<td colspan="3">
 						<div style="overflow: auto; width: 100%; height: 70px;">
 							<c:forEach var="c" items="${certificate}">
@@ -425,7 +434,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td>후기 & 별점</td>
+					<td style='background-color:#89AD98; color:#fff;'>후기 & 별점</td>
 					<td colspan="3">
 						<div style="overflow: auto; width: 100%; height: 150px;">
 							<div>평균 별점 : ${data.starAverage}점</div>
@@ -436,12 +445,19 @@
 									<p>닉네임 : ${r.user_nick} 별점: ${r.star} <br>
 										후기: ${r.review}</p>
 								</div>
+								<br>
 							</c:forEach>
 						</div>
 					</td>
 				</tr>
 			</table>
 		</div>
+		
+		</div>
+	</div>
+	
+	<div class="sub" id="wrapperView">
+		<div class="size" id="gdView">
 		<div>
 			<div id="calendarForm"></div>
 			<div id="reservableSchedule"></div>
@@ -459,6 +475,10 @@
 				</tr>
 			</table>
 		</div>
+		</div>
 	</div>
+
+
+	
 </body>
 </html>

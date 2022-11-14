@@ -3,7 +3,7 @@
 .searchbox {
 	margin: 15em 0 1.5em 0;
 	position: relative;
-	padding: 5em 0 4em 0;
+	padding: 0em 0 4em 0;
 	text-align: center;
 }
 
@@ -47,7 +47,7 @@
 	}
 
 #plantbookSearch{
-	border: 2px solid #ecfde9;
+	border: 2px solid #4d7e5a;
     border-radius: 50px;
     width: 36em;
     height: 25%;

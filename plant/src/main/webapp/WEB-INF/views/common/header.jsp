@@ -10,13 +10,53 @@
 <title>메뉴 바</title>
 
 <link rel="stylesheet" href="/plant/css/header/header.css"  type="text/css"/>
+<script type="text/javascript">
+function login() {
+	location.href = "/plant/user/login.do";	
+}
+
+function logout() {
+	location.href = "/plant/user/logout.do"
+}
+
+function gdlogout() {
+	location.href = "/plant/gd/logout.do"
+}
+
+function gdlogin() {
+	location.href = "/plant/gd/login.do";	
+}
+
+function searchSword() {
+	
+}
+</script>
 
 </head>
 
 <body class="homepage is-preload">
 <div id="page-wrapper">
 	<nav id="nav">
-		<ul>
+	<header id="header">
+			<div id="plantBar">
+				<span id="plantTxt">P L A N T</span>
+				
+				<input type="search" id="plantHederSearch" placeholder="검색어를 입력해주세요">
+				
+				<c:choose>
+					<c:when test="${!empty loginUserInfo}">
+						<span class="plantHederlogin">${loginUserInfo.user_nick } </span>
+						<span class="plantHederlogin"  onclick="logout()">로그아웃</span>
+					</c:when>
+					<c:when test="${!empty loginGdInfo}">
+						<span class="plantHederlogin"  onclick="gdlogout()">로그아웃</span>
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>
+			</div>
+	</header>
+		<ul class="headerUl">
 			<li class="current"><a href="/plant/main/index.do">HOME</a></li>
 	       
 			<li><a>예약</a>
@@ -102,16 +142,23 @@
 						</ul>
 					</li>
 				</c:when>
-				<c:otherwise> 
+				<c:otherwise>  
 					<li>
-						<a href="/plant/gd/logout.do">로그아웃</a>
+						<c:if test="${!empty loginUserInfo and empty loginGdInfo}">
+							<a href="/plant/user/logout.do">로그아웃</a>
+						</c:if> 
+						<c:if test="${!empty loginGdInfo and empty loginUserInfo}">
+							<a href="/plant/gd/logout.do">로그아웃</a>
+						</c:if>
 					</li>
 				</c:otherwise>
 			</c:choose>
 	       
 		</ul>
 	</nav>
+	
 </div>
+<div id="headerArea"></div>
 
    <script src="/plant/js/header/jquery.min.js"></script>
    <script src="/plant/js/header/jquery.dropotron.min.js"></script>

@@ -43,7 +43,7 @@ function gowrite() {
 						<div class="col-4 col-6-medium col-12-small">
 							<section class="box">
 								<a href="#" class="image featured"><img src="<%=request.getContextPath()%>/upload/${diarylist.user_plantfile_real}"/></a>
-								<form action="listdetDiary.do" method="post" >
+								<form action="listdetDiary.do" method="get" >
 									<h3><a href="#">${diarylist.user_plantname}</a></h3>
 									<input type="hidden" name="diary_no" value="${diarylist.diary_no}">
 									<input type="hidden" name="diary_gno" value="${diarylist.diary_gno}">

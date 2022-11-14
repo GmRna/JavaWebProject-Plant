@@ -8,6 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <title>나의 예약 확인하기</title>
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+
 <style>
 .review {
 	margin: 1px;
@@ -24,25 +26,34 @@
 	padding: 0
 }
 
+table{
+	width: 100%;
+    border: 1px solid rgba(0,0,0,.1);
+}
+table td{
+	border: 1px solid rgba(0,0,0,.1);
+}
 .custom_calendar_table td {
 	text-align: center;
+	border: 1px solid rgba(0,0,0,.1);
 }
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
-	color: #B1DDAA;
+	color: #6C987E;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
-	color: #B1DDAA;
+	color: #6C987E;
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #b1ddaa;
+	background-color: #6C987E;
 	color: #fff;
+	vertical-align: middle;
 }
 
 .custom_calendar_table tbody td {
@@ -270,7 +281,7 @@
 		*/
 		function assembly(year, month) {
 			var calendar_html_code =
-				"<table class='custom_calendar_table'>" +
+				"<table class='custom_calendar_table' >" +
 					"<colgroup>" +
 						"<col style='width:50px'/>" +
 						"<col style='width:50px'/>" +
@@ -385,23 +396,23 @@
 		    		var date = moment(idValue); 
 					// 클릭한 id값 SelectDate에 넣기
 					if(Number(idValue)){
-						var selectDate = ""
+						var selectDate = " "
 							selectDate += "<tr>";
-							selectDate += "		<td>선택일</td>";
+							selectDate += "		<td style='background-color:#89AD98; color:#fff;'>선택일</td>";
 							selectDate += "		<td  id='"+idValue+"'>"+date.format('YYYY-MM-DD')+"</td>";
 							selectDate += "		<td><button type='button' onclick='addReservable("+idValue+")'>예약가능일정 추가하기</button></td>";
 							selectDate += "</tr>";
 							selectDate += "<tr>";
-							selectDate += "		<td>예약가능시간</td>"; 
-							selectDate += "		<td>케어종목</td>";
-							selectDate += "		<td>선택</td>";
+							selectDate += "		<td style='background-color:#89AD98; color:#fff;'>예약가능시간</td>"; 
+							selectDate += "		<td style='background-color:#89AD98; color:#fff;'>케어종목</td>";
+							selectDate += "		<td style='background-color:#89AD98; color:#fff;'>선택</td>";
 							selectDate += "</tr>";
 						var addReservableSchedule = "<tr><td colspan='3'>예약가능일정을 추가하여 주세요</td></tr>"
 						$('#selectDate').html(selectDate);
 						$('#addReservableSchedule').html(addReservableSchedule);
 					} else {
 						var selectDate = ""
-							selectDate += "<td>선택일</td>";
+							selectDate += "<td style='background-color:#89AD98; color:#fff;'>선택일</td>";
 							selectDate += "<td>정확한 일자를 선택해주세요</td>";
 						$('#selectDate').html(selectDate);
 						$('#addReservableSchedule').html("<div id='addReservableSchedule'></div>");
@@ -440,10 +451,10 @@
 						var noReserve = "";
 							noReserve += "<table border='1' class='default'>";
 							noReserve += "	<tr>";
-							noReserve += "		<td colspan='2'>예약이 없는 일정</td>";	
+							noReserve += "		<td colspan='2' style='background-color:#89AD98; color:#fff;'>예약이 없는 일정</td>";	
 							noReserve += "	</tr>";	            	
 							noReserve += "	<tr>";            			
-							noReserve += "		<td>선택일</td>";	
+							noReserve += "		<td style='background-color:#89AD98; color:#fff;'>선택일</td>";	
 		        			noReserve += "		<td>"+date.format('YYYY-MM-DD')+"</td>";	
 		        			noReserve += "	</tr>";	            	
 		        			noReserve += "	<tr>";
@@ -466,19 +477,19 @@
 		        			$("#noReserve").html("<div id='noReserve'></div>");
 		        			reservable += "<table border='1' class='default'>";
 		        			reservable += "	<tr>";
-		        			reservable += "		<td colspan='10'>예약가능 일정</td>";	
+		        			reservable += "		<td colspan='10' style='background-color:#89AD98; color:#fff;'>예약가능 일정</td>";	
 		            		reservable += "	</tr>";	            	
 		            		reservable += "	<tr>";            			
-		            		reservable += "		<td>예약일</td>";	
+		            		reservable += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";	
 		            		reservable += "		<td colspan='10'>"+date.format('YYYY-MM-DD')+"</td>";	
 		            		reservable += "	</tr>";	            	
 		            		reservable += "	<tr>";
 		        			for(var i=0; i<reservableDate.length; i++){
-		        				reservable += "	<td>예약가능 일정</td>";
+		        				reservable += "	<td style='background-color:#89AD98; color:#fff;'>예약가능 일정</td>";
 		        				reservable += "	<td>"+reservableDate[i].reservable_hour+"시</td>";
-		        				reservable += "	<td>케어 종목</td>";
+		        				reservable += "	<td style='background-color:#89AD98; color:#fff;'>케어 종목</td>";
 		        				reservable += "	<td>"+reservableDate[i].reservable_major+"</td>";
-		        				reservable += "	<td>수정 및 삭제하기</td>";
+		        				reservable += "	<td style='background-color:#89AD98; color:#fff;'>수정 및 삭제하기</td>";
 		        				reservable += "	<td>";
 		        				reservable += "		<button type='button' onclick='javascript:reservableChoose(this.value, "+reservableDate[i].reservable_no+")' value='"+idValue+"_"+reservableDate[i].reservable_hour+"_"+reservableDate[i].reservable_major+"'>선택</button>";
 		        				reservable += "	</td>";
@@ -1159,10 +1170,13 @@
 </script>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/reserveHeader.jsp"></jsp:include>
-	<table class='default'>
-		<tr><th style='font-size: 20pt; text-align: center;'>가드너 예약 확인 및 관리</th></tr>
-	</table>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+
+<div class="sub" id="wrapper">
+	<h2>가드너 예약 확인 및 관리</h2>
+	<div class="size" id="gdView">	
+	
+	
 	<div>
 		<!-- 상단 -->
 		<div>
@@ -1203,16 +1217,16 @@
 				<div id="reservableChoose"></div>
 			</div>
 			<!-- 예약 추가 하기 -->
-			<div>
+			<div id="reservedViewTable">
 				<div>
 					<table border="1" class='default'>
 						<tr>
-							<td colspan='3'>예약가능일 추가하기</td>
+							<td colspan='3' style='background-color:#89AD98; color:#fff;'>예약가능일 추가하기</td>
 						</tr>
 						<tbody  id="selectDate">
 							<tr>
-								<td>선택일</td>
-								<td>달력에서 날짜를 선택해주세요</td>
+								<td style='background-color:#89AD98; color:#fff;'>선택일</td>
+								<td style='background-color:#89AD98; color:#fff;'>달력에서 날짜를 선택해주세요</td>
 							</tr>
 						</tbody>
 						<tbody id="addReservableSchedule">
@@ -1224,5 +1238,9 @@
 			</div>
 		</div>
 	</div>
+	
+	
+	</div>
+</div>
 </body>
 </html>

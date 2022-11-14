@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+    
     <script>
     	function goSave() {
     		if ($("#user_id").val().trim() == '') {
@@ -165,7 +167,8 @@
 
 </head>
   <style>
-        td{padding:5px;}
+	td{padding:5px;}
+  
   </style>
 <body>
     
@@ -261,7 +264,7 @@
                         <tr>
                             <th>*공개범위</th>
                             <td>
-                            <select name="user_open" id="user_open">
+                            <select name="user_open" id="user_open" style="height: 33px;">
                             <option value="0">전체</option>
                             <option value="1">닉네임과 프로필 사진 및 반려식물 정보</option>
                             <option value="2">닉네임과 프로필 사진</option>

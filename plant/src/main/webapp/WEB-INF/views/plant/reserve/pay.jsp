@@ -2,11 +2,16 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %> 
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html>
 <head>
 <style>
+th {
+	padding: 10px;
+	background-color:#89AD98; 
+	color:#fff;
+}
 </style>
 <meta charset="UTF-8">
 <title>가드너 예약 결제</title>
@@ -16,6 +21,8 @@
 <!-- postCode api -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!-- iamport.payment.js -->
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+
 <script type="text/javascript"
 	src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
 <script>
@@ -90,25 +97,25 @@
 	function reserveInfo() {
 		var res = "";
 			res += "<tr>";
-			res += "	<td>예약일</td>";
+			res += "	<td style='background-color:#89AD98; color:#fff;'>예약일</td>";
 		for(var i=0; i<reservableNoList.length; i++) {
 			res += "	<td>"+moment(reservableNoList[i].reservable_date.toString()).format('YYYY-MM-DD')+"</td>";
 		}
 			res += "</tr>";
 			res += "<tr>";
-			res += "	<td>예약시간</td>";
+			res += "	<td style='background-color:#89AD98; color:#fff;'>예약시간</td>";
 		for(var i=0; i<reservableNoList.length; i++) {
 			res += "	<td>"+reservableNoList[i].reservable_hour+"</td>";
 		}
 			res += "</tr>";
 			res += "<tr>";
-			res += "	<td>케어내용</td>";
+			res += "	<td style='background-color:#89AD98; color:#fff;'>케어내용</td>";
 		for(var i=0; i<reservableNoList.length; i++) {
 			res += "	<td>"+reservableNoList[i].reservable_major+"</td>";
 		}
 			res += "</tr>";
 			res += "<tr id='subTotal'>";
-			res += "	<td>케어당 가격</td>";
+			res += "	<td style='background-color:#89AD98; color:#fff;'>케어당 가격</td>";
 		for(var i=0; i<reservableNoList.length; i++) {
 			res += "	<td>"+reservableNoList[i].reservable_subTotal+"</td>";
 		}
@@ -207,9 +214,11 @@
 </script>
 </head>
 <body>
-	<table class='default'>
-		<tr><th style='font-size: 20pt; text-align: center;'>결제 하기</th></tr>
-	</table>
+
+<div class="sub" id="wrapper">
+	<h2>결제 하기</h2>
+	<div class="size" id="gdView">	
+	
 	<!-- 결제페이지 상단 -->
 	<div>
 		<!-- 결제 정보 -->
@@ -220,40 +229,40 @@
 				</tr>
 				<tbody>
 					<tr>
-						<td>예약자</td>
+						<td style='background-color:#89AD98; color:#fff;'>예약자</td>
 						<td>
-							<input style='width: 400px;' type="text" id="user_name" value="${user.user_name}">
+							<input  type="text" id="user_name" value="${user.user_name}">
 						</td>
 					</tr>
 					<tr>
-						<td>연락처</td>
+						<td style='background-color:#89AD98; color:#fff;'>연락처</td>
 						<td>
-							<input style='width: 400px;' type="text" id="user_hp" value="${user.user_hp}">
+							<input  type="text" id="user_hp" value="${user.user_hp}">
 						</td>
 					</tr>
 					<tr>
-						<td>이메일</td>
+						<td style='background-color:#89AD98; color:#fff;'>이메일</td>
 						<td>
-							<input style='width: 400px;' type="text" id="user_email" value="${user.user_email}">
+							<input type="text" id="user_email" value="${user.user_email}">
 						</td>
 					</tr>
 					<tr>
-						<td>주소</td>
+						<td style='background-color:#89AD98; color:#fff;'>주소</td>
 						<td>
 							<input type="text" name="postCode" id="postCode"class="inNextBtn" style="float: left;" value="${user.user_postcode}" readonly>
 							&nbsp<button type='button' onclick='postCode()'>우편번호 검색</button>
 						</td>
 					</tr>
 					<tr>
-						<td>기본주소</td>
+						<td style='background-color:#89AD98; color:#fff;'>기본주소</td>
 						<td>
-							<input style='width: 400px;' type="text" id="addr1" readonly value="${user.user_addr1}">
+							<input  type="text" id="addr1" readonly value="${user.user_addr1}">
 						</td>
 					</tr>
 					<tr>
-						<td>상세주소</td>
+						<td style='background-color:#89AD98; color:#fff;'>상세주소</td>
 						<td>
-							<input style='width: 400px;' type="text" id="addr2" value="${user.user_addr2}">
+							<input type="text" id="addr2" value="${user.user_addr2}">
 						</td>
 					</tr>
 				</tbody>
@@ -263,27 +272,27 @@
 					<th colspan='100' style='font-size: 15pt; text-align: center;'>예약 정보</th>
 				</tr>
 				<tr>
-					<td>가드너 이름</td>
+					<td style='background-color:#89AD98; color:#fff;'>가드너 이름</td>
 					<td colspan="100">${gd.gd_name}</td>
 				</tr>
 				<tr>
-					<td>가드너 연락처</td>
+					<td style='background-color:#89AD98; color:#fff;'>가드너 연락처</td>
 					<td colspan="100">${gd.gd_hp}</td>
 				</tr>
 				<tbody id="reserveInfo">
 				</tbody>
 				<tr>
-					<td>요청사항</td>
+					<td style='background-color:#89AD98; color:#fff;'>요청사항</td>
 					<td colspan="100">
 						<input style='width: 80%; hight:height 50px;' type="text" id="etc">
 					</td>
 				</tr>
 				<tr>
-					<td>총 합계 금액</td>
+					<td style='background-color:#89AD98; color:#fff;'>총 합계 금액</td>
 					<td colspan="100" style='font-size: 13pt;text-align: center;'><div id="total"></div></td>
 				</tr>
 				<tr>
-					<td>카드 결제</td>
+					<td style='background-color:#89AD98; color:#fff;'>카드 결제</td>
 					<td colspan="100" style='text-align: center;'><button onclick="requestPay()">결제하기</button></td>
 				</tr>
 				<tr>
@@ -299,5 +308,10 @@
 				<div id="param"></div>
 			</form>
 	</div>
+	
+	
+	
+	</div>
+</div>
 </body>
 </html>

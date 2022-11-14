@@ -15,7 +15,7 @@
 <body class="homepage is-preload">
 <div id="page-wrapper">
 <!-- Header -->
-	<section id="header">
+	<section id="headerId">
 		<h1><a href="/plant/main/index.do">P L A N T</a></h1>
 		
 		<nav id="nav">

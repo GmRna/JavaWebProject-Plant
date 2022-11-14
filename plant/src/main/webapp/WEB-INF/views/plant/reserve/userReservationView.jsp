@@ -2,12 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>나의 예약 확인하기</title>
+
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
 <style>
 .review {
 	margin: 1px;
@@ -30,18 +32,18 @@
 
 .custom_calendar_table thead.cal_date th {
 	font-size: 1.5rem;
-	color: #B1DDAA;
+	color: #89AD98;
 }
 
 .custom_calendar_table thead.cal_date th button {
 	font-size: 1.5rem;
 	background: none;
 	border: none;
-	color: #B1DDAA;
+	color: #89AD98;
 }
 
 .custom_calendar_table thead.cal_week th {
-	background-color: #b1ddaa;
+	background-color: #89AD98;
 	color: #fff;
 }
 
@@ -122,6 +124,15 @@
 }
 .input-chek:checked + .form-chek, .input-radio:checked + .form-radio{
 	color: #749fbb;
+}
+
+.careTh {
+	padding: 10px 10px;
+    vertical-align: middle;
+}
+
+.divpadding{
+	padding: 10px;
 }
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -440,7 +451,7 @@
 	            classChange();
             	res += "<table border='1' class='default'>";
             	res += "	<tr>";
-            	res += "		<td colspan='3'>예약일정 확인</td>";	
+            	res += "		<td colspan='3' style='background-color:#89AD98; color:#fff;'>예약일정 확인</td>";	
             	res += "	</tr>";	            	
             	if ($('#'+idValue+'').attr('class') === 'default') {
             		res += "<td colspan='3'>예약한 일정이 없습니다.</td>"
@@ -454,19 +465,19 @@
             		// 예약된 시간
             		if (reservedDate.length > 0) {
 						res += "	<tr>";
-		            	res += "		<td>예약일</td>";		
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>예약일</td>";		
 		            	res += "		<td colspan='2'>";
 		            	res += "			"+date.format('YYYY-MM-DD')+"";
 		            	res += "		</td>";
 		            	res += "	</tr>";
 		            	res += "	<tr>";
-		            	res += "		<td>예약 시간</td>"
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>예약 시간</td>"
             			for(var i=0; i<reservedDate.length; i++){
             				res += "	<td>"+reservedDate[i].reserve_hour+"시</td>";
             			}
 		            	res += "	</tr>";
 		            	res += "	<tr>";
-		            	res += "		<td>케어종목</td>"
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>케어종목</td>"
             			for(var i=0; i<reservedDate.length; i++){
             				res += "	<td>";
             				res += "		"+reservedDate[i].major+"";
@@ -474,13 +485,13 @@
             			}
 		            	res += "	</tr>";
 		            	res += "	<tr>";
-		            	res += "		<td>특이사항</td>"
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>특이사항</td>"
             			for(var i=0; i<reservedDate.length; i++){
             				res += "	<td>"+reservedDate[i].reserve_etc+"</td>";
             			}
 		            	res += "	</tr>";
 		            	res += "	<tr>";
-		            	res += "		<td>출장요청주소</td>"
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>출장요청주소</td>"
 		            	var addr = false;
             			for(var i=0; i<reservedDate.length; i++){
             				for(var j=0; j<userPayHistory.length; j++){
@@ -495,7 +506,7 @@
             			}
 		            	res += "	</tr>";
 		            	res += "	<tr>";
-		            	res += "		<td>구매자</td>"
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>구매자</td>"
 		            	var buyer = false;
 		            	for(var i=0; i<reservedDate.length; i++){
             				for(var j=0; j<userPayHistory.length; j++){
@@ -510,7 +521,7 @@
             			}
 		            	res += "	</tr>";	
 		            	res += "	<tr>";
-		            	res += "		<td>가드너 이름 및 연락처</td>";
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>가드너 이름 및 연락처</td>";
 		            	for(var i=0; i<reservedDate.length; i++){
 				            res += "	<td>"
 					        res += "		"+reservedDate[i].gd_name+"("+reservedDate[i].gd_hp+")";
@@ -518,7 +529,7 @@
             			}
             			res += "	</tr>"; 
 		            	res += "	<tr>";
-		            	res += "		<td>결제번호</td>";
+		            	res += "		<td style='background-color:#89AD98; color:#fff;'>결제번호</td>";
 		            	var uid = false;
 		            	for(var i=0; i<reservedDate.length; i++){
             				for(var j=0; j<userPayHistory.length; j++){
@@ -553,11 +564,11 @@
 		var res = "";
 			res += "<table class='default'>";
 			res += "	<tr>";
-			res += "		<td>결제번호</td>";
+			res += "		<td style='background-color:#89AD98; color:#fff;'>결제번호</td>";
 			res += "		<td>"+merchant_uid+"</td>";
 			res += "	</tr>";
 			res += "	<tr>";
-			res += "		<td>예약번호</td>";
+			res += "		<td style='background-color:#89AD98; color:#fff;'>예약번호</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -569,7 +580,7 @@
 		}
 			res += "	</tr>";
 			res += "	<tr>";
-			res += "		<td>예약일시</td>";
+			res += "		<td style='background-color:#89AD98; color:#fff;'>예약일시</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -589,7 +600,7 @@
 		}
 			res += "	</tr>";
 			res += "	<tr>";
-			res += "		<td>케어종목</td>";
+			res += "		<td style='background-color:#89AD98; color:#fff;'>케어종목</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -605,7 +616,7 @@
 		}
 			res += "	</tr>";
 			res += "	<tr>";
-			res += "		<td>가드너 이름</td>";
+			res += "		<td style='background-color:#89AD98; color:#fff;'>가드너 이름</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -626,7 +637,7 @@
 		}
 			res += "	</tr>";
 			res += "	<tr>";
-			res += "		<td>결제가격</td>";
+			res += "		<td style='background-color:#89AD98; color:#fff;'>결제가격</td>";
 		for(var i=0; i<userPayHistory.length; i++) {
 			if(userPayHistory[i].merchant_uid === merchant_uid) {
 				check = true;
@@ -797,15 +808,15 @@
 		var completion ="";
 			completion +="<table border='1' class='default'>";
 			completion +="		<tr>";
-			completion +="			<th>케어진행완료내역</th>";
+			completion +="			<th class='careTh' style='background-color:#89AD98; color:#fff;'>케어 진행 완료 내역</th>";
 			completion +="		</tr>";
 			completion +="		<tr>";
-			completion +="			<td>예약번호</td>";
-			completion +="			<td>예약일</td>";
-			completion +="			<td>예약시간</td>";
-			completion +="			<td>케어종목</td>";
-			completion +="			<td>케어진행가드너</td>";
-			completion +="			<td>케어내용상세보기</td>";
+			completion +="			<td style='background-color:#89AD98; color:#fff;'>예약번호</td>";
+			completion +="			<td style='background-color:#89AD98; color:#fff;'>예약일</td>";
+			completion +="			<td style='background-color:#89AD98; color:#fff;'>예약시간</td>";
+			completion +="			<td style='background-color:#89AD98; color:#fff;'>케어종목</td>";
+			completion +="			<td style='background-color:#89AD98; color:#fff;'>케어진행가드너</td>";
+			completion +="			<td style='background-color:#89AD98; color:#fff;'>케어내용상세보기</td>";
 			completion +="		</tr>";
 		for(var i=0; i<completionList.length; i++) {
 			completion +="		<tr>";
@@ -830,12 +841,12 @@
 			if(completionList[i].reserve_no === reserve_no) {
 				view +="<table border='1' class='default'>";
 				view +="		<tr>";
-				view +="			<th colspan='6'>케어내용상세보기 <button type='button' onclick='completionViewDelete()'>상세보기 닫기</button></th>";
+				view +="			<th class='careth' colspan='6' style='background-color:#89AD98; color:#fff;'>케어내용상세보기 <button type='button' onclick='completionViewDelete()' style='background:#48663f;'>상세보기 닫기</button></th>";
 				view +="		</tr>";
 				view +="		<tr>";
-				view +="			<td>예약자(닉네임)</td>";
+				view +="			<td style='background-color:#89AD98; color:#fff;'>예약자(닉네임)</td>";
 				view +="			<td colspan='2'>"+completionList[i].user_name+"("+completionList[i].user_nick+")</td>";
-				view +="			<td>리뷰남기기</td>";
+				view +="			<td style='background-color:#89AD98; color:#fff;'>리뷰남기기</td>";
 				if(completionList[i].reserve_review == 0){
 					view +="			<td colspan='2'><button type='button' onclick='writeReview("+completionList[i].reserve_no+","+completionList[i].gd_no+","+completionList[i].user_no+")'>리뷰쓰기</button></td>";
 				}
@@ -852,23 +863,23 @@
 				}
 				view +="		</tr>";
 				view +="		<tr>";
-				view +="			<td>가드너</td>";
+				view +="			<td style='background-color:#89AD98; color:#fff;'>가드너</td>";
 				view +="			<td colspan='5'>"+completionList[i].gd_name+"</td>";
 				view +="		</tr>";
 				view +="		<tr>";
-				view +="			<td>예약일</td>";
+				view +="			<td style='background-color:#89AD98; color:#fff;'>예약일</td>";
 				view +="			<td>"+moment(String(completionList[i].reserve_date)).format('YYYY-MM-DD')+"</td>";
-				view +="			<td>예약시간</td>";
+				view +="			<td style='background-color:#89AD98; color:#fff;'>예약시간</td>";
 				view +="			<td>"+completionList[i].reserve_hour+"시</td>";
-				view +="			<td>예약시간</td>";
+				view +="			<td style='background-color:#89AD98; color:#fff;'>예약시간</td>";
 				view +="			<td>"+completionList[i].reserve_hour+"</td>";
 				view +="		</tr>";
 				view += "	<tr>";
-				view += "		<td>케어진행 사항</td>";
+				view += "		<td style='background-color:#89AD98; color:#fff;'>케어진행 사항</td>";
 				view += "		<td colspan='5'>"+completionList[i].completion_comment+"</td>";
 				view += "	</tr>";
 				view += "	<tr>";
-				view += "		<td>케어진행사진</td>";
+				view += "		<td style='background-color:#89AD98; color:#fff;'>케어진행사진</td>";
 				if(completionList[i].completion_picorg1 !== null && completionList[i].completion_picorg1 !== '') {
 					if((completionList[i].completion_picorg3 === null || completionList[i].completion_picorg3 === '')
 							&& (completionList[i].completion_picorg2 === null || completionList[i].completion_picorg2 === '')) {
@@ -1130,90 +1141,93 @@
 </script>
 </head>
 <body>
-	<table class='default'>
-		<tr><th style='font-size: 20pt; text-align: center;'>나의 예약 확인 및 관리</th></tr>
-	</table>
-	<div>
-		<!-- 상단 -->
+
+<div class="sub" id="wrapper">
+	<h2>가드너 예약 확인 및 관리</h2>
+	<div class="size" id="gdView">	
 		<div>
-			<!-- 달력 -->
+			<!-- 상단 -->
 			<div>
-				<div id="calendarForm"></div>
+				<!-- 달력 -->
+				<div class="divpadding">
+					<div id="calendarForm"></div>
+				</div>
+				<!-- 예약내역 확인 -->
+				<div class="divpadding">
+					<div id="reservableSchedule"></div> 
+				</div>
 			</div>
-			<!-- 예약내역 확인 -->
-			<div>
-				<div id="reservableSchedule"></div> 
-			</div>
-		</div>
-		
-		<!-- 하단 -->
-		<div>
-			<!-- 결제 내역 -->
+			
+			<!-- 하단 -->
 			<div>
 				<!-- 결제 내역 -->
-				<div>
-					<table border="1">
-						<tr>
-							<td colspan="4">결제내역</td>
-						</tr>
-						<tr>
-							<td colspan='4'>결제번호 검색&nbsp&nbsp&nbsp<input onkeyup="filter()" type="text" id="value" placeholder="Type to Search"></td>
-								
-						</tr>
-						<tr>
-							<td colspan='4'>결제정보</td>
-						</tr>
-						<c:forEach var="p" items="${userPayHistoryDeduplication}">
-							<c:if test='${p.reserve_cancel eq 0 }'>
-								<tr class="item" style="width: 100%;">
-									<td class="history">${p.merchant_uid}</td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd" value="${p.pay_date}" /></td>
-									<td>${p.pay_size}</td>
-									<td>
-										<button 
-											type='button'
-											name='${p.merchant_uid}'
-											onclick='payHistory(this.name)'>상세보기</button>
-									</td>
-								</tr>
-							</c:if>
-							<c:if test='${p.reserve_cancel eq 1 }'>
-								<tr class="item" style="width: 100%;">
-									<td class="history">${p.merchant_uid}</td>
-									<td><fmt:formatDate pattern="yyyy-MM-dd" value="${p.pay_date}" /></td>
-									<td>${p.pay_size}</td>
-									<td>취소 및 환불 완료</td>
-								</tr>
-							</c:if>
-						</c:forEach>
-					</table>
-				</div>
-				<div id="payHistory"></div>
-			</div>
-			<!-- 완료 예약 내역 상세정보 -->
-			<div>
-				<div id="completion"></div>
-				<div id="completionView"></div>
-			</div>
-			<!-- modal insertReview -->
-			<div id="modal" class="searchModal">
-				<div class="search-modal-content"> 
-					<div class="page-header">
-						<h1>Review</h1>
+				<div class="divpadding">
+					<!-- 결제 내역 -->
+					<div>
+						<table border="1">
+							<tr>
+								<td colspan="4" style="background-color:#89AD98; color:#fff;">결제내역</td>
+							</tr>
+							<tr>
+								<td colspan='4' style="background-color:#89AD98; color:#fff;">결제번호 검색&nbsp&nbsp&nbsp<input onkeyup="filter()" type="text" id="value" placeholder="Type to Search"></td>
+									
+							</tr>
+							<tr>
+								<td colspan='4' style="background-color:#89AD98; color:#fff;">결제정보</td>
+							</tr>
+							<c:forEach var="p" items="${userPayHistoryDeduplication}">
+								<c:if test='${p.reserve_cancel eq 0 }'>
+									<tr class="item" style="width: 100%;">
+										<td class="history">${p.merchant_uid}</td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd" value="${p.pay_date}" /></td>
+										<td>${p.pay_size}</td>
+										<td>
+											<button 
+												type='button'
+												name='${p.merchant_uid}'
+												onclick='payHistory(this.name)'>상세보기</button>
+										</td>
+									</tr>
+								</c:if>
+								<c:if test='${p.reserve_cancel eq 1 }'>
+									<tr class="item" style="width: 100%;">
+										<td class="history">${p.merchant_uid}</td>
+										<td><fmt:formatDate pattern="yyyy-MM-dd" value="${p.pay_date}" /></td>
+										<td>${p.pay_size}</td>
+										<td>취소 및 환불 완료</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</table>
 					</div>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="row">
-								<div id='reviewForm' class="col-sm-12"></div>
+					<div id="payHistory"></div>
+				</div>
+				<!-- 완료 예약 내역 상세정보 -->
+				<div class="divpadding">
+					<div id="completion"></div>
+					<div id="completionView"></div>
+				</div>
+				<!-- modal insertReview -->
+				<div id="modal" class="searchModal">
+					<div class="search-modal-content"> 
+						<div class="page-header">
+							<h1>Review</h1>
+						</div>
+						<div class="row">
+							<div class="col-sm-12">
+								<div class="row">
+									<div id='reviewForm' class="col-sm-12"></div>
+								</div>
 							</div>
 						</div>
+						<hr>
+						<div id='submitForm'></div>
 					</div>
-					<hr>
-					<div id='submitForm'></div>
 				</div>
+				<!-- modal -->
 			</div>
-			<!-- modal -->
 		</div>
 	</div>
+</div>
 </body>
 </html>

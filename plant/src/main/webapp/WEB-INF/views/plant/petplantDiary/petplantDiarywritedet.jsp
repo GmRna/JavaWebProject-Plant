@@ -7,12 +7,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>반려식물 관찰 일지 작성 첫 작성</title>
+<title>반려식물 관찰 일지 다음 작성</title>
 
 <!-- //제이쿼리 ui css -->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="/plant/css/petplant/petdiary/petplantDiary.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 // 기르기 시작한 날짜를 넣어주면 몇 일째 기르고 있는지 알려주는 함수
@@ -68,34 +69,52 @@ body {
 
 
 </head>
-<body>
-  
-<div>
-	<form id="frm" method="post" action="insertTwoDiary.do"  enctype="multipart/form-data" >
-		<input type="hidden" name="diary_no" value="${vo.diary_no }">
-		<input type="hidden" name="diary_gno" value="${vo.diary_gno }">
-		<span>기르기 시작한 날짜 <input type="text" id="datepicker" name="pet_regdate" value="${vo.pet_regdate}" readonly="readonly"></span> 
-		<span id="todaypet"></span>    일째
-		<input type="hidden" name="diary_day">
-		
-		<br><br>
-		이름 <input type="text" name="user_plantname" value="${vo.user_plantname}" readonly="readonly"><br>
-		품종 <input type="text" name="user_planttype" value="${vo.user_planttype}" readonly="readonly"><br>
-		사진 <input type="file" name="file" id="user_plantfile_org"><br>
-		
-		<br><br><br>
-		제목 <input type="text" name="diary_title"><br>
-		날씨 <br>
-				<input type="checkbox" name="diary_weather" value="1"> 맑음
-				<input type="checkbox" name="diary_weather" value="2" > 비
-			  	<input type="checkbox" name="diary_weather" value="3" > 구름
-			  	<input type="checkbox" name="diary_weather" value="4" > 눈
-		<br><br><br>
-		관찰 내용 <textarea name="diary_content"></textarea>
-	</form>
-	<button onclick="save()">작성완료</button>
-	<button onclick="javascript:history.back();">목록으로</button>
-	
+<body  class="is-preload"> 
+<div id="diaryDiv">
+	<div id="diaryDivmain">
+		<article id="contact" class="panel">
+			<header><h2>관찰일지 작성</h2></header>
+			<div>
+				<form id="frm" method="post" action="insertTwoDiary.do"  enctype="multipart/form-data" >
+					<div class="row">
+						<div class="col-12" id="day">
+							<input type="hidden" name="diary_no" value="${vo.diary_no }">
+							<input type="hidden" name="diary_gno" value="${vo.diary_gno }">
+							<span class="txt">기르기 시작한 날짜 <input type="text" id="datepicker" name="pet_regdate" value="${vo.pet_regdate}" readonly="readonly"></span>
+						</div>
+						<div class="col-12" id="day">
+							<span id="todaypet" class="txt"></span>  <span class="txt">  일째</span>
+							<input type="hidden" name="diary_day">
+						</div>	
+						<div class="col-12" >
+							<span class="txt" >이름</span> <input type="text" name="user_plantname" value="${vo.user_plantname}" readonly="readonly"><br>
+							<span class="txt">품종</span> <input type="text" name="user_planttype" value="${vo.user_planttype}" readonly="readonly"><br>
+						</div>
+						<div class="col-12" >
+							<span class="txt" >제목</span> <input type="text" name="diary_title">
+						</div>
+						<div class="col-12" >
+							<span class="txt" >날씨</span>
+							<input type="radio" name="diary_weather" value="1"checked="checked"> 맑음
+								<input type="radio" name="diary_weather" value="2" > 비
+							  	<input type="radio" name="diary_weather" value="3" > 구름
+							  	<input type="radio" name="diary_weather" value="4" > 눈
+						</div>
+						<div class="col-12">
+							<textarea name="diary_content" id="content" placeholder="내용" rows="6"></textarea>
+						</div>
+						<div class="col-12" >
+							<span class="txt" >사진</span> <input type="file" name="file" id="user_plantfile_org"><br>
+						</div>
+						<div class="col-12">
+						</div>
+					</div>
+				</form>
+					<button class="btn" onclick="save()">작성완료</button>
+					<button class="btn" onclick="javascript:history.back();">목록으로</button>
+			</div>
+		</article>
+	</div>
 </div>
 
 

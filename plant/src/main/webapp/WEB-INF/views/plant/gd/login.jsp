@@ -1,5 +1,8 @@
+<%@page import="com.plant.gd.GdVO"%>
+<%@page import="com.plant.user.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -68,7 +71,7 @@
 <body>
         
 <!-- 헤더 홈화면으로 가기 -->
-<section id="header">
+<section id="headerId">
 	<h1><a href="/plant/main/index.do">P L A N T</a></h1>
 </section>
 	
@@ -98,5 +101,16 @@
 	</div>
 </div>
 
+
+
+<!-- Scripts -->
+	<script src="/plant/js/main/jquery.min.js"></script>
+	<script src="/plant/js/main/jquery.dropotron.min.js"></script>
+	<script src="/plant/js/main/browser.min.js"></script>
+	<script src="/plant/js/main/breakpoints.min.js"></script>
+	<script src="/plant/js/main/util.js"></script>
+	<script src="/plant/js/main/main.js"></script>
+	
+	
 </body>
 </html>

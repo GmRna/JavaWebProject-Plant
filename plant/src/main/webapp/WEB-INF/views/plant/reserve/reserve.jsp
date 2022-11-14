@@ -2,12 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>가드너</title>
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+
 <script>
 	function goCompletion(gd_no) {
 		location.href='/plant/reserve/completion.do?gd_no='+gd_no+''
@@ -20,16 +22,12 @@
 </script>
 </head>
 <body>
-	<table class='default'>
-		<tr><th colspan="4" style='font-size: 20pt; text-align: center;'>가드너 메뉴 </th></tr>
-		<tr>
-			<td style='text-align: center;'>
-				<button type='button' onclick='goGdReservationView(${loginGdInfo.gd_no})'>나의 예약 스케줄 관리</button>
-			<td>
-			<td style='text-align: center;'>
-				<button type='button' onclick='goCompletion(${loginGdInfo.gd_no})'>케어진행 내용 및 리뷰 관리</button>
-			</td>	
-		</tr>
-	</table>
+<div class="sub" id="wrapper">
+	<h2>가드너 메뉴 바로가기</h2>
+	<div class="size" id="gdView">
+		<button type='button' onclick='goGdReservationView(${loginGdInfo.gd_no})'>나의 예약 스케줄 관리</button>
+		<button type='button' onclick='goCompletion(${loginGdInfo.gd_no})'>케어진행 내용 및 리뷰 관리</button>
+	</div>
+</div>
 </body>
 </html>

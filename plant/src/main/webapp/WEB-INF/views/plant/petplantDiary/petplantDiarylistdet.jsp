@@ -23,6 +23,10 @@ function edit(diary_no) {
 function diaryList(){
 	location.href = "/plant/petplantDiary/listDiary.do";
 }
+
+function diaryDel(diary_no) {
+	location.href = "/plant/petplantDiary/deleteDiary.do?diary_no="+diary_no;
+}
 </script>
 
 </head>
@@ -56,6 +60,21 @@ function diaryList(){
 								<h3><a href="#">${diarylist.diary_day}일 째 </a></h3>
 								<p>제 목 : ${diarylist.diary_title}</p>
 								<p>${diarylist.diary_content}</p>
+								<p>
+								날씨
+								<c:if test="${diarylist.diary_weather eq 1}">
+									<img class="weather" src="/plant/img/weather/weather_1.png">
+								</c:if>
+								<c:if test="${diarylist.diary_weather eq 2}">
+									<img class="weather" src="/plant/img/weather/weather_2.png">
+								</c:if>
+								<c:if test="${diarylist.diary_weather eq 3}">
+									<img class="weather" src="/plant/img/weather/weather_3.png">
+								</c:if>
+								<c:if test="${diarylist.diary_weather eq 4}">
+									<img class="weather" src="/plant/img/weather/weather_4.png">
+								</c:if>
+								</p>
 								<input type="hidden" name="pet_regdate" value="${diarylist.pet_regdate }">
 								<input type="hidden" name="user_plantname" value="${diarylist.user_plantname }">
 								<input type="hidden" name="user_planttype" value="${diarylist.user_planttype }">
@@ -63,7 +82,7 @@ function diaryList(){
 								<h3><a href="#"><fmt:formatDate value="${diarylist.diary_regdate}" pattern="yyyy MM dd" /></a></h3>
 							</section>
 							<button onclick="edit(${diarylist.diary_no})">수정하기</button>
-							<button onclick="(${diarylist.diary_no})">삭제하기</button>
+							<button onclick="diaryDel(${diarylist.diary_no})">삭제하기</button>
 						</div>
 					</c:forEach>
 				</div>

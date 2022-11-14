@@ -12,6 +12,12 @@
 .searchbox{
 	margin-top: 60px;
 }
+
+.banner {
+	background-image: url("/plant/img/petplant/searcharea.jpg")
+} 
+
+
 </style>
 
 <link rel="stylesheet" href="/plant/css/petplant/plantbook.css">
@@ -23,19 +29,26 @@ function search() {
 	location.href = '/plant/plantbook/search.do?sword='+sword;
 }
 
+$(function () {
+	$("#headerArea").css("height", "0"); 
+})
 </script>
 </head>
 
 <body>
-<div class="searchbox">
-	<div id="searchDiv">
-		<div id="searchHeader">
-			<h2> 📚 식 물 도 감 📚 </h2>
-			<input type="search" id="plantbookSearch" onkeyup="if(window.event.keyCode==13){search()}" name="sword" placeholder="검색어를 입력해주세요"> 
-		</div>
-	</div>
-</div>
-<div class="searchResult"></div>
+
+	<section id="banner" >
+		<header>
+			<div class="search-mode">
+			    <div id="searchDiv">
+					<div id="searchHeader">
+						<h2> 📚 식 물 도 감 📚 </h2>
+						<input type="search" id="plantbookSearch" onkeyup="if(window.event.keyCode==13){search()}" name="sword" placeholder="검색어를 입력해주세요"> 
+					</div>
+				</div>
+		    </div>
+		</header>
+	</section>
 
 </body>
 </html>

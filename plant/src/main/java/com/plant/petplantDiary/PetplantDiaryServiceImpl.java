@@ -70,22 +70,11 @@ public class PetplantDiaryServiceImpl implements PetplantDiaryService {
 		return mapper.updateDiary(vo);
 
 	}
-
-
+	
+	// 반려 식물 관찰일지 - 삭제하기
 	@Override
-	public Map plantStypeF(String stype) {
-		List<PetplantDiaryVO> list = mapper.plantStypeF(stype);
-		Map map = new HashMap();  
-		map.put("stype", list);
-		return map;
-	}
-
-	@Override
-	public Map plantStypeS(String stype) {
-		List<PetplantDiaryVO> list = mapper.plantStypeS(stype);
-		Map map = new HashMap();  
-		map.put(stype, list);
-		return map;
+	public int deleteDiary(int diary_no) {
+		return mapper.deleteDiary(diary_no);
 	}
 
 	

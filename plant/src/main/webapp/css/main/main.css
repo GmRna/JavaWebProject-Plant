@@ -2066,7 +2066,7 @@ input, select, textarea {
 
 /* Header */
 
-	#header {
+	#headerId {
 		position: relative;
 		background: #ffffff;
 		border-bottom: solid 1px #ccc;
@@ -2074,7 +2074,7 @@ input, select, textarea {
 		text-align: center;
 	}
 
-		#header h1 {
+		#headerId h1 {
 			color: #252122;
 			font-weight: 900;
 			font-size: 2.5em;
@@ -2086,6 +2086,7 @@ input, select, textarea {
 
 	#nav {
 		margin: 2.5em 0 0 0;
+		
 	}
 
 		#nav > ul {

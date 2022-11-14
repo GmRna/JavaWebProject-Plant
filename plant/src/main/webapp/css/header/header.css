@@ -13,7 +13,7 @@ pre, a, abbr, acronym, address, big, cite,
 code, del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var, b,
 u, i, center, dl, dt, dd, ol, ul, li, fieldset,
-form, label, legend, table, caption, tbody,
+ label, legend, table, caption, tbody,
 tfoot, thead, tr, th, td, article, aside,
 canvas, details, embed, figure, figcaption,
 footer, header, hgroup, menu, nav, output, ruby,
@@ -49,6 +49,7 @@ blockquote, q {
 
 body {
 	-webkit-text-size-adjust: none;
+	line-height: 1.75em;
 }
 
 mark {
@@ -65,7 +66,6 @@ mark {
 
 
 	body {
-		background: #f2f5f3;
 		font-size : 13px;
 	}
 
@@ -168,7 +168,7 @@ mark {
 	}
 
 	p, ul, ol, dl {
-		margin-bottom: 3em;
+	
 	}
 
 
@@ -234,10 +234,47 @@ mark {
 
 
 /* List */
+#plantBar {
+	height: 55px;
+	align-items: center;
+    justify-content: center;
+    display: flex;
+    
+}
 
-	ul {
+#plantTxt{
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-weight: 700;
+	text-transform: uppercase;
+	padding: 6px;
+	text-align: center;
+	font-size: 30pt;
+	padding: 0px 30px 0px 0px;
+}
+
+.plantHederlogin{
+	font-size: 14px;
+    padding-left: 15px;
+}
+
+#plantHederSearch{
+	border: 2px solid #eee;
+    border-radius: 50px;
+    width: 26em;
+    height: 65%;
+    padding: 0px 0px 0px 15px;
+    font : menu;
+}
+
+#headerArea{
+	height: 90px;
+}
+
+	ul.headerUl {
 		list-style: disc;
 		padding-left: 1em;
+		background-color: rgba(255, 255, 255, 0.95);
+    	background-image: url(/plant/img/main/overlay.png);
 	}
 
 		ul li {
@@ -324,6 +361,38 @@ mark {
 	}
 
 /* Header */
+#header {
+		font-size: 2em;
+		font-family: 'Open Sans Condensed', sans-serif;
+		font-weight: 700;
+		text-transform: uppercase;
+		background: #fff;
+		margin: 0 auto;
+	}
+
+		/* #header .logo {
+			position: relative;
+			text-align: center;
+			border-top: solid 5px #e7eae8;
+			top: 0.65em;
+		}
+
+			#header .logo div {
+				background: #fff;
+				position: relative;
+				display: inline-block;
+				padding: 0 1.5em 0 1.5em;
+				top: -0.65em;
+			} */
+
+			#header .logo h1 {
+				display: inline;
+			}
+
+			#header .logo p {
+				display: inline;
+				color: #C1CAC5;
+			}
 
 
 /* Nav */
@@ -338,7 +407,7 @@ mark {
 		left: 0;
 		z-index: 1000;
 		background-color: rgba(255, 255, 255, 0.95);
-		background-image: url("images/overlay.png");
+    	background-image: url(/plant/img/main/overlay.png);
 		width: 100%;
 		height: 3.25em;
 		line-height: 3.25em;
@@ -468,12 +537,12 @@ mark {
 
 	#banner {
 		position: relative;
-		background-image: url("images/overlay.png"), url("images/overlay.png"), url("../../images/banner.jpg");
-		background-position: top left, top left, center center;
-		background-repeat: repeat, repeat, no-repeat;
-		background-size: auto, auto, cover;
+		background-image: url("/plant/img/petplant/searcharea1.jpg");
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
 		z-index: 1;
-		padding: 11em 0;
+		padding: 20em 0;
 	}
 
 		#banner .content {
@@ -539,7 +608,6 @@ mark {
 		/* Basic */
 
 			body, input, textarea, select {
-				font-size: 12pt;
 				line-height: 1.75em;
 			}
 
@@ -552,37 +620,30 @@ mark {
 		/* Basic */
 
 			body, input, textarea, select {
-				font-size: 11pt;
 			}
 
 		/* Special */
 
 			ul.special li a:before {
-				font-size: 60px;
 			}
 
 		/* Box */
 
 			.box.highlight h2 {
-				font-size: 2.5em;
 			}
 
 			.box.highlight header > p {
-				font-size: 1.25em;
 			}
 
 			.box.post h3 {
-				font-size: 2.5em;
 			}
 
 			.box.post header > p {
-				font-size: 1.25em;
 			}
 
 		/* Header */
 
 			#header {
-				font-size: 1.5em;
 			}
 
 		/* Banner */
@@ -717,7 +778,6 @@ mark {
 					font-family: 'Open Sans Condensed', sans-serif;
 					font-weight: 700;
 					text-transform: uppercase;
-					font-size: 1.25em;
 					line-height: 44px;
 					color: #fff;
 					z-index: 1000;
@@ -760,7 +820,6 @@ mark {
 						color: #fff;
 						text-align: center;
 						line-height: 44px;
-						font-size: 20px;
 					}
 
 					#titleBar .toggle:active:before {
@@ -798,7 +857,6 @@ mark {
 				font-family: 'Open Sans Condensed', sans-serif;
 				font-weight: 700;
 				text-transform: uppercase;
-				font-size: 1.25em;
 				box-shadow: inset -3px 0px 10px 0px rgba(0, 0, 0, 0.25);
 			}
 
@@ -817,7 +875,6 @@ mark {
 					color: #888;
 					color: rgba(255, 255, 255, 0.5);
 					border-top: solid 2px rgba(87, 93, 89, 0.15);
-					font-size: 0.8em;
 				}
 
 					#navPanel .link:first-child {
@@ -883,15 +940,12 @@ mark {
 		/* Basic */
 
 			body, input, textarea, select {
-				font-size: 11pt;
 			}
 
 			h2 {
-				font-size: 1.25em;
 			}
 
 				h2.major {
-					font-size: 1.25em;
 					margin: 0 0 2em 0;
 				}
 
@@ -921,7 +975,6 @@ mark {
 				input[type="reset"].large,
 				button.large,
 				.button.large {
-					font-size: 1.25em;
 				}
 
 		/* Actions */
@@ -946,33 +999,26 @@ mark {
 				}
 
 					ul.special li a:before {
-						font-size: 28px;
 					}
 
 		/* Box */
 
 			.box.highlight h2 {
-				font-size: 2em;
 			}
 
 			.box.highlight header > p {
-				font-size: 1.25em;
 			}
 
 			.box.post h3 {
-				font-size: 2em;
 			}
 
 			.box.post header > p {
-				font-size: 1.25em;
 			}
 
 			.box.page-content h2 {
-				font-size: 2em;
 			}
 
 			.box.page-content header > p {
-				font-size: 1.25em;
 			}
 
 		/* Banner */
@@ -986,11 +1032,9 @@ mark {
 				}
 
 					#banner .content h2 {
-						font-size: 2em;
 					}
 
 					#banner .content p {
-						font-size: 1.25em;
 					}
 
 		/* Main */
@@ -1031,7 +1075,6 @@ mark {
 		/* Basic */
 
 			body, input, textarea, select {
-				font-size: 10pt;
 			}
 
 	}

@@ -126,4 +126,8 @@
 				, diary_content = #{diary_content}
 		WHERE diary_no=#{diary_no}
 	</update>
+	
+	<delete id="deleteDiary" parameterType="com.plant.petplantDiary.PetplantDiaryVO">
+		DELETE FROM petplantdiary WHERE diary_no = #{diary_no}
+	</delete>
 </mapper>

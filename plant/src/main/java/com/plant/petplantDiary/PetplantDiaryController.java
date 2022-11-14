@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +48,7 @@ public class PetplantDiaryController {
 	
 	
 	// 반려식물 관찰일지 - 상세 리스트
-	@PostMapping("/petplantDiary/listdetDiary.do")
+	@GetMapping("/petplantDiary/listdetDiary.do")
 	public String petplantdetDiarylist (PetplantDiaryVO vo, Model model, HttpServletRequest req) {
 		// 유저번호 가져오기
 		HttpSession sess = req.getSession();
@@ -194,9 +195,10 @@ public class PetplantDiaryController {
 		}
 	}
 		
-	// 반려 식물 관찰일지 - 수정
+	// 반려 식물 관찰일지 - 수정페이지
 	@GetMapping("/petplantDiary/editDiary.do")
 	public String editDiary (PetplantDiaryVO vo , Model model) {
+		
 		model.addAttribute("diary", service.editDiary(vo.getDiary_no()));
 		return "plant/petplantDiary/petplantDiaryEdit";
 	}
@@ -211,6 +213,8 @@ public class PetplantDiaryController {
 		vo.setUser_no(user.getUser_no());
 		
 		System.out.println("vo = " + vo.getDiary_content() + vo.getDiary_title());
+		System.out.println("vo = " + vo.getUser_plantfile_org());
+		
 		
 		if(!file.isEmpty()) {
 			String fileorg = file.getOriginalFilename();
@@ -240,6 +244,20 @@ public class PetplantDiaryController {
 			return "common/alert";
 		}else {
 			model.addAttribute("msg", "수정 실패.");
+			return "common/alert";
+		}
+	}
+	
+	@GetMapping("/petplantDiary/deleteDiary.do")
+	public String deleteDiary(int diary_no, Model model) {
+		int no = service.deleteDiary(diary_no);
+		
+		if(no == 1) {
+			model.addAttribute("msg", "삭제되었습니다.");
+			model.addAttribute("url", "listDiary.do");
+			return "common/alert";
+		}else {
+			model.addAttribute("msg", "삭제 실패.");
 			return "common/alert";
 		}
 	}

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ include file="/WEB-INF/views/common/reserveHeader.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +10,27 @@
 </style>
 <meta charset="UTF-8">
 <title>가드너 예약 결제</title>
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+<style type="text/css">
+#payTable{
+	display: flex;
+    flex-direction: column;
+}
+table th {
+	font-size: 20px;
+	padding: 10px;
+}
+table td button {
+	font-size: 13px;
+}
+
+h4{
+	padding-top :20px;
+	display: flex;
+    justify-content: center;
+}
+
+</style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- moment.js -->
@@ -91,38 +112,38 @@
 </script>
 </head>
 <body>
-	<table class='default'>
-		<tr><th style='font-size: 20pt; text-align: center;'>결제 내역</th></tr>
-		<tr><th style='font-size: 10pt; text-align: center;'>예약에 성공하였습니다.</th></tr>
-	</table>
-	<div>
+<div class="sub" id="wrapper">
+	<h2>결제 내역</h2>
+	<h4>예약에 성공하였습니다.</h4>
+	<div class="size" id="gdView">	
+	<div id="payTable">
 		<table border="1" class='default'>
 			<tbody>
 				<tr>
-					<th colspan='100' style='font-size: 15pt; text-align: center;'>예약 정보</th>
+					<th style='background-color:#89AD98; color:#fff;'colspan='100' style='font-size: 15pt; text-align: center;'>예약 정보</th>
 				</tr>
 				<tr>
-					<td>예약자</td>
+					<td style='background-color:#89AD98; color:#fff;'>예약자</td>
 					<td colspan="100">${vo.buyer_name}</td>
 				</tr>
 				<tr>
-					<td>닉네임</td>
+					<td style='background-color:#89AD98; color:#fff;'>닉네임</td>
 					<td colspan="100">${user.user_nick}</td>
 				</tr>
 				<tr>
-					<td>주소</td>
+					<td style='background-color:#89AD98; color:#fff;'>주소</td>
 					<td colspan="100">${vo.buyer_addr}</td>
 				</tr>
 				<tr>
-					<td>연락처</td>
+					<td style='background-color:#89AD98; color:#fff;'>연락처</td>
 					<td colspan="100">${vo.buyer_tel}</td>
 				</tr>
 				<tr>
-					<td>가드너 이름</td>
+					<td style='background-color:#89AD98; color:#fff;'>가드너 이름</td>
 					<td colspan="100">${gd.gd_name}</td>
 				</tr>
 				<tr>
-					<td>가드너 연락처</td>
+					<td style='background-color:#89AD98; color:#fff;'>가드너 연락처</td>
 					<td colspan="100">${gd.gd_hp}</td>
 				</tr>
 			</tbody>
@@ -130,18 +151,18 @@
 			</tbody>
 			<tbody>
 				<tr>
-					<th colspan='100' style='font-size: 15pt; text-align: center;'>결제 정보</th>
+					<th style='background-color:#89AD98; color:#fff;' colspan='100' style='font-size: 15pt; text-align: center;'>결제 정보</th>
 				</tr>
 				<tr>
-					<td>결제번호(예약번호)</td>
+					<td style='background-color:#89AD98; color:#fff;'>결제번호(예약번호)</td>
 					<td colspan="100">${vo.merchant_uid}</td>
 				</tr>
 				<tr>
-					<td>결제수단</td>
+					<td style='background-color:#89AD98; color:#fff;'>결제수단</td>
 					<td colspan="100">${vo.pay_method}</td>
 				</tr>
 				<tr>
-					<td>총 결제액</td>
+					<td style='background-color:#89AD98; color:#fff;'>총 결제액</td>
 					<td colspan="100">${vo.pay_size}</td>
 				</tr>
 			</tbody>
@@ -161,5 +182,9 @@
 				</tr>
 		</table>				
 	</div>
+	
+	
+	</div>
+</div>
 </body>
 </html>
