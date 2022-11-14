@@ -85,7 +85,7 @@ public class GdController {
 			service.insertcar(vo);
 			service.insertcer(vo);
 			model.addAttribute("msg", "정상적으로 회원가입되었습니다.");
-			model.addAttribute("url", "/plant/main/index.do");
+			model.addAttribute("url", "/plant/gd/login.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "회원가입오류");
@@ -114,24 +114,13 @@ public class GdController {
 	}
 	
 	@PostMapping("/gd/login.do")
-	public String login(GdVO vo, HttpSession sess, Model model) {
-		if (service.loginCheck(vo, sess)) {
-			return "redirect:/reserve/reserve.do";
-		} else {
-			model.addAttribute("msg", "아이디와 비밀번호를 확인해 주세요");
-			return "common/alert";
-		}
-		
-	}
-	
-	@PostMapping("/gd/login")
 	public String login(GdVO vo, HttpSession sess, Model model, HttpServletRequest req) {		
 		if (service.loginCheck(vo, sess)) {
 			vo = (GdVO) sess.getAttribute("loginGdInfo");
 			if(vo.getGd_acc() == 0) {
 				model.addAttribute("msg", "승인대기 중입니다.");
 			}else if(vo.getGd_acc() == 1) {
-				return "redirect:/main/index.do";
+				return "redirect:/reserve/reserve.do";
 			}else if(vo.getGd_acc() == 2){
 				model.addAttribute("msg", "가입 요청이 거절된 아이디입니다.");
 
@@ -223,7 +212,7 @@ public class GdController {
 		sess.invalidate(); // 세션초기화(세션객체에있는 모든 값들이 삭제)
 		//sess.removeAttribute("loginInfo"); // 세션객체의 해당값만 삭제
 		model.addAttribute("msg", "로그아웃되었습니다.");
-		model.addAttribute("url", "/plant/gd/login.do");
+		model.addAttribute("url", "/plant/main/index.do");
 		return "common/alert";
 	}
 	

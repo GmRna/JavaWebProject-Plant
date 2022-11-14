@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -445,14 +446,14 @@
                 <div class="btnSet clear">
                     <div>
                     <a href="/plant/gd/edit.do" class="btn">수정</a> 
-                    <a href="/plant/board/index.do" class="btn">홈 화면</a></div>
+                    <a href="/plant/main/index.do" class="btn">홈 화면</a></div>
                     
                 </div>
             </div>
         </div>  
         
         <div class='btnSet'>
-		<a class='btn btn-info m-btn--air' onclick="if( confirm('정말 탈퇴하시겠습니까?') ){ href='/plant/gd/delete.do?gd_no=${vo.gd_no }'}">탈퇴</a>
+		<a class='btn btn-info m-btn--air' onclick="if( confirm('정말 탈퇴하시겠습니까?') ){ href='/plant/gd/delete.do'}">탈퇴</a>
 		</div>	  
 		 
 </body>

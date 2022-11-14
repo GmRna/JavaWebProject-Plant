@@ -69,7 +69,25 @@ public class UserController {
 	}
 	
 	@PostMapping("/user/edit.do")
-	public String edit(UserVO vo, Model model) {
+	public String edit(UserVO vo, Model model, @RequestParam MultipartFile picorg, HttpServletRequest req) {
+		
+		System.out.print("vo"+vo.getUser_plantfile_org());
+		if(!picorg.isEmpty()) {
+			// 파일명 
+			String org = picorg.getOriginalFilename();
+			System.out.println("org : "+ org);
+			String ext = org.substring(org.lastIndexOf(".")); 	// 확장자 
+			String real = new Date().getTime()+ext;
+			
+			// 파일 저장
+			String path = req.getRealPath("/upload/");
+			try {
+				picorg.transferTo(new File(path+real));
+			} catch (Exception e) {}
+			
+			vo.setUser_plantfile_org(org);
+			vo.setUser_plantfile_real(real);			
+		}
 		int no = service.edit(vo);
 		if (no > 0) {
 			vo.setUser_no(no);
@@ -180,7 +198,7 @@ public class UserController {
 		sess.invalidate(); // 세션초기화(세션객체에있는 모든 값들이 삭제)
 		//sess.removeAttribute("loginInfo"); // 세션객체의 해당값만 삭제
 		model.addAttribute("msg", "로그아웃되었습니다.");
-		model.addAttribute("url", "/plant/user/login.do");
+		model.addAttribute("url", "plant/main/index.do");
 		return "common/alert";
 	}
 	
