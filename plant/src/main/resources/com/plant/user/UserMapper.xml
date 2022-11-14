@@ -31,8 +31,7 @@
 	</delete>
 	
 	<select id="count" parameterType="com.plant.user.UserVO" resultType="java.lang.Integer">
-		SELECT COUNT(*) FROM user
-		
+		SELECT COUNT(*) FROM user		
 		<where>
 			<if test="stype !=null and stype !='' ">
 				<if test="stype !='all' ">
@@ -44,8 +43,7 @@
 			</if>				
 		</where>
 		ORDER BY user_regdate DESC
-		LIMIT ${startIdx}, ${pageRow};	
-	
+		LIMIT ${startIdx}, ${pageRow};		
 	</select>
 	
 	<select id="emailDupCheck" parameterType="string" resultType="int">

@@ -10,10 +10,10 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <title>내 정보 수정하기</title>
-    <link rel="stylesheet" href="/project/css/reset.css"/>
-    <link rel="stylesheet" href="/project/css/contents.css"/>
-    <link rel="stylesheet" href="/project/css/common.css"/>
-    <link rel="stylesheet" href="/project/css/style.css"/>
+    <link rel="stylesheet" href="/plant/css/reset.css"/>
+    <link rel="stylesheet" href="/plant/css/contents.css"/>
+    <link rel="stylesheet" href="/plant/css/common.css"/>
+    <link rel="stylesheet" href="/plant/css/style.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -472,7 +472,7 @@
                 <div class="btnSet clear">
                     <div>
                     <a href="javascript:;" class="btn" onclick="goSave();">저장</a> 
-                    <a href="/project/gd/login.do" class="btn">취소</a>
+                    <a href="/plant/gd/myInfo.do" class="btn">취소</a>
                     </div>
                     <div>별표가 있는 항목은 필수 항목입니다.</div>
                 </div>
