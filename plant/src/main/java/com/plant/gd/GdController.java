@@ -200,10 +200,8 @@ public class GdController {
 	}
 	
 	@GetMapping("/gd/access.do")
-	public String access(GdVO vo, Model model, HttpServletRequest req) {
-		GdVO data = service.access(vo.getGd_id());
-		model.addAttribute("vo", data);
-		return "/plant/gd/access";
+	public String access() {
+		return "plant/gd/access";
 	}
 	
 	@GetMapping("/gd/logout.do")
