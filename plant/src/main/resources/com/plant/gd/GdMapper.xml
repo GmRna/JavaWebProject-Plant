@@ -3,7 +3,7 @@
 <mapper namespace="com.plant.gd.GdMapper">
 
 	<select id="list" parameterType="java.util.Map" resultType="com.plant.gd.GdVO">
-		SELECT gd_no, gd_name, gd_id, gd_email, gd_hp, gd_acc, gd_ableaddr, gd_regdate FROM gd ORDER BY gd_regdate DESC limit ${startIdx}, ${pageRow};;
+		SELECT gd_no, gd_name, gd_id, gd_email, gd_hp, gd_acc, gd_ableaddr, gd_regdate FROM gd ORDER BY gd_regdate DESC limit ${startIdx}, ${pageRow};
 	</select>
 	
 	<select id="view" parameterType="com.plant.gd.GdVO" resultType="com.plant.gd.GdVO">
@@ -35,8 +35,7 @@
 			</if>
 			</if>				
 		</where>
-		ORDER BY gd_regdate DESC
-		LIMIT ${startIdx}, ${pageRow};	
+		ORDER BY gd_regdate DESC LIMIT ${startIdx}, ${pageRow};	
 	
 	</select>
 
@@ -87,10 +86,15 @@
 	<update id="updateTempPwd" parameterType="com.plant.gd.GdVO">
 		UPDATE gd SET gd_pwd = #{gd_pwd} WHERE gd_hp=#{gd_hp} AND gd_email = #{gd_email}
 	</update>
-	
+		
 	<update id="access" parameterType="com.plant.gd.GdVO" >
-		UPDATE gd SET gd_acc = #{gd_acc} WHERE gd_id=#{gd_id} AND gd_email = #{gd_email}
+		UPDATE gd SET gd_acc = #{gd_acc} WHERE gd_id=#{gd_id} 
 	</update>
+	
+	<!-- 현재 승인처리 상태 불러오기 -->
+	<select id="status" parameterType="com.plant.gd.GdVO" resultType="com.plant.gd.GdVO">
+		SELECT * FROM gd WHERE gd_id = #{gd_id}
+	</select>
 	
 	<delete id="edit">
 		DELETE FROM gd WHERE gd_no=#{gd_no }
