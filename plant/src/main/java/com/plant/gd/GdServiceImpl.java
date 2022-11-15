@@ -60,8 +60,7 @@ public class GdServiceImpl implements GdService {
 	}
 	
 	@Override
-	public int insertcar(GdVO vo) {
-		
+	public int insertcar(GdVO vo) {		
 		return mapper.insertcar(vo);
 	}
 
@@ -154,8 +153,8 @@ public class GdServiceImpl implements GdService {
 	}
 	
 	@Override
-	public GdVO access(String gd_id) {
-		return mapper.access(gd_id);
+	public int access(GdVO vo) {
+		return mapper.access(vo);
 	}
 
 	@Override
@@ -173,6 +172,11 @@ public class GdServiceImpl implements GdService {
 	@Override
 	public int insertcer2(GdVO vo) {		
 		return mapper.insertcer(vo);
+	}
+
+	@Override
+	public GdVO status(String gd_id) {
+		return mapper.status(gd_id);
 	}
 
 
