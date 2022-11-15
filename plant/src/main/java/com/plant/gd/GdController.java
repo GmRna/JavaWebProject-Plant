@@ -199,7 +199,7 @@ public class GdController {
 		}
 	}
 	
-	@GetMapping("/gd/access.do")
+	@RequestMapping("/gd/access.do")
 	public String access() {
 		return "plant/gd/access";
 	}
