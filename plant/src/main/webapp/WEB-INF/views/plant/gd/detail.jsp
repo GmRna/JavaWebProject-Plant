@@ -68,7 +68,7 @@
                     </div>
             </div>
             <div class='btnSet'>
-				<a class='btn btn-info m-btn--air' href="/plant/gd/access.do?gd_id=${vo.gd_id }">승인 처리</a>
+				<a class='btn btn-info m-btn--air' href="/plant/gd/access.do?gd_id=${vo.gd_id}">승인 처리</a>
 				<a class='btn btn-info m-btn--air' href="/plant/gd/list.do">회원 목록</a>
 			</div>
         </div> 
