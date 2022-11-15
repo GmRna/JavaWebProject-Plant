@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,67 +36,18 @@
 	<div class="sub">
 		<div class="size">
 			<h3 class="sub_title">가드너 승인처리</h3>
-			<form name="frm" id="frm" action="access.do" method="post" enctype="multipart/form-data">
+			<form name="frm" id="frm" action="access.do" method="post">
+			<input type="hidden" value="${data.gd_id }" name="gd_id">
 			<table class="board_write">
 				<caption>가드너 승인처리</caption>
 				<colgroup>
 					<col width="20%"/>
                     <col width="*"/>
                 </colgroup>
-                <tbody>
-                	<tr>
-                    	<th>아이디(이메일)</th>
-                        	<td>
-                        	${vo.gd_id }
-                        	</td>
-                    </tr>
-                    <tr>
-                        <th>복구 이메일</th>
-                        	<td>
-                        	${vo.gd_email }
-                        	</td>
-                    </tr>
-                    <tr>
-                        <th>이름</th>
-                            <td>
-                            ${vo.gd_name }
-                            </td>
-                    </tr>
-                    <tr>
-                        <th>주민등록번호</th>
-                            <td>
-                            ${vo.gd_regnum }
-                            </td>
-					</tr> 
-                     <tr>
-						  <th class="first">주소</th>
-						  <td colspan="3" class="last">
-						      ${vo.gd_postcode } 
-						  <br>
-						  <span style="line-height:50%"><br></span>
-							  ${vo.gd_addr1 }
-							  ${vo.gd_addr2 }
-						  </td>
-					</tr>
-                    <tr>
-                    	<th>연락처</th>
-                        	<td>
-                                ${vo.gd_hp }
-                            </td>
-                    </tr>
-                    <tr>
-                    	<th>출장가능지역</th>
-                            <td>
-                          		${vo.gd_ableaddr }
-                            </td>
-					</tr>
+                <tbody>                	                              
                 </table>
                 <table id="tbl" class="board_write" summary = "옵션 선택">
-                <caption>가드너 회원가입</caption>
-				<colgroup>
-					<col width="20%"/>
-                    <col width="*"/>
-                </colgroup>            
+                <caption>가드너 회원가입</caption>           
             	</table>
                 <table class="board_write">
                     <caption>가드너 회원가입</caption>
@@ -107,11 +59,11 @@
                         <tr>
                             <th>회원 승인</th>
                             <td>
-                            <select name="gd_acc" id="acc">
-                            <option value="0">승인 대기 중</option>
-                        	<option value="1">승인 완료</option>
-                        	<option value="2">가입 거부</option>
-                        	<option value="3">추방</option>
+                            <select name="gd_acc" id="acc" value="${data.gd_acc}">                    
+                            	<option <c:if test="${data.gd_acc == 0 }"> selected="selected" </c:if> value="0">승인 대기 중</option>
+                            	<option <c:if test="${data.gd_acc == 1 }"> selected="selected" </c:if> value="1">승인 완료</option>
+                            	<option <c:if test="${data.gd_acc == 2 }"> selected="selected" </c:if> value="2">승인 거절</option>
+                            	<option <c:if test="${data.gd_acc == 3 }"> selected="selected" </c:if> value="3">탈퇴 처리됨</option>
                             </select> 
                             </td>
                     	</tr>
@@ -122,7 +74,7 @@
                 <!-- //write--->
                 <div class="btnSet clear">
                     <div>
-                    <a href="javascript:;" class="btn" onclick="goSave();">저장</a> 
+                    <a class="btn" href="javascript:goSave();">저장 </a>
                     <a href="/plant/gd/list.do" class="btn">취소</a>
                     </div>
                 </div>
