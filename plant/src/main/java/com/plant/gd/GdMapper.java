@@ -24,10 +24,11 @@ public interface GdMapper {
 	int count(GdVO vo);
 	int delete(int gd_no);
 	GdVO myInfo(String gd_id);
-	GdVO access(String gd_id);
+	int access(GdVO vo);
 	int edit(GdVO vo);
 	
 	int insert2(GdVO vo);
 	int insertcar2(GdVO vo);
 	int insertcer2(GdVO vo);
+	GdVO status(String gd_id);
 }

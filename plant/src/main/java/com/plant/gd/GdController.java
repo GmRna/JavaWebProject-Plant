@@ -200,10 +200,26 @@ public class GdController {
 	}
 	
 	@GetMapping("/gd/access.do")
-	public String access(GdVO vo, Model model, HttpServletRequest req) {
-		GdVO data = service.access(vo.getGd_id());
-		model.addAttribute("vo", data);
-		return "/plant/gd/access";
+	public String status(GdVO vo, Model model) {
+		System.out.println("gd_id"+vo.getGd_id());
+		model.addAttribute("data",service.status(vo.getGd_id()));
+		
+		return "plant/gd/access";
+	}
+	
+	@PostMapping("/gd/access.do")
+	public String access(GdVO vo, Model model) {
+		System.out.println("gd_id"+vo.getGd_id());
+		int no = service.access(vo); 
+		if (no > 0) {
+			model.addAttribute("msg", "정상적으로 수정되었습니다.");
+			model.addAttribute("url", "/plant/gd/list.do");
+			return "common/alert";
+		} else {
+			model.addAttribute("msg", "가드너 승인 처리 오류");
+			return "common/alert";
+		}
+		
 	}
 	
 	@GetMapping("/gd/logout.do")
