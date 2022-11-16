@@ -96,9 +96,9 @@
 		SELECT * FROM gd WHERE gd_id = #{gd_id}
 	</select>
 	
-	<delete id="edit">
-		DELETE FROM gd WHERE gd_no=#{gd_no }
-	</delete>
+	<select id="edit">
+		SELECT * FROM gd WHERE gd_id = #{gd_id}
+	</select>
 	
 	<insert id="insert2" parameterType="com.plant.gd.GdVO">
 		INSERT INTO gd (

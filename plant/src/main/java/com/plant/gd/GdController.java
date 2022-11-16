@@ -191,7 +191,7 @@ public class GdController {
 			service.insertcar2(vo);
 			service.insertcer2(vo);
 			model.addAttribute("msg", "정상적으로 수정되었습니다.");
-			model.addAttribute("url", "/plant/gd/login.do");
+			model.addAttribute("url", "/plant/gd/myInfo.do");
 			return "common/alert";
 		} else {
 			model.addAttribute("msg", "회원 정보 수정 오류");
