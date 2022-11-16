@@ -22,7 +22,7 @@ public class FreeController {
 	
 	@Autowired
 	FreeService service;
-	
+	  
 	@Autowired
 	FreeCommentService fcservice;
 	
