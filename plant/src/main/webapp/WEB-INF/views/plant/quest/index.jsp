@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.net.*" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -77,7 +79,7 @@
                                 <td class="writer">
                                     ${vo.user_nick }
                                 </td>
-                                <td class="date"><fmt:formatDate value="${vo.quest_regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td class="date"><fmt:formatDate value="${vo.quest_regdate }" pattern="yyyy-MM-dd"/></td>
                             </tr>
                         </c:forEach>
                         </tbody>

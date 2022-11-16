@@ -24,7 +24,7 @@ public class FreeCommentController{
 		
 		return "common/freecomment";
 	}
-	@GetMapping("/portfolio/freecomment/insert.do")
+	@GetMapping("/freecomment/insert.do")
 	public String insert(FreeCommentVO vo, Model model,
 			HttpServletRequest req) {
 		HttpSession sess = req.getSession();

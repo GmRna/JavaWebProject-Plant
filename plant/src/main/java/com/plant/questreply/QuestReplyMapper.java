@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface QuestReplyMapper {
 	
-	int reply(QuestReplyVO vo);
-	int insert(QuestReplyVO vo);
 	List<QuestReplyVO> list(QuestReplyVO vo);
+	int questreply(QuestReplyVO vo);
+	int insert(QuestReplyVO vo);
 	int count(QuestReplyVO vo);
 	QuestReplyVO view(int no);
 	void updateViewcount(int no);

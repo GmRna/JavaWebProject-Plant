@@ -76,15 +76,16 @@ public interface PetplantMapper {
 	int updatefile(PetplantVO vo);
 
 	
-	
+	// 반려식물 게시물 저장 리스트
 	int selectsavepetplant(PetplantVO vo);
-
+	// 반려식물 게시물 - 저장
 	int pluspetplant(PetplantVO vo);
-
+	// 반려식물 게시물 - 삭제
 	int minuspetplant(PetplantVO vo);
 
 	PetplantVO listpop(PetplantVO vo);
-
+	
+	// 반려식물 게시판 - 검색
 	List<PetplantVO> searchpet(PetplantVO vo);
 
 	

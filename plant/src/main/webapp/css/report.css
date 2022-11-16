@@ -1,0 +1,64 @@
+
+#replydiv {
+	padding-bottom:20px;
+}
+
+/* 신고 박스*/
+.reportDiv {
+	font-size: 11px;
+    position: absolute;
+    width: 191px;
+    height: auto;
+    display: block;
+    padding: 8px 8px 8px 8px;
+    box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -webkit-box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);
+    color: var(--paper-listbox-color, var(--primary-text-color));
+    border: var(--paper-listbox-border);
+    background: #fff;
+}
+.reportBtn {
+	position: absolute;
+	font-size: 15px;
+    width: 110px;
+    height: auto;
+    display: block;
+    padding: 8px 8px 8px 8px;
+    box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%);
+    -webkit-box-shadow: 2px 5px 10px 0px rgb(0 0 0 / 35%); 
+    -moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);
+    color: var(--paper-listbox-color, var(--primary-text-color));
+    border: var(--paper-listbox-border);
+    background: #fff;
+    text-align: center;
+}
+
+#reportSubmit{
+    color: #fff !important;
+    text-decoration: none;
+    font-weight: 700;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #89AD98;
+    padding: 0.3em 0.7em 0.3em 0.7em;
+    padding-left: 10px;
+}
+
+#close{
+	color: #fff !important;
+    text-decoration: none;
+    font-weight: 700;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #00000073;
+    padding: 0.3em 0.7em 0.3em 0.7em;
+}
+
+.reportlist label{
+	padding-bottom: 10px;
+}

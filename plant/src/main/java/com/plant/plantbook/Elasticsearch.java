@@ -11,23 +11,39 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 public class Elasticsearch {
-	public static Map<String, Object> getPlant(String sword) throws Exception {
+	
+	public static void main (String [] args) throws Exception {
+		List<Map<String, Object>> list = getPlant("plantbook", "mainChartrInfo", "마블");
+		for (Map<String, Object> map : list) {
+			System.out.println(map.get("plantbook_no")+"\t"+map.get("cntntsSj")+"\t"+map.get("mainChartrInfo"));
+		}
+	}
+	
+	public static List<Map<String, Object>> getPlant(String index, String field, String sword) throws Exception {
 		
+		// 여러건 조회 
 		HttpHost host = new HttpHost("localhost",9200);
 		RestClientBuilder restClientBuilder = RestClient.builder(host);
 		RestHighLevelClient client = new RestHighLevelClient(restClientBuilder);
 		
-		SearchRequest searchRequest = new SearchRequest("seoul_wifi");
+		SearchRequest searchRequest = new SearchRequest(index);
 		SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-		sourceBuilder.query(QueryBuilders.matchQuery("place_nm", "도서관"));
+		
+		sourceBuilder.query(QueryBuilders.fuzzyQuery(field, sword).fuzziness(Fuzziness.ONE));
+		//sourceBuilder.query(QueryBuilders.matchQuery(field, sword));
 		
 		searchRequest.source(sourceBuilder);
 		
+		// 페이징 처리 관련 -----  디폴트 10개 임 
+		sourceBuilder.size(3000);
+		sourceBuilder.from(0);
+					
 		SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
 		
 		//System.out.println(searchResponse.getHits().getHits()); 객체? 로 출력됨
@@ -39,6 +55,6 @@ public class Elasticsearch {
 		for (Map<String, Object> map : list) {
 			System.out.println(map.get("place_nm"));
 		}
-		return null;
+		return list;
 	}
 }

@@ -16,7 +16,7 @@ public interface QuestReplyService {
 	
 	boolean update(QuestReplyVO vo);
 	boolean insert(QuestReplyVO vo);
-	boolean reply(QuestReplyVO vo);
+	boolean questreply(QuestReplyVO vo);
 	boolean delete(int no);
 
 	

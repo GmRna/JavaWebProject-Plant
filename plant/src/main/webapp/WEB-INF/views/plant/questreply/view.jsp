@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.net.*" %>
+<%@include file ="../../common/header.jsp" %>
+
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,14 +22,14 @@
     <script>
     	function del(no) {
     		if (confirm('삭제하시겠습니까?')) {
-    			location.href='delete.do?quest_no='+quest_no;
+    			location.href='delete.do?questreply_no='+questreply_no;
     		}
     	}
     	function getComment(page) {
     		$.ajax({
     			url : "/plant/questcomment/list.do",
     			data : {
-    				quest_no : ${data.quest_no},
+    				questreply_no : ${data.questreply_no},
     				tablename : 'reply',
     				page : page
     			},
@@ -37,15 +40,41 @@
     	}
     	$(function(){
     		getComment(1);
+    		
+    		// 신고하기
+    		var board_no = ${data.questreply_no};
+    		$("#reportBtn").click(function() {
+    			$.ajax ({
+    				url : '/plant/report.do',
+    				method : 'get',
+    				data : {
+    					board_no : ${data.questreply_no},
+    					report_tablename : "free",
+    				},
+    				success : function (data) {
+    					$("#reportList").after(data);
+    		            console.log("????????????????????");
+    				}, error: function (xhr, desc, err) {
+    		            alert('에러가 발생');
+    		            console.log(err);
+    		            return; 
+    		        }
+    			})		
+    		})
+    		
     	});
     	function goSave() {
-    	
+    		<c:if test="${empty loginUserInfo}">
+	    		alert('댓글은 로그인 후 작성 가능합니다.');
+	    		location.href = '/plant/user/login.do';
+    		</c:if>
+    		
     		if (confirm('댓글을 저장하시겠습니까?')) {
 	    		$.ajax({
 	    			url : "/plant/questcomment/insert.do",
 	    			data : {
-	    				quest_no : ${data.quest_no},
-	    				tablename : 'reply',
+	    				quest_no : ${data.questreply_no},
+	    				tablename : 'quest_reply',
 	    				content : $("#contents").val(),
 	    			},
 	    			success : function(res) {
@@ -61,7 +90,7 @@
     	function commentDel(no) {
     		if (confirm("댓글을 삭제하시겠습니까?")) {
     			$.ajax({
-    				url : '/plant/questcomment/delete.do?quest_no='+quest_no,
+    				url : '/plant/questcomment/delete.do?quest_no='+questreply_no,
     				success : function(res) {
     					if (res.trim() == '1') {
     						alert('댓글이 정상적으로 삭제되었습니다.');
@@ -71,22 +100,44 @@
     			})
     		}
     	}
+    	
+    	function goReply(no) {
+    		<c:if test="${empty loginUserInfo}">
+    			alert('답변 작성은 로그인 후 작성 가능합니다.');
+    			location.href = '/plant/user/login.do';
+			</c:if>
+    		<c:if test="${!empty loginUserInfo}">
+				location.href = "reply.do?questreply_no="+no;
+			</c:if>
+		}
+    	function goLogin() {
+    		location.href = '/plant/user/login.do';
+		}
+    	
+    	
     </script>
 </head>
 <body>
     
         <div class="sub">
             <div class="size">
-                <h3 class="sub_title">질문게시판</h3>
+                <h3 class="sub_title">질문 게시판</h3>
                 <div class="bbs">
                     <div class="view">
                         <div class="title">
                             <dl>
                                 <dt>${data.questreply_title } </dt>
-                                <dd class="date">작성일 : ${data.questreply_regdate } </dd>
+                                <dd class="date"><fmt:formatDate value="${data.questreply_regdate }" pattern="yyyy-MM-dd"/></dd>
+                           		<dd class="viewcount"> 조회수 : ${data.questreply_viewcount }</dd>
                             </dl>
                         </div>
-                        <div class="cont"><p>${data.questreply_content }</p> </div>
+                        <div class="cont">
+                        	<p>${data.questreply_content }</p> 
+                        </div>
+                        
+                        <!-- report -->
+                        <div id="reportList"></div>
+                        
                         <dl class="file">
                             <dt>첨부파일 </dt>
                             <dd>
@@ -96,9 +147,13 @@
                                     
                         <div class="btnSet clear">
                             <div class="fl_l">
-                            	<a href="edit.do?quest_no=${data.quest_no}" class="btn">수정</a>
-                               	<a href="delete.do?quest_no=${data.quest_no}" class="btn">삭제</a>
-                            	<a href="questreply.do?quest_no=${data.quest_no}" class="btn">답변</a>
+                            <c:if test="${loginUserInfo.user_no == data.user_no}">
+                            	<a href="edit.do?questreply_no=${data.questreply_no}" class="btn">수정</a>
+                               	<a href="delete.do?questreply_no=${data.questreply_no}" class="btn">삭제</a>
+                            </c:if>
+                            <c:if test="${loginUserInfo.user_no != data.user_no}">
+                            	<a onclick="goReply(${data.questreply_no})" class="btn">답변</a>
+                            </c:if>
                             	<a href="index.do" class="btn">목록으로</a>
                             </div>
                         </div>
@@ -114,17 +169,24 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <textarea name="contents" id="contents" style="height:50px;"></textarea>
+                                	<c:if test="${empty loginUserInfo}">
+                                		<p onclick="goLogin()" style="text-align: center; padding-bottom: 10px; padding-left: 100px;">댓글 작성은 로그인이 필요합니다.</p>
+                                   	</c:if>
+                                   	<c:if test="${!empty loginUserInfo}">
+	                                	<textarea name="contents" id="contents" style="height:50px;"></textarea>
+                                   	</c:if>
                                 </td>
                                 <td>
                                     <div class="btnSet"  style="text-align:right;">
-                                        <a class="btn" href="javascript:goSave();">저장 </a>
+                                    	<c:if test="${!empty loginUserInfo}">
+                                        	<a class="btn" href="javascript:goSave();">저장</a>
+                                        </c:if>
                                     </div>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
-                        </form>
+					</form>
 
                         <div id="commentArea"></div>
                     </div>

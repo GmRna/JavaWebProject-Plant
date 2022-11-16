@@ -21,4 +21,18 @@
 		)
 	</insert>
 	
+	<select id="reportList" parameterType="com.plant.report.ReportVO"  resultType="com.plant.report.ReportVO">
+		SELECT a.*, 
+			(select user_nick FROM user WHERE user_no=a.user_no) AS user_nick
+		FROM report AS a
+		ORDER BY report_no DESC 
+	</select> 
+	
+	<!-- <select id="reportList" parameterType="com.plant.report.ReportVO"  resultType="com.plant.report.ReportVO">
+		SELECT * 
+		FROM ${report_tablename}
+		WHERE ${report_tablename}_no = #{board_no} 
+	</select> -->
+	
+	
 </mapper>

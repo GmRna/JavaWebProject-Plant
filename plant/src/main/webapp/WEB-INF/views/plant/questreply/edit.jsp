@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file ="../../common/header.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,9 +11,10 @@
     <meta name="format-detection" content="telephone=no, address=no, email=no">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <title>게시판 등록</title>
-    <link rel="stylesheet" href="/project/css/reset.css"/>
-    <link rel="stylesheet" href="/project/css/contents.css"/>
+    <title>게시판 수정</title>
+    <link rel="stylesheet" href="/plant/css/reset.css"/>
+    <link rel="stylesheet" href="/plant/css/contents.css"/>
+    
     <script>
     	function goSave() {
     		frm.submit();
@@ -22,24 +25,32 @@
     
         <div class="sub">
             <div class="size">
-                <h3 class="sub_title">게시판</h3>
+                <h3 class="sub_title">질문 게시판 수정</h3>
     
                 <div class="bbs">
-                <form method="post" name="frm" id="frm" action="update.do"  ><!-- enctype="multipart/form-data" -->
-                <input type="hidden" name="no" value="${data.no }">
+                <form method="post" name="frm" id="frm" action="update.do" enctype="multipart/form-data">
+                <input type="hidden" name="questreply_no" value="${data.questreply_no }">
                     <table class="board_write">
                         <tbody>
                         <tr>
                             <th>제목</th>
                             <td>
-                                <input type="text" name="title" id="title" class="wid100" value="${data.title }"/>
+                                <input type="text" name="questreply_title" id="title" class="wid100" value="${data.questreply_title }"/>
                             </td>
                         </tr>
                         <tr>
                             <th>내용</th>
                             <td>
-                                <textarea name="content" id="content">${data.content }</textarea>
+                                <textarea name="questreply_content" id="content">${data.questreply_content }</textarea>
                             </td>
+                        </tr>
+                        <tr>
+                        	<th>첨부파일</th>
+                        	<td>
+                        		<input type="file" name="filename">
+                        		<input type="hidden" name="filename_org" value="${data.filename_org}">
+                        		<input type="hidden" name="filename_real" value="${data.filename_real}">
+                        	</td>
                         </tr>
                         </tbody>
                     </table>

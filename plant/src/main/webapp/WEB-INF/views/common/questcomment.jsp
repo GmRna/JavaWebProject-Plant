@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<p><span><strong>총 ${questcomment.totalCount}개</strong>  |  ${questcommentVO.page }/${questcomment.totalPage }페이지</span></p>
+<p><span><strong>총 ${questcomment.totalCount}개</strong>  |  ${questCommentVO.page }/${questcomment.totalPage }페이지</span></p>
                     <table class="list">
                         <colgroup>
                             <col width="80px" />
@@ -25,7 +25,7 @@
                                 <td class="writer">
                                      ${vo.user_no }
                                 </td>
-                                <td class="date"><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td class="date"><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/></td>
                             </tr>
                         </c:forEach>
                         </c:if>

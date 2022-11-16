@@ -27,11 +27,25 @@ function gdlogin() {
 	location.href = "/plant/gd/login.do";	
 }
 
-function searchSword() {
-	
+function search() {
+	sword = $('input[name="headersword"]').val();
+	location.href = '/plant/plantbook/search.do?sword='+headersword;
 }
-</script>
 
+</script>
+<style type="text/css">
+
+#plantrealImg{
+    border-radius: 50%;
+    padding: 0px;
+    margin-left: 15px;
+    width: 20px; height: 20px;
+}
+.name {
+    font-size: 13px;
+    color: #48663f;
+}
+</style>
 </head>
 
 <body class="homepage is-preload">
@@ -41,15 +55,20 @@ function searchSword() {
 			<div id="plantBar">
 				<span id="plantTxt">P L A N T</span>
 				
-				<input type="search" id="plantHederSearch" placeholder="검색어를 입력해주세요">
+				<input type="search" id="plantHederSearch" placeholder="검색어를 입력해주세요" name="headersword" onkeyup="if(window.event.keyCode==13){search()}">
 				
 				<c:choose>
 					<c:when test="${!empty loginUserInfo}">
-						<span class="plantHederlogin">${loginUserInfo.user_nick } </span>
-						<span class="plantHederlogin"  onclick="logout()">로그아웃</span>
+						<c:if test="${loginUserInfo.user_plantfile_real ne null }">
+							<img id="plantrealImg" src="<%=request.getContextPath()%>/upload/${loginUserInfo.user_plantfile_real}">
+						</c:if>
+						<span class="plantHederlogin"> <span class="name">${loginUserInfo.user_nick }</span> 님 환영합니다</span>
 					</c:when>
 					<c:when test="${!empty loginGdInfo}">
-						<span class="plantHederlogin"  onclick="gdlogout()">로그아웃</span>
+						<c:if test="${loginGdInfo.gd_picreal ne null }">
+							<img id="plantrealImg" src="<%=request.getContextPath()%>/upload/${loginGdInfo.gd_picreal}">
+						</c:if>
+						<span class="plantHederlogin">가드너 <span class="name">${loginGdInfo.gd_name }</span> 님 환영합니다</span>
 					</c:when>
 					<c:otherwise>
 					</c:otherwise>
@@ -90,7 +109,7 @@ function searchSword() {
 				<a href="">커뮤니티</a>
 				<ul>
 					<li><a href="/plant/free/index.do">자유 게시판</a></li>
-					<li><a href="/plant/quest/index.do">질문 게시판</a></li>
+					<li><a href="/plant/questreply/index.do">질문 게시판</a></li>
 				</ul>
 			</li>
 	       
@@ -142,7 +161,7 @@ function searchSword() {
 						</ul>
 					</li>
 				</c:when>
-				<c:otherwise>  
+				<c:otherwise> 
 					<li>
 						<c:if test="${!empty loginUserInfo and empty loginGdInfo}">
 							<a href="/plant/user/logout.do">로그아웃</a>
@@ -150,7 +169,7 @@ function searchSword() {
 						<c:if test="${!empty loginGdInfo and empty loginUserInfo}">
 							<a href="/plant/gd/logout.do">로그아웃</a>
 						</c:if>
-					</li>
+					</li> 
 				</c:otherwise>
 			</c:choose>
 	       

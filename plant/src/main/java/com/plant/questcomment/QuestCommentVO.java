@@ -16,6 +16,7 @@ import java.sql.Timestamp;
   private int quest_no; 
   private Timestamp regdate; 
   private String tablename;
+  private String user_nick;
   
   //NoticeService에서 목록을 불러오는 용도
   

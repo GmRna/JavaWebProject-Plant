@@ -1,5 +1,6 @@
 package com.plant.questreply;
 
+
 import java.sql.Timestamp;
 
 import lombok.Getter;
@@ -12,19 +13,20 @@ import lombok.ToString;
 
 public class QuestReplyVO {
 	
-	private int no;
+	private int questreply_no;
 	private int user_no;
-	private String title;
-	private String content;
-	private int viewcount;
-	private Timestamp regdate;
+	private String user_nick;
+	private String questreply_title;
+	private String questreply_content;
+	private int questreply_viewcount;
+	private Timestamp questreply_regdate;
 	private String filename_org;
 	private String filename_real;
 	private int quest_level;
 	private int comment_count;
-	private int gno;
-	private int ono;
-	private int nested;
+	private int questreply_gno;
+	private int questreply_ono;
+	private int questreply_nested;
 	
 	private int page;
 	private String stype;
@@ -36,7 +38,6 @@ public class QuestReplyVO {
 		this(1,10);					// 1페이지당 페이지로우 10개?
 		
 	}
-
 
 	public QuestReplyVO(int page, int pageRow) {
 		

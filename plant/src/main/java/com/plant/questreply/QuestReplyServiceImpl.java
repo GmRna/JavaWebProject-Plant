@@ -65,17 +65,17 @@ public class QuestReplyServiceImpl implements QuestReplyService {
 	public boolean insert(QuestReplyVO vo) {
 		boolean r = mapper.insert(vo) > 0 ? true : false;
 		
-		if(r) mapper.gnoUpdate(vo.getNo());
+		if(r) mapper.gnoUpdate(vo.getQuestreply_no());
 		
 		return r;
 	}
 	
 	@Override
-	public boolean reply(QuestReplyVO vo) {
+	public boolean questreply(QuestReplyVO vo) {
 		mapper.onoUpdate(vo);
-		vo.setOno(vo.getOno()+1);
-		vo.setNested(vo.getNested()+1);
-		return mapper.reply(vo) > 0 ? true : false;
+		vo.setQuestreply_ono(vo.getQuestreply_ono()+1);
+		vo.setQuestreply_nested(vo.getQuestreply_nested()+1);
+		return mapper.questreply(vo) > 0 ? true : false;
 	}
 	
 	@Override

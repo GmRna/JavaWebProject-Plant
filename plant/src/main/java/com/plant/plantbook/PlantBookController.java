@@ -42,7 +42,16 @@ public class PlantBookController {
 	
 	
 	@GetMapping("/plantbook/search.do")
-	public String search(PlantBookVO vo, @RequestParam String sword , Model model) {
+	public String search(PlantBookVO vo, @RequestParam String sword , HttpServletRequest req, Model model) {
+		
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		
+		if (user != null) {
+			vo.setUser_no(user.getUser_no());
+		}
+		
 		vo.setSword(sword);
 		model.addAttribute("list", service.searchWord(vo));
 		return "plant/plantbook/searchResult";

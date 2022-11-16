@@ -44,7 +44,7 @@
 	</select>
 	
 	<select id="view" parameterType="int" resultType="com.plant.quest.QuestVO">
-		SELECT * FROM quest WHERE quest_no = #{xxxxx}
+		SELECT * FROM quest WHERE quest_no = #{quest_no}
 	</select>
 	
 	<update id ="updateViewcount" parameterType="int">

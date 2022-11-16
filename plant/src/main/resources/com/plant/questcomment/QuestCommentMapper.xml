@@ -5,11 +5,9 @@
 	<insert id="insert" parameterType="com.plant.questcomment.QuestCommentVO">
 		INSERT INTO quest_comment (
 			content, user_no, quest_no, regdate, tablename
-		
 		) VALUES (
 			#{content}, #{user_no}, #{quest_no}, NOW(), #{tablename}
 		)
-	
 	</insert>
 	
 	<select id="count" parameterType="com.plant.questcomment.QuestCommentVO" resultType="java.lang.Integer">
@@ -20,18 +18,15 @@
 
 	<select id="list" parameterType="com.plant.questcomment.QuestCommentVO" resultType="com.plant.questcomment.QuestCommentVO">
 		SELECT *,
-			(SELECT name FROM member WHERE no = quest_comment.user_no) AS member_name
+			(SELECT user_nick FROM user WHERE user_no = quest_comment.user_no) AS user_nick
 		FROM quest_comment
-		
 		WHERE quest_no = #{quest_no} AND tablename = #{tablename}
 		ORDER BY regdate DESC
 		LIMIT ${startIdx}, ${pageRow};
 	</select>
 	
-	
-	
 	<delete id="delete" parameterType="int">
-		DELETE FROM quest_comment WHERE quest_no = #{quest_no}
+		DELETE FROM quest_comment WHERE no = #{no}
 	</delete>
 	
 	</mapper>

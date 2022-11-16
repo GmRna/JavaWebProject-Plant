@@ -67,6 +67,12 @@
 			}
 		});
     </script>
+    <style type="text/css">
+    #email, #password{
+		background: #70707514;
+	    border-radius: 2px;
+	}
+    </style>
 </head>
 <body>
         

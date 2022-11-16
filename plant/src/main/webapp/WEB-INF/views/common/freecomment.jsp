@@ -21,12 +21,12 @@
                         <c:forEach var="vo" items="${freecomment.list}">     
                             <tr>
                                 <td class="writer" style="text-align:left;">
-                                     ${vo.user_name }
+                                     ${vo.user_nick }
                                 </td>	
                                 <td class="txt_l">
-                                	${vo.comment_content}  
+                                	${vo.content}  
                                 </td>
-                                <td class="date"><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td class="date"><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/></td>
 								<td>
 								<c:if test="${loginUserInfo.user_no == vo.user_no }">
                                 	<a class="btn" href="javascript:commentDel(${vo.no });">삭제</a>

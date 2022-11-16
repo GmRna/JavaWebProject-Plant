@@ -9,7 +9,7 @@
 			<div>
 				<table border="1">
 					<tr>
-						<td>해당하는 일정에 예약가능한 가드너가 없습니다.</td>
+						<span>해당하는 일정에 예약가능한 가드너가 없습니다.</span>
 					</tr>
 				</table>
 			</div>

@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<link href="/plant/css/instagram.css" rel="stylesheet" type="text/css" />
+<link href="/plant/css/report.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 </script>
 
 <div id="report_popup_layer" >
 	<div class="reportDiv" id="reportDiv" >
-		<form method="post" action="report.do">
+		<form method="post" action="/plant/report.do">
 			<p>신고 항목 선택</p>
 				<div class="reportlist">
 					<label><input type="radio" name="report_check" value="1"> 성적인 글 </label> <br>
@@ -23,7 +23,7 @@
 				<input type="hidden" name="user_no" value="${reportList.user_no}">
 				<input type="hidden" name="board_no" value="${reportList.board_no}">
 				
-			<p><input type="submit" value="신고"> <input type="reset" value="Reset">  <span id="close" title="닫기"> 닫기 </span> </p>
+			<p><input type="submit" id="reportSubmit" value="신고">  <input type="button" id="close" value="닫기"></p>
 		</form>
 	</div>
 </div>

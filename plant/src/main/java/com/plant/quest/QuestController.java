@@ -30,13 +30,13 @@ public class QuestController {
 	public String index(Model model, QuestVO vo) {
 		
 		model.addAttribute("data", service.index(vo));
-		return "/plant/quest/index";
+		return "plant/quest/index";
 	}
 	
 	@GetMapping("quest/write.do")
 	public String write() {
 		
-		return "/plant/quest/write";
+		return "plant/quest/write";
 	}
 	@PostMapping("/quest/write.do")
 	public String insert(QuestVO vo, Model model) {
@@ -99,7 +99,7 @@ public class QuestController {
 		
 		QuestVO data = service.view(vo.getQuest_no());
 		model.addAttribute("data", data);
-		return "/plant/quest/view";
+		return "plant/quest/view";
 		
 	}
 	
@@ -125,7 +125,7 @@ public class QuestController {
 		QuestVO data = service.edit(vo.getQuest_no());
 		model.addAttribute("data", data);
 		
-		return "/plant/quest/edit";
+		return "plant/quest/edit";
 	}
 	
 	@GetMapping("/quest/delete.do")

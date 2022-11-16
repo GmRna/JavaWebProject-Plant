@@ -50,7 +50,7 @@
 				<a href="">커뮤니티</a>
 				<ul>
 			    	<li><a href="/plant/free/index.do">자유 게시판</a></li>
-			    	<li><a href="/plant/quest/index.do">질문 게시판</a></li>
+			    	<li><a href="/plant/questreply/index.do">질문 게시판</a></li>
 				</ul>
 			</li>
 			

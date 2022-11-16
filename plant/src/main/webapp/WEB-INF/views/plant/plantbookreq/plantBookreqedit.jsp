@@ -7,19 +7,40 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>식물 도감 요청 게시판 view</title>
+<title>식물 도감 요청 게시판 수정 페이지</title>
 <link rel="stylesheet" href="/plant/css/reset.css"/>
-<link rel="stylesheet" href="/plant/css/common.css"/>
-<link rel="stylesheet" href="/plant/css/style.css"/>
 <link rel="stylesheet" href="/plant/css/contents.css"/>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <style type="text/css">
-.pad{
-	padding-top: 60px;
+body{
+	padding-top: 70px;
+    height: 90%;
 }
+
+#titleDiv{
+	background: #89AD98;
+	color: white;
+}
+.title{
+border-top: 1px solid #221f1f;
+}
+
+.sub{
+    width: 50%;
+    position: relative;
+    margin: auto;
+    margin-top: 90px;
+}
+#titleDiv .viewcount, #titleDiv dd.date{
+	color: #fff;
+}
+#view{
+	border: none;
+}
+
+
 </style>
 </head>
 <script type="text/javascript">

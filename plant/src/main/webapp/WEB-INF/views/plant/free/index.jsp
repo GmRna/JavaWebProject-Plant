@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ include file="/WEB-INF/views/common/header.jsp" %> 
+<%@include file ="../../common/header.jsp" %>
+ 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -77,7 +78,7 @@
                                 <td class="writer">
                                    ${vo.user_nick }
                                 </td>
-                                <td class="date"><fmt:formatDate value="${vo.free_regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td class="date"><fmt:formatDate value="${vo.free_regdate }" pattern="yyyy-MM-dd"/></td>
                             </tr>
                         	
                         	
@@ -108,8 +109,8 @@
                             <span class="srchSelect">
                                 <select id="stype" name="stype" class="dSelect" title="검색분류 선택">
                                     <option value="all">전체</option>
-                                    <option value="title">제목</option>
-                                    <option value="content">내용</option>
+                                    <option value="free_title">제목</option>
+                                    <option value="free_content">내용</option>
                                 </select>
                             </span>
                             <span class="searchWord">
@@ -117,7 +118,6 @@
                                 <input type="button" id="" value="검색" title="검색">
                             </span>
                         </form>
-                        
                     </div>
                 </div>
             </div>

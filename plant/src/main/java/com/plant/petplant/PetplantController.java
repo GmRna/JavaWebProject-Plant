@@ -45,14 +45,6 @@ public class PetplantController {
 	 public String plantwrite3() { 
 		 return "plant/petplant/instagram2";  
 	}
-	/*
-	 * @GetMapping("/plant/list123.do") public String plantwrite2() { return
-	 * "plant/petplant/list"; }
-	 * 
-	 * @GetMapping("/plant/car.do") public String car(Model model, PetplantVO vo) {
-	 * model.addAttribute("list", service.list(vo)); return "plant/petplant/list4";
-	 * }
-	 */
 	
 	
 	// 반려 게시판 전체 리스트 
@@ -357,6 +349,8 @@ public class PetplantController {
 		return "common/return";
 	}
 	
+	
+	// 반려식물 게시물 저장 (담기)
 	@PostMapping("/plant/savepetplant.do")
 	@ResponseBody
 	public int savepetplant (Model model, PetplantVO vo ,HttpServletRequest req) {

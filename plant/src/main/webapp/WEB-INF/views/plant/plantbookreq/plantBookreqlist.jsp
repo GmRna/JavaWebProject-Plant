@@ -26,27 +26,26 @@ img {
 	height: 24px;
 }
 .bbs{
-	padding-top: 12%;
-	width: 85%;
+	width: 60%;
     margin: auto;
+    height: auto;
 }
 
 body {
 	padding-top: 70px;
-	background: #f2f5f3;
 }
 th {
 	text-align: center;
 }
 tr:nth-child(even) {
-  background-color: #e7eae89c;
+  background-color: #e7eae833;
 }
 tr:nth-child(odd) {
   background-color: #fff;
 }
 
 #trthList th {
-  background-color: #7c957c;
+  background-color: #89AD98;
   color: white;
 }
 
@@ -63,7 +62,19 @@ tr:nth-child(odd) {
 	background: white;
 	border-radius : 5px;
 }
+td {
+border: 1px solid rgba(0,0,0,.1);
+}
 
+header.title {
+    font-size: 1.65em;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #6b7770;
+    margin: 0 0 0.5em 0;
+    line-height: 1.3;
+}
 </style>
 </head>
 
@@ -90,6 +101,7 @@ function reqWrite(){
 
 
 <div class="bbs" >
+	<header class="title">식물 도감 요청 게시판</header>
 	<div class="btnDiv">
 		<c:if test="${!empty loginAdminInfo}">
 			<button class="btn" onclick="reqWrite()" > 답변 작성하기 </button> 

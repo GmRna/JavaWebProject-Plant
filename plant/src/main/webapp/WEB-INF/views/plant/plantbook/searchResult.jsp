@@ -9,18 +9,78 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="/plant/css/header/reserve.css"  type="text/css"/>
+
+
 <style type="text/css">
 .img {
 	width: 100px;
 	height: 100px;
 }
-.searchbox{
-	margin-top: 60px;
+.boxxx{
+	margin-top: 20px;
 }
 #booksave{
 	width: 50px;
 	height: 50px;
 }
+
+#plantbookSearch{
+	border: 2px solid #eee;
+    border-radius: 50px;
+    width: 20em;
+    height: 3em;
+    padding: 0px 0px 0px 15px;
+    font : menu;
+}
+
+th {
+	padding: 10px 10px;
+    vertical-align: middle;
+    background-color: #89AD98;
+    color: #fff;
+}
+th.down {
+	width: 55px;
+}
+
+#button {
+    font-size: 12px;
+}
+
+#wrapper {
+    width: 80em;
+   }
+
+#pagingUl {
+	display: flex;
+}
+
+.pagingLi:hover a {
+  color: #fdfdfd;
+  background-color: #48663f;
+}
+
+.pagingLi.active a {
+  color: #fdfdfd;
+  background-color: #48663f;
+}
+
+.pagingLi a {
+  border-radius: 0.2rem;
+  color: #7d7d7d;
+  text-decoration: none;
+  text-transform: uppercase;
+  display: inline-block;
+  text-align: center;
+  padding: 2px 7px 5px 7px;
+  border: solid 1px #d7d7d7;
+}
+.paging{
+    display: flex;
+    justify-content: center; 
+}
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -44,10 +104,10 @@ function booksave(plantbook_no) {
 		success : function (data) {
 			if (data == 1){
 				console.log(data+"담기사진");
-				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/save1.png');
+				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/bookmark1.png');
 			} else {
 				console.log(data+"해제사진");
-				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/save2.png');
+				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/bookmark2.png');
 			}
 		}, error: function (xhr, desc, err) {
             alert('에러가 발생');
@@ -58,77 +118,66 @@ function booksave(plantbook_no) {
 	})
 }
 
-$(function () {
-	infiniteScroll({
-	    container: "#container",
-	    item: ".item",
-	    next: ".next",
-	    prev: ".prev"
-	})
-})
-
-
 </script>
 </head>
 <body>
 
-	<div class="searchbox">
-		<input type="search" id="plantbookSearch" onkeyup="if(window.event.keyCode==13){search()}" name="sword" value="${param.sword}"> <input type="button" onclick="search()" value="검색">
+<div class="sub" id="wrapper">
+	<div class="size" id="gdView">	
+	
+	<div class="">
+		<input type="search" id="plantbookSearch" onkeyup="if(window.event.keyCode==13){search()}" name="sword" value="${param.sword}"> <input type="button" id="button" onclick="search()" value="검색">
 	</div>
-
+	
+	<div class="boxxx">
+	</div>
+	
 	<table border="1">
 		<tr>
 			<th></th>
 			<th>이미지</th>
 			<th>품종명</th>
 			<th>주요 특성</th>
-			<th>다운로드</th>
+			<th class="down">다운로드</th>
 		</tr>
-	<article id="container">
 	
-	<c:forEach items="${list.list}" var="list" >
-		<div class="items">
+		<c:forEach items="${list.list}" var="list" >
 		<tr>
 			<c:if test="${list.count == 0}">
-				<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/save1.png" onclick="booksave(${list.plantbook_no})"></td>
+				<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/bookmark1.png" onclick="booksave(${list.plantbook_no})"></td>
 			</c:if>
 			<c:if test="${list.count == 1}">
-				<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/save2.png" onclick="booksave(${list.plantbook_no})"></td>
+				<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/bookmark2.png" onclick="booksave(${list.plantbook_no})"></td>
 			</c:if>
 			<td><img class="img" src="${list.imgFileLinkOriginal}"></td>
 			<td>${list.cntntsSj}</td>
 			<td>${list.mainChartrInfo}</td>
 			<td><a href="${list.atchFileLink}">다운로드</a></td>
 		</tr>
-		</div>
-	</c:forEach>
-	</article>
+		</c:forEach>
 	
 	</table>
 	
-	<div class="pagenate clear">
-		<ul class='paging'>
+	<div class="boxxx">
+	</div>
+	
+	<div class="paging">
+		<ul id="pagingUl">
 			<c:if test="${list.prev == true }">
-				<li><a href="search.do?page=${list.startPage-1 }&sword=${param.sword}"><</a>
-				</c:if>
-				<c:forEach var="p" begin="${list.startPage }" end="${list.endPage }">
-				<li><a href='search.do?page=${p }&sword=${param.sword}' <c:if test="${plantVO.page == p }">class='current'</c:if>>${p }</a></li>
-				</c:forEach>
-				<c:if test="${data.next == true }">
-				<li><a href="search.do?page=${list.endPage+1 }&sword=${param.sword}">></a>
+		   		<li class="pagingLi"><a href="mapList.do?page=${list.startPage }&stype=${param.stype}&sword=${param.sword}"><</a>
+			</c:if>
+			<c:forEach var="p" begin="${list.startPage }" end="${list.endPage }">
+				<li class="pagingLi"><a href='search.do?page=${p }&sword=${param.sword}' <c:if test="${plantVO.page == p }">class='current'</c:if>>${p }</a></li>
+			</c:forEach>
+			<c:if test="${list.next == true }">
+				<li class="pagingLi"><a href="search.do?page=${list.endPage+1 }&sword=${param.sword}">></a>
 			</c:if>
 		</ul> 
 	</div>
 
-<div class="paging">
-	<a class="prev" href="search.do?page=${list.endPage+1 }&sword=${param.sword}"></a> 
-    <a class="next" href="search.do?page=${list.endPage+1 }&sword=${param.sword}"></a> 
+
 </div>
-
-
-
-<!-- 스크롤 -->
-<script src="https://cdn.jsdelivr.net/gh/marshallku/infinite-scroll/dist/infiniteScroll.js"></script>
+</div>
 
                   
 </body>

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%@include file ="../../common/header.jsp" %>
 
 <!DOCTYPE html>
@@ -17,24 +19,31 @@
 <style type="text/css">
 body{
 	padding-top: 70px;
-	background: #f2f5f3;
+    height: 90%;
 }
 
 #titleDiv{
-	background: #5794080d;
+	background: #89AD98;
 	color: white;
+}
+.title{
+border-top: 1px solid #221f1f;
 }
 
 .sub{
-    width: 75%;
+    width: 50%;
     position: relative;
     margin: auto;
     margin-top: 90px;
 }
-
+#titleDiv .viewcount, #titleDiv dd.date{
+	color: #fff;
+}
 #view{
 	border: none;
 }
+
+
 </style>
 
 </head>
@@ -52,7 +61,7 @@ function replyReq(pbreq_no) {
 </script>
 <body>
 
-		<div class="sub">
+<div class="sub">
 	<form id="frm" method="post" action="modifyBookreq.do" enctype="multipart/form-data">
 		<input type="hidden" name="pbreq_no" value="${reqlist.pbreq_no}">
 		<input type="hidden" name="user_no" value="${reqlist.user_no}">
@@ -72,12 +81,16 @@ function replyReq(pbreq_no) {
 										반려
 									</c:if>
 								</dd>
-								<dt id="title"> ${reqlist.pbreq_title} </dt>
-									<dd class="date">작성일 : ${reqlist.pbreq_regdate } </dd>
-									<dd class="viewcount"> 조회수 :</dd>
-									<c:if test="${reqlist.pbreq_admin ne 1}">
-										<dd class="viewcount"> 품종 : ${reqlist.pbreq_type} </dd>
-									</c:if>
+									<dt id="title"> ${reqlist.pbreq_title} </dt>
+								<dd class="date"> 
+									작성일 : 
+									<fmt:formatDate value="${reqlist.pbreq_regdate }" pattern="yyyy-MM-dd" />
+									&nbsp;
+								</dd>
+								<dd class="viewcount"> 조회수 :</dd> &nbsp;&nbsp; 
+								<dd class="viewcount"> 품종 : ${reqlist.pbreq_type} </dd>
+								<c:if test="${reqlist.pbreq_admin ne 1}">
+								</c:if>
 		    				</dl>
 						</div>
 						<div class="cont"><p>${reqlist.pbreq_content}</p> </div>

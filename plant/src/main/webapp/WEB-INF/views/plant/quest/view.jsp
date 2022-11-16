@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.net.*" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -15,6 +17,7 @@
     <title>질문게시판 상세</title>
     <link rel="stylesheet" href="/plant/css/reset.css"/>
     <link rel="stylesheet" href="/plant/css/contents.css"/>
+   
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
     	function del(quest_no) {
@@ -38,6 +41,27 @@
     	}
         $(function(){
     		getComment(1);
+    		
+    		// 신고하기
+    		var board_no = ${data.quest_no};
+    		$("#reportBtn").click(function() {
+    			$.ajax ({
+    				url : '/plant/report.do',
+    				method : 'get',
+    				data : {
+    					board_no : ${data.quest_no},
+    					report_tablename : "quest",
+    				},
+    				success : function (data) {
+    					$("#reportList").after(data);
+    		            console.log("????????????????????");
+    				}, error: function (xhr, desc, err) {
+    		            alert('에러가 발생');
+    		            console.log(err);
+    		            return; 
+    		        }
+    			})		
+    		})
     	});
         function goSave() {
     		<c:if test="${empty loginUserInfo}">
@@ -83,6 +107,14 @@
     	
   
     </script>
+     <style type="text/css">
+    #reportDiv {
+    	position: fixed;
+    	margin-left: 23%;
+    	margin-top: -10%;
+    }
+    </style>
+    
 </head>
 <body>
     
@@ -99,6 +131,10 @@
                             </dl>
                         </div>
                         <div class="cont"><p>${data.quest_content }</p> </div>
+                        
+                        <!-- report -->
+                        <div id="reportList"></div> 
+                        
                         <dl class="file">
                             <dt>첨부파일 </dt>
                             <dd>
@@ -112,6 +148,7 @@
                             	<a href="edit.do?quest_no=${data.quest_no}" class="btn">수정</a>
                             	<a href="delete.do?quest_no=${data.quest_no}" class="btn">삭제</a>
                         </c:if>
+                                <a id="reportBtn" class="btn">신고하기</a>
                             	<a href="index.do" class="btn">목록으로</a>
                             </div>
                         </div>

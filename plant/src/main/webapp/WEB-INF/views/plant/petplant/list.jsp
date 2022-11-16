@@ -141,7 +141,6 @@ $(function () {
 	// 게시판 더보기 버튼 - 수정 및 신고 
 	$("#icon-react #icon-more").click(function () {
 		
-		
 		var petplant = $(this).parent().parent().parent();
 		var board_no = petplant.find("input[name='pet_no']").val();
 		var report_tablename = "petplant";
@@ -153,22 +152,23 @@ $(function () {
 		// 신고 레이어 뜸
 		$(".moreDiv #icon-siren").click(function() {
 			document.getElementById("moreDiv"+board_no).style.display = "none";
-			
+
 			$.ajax ({
-				url : 'report.do',
+				url : '/plant/report.do',
 				method : 'get',
 				data : {
 					board_no : board_no,
 					report_tablename : report_tablename,
 				},
 				success : function (data) {
+					$("#report_popup_layer").remove();
 					$("#reportList"+board_no).after(data);
 				}, error: function (xhr, desc, err) {
 		            alert('에러가 발생');
 		            console.log(err);
 		            return; 
 		        }
-			})		
+			})	
 		})
 		
 		// 수정 하는 jsp로 넘어감 

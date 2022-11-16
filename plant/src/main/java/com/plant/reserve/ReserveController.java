@@ -70,6 +70,7 @@ public class ReserveController {
 			return "common/alert";
 		} else {
 			vo.setGd_no(gd.getGd_no());
+			vo.setGd_name(gd.getGd_name());
 			model.addAttribute("loginGdInfo", vo); // gd세션값
 			return "plant/reserve/reserve";
 		}

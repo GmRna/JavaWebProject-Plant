@@ -18,7 +18,7 @@ public class ReportController {
 	@Autowired
 	ReportService service;
 	
-	@GetMapping("/plant/report.do")
+	@GetMapping("/report.do")
 	public String report (Model model, ReportVO vo , HttpServletRequest req
 			, @RequestParam(name="report_tablename") String report_tablename
 			, @RequestParam(name="board_no") int board_no
@@ -40,11 +40,11 @@ public class ReportController {
 			
 			model.addAttribute("reportList" , vo);
 			
-			return "common/report";
+			return "common/report/report";
 		}
 	}
 	
-	@PostMapping("/plant/report.do")
+	@PostMapping("/report.do")
 	public String addreport (Model model, ReportVO vo) {
 		
 		if (service.insert(vo) > 0) {
@@ -56,4 +56,12 @@ public class ReportController {
 		}
 	}
 	
+	@GetMapping("/reportList.do")
+	public String reportList (ReportVO vo, Model model) {
+		vo.setBoard_no(8);
+		vo.setReport_tablename("free");
+		
+		model.addAttribute("list", service.reportList(vo));
+		return "common/report/reportList";
+	}
 }

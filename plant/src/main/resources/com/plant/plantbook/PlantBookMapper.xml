@@ -5,9 +5,9 @@
 	<select id="searchWord" parameterType="com.plant.plantbook.PlantBookVO"  resultType="com.plant.plantbook.PlantBookVO">
 		SELECT a.*,
 			(SELECT count(*) FROM petplantput WHERE a.plantbook_no = plantbook_no and user_no = #{user_no}) as count 
-		FROM plantbook a
+		FROM plantbook AS a
 		WHERE cntntsSj like '%${sword}%' or mainChartrInfo like '%${sword}%' or svcCodeNm like '%${sword}%'
-		ORDER BY a.plantbook_no DESC
+		ORDER BY a.plantbook_no ASC
 		LIMIT  ${startIdx},${pageRow}
 	</select>
 	

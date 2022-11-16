@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file ="../../common/header.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,9 +11,9 @@
     <meta name="format-detection" content="telephone=no, address=no, email=no">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <title>게시판 등록</title>
-    <link rel="stylesheet" href="/project/css/reset.css"/>
-    <link rel="stylesheet" href="/project/css/contents.css"/>
+    <title>질문 게시판 등록</title>
+    <link rel="stylesheet" href="/plant/css/reset.css"/>
+    <link rel="stylesheet" href="/plant/css/contents.css"/>
     <script>
     	function goSave() {
     		frm.submit();
@@ -22,7 +24,7 @@
     
         <div class="sub">
             <div class="size">
-                <h3 class="sub_title">게시판</h3>
+                <h3 class="sub_title">질문 게시판 작성</h3>
     
                 <div class="bbs">
                 <form method="post" name="frm" id="frm" action="insert.do" enctype="multipart/form-data" ><!-- enctype="multipart/form-data" -->
@@ -32,13 +34,13 @@
                         <tr>
                             <th>제목</th>
                             <td>
-                                <input type="text" name="title" id="title" class="wid100" value=""/>
+                                <input type="text" name="questreply_title" id="title" class="wid100" value=""/>
                             </td>
                         </tr>
                         <tr>
                             <th>내용</th>
                             <td>
-                                <textarea name="content" id="content"></textarea>
+                                <textarea name="questreply_content" id="content"></textarea>
                             </td>
                         </tr>
                         <tr>

@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@include file ="../../common/header.jsp" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -16,7 +18,13 @@
     <link rel="stylesheet" href="/plant/css/contents.css"/>
     <script>
     	function goWrite() {
-    			location.href='write.do';
+    		<c:if test="${empty loginUserInfo}">
+				alert('로그인 후 글작성이 가능합니다.')
+				location.href = '/plant/user/login.do';
+			</c:if>
+			<c:if test="${!empty loginUserInfo}">
+				location.href = 'write.do';
+			</c:if>
     	}
     </script>
 
@@ -25,12 +33,12 @@
     
         <div class="sub">
             <div class="size">
-                <h3 class="sub_title">질문게시판</h3>
+                <h3 class="sub_title">질문 게시판</h3>
     
                 <div class="bbs">
                     <table class="list">
-                    <p><span><strong>총 ${data.totalCount }개</strong>  |  ${questVO.page }/${data.totalPage }페이지</span></p>
-                        <caption>게시판 목록</caption>
+                    <p><span><strong>총 ${data.totalCount }개</strong>  |  ${questreplyVO.page }/${data.totalPage }페이지</span></p>
+                        <caption>질문 게시판 목록</caption>
                         <colgroup>
                             <col width="80px" />
                             <col width="*" />
@@ -55,33 +63,39 @@
                         </c:if>
                         <c:forEach var="vo" items="${data.list }" varStatus="status">
                             <tr>
-                                <td>${data.totalCount-status.index-(questVO.page-1)*questVO.pageRow }<!-- 총개수 - 인덱스-(현재페이지번호-1)*페이지당개수 --></td>
-                                <td class="txt_l">
-                                    <a href="view.do?quest_no=${vo.quest_no }">${vo.quest_title} [${vo.comment_count }]</a>
+                                <td>${data.totalCount-status.index-(questreplyVO.page-1)*questreplyVO.pageRow }<!-- 총개수 - 인덱스-(현재페이지번호-1)*페이지당개수 --></td>
+                                <td class="txt_l" style="text-align: inherit;">
+                                	<c:if test="${vo.questreply_nested != 0 }">
+								     	<c:forEach begin="1" end="${vo.questreply_nested}">
+								        	<span>&nbsp;&nbsp;</span>
+								    	</c:forEach>
+								        	<img alt="" src="/plant/img/answer_icon.gif">
+								    </c:if>
+                                    <a href="view.do?questreply_no=${vo.questreply_no }">${vo.questreply_title} [${vo.comment_count }]</a>
                                 </td>
                                 <td>
-                                	${vo.quest_viewcount }
+                                	${vo.questreply_viewcount }
                                 </td>
                                 <td class="writer">
-                                    ${vo.user_no }
+                                    ${vo.user_nick }
                                 </td>
-                                <td class="date"><fmt:formatDate value="${vo.quest_regdate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                <td class="date"><fmt:formatDate value="${vo.questreply_regdate }" pattern="yyyy-MM-dd"/></td>
                             </tr>
                         </c:forEach>
                         </tbody>
                     </table>
+                    
                     <div class="btnSet"  style="text-align:right;">
                         <a class="btn" href="javascript:goWrite();">글작성 </a>
                     </div>
                     <div class="pagenate clear">
                         <ul class='paging'>
-	                        
 	                        <c:if test="${data.prev == true }">
 	                        	<li><a href="index.do?page=${data.startPage-1 }&stype=${param.stype}&sword=${param.sword}"><</a>
 	                        </c:if>
 	                        
 	                        <c:forEach var="p" begin="${data.startPage }" end="${data.endPage }">
-	                            <li><a href='index.do?page=${p }&stype=${param.stype}&sword=${param.sword}' <c:if test="${questVO.page == p }">class='current'</c:if>>${p }</a></li>
+	                            <li><a href='index.do?page=${p }&stype=${param.stype}&sword=${param.sword}' <c:if test="${questreplyVO.page == p }">class='current'</c:if>>${p }</a></li>
 	                        </c:forEach>
                        		
                        		<c:if test="${data.next == true }">
@@ -96,8 +110,8 @@
                             <span class="srchSelect">
                                 <select id="stype" name="stype" class="dSelect" title="검색분류 선택">
                                     <option value="all">전체</option>
-                                    <option value="title">제목</option>
-                                    <option value="content">내용</option>
+                                    <option value="questreply_title">제목</option>
+                                    <option value="questreply_content">내용</option>
                                 </select>
                             </span>
                             <span class="searchWord">
