@@ -473,6 +473,7 @@
                     <div>
                     <a href="javascript:;" class="btn" onclick="goSave();">저장</a> 
                     <a href="/plant/gd/myInfo.do" class="btn">취소</a>
+                    <button onclick="history.forward()">취소</button>
                     </div>
                     <div>별표가 있는 항목은 필수 항목입니다.</div>
                 </div>
