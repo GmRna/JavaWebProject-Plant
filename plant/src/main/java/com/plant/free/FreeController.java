@@ -31,7 +31,7 @@ public class FreeController {
 		model.addAttribute("data", service.index(vo));
 		
 		return "/plant/free/index";
-	}
+	}  
 	
 	@GetMapping("/free/write.do")
 	public String write() {
