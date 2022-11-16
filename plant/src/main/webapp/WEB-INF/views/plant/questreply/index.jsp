@@ -30,7 +30,7 @@
 
 </head> 
 <body>
-    
+     
         <div class="sub">
             <div class="size">
                 <h3 class="sub_title">질문 게시판</h3>
