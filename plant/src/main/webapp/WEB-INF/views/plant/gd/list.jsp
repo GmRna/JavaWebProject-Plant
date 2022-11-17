@@ -76,24 +76,22 @@
                                     ${vo.gd_ableaddr }
                                 </td>
                                 <td class="date">
-                                <fmt:formatDate value="${vo.gd_regdate }" pattern="yyyy년 MM월 dd일 HH시 mm분"/>
+                               		<fmt:formatDate value="${vo.gd_regdate }" pattern="yyyy년 MM월 dd일 HH시 mm분"/>
                                 </td>
-                                <td>
-                                    <c:choose>
-                                    	<c:when test="${vo.gd_acc == 0}">
-			  	 							<td>승인대기</td>
-			  							</c:when>
-                                    	<c:when test="${vo.gd_acc == 1}">
-			  	 							<td>일반회원</td>
-			  							</c:when>
-			  							<c:when test="${vo.gd_acc == 2}">
-			  	 							<td>승인거절</td>
-			  							</c:when>
-			  							<c:when test="${vo.gd_acc == 3 }">
-			  								<td>탈퇴처리</td>
-			  							</c:when>
-			  						</c:choose>
-                                </td>
+                                <c:choose>
+                                   	<c:when test="${vo.gd_acc == 0}">
+		  	 							<td>승인대기</td>
+		  							</c:when>
+                                   	<c:when test="${vo.gd_acc == 1}">
+		  	 							<td>일반회원</td>
+		  							</c:when>
+		  							<c:when test="${vo.gd_acc == 2}">
+		  	 							<td>승인거절</td>
+		  							</c:when>
+		  							<c:when test="${vo.gd_acc == 3 }">
+		  								<td>탈퇴처리</td>
+		  							</c:when>
+		  						</c:choose>
                             </tr>
                         </c:forEach>
                         </tbody>

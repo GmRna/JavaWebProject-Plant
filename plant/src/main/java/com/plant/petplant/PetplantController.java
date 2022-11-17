@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.plant.user.UserVO;
 
+import retrofit2.http.POST;
+
 
 @Controller
 public class PetplantController {
@@ -176,6 +178,22 @@ public class PetplantController {
 		}
 		
 		return no;
+	}
+	
+	// 반려식물 게시판 삭제
+	@PostMapping("/plant/delete.do")
+	public String delete (Model model, PetplantVO vo, @RequestParam("pet_no") int pet_no) {
+		vo.setPet_no(pet_no);
+		
+		if (service.delete(vo) > 0) {
+			model.addAttribute("msg", "삭제되었습니다.");
+			model.addAttribute("url", "/plant/list.do");
+			return "common/alert";
+		}else {
+			model.addAttribute("msg", "삭제에 실패하였습니다.");
+			model.addAttribute("url", "/plant/list.do");
+			return "common/alert";
+		}
 	}
 	
 	

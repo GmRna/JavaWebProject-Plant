@@ -38,8 +38,6 @@
     
                 <div class="bbs">
                     <table class="list">
-                           <h3 class="logconfirm" style="text-align:right;">로그인 중인 아이디 : ${loginUserInfo.user_email }</h3>
-                     
                         <caption>자유게시판 목록</caption>
                         <colgroup>
                             <col width="80px" />
@@ -88,7 +86,7 @@
                            
                     <div class="btnSet"  style="text-align:right;">
                       	<p><span><strong>총${data.totalCount }개</strong>  | ${freeVO.page }/${ data.totalPage} 페이지</span></p>     
-                      	<a class="btn" style="text-align:right;" href="javascript:goWrite();">글작성 </a>
+                      	<a class="btn" href="javascript:goWrite();">글작성 </a>
                     </div>
                     <div class="pagenate clear">
                         <ul class='paging'>

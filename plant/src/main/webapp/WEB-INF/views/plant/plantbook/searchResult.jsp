@@ -132,6 +132,11 @@ function booksave(plantbook_no) {
 	<div class="boxxx">
 	</div>
 	
+	<c:if test="${empty list.list}">
+			<span>" ${param.sword}" 에 대한 검색 결과가 없습니다.</span>
+	</c:if>
+	
+	<c:if test="${!empty list.list}">
 	<table border="1">
 		<tr>
 			<th></th>
@@ -140,23 +145,24 @@ function booksave(plantbook_no) {
 			<th>주요 특성</th>
 			<th class="down">다운로드</th>
 		</tr>
-	
-		<c:forEach items="${list.list}" var="list" >
-		<tr>
-			<c:if test="${list.count == 0}">
-				<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/bookmark1.png" onclick="booksave(${list.plantbook_no})"></td>
-			</c:if>
-			<c:if test="${list.count == 1}">
-				<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/bookmark2.png" onclick="booksave(${list.plantbook_no})"></td>
-			</c:if>
-			<td><img class="img" src="${list.imgFileLinkOriginal}"></td>
-			<td>${list.cntntsSj}</td>
-			<td>${list.mainChartrInfo}</td>
-			<td><a href="${list.atchFileLink}">다운로드</a></td>
-		</tr>
-		</c:forEach>
-	
+		
+		
+			<c:forEach items="${list.list}" var="list" >
+			<tr>
+				<c:if test="${list.count == 0}">
+					<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/bookmark1.png" onclick="booksave(${list.plantbook_no})"></td>
+				</c:if>
+				<c:if test="${list.count == 1}">
+					<td><img id="booksave" class="booksave${list.plantbook_no}"src="/plant/img/petplant/bookmark2.png" onclick="booksave(${list.plantbook_no})"></td>
+				</c:if>
+				<td><img class="img" src="${list.imgFileLinkOriginal}"></td>
+				<td>${list.cntntsSj}</td>
+				<td>${list.mainChartrInfo}</td>
+				<td><a href="${list.atchFileLink}">다운로드</a></td>
+			</tr>
+			</c:forEach>
 	</table>
+	</c:if>
 	
 	<div class="boxxx">
 	</div>
@@ -164,7 +170,7 @@ function booksave(plantbook_no) {
 	<div class="paging">
 		<ul id="pagingUl">
 			<c:if test="${list.prev == true }">
-		   		<li class="pagingLi"><a href="mapList.do?page=${list.startPage }&stype=${param.stype}&sword=${param.sword}"><</a>
+		   		<li class="pagingLi"><a href="search.do?page=${list.startPage -1}&stype=${param.stype}&sword=${param.sword}"><</a>
 			</c:if>
 			<c:forEach var="p" begin="${list.startPage }" end="${list.endPage }">
 				<li class="pagingLi"><a href='search.do?page=${p }&sword=${param.sword}' <c:if test="${plantVO.page == p }">class='current'</c:if>>${p }</a></li>

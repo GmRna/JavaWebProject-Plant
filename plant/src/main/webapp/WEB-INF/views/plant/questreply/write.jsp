@@ -53,6 +53,7 @@
                     </table>
                     <div class="btnSet"  style="text-align:right;">
                         <a class="btn" href="javascript:goSave();">저장 </a>
+                        <a class="btn" href="javascript:history.back();">목록으로 </a>
                     </div>
                     </form>
                 </div>

@@ -95,6 +95,11 @@
 		UPDATE petplant SET pet_content = #{pet_content}, pet_regdate = NOW() WHERE pet_no = #{pet_no} 
 	</update>
 	
+	<!-- 반려식물 게시판 내용 삭제 -->
+	<delete id="delete">
+		DELETE FROM petplant WHERE pet_no = #{pet_no}
+	</delete>
+		
 	<!-- 반려식물 게시판 파일 수정 전에 사진 전체 삭제 -->
 	<delete id="deletefile"  parameterType="com.plant.petplant.PetplantVO">
 		DELETE FROM plant_file WHERE file_no = #{file_no} AND filename_real = #{filename_real} 

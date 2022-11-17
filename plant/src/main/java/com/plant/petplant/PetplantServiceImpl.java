@@ -230,6 +230,11 @@ public class PetplantServiceImpl implements PetplantService {
 		
 		
 		return map;
+	}
+	// 게시판 삭제
+	@Override
+	public int delete(PetplantVO vo) {
+		return mapper.delete(vo);
 	} 
 	
 

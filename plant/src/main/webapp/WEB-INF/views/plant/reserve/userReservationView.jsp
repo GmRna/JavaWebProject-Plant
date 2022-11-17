@@ -1143,7 +1143,7 @@
 <body>
 
 <div class="sub" id="wrapper">
-	<h2>가드너 예약 확인 및 관리</h2>
+	<h2>나의 예약 확인하기</h2>
 	<div class="size" id="gdView">	
 		<div>
 			<!-- 상단 -->

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %> 
+    
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -247,7 +249,13 @@
 </head>
 
   <style>
-        td{padding:5px;}
+    td{padding:5px;}
+	select {
+		height: auto;
+	}
+	span.label.label-info{
+		font-size: 100%;
+	}
   </style>
   
 <body>

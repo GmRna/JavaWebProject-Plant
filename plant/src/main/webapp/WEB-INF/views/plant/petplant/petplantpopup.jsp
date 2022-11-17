@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
-
+<link href="/plant/css/petplant/instagram.css" rel="stylesheet" type="text/css" />
 <div class="feeds" id="petplant" >
 	<!-- article -->
 	<article  id="petplantDiv">
@@ -25,6 +25,7 @@
 				<div class="moreDivPop" id="moreDivPop${petboard.pet_no}" style="display:none;" >
 					<c:if test="${loginUserInfo.user_no eq petboard.user_writeNo }">
 						<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
+						<span id="icon-delete" ><img class="icon-edit" id="icon-delete" src="/plant/img/petplant/edit.png" >삭제하기</span>
 					</c:if>
 					<c:if test="${empty loginUserInfo or loginUserInfo.user_no ne petboard.user_writeNo}">
 						<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>

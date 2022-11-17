@@ -27,12 +27,13 @@ public class PlantBookreqServiceImpl implements PlantBookreqService {
 		
 		// 시작 인덱스
 		int startIdx = (vo.getPage() -1) * vo.getPageRow();
+		vo.setStartIdx(startIdx);
 		
 		// 게시판 목록
 		List<PlantBookreqVO> reqlist = mapper.listBookreq(vo);
 		
 		// 페이징 처리
-		int endPage = (int)(Math.ceil(vo.getPage()/10.0)*10);
+		int endPage = (int)(Math.ceil(vo.getPage()/10.0)*vo.getPageRow());
 		int startPage = endPage - 9;
 		if ( endPage > totalPage ) endPage = totalPage;
 		boolean prev = startPage > 1 ? true : false;
@@ -52,7 +53,9 @@ public class PlantBookreqServiceImpl implements PlantBookreqService {
 		map.put("next", next);
 		
 		map.put("reqlist", reqlist);
-		
+
+		System.out.println("totalCount : "+totalcount+" totalPage : "+totalPage+": startPage :"+startPage+" endPage : "+ endPage+ "page: "+ vo.getPage());
+
 		return map;
 	}
 	

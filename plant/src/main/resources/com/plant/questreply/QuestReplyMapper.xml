@@ -4,7 +4,7 @@
 
 	<select id = "list" parameterType="com.plant.questreply.QuestReplyVO" resultType="com.plant.questreply.QuestReplyVO">
 		SELECT *,
-			(SELECT COUNT(*) FROM quest_comment WHERE no=quest_reply.questreply_no AND tablename='quest_reply') AS comment_count 
+			(SELECT COUNT(*) FROM quest_comment WHERE quest_no=quest_reply.questreply_no AND tablename='quest_reply') AS comment_count 
 			, (SELECT user_nick FROM user WHERE user_no = quest_reply.user_no) AS user_nick
 		FROM quest_reply
 		<where>

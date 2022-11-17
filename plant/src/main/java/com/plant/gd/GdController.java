@@ -162,7 +162,6 @@ public class GdController {
 		vo = (GdVO) sess.getAttribute("loginGdInfo");
 		GdVO data = service.myInfo(vo.getGd_id());
 		model.addAttribute("vo", data);
-		service.delete(vo.getGd_no());
 		return "/plant/gd/edit";
 	}
 	

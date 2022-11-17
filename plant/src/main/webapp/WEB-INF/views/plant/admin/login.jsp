@@ -12,6 +12,9 @@
     <title>관리자 로그인</title>
     <link rel="stylesheet" href="/plant/css/reset.css"/>
     <link rel="stylesheet" href="/plant/css/contents.css"/>
+    
+    <link rel="stylesheet" href="/plant/css/login/userlogin.css"/>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
     	function loginCheck1() {
@@ -29,28 +32,30 @@
     </script>
 </head>
 <body>
-    
-        <form action="login.do" method="post" id="loginFrm1" name="loginFrm1" onsubmit="return loginCheck1();"><!-- header에서 id="board"이미 사용중이라서 board2로 함 -->
-            <div class="sub">
-                <div class="size">
-                    <h3 class="sub_title">관리자 로그인</h3>
-                    
-                    <div class="member">
-                        <div class="box">
-                            <fieldset class="login_form">
-                                <ul>
-                                    <li><input type="text" id="admin_id" name="admin_id" placeholder="아이디"></li>
-                                    <li><input type="password" id="admin_pwd" name="admin_pwd" placeholder="비밀번호"></li>
-                                    <li><label><input type="checkbox" name="reg1" id="reg1"/> 아이디 저장</label></li>
-                                </ul>
-                                <div class="login_btn"><input type="submit" value="로그인" alt="로그인" /></div>
-                            </fieldset>
-                        </div>
-                    </div>
-        
-                </div>
-            </div>        
-        </form>
+
+<section id="headerId">
+	<h1><a href="/plant/main/index.do">P L A N T</a></h1>
+</section>
+
+
+<div class="page">
+	<div class="container">
+		<div class="left">
+			<img src="/plant/img/login/82d888piCxbh1.jpg">
+		</div>
+		<div class="right">
+			<div class="form">
+		        <form action="login.do" method="post" id="loginFrm1" name="loginFrm1" onsubmit="return loginCheck1();"><!-- header에서 id="board"이미 사용중이라서 board2로 함 -->
+		        	<label for="Id" style="color: black;">관리자 아이디</label>
+						<input type="text" name="admin_id" id="email" >
+					<label for="password"  style="color: black;">비밀번호</label>
+						<input type="password" name="admin_pwd" id="password">
+					<input type="submit" id="submit" value="관리자 로그인">
+		        </form>
+			</div>
+		</div>
+	</div>
+</div>
         
 </body>
 </html>

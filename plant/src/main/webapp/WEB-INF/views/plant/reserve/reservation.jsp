@@ -605,13 +605,13 @@
 		<div>
 			<!-- 가드너 프로필 -->
 			<div>
-				<table border="1" id="top" class='default'>
+				<table id="gdViewtable" border="1" class='default' style="width: -webkit-fill-available;">
 					<tr>
-						<th colspan='6' style='text-align: center;'>가드너 프로필 카드</th>
+						<th colspan='6' style='background-color:#89AD98; color:#fff; font-size: 13px;'>가드너 프로필 카드</th>
 					</tr>
 					<tr>
 						<td rowspan="7" style="width: 250px; text-align: center;">
-							<img src='<%=request.getContextPath()%>/upload/${data.gd_picreal}' style='width:90px; height:90px;' >
+							<img src='<%=request.getContextPath()%>/upload/${data.gd_picreal}' style='width: 190px;height: 230px;' >
 						</td>
 						<td style='background-color:#89AD98; color:#fff; width: 115px;'>이름</td>
 						<td>&nbsp${data.gd_name}&nbsp(만 ${data.gd_age}세)&nbsp</td>

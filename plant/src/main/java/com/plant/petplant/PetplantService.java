@@ -56,6 +56,10 @@ public interface PetplantService {
 	Map findFile(PetplantVO vo);
 	// 게시판 수정 - 내용 업데이트
 	int update(PetplantVO vo);
+	
+	// 게시판 삭제 - 내용 삭제
+	int delete(PetplantVO vo);
+
 	// 게시판 수정 - 파일 삭제
 	int deletefile(PetplantVO vo);
 	// 게시판 수정 - 파일 업데이트

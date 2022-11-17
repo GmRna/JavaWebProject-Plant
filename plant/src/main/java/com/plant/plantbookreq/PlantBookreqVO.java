@@ -17,6 +17,7 @@ public class PlantBookreqVO {
 	private int pbreq_status;
 	private String pbreq_type;
 	private int pbreq_gno;
+	private int pbreq_ono;
 	private int pbreq_admin;
 	private Timestamp pbreq_regdate;
 	private String filename_org;

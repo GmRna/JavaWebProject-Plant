@@ -16,7 +16,7 @@
 				</if>
 			</if>
 		</where>
-		ORDER BY pbreq_gno DESC
+		ORDER BY pbreq_gno DESC , pbreq_ono ASC
 		LIMIT ${startIdx} , ${pageRow}
 	</select>
 	

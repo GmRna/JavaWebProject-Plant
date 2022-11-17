@@ -26,11 +26,12 @@
     		}
     	}
     	function getComment(page) {
+    		console.log(${data.questreply_no});
     		$.ajax({
     			url : "/plant/questcomment/list.do",
     			data : {
-    				questreply_no : ${data.questreply_no},
-    				tablename : 'reply',
+    				quest_no : ${data.questreply_no},
+    				tablename : 'quest_reply',
     				page : page
     			},
     			success : function(res) {
@@ -49,7 +50,7 @@
     				method : 'get',
     				data : {
     					board_no : ${data.questreply_no},
-    					report_tablename : "free",
+    					report_tablename : "quest_reply",
     				},
     				success : function (data) {
     					$("#reportList").after(data);

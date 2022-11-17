@@ -87,6 +87,8 @@ public interface PetplantMapper {
 	
 	// 반려식물 게시판 - 검색
 	List<PetplantVO> searchpet(PetplantVO vo);
+	// 반려식물 게시판 - 삭제
+	int delete(PetplantVO vo);
 
 	
 

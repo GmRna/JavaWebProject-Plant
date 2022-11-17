@@ -497,6 +497,10 @@ ul.story-list .profile-text {
     width: 24px;
     height: 24px;
 }
+.icon-delete {
+    width: 24px;
+    height: 24px;
+}
 
 h1 {
 	color: #252122;

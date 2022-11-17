@@ -62,6 +62,7 @@ function replyReq(pbreq_no) {
 <body>
 
 <div class="sub">
+<h2>식물 도감 요청 게시판 상세보기</h2>
 	<form id="frm" method="post" action="modifyBookreq.do" enctype="multipart/form-data">
 		<input type="hidden" name="pbreq_no" value="${reqlist.pbreq_no}">
 		<input type="hidden" name="user_no" value="${reqlist.user_no}">
@@ -87,8 +88,7 @@ function replyReq(pbreq_no) {
 									<fmt:formatDate value="${reqlist.pbreq_regdate }" pattern="yyyy-MM-dd" />
 									&nbsp;
 								</dd>
-								<dd class="viewcount"> 조회수 :</dd> &nbsp;&nbsp; 
-								<dd class="viewcount"> 품종 : ${reqlist.pbreq_type} </dd>
+								<dd class="viewcount"> &nbsp;&nbsp; 품종 : ${reqlist.pbreq_type} </dd> 
 								<c:if test="${reqlist.pbreq_admin ne 1}">
 								</c:if>
 		    				</dl>
@@ -102,7 +102,7 @@ function replyReq(pbreq_no) {
 		    	</div>
 			</div>
 	</form>
-		</div>
+</div>
 	
 	<div class='btnSet'>	
 		<a class='btn btn-info m-btn--air' onclick="listReq()">목록으로 가기</a>

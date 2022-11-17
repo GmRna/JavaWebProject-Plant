@@ -111,15 +111,15 @@ header.title {
 						${list.board_no}
 					</td>
 					<td>
-						<span class="txt_l" style="text-align:left;" onclick="view(${list.board_no}, ${list.report_tablename })" >
+						<span class="txt_l" style="text-align:left;">
 							<c:if test="${list.report_tablename eq 'petplant'}">
-								반려 식물 게시판
+								<a href="/plant/plant/findpetplant.do?pet_no=${list.board_no}">반려 식물 게시판</a>
 							</c:if>
 							<c:if test="${list.report_tablename eq 'free'}">
-								자유 게시판
+								<a href="/plant/free/view.do?free_no=${list.board_no}">자유 게시판</a>
 							</c:if>
 							<c:if test="${list.report_tablename eq 'quest'}">
-								질문 게시판
+								<a href="/plant/questreply/view.do?questreply_no=${list.board_no}">질문 게시판</a>
 							</c:if>
 						</span>
 					</td>

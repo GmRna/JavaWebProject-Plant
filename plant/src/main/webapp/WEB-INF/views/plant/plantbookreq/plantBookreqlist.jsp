@@ -83,17 +83,6 @@ function view(pbreq_no) {
 	location.href = "viewBookreq.do?pbreq_no="+pbreq_no;
 }
 
-function reqWrite(){
-	<c:if test="${empty loginUserInfo}">
-		alert('로그인 후 이용해주세요');
-		location.href = "/plant/user/login.do";
-	</c:if>
-	<c:if test="${!empty loginUserInfo}">
-		location.href = "/plant/plantbookreq/writeBookreq.do";
-	</c:if> 
-}
-
-
 </script>
 
 
@@ -103,9 +92,6 @@ function reqWrite(){
 <div class="bbs" >
 	<header class="title">식물 도감 요청 게시판</header>
 	<div class="btnDiv">
-		<c:if test="${!empty loginAdminInfo}">
-			<button class="btn" onclick="reqWrite()" > 답변 작성하기 </button> 
-		</c:if>
 		<button class="btn" onclick="reqWrite()" > 작성하기</button> 
 	</div>
 	
@@ -147,11 +133,10 @@ function reqWrite(){
 							반려
 						</c:if>
 					</td>
-					<td>
-						<span class="txt_l" style="text-align:left;" onclick="view(${reqlist.pbreq_no})" >
-						
+					<td style="text-align: left;">
+						<span class="txt_l"  onclick="view(${reqlist.pbreq_no})" >
 							<c:if test="${reqlist.pbreq_admin == 1 }">
-								<span style="padding: 0px 80px 0px 0px;"></span><img class="icon" src="/plant/img/petplant/pQnA_answer.png">
+								<span style="padding: 0px 20px 0px 0px;"></span><img class="icon" src="/plant/img/petplant/pQnA_answer.png">
 							</c:if>
 							${reqlist.pbreq_title}
 						</span>
@@ -177,19 +162,34 @@ function reqWrite(){
 	<div class="pagenate clear">
 		<div class="paging">
 			<ul id="ulBtn">
-				<c:if test="${list.prev == true }">
-					<li><a href="listBookreq.do?page=${list.startPage }"><</a>
+				<c:if test="${reqlist.prev == true }">
+					<li><a href="listBookreq.do?page=${reqlist.startPage }&stype=${param.stype}&sword=${param.sword}"><</a>
 				</c:if>
-				<c:forEach var="p" begin="${list.startPage }" end="${list.endPage }">
-					<li><a href='listBookreq.do?page=${p }' <c:if test="${plantBookreqVO.page == p }">class='current'</c:if>>${p }</a></li>
+				<c:forEach var="p" begin="${reqlist.startPage }" end="${reqlist.endPage }">
+					<li><a href='listBookreq.do?page=${p }&stype=${param.stype}&sword=${param.sword}' <c:if test="${plantbookreqVO.page == p }">class='current'</c:if>>${p }</a></li>
 				</c:forEach>
-				<c:if test="${list.next == true }">
-					<li><a href="listBookreq.do?page=${list.endPage+1 }">></a>
+				<c:if test="${reqlist.next == true }">
+					<li><a href="listBookreq.do?page=${reqlist.endPage+1 }&stype=${param.stype}&sword=${param.sword}">></a>
 				</c:if>
 			</ul> 
 		</div>
 	</div>
-                		
+	
+    <!-- 검색처리 -->
+    <div class="bbsSearch">
+        <form method="get" name="searchForm" id="searchForm" action="">
+            <span class="srchSelect">
+                <select id="stype" name="stype" class="dSelect" title="검색분류 선택">
+                    <option value="all">전체</option>
+                    <option value="content">내용</option>
+                </select>
+            </span>
+            <span class="searchWord">
+                <input type="text" id="sval" name="sword" value="${param.sword }"  title="검색어 입력">
+                <input type="button" id="" value="검색" title="검색">
+            </span>
+        </form>
+    </div>    		
 </div>
 
 

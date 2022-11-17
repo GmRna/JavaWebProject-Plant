@@ -27,7 +27,7 @@ function gdlogin() {
 	location.href = "/plant/gd/login.do";	
 }
 
-function search() {
+function search(headersword) {
 	sword = $('input[name="headersword"]').val();
 	location.href = '/plant/plantbook/search.do?sword='+headersword;
 }
@@ -101,7 +101,7 @@ function search() {
 				<a href="">식물 도감</a>
 				<ul>
 					<li><a href="/plant/plantbook/main.do">식물 도감</a></li>
-					<li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 리스트</a></li>
+					<li><a href="/plant/plantbookreq/listBookreq.do">식물 도감 요청 게시판</a></li>
 				</ul>
 			</li>
 		

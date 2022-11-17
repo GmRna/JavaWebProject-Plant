@@ -176,6 +176,22 @@ $(function () {
 			location.href = "editpet.do?pet_no="+board_no;
 		})
 		
+		// 수정 하는 jsp로 넘어감 
+		$(".moreDiv #icon-delete").click(function () {
+			alert("삭제하시겠습니까?");
+			$.ajax ({
+				url : 'delete.do',
+				data : { pet_no : board_no},
+				success : function(data) {
+		            console.log("성공");
+				}, error: function (xhr, desc, err) {
+		            alert('에러가 발생');
+		            console.log(err);
+		            return; 
+		        }
+			})
+		})
+		
 		// 레이어 창 꺼짐
 		$(document).mouseup(function (e){
 			var LayerPopup = $(".moreDiv"+board_no);
@@ -316,6 +332,7 @@ YesScroll() */
 						<div class="moreDiv" id="moreDiv${list.pet_no}" style="display:none;" >
 							<c:if test="${loginUserInfo.user_no eq list.user_writeNo }">
 								<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
+								<span id="icon-delete" ><img class="icon-edit" id="icon-delete" src="/plant/img/petplant/edit.png" >삭제하기</span>
 							</c:if>
 							<c:if test="${empty loginUserInfo or loginUserInfo.user_no ne list.user_writeNo}">
 								<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>
