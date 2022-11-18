@@ -434,7 +434,8 @@
 	        //일자 선택 클릭
 	        $(".custom_calendar_table").on("click", "td", function () {
 				// 클릭한 id값 찾기
-				var idValue = $(this).attr('id');	
+				var idValue = $(this).attr('id');
+				setTimeout(function() {document.getElementById('reservableSchedule').scrollIntoView();}, 300);
 				// 클릭한 td id값에 맞는 예약된 일자 true 처리
 				function rdDate(reserved) {
 					if(reserved.reserve_date === Number(idValue)) {
@@ -697,6 +698,7 @@
 			res += "	</tr>";
 			res += "</table>";
 		$('#payHistory').html(res);
+		setTimeout(function() {document.getElementById('payHistory').scrollIntoView();}, 300);
 	}
 	
 	// 예약취소
@@ -921,6 +923,7 @@
 			}
 		}
 		$('#completionView').html(view);
+		setTimeout(function() {document.getElementById('completionView').scrollIntoView();}, 300);
 	}
 	
 	/** 결제내역 상세보기 지우기
