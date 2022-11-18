@@ -23,7 +23,7 @@ public interface GdMapper {
 	GdVO detail(int gd_no);
 	int count(GdVO vo);
 	int delete(int gd_no);
-	GdVO myInfo(String gd_id);
+	GdVO myInfo(int gd_no);
 	int access(GdVO vo);
 	int edit(GdVO vo);
 	

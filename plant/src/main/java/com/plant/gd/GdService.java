@@ -25,7 +25,7 @@ public interface GdService {
 
 	GdVO getInfo(String gd_id);
 
-	GdVO myInfo(String gd_id);
+	GdVO myInfo(int gd_no);
 	
 	int access(GdVO vo);
 
