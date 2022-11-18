@@ -387,19 +387,10 @@
                             </select>
                        	</td>
                        	<td>  
-                            <a href="javascript:;" class="add_btn"><img src="../img/sum_ico.png"/></a>
+                            <a href="javascript:;" class="add_btn"></a>
                         </td>
                     </tr>
                 </tbody>
-            	</table>
-                <table class="board_write">
-                    <caption>가드너 회원가입</caption>
-                    <colgroup>
-                        <col width="20%" />
-                        <col width="*" />
-                    </colgroup>
-                    <tbody>
-                		<tr>
                             <th>*주 케어 종목</th>
                             <td>
                             
@@ -438,7 +429,6 @@
 				                    <span class="label label-info"><small>식물 생장관리</small></span>
 				                </label>
                             </td>
-                        </tr>
                     </tbody>
                 </table>                   
                 </form>
