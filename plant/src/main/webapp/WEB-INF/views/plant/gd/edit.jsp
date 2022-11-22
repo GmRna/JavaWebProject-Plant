@@ -121,7 +121,7 @@
                 html += '            <input type="text" name="gd_career" id="career">';
                 html += '        </td>';
                 html += '        <td>';
-                html += '            <a href="javascript:;" class="minus_btn"><img src="../img/minus_ico.png"/></a>';
+                html += '            <a href="javascript:;" class="minus_btn"><img src="../img/minus_ico.png" style="width:17px"/></a>';
                 html += '        </td>';
                 html += '    </tr>';
                 $(".addtr2").append(html);
@@ -343,7 +343,7 @@
                             </td>
 					</tr>
 					<tbody class="addtr2">
-                    <tr>
+                     <tr>
                     	<th>*이력</th>              		            		
                          	<c:set var="text2" value="${fn:split(vo.gd_career,',')}" />
                          	<td>
@@ -356,7 +356,7 @@
 											<input type="text" name="gd_career" id="career" value="${gd_career}" style="float:left;"><br>
 	                         			</td>
 		                         		<td>
-	                            	 		<a href="javascript:;" class="minus_btn2"><img src="../img/minus_ico.png"/></a>
+	                            	 		<a href="javascript:;" class="minus_btn2"><img src="../img/minus_ico.png" style="width:17px"/></a>
 	    	                     		</td>
 	                     		</tr>
 							</c:forEach>
@@ -509,32 +509,32 @@
 				                </label>
  
 				                <label>
-				                    <input type="checkbox" name="gd_major2" <c:if test="${vo.gd_major2 eq '실내식물관리' }">checked='checked'</c:if> value="실내식물관리">
+				                    <input type="checkbox" name="gd_major2" <c:if test="${vo.gd_major2 eq '실내식물관리' }">checked='checked' checked disabled</c:if> value="실내식물관리">
 				                    <span class="label label-info"><small>실내 식물관리</small></span>
 				                </label>
 
 				                <label>
-				                    <input type="checkbox" name="gd_major3" <c:if test="${vo.gd_major3 eq '온라인상담' }">checked='checked'</c:if> value="온라인상담">
+				                    <input type="checkbox" name="gd_major3" <c:if test="${vo.gd_major3 eq '온라인상담' }">checked='checked' checked disabled</c:if> value="온라인상담">
 				                    <span class="label label-info"><small>온라인 상담</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major4" <c:if test="${vo.gd_major4 eq '병충해관리' }">checked='checked'</c:if> value="병충해관리">
+				                    <input type="checkbox" name="gd_major4" <c:if test="${vo.gd_major4 eq '병충해관리' }">checked='checked' checked disabled</c:if> value="병충해관리">
 				                    <span class="label label-info"><small>병충해 관리</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major5" <c:if test="${vo.gd_major5 eq '가지치기' }">checked='checked'</c:if> value="가지치기">
+				                    <input type="checkbox" name="gd_major5" <c:if test="${vo.gd_major5 eq '가지치기' }">checked='checked' checked disabled</c:if> value="가지치기">
 				                    <span class="label label-info"><small>가지 치기</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major6" <c:if test="${vo.gd_major6 eq '정원 식물케어' }">checked='checked'</c:if> value="정원 식물케어">
+				                    <input type="checkbox" name="gd_major6" <c:if test="${vo.gd_major6 eq '정원 식물케어' }">checked='checked' checked disabled</c:if> value="정원 식물케어">
 				                    <span class="label label-info"><small>정원 식물케어</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major7" <c:if test="${vo.gd_major7 eq '식물생장관리' }">checked='checked'</c:if> value="식물생장관리">
+				                    <input type="checkbox" name="gd_major7" <c:if test="${vo.gd_major7 eq '식물생장관리' }">checked='checked' checked disabled</c:if> value="식물생장관리">
 				                    <span class="label label-info"><small>식물 생장관리</small></span>
 				                </label>
                             </td>
