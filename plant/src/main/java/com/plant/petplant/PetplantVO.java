@@ -49,4 +49,19 @@ public class PetplantVO {
 	private int ppp_check;
 	
 	private String sword;
+	
+	// 페이징 처리
+	private int page;
+	private int startIdx;
+	private int pageRow;
+	
+	// 페이지
+	public PetplantVO(){
+		this.page = 1;
+		this.pageRow = 10;
+	}
+	public PetplantVO(int page, int pageRow){
+		this.page = page;
+		this.pageRow = pageRow;
+	}
 }

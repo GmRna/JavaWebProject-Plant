@@ -18,6 +18,12 @@
 			FROM plant_file group by pet_no
 		) AS b
 		ON (a.pet_no = b.pet_no) ORDER BY a.pet_no DESC
+		LIMIT  ${startIdx},${pageRow}
+	</select>
+	
+	<select id="listCount" parameterType="com.plant.petplant.PetplantVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM petplant
+		WHERE pet_content like '%${sword}%'
 	</select>
 	
 	<!-- 검색기능 -->

@@ -52,6 +52,7 @@ function gowrite() {
 											<input type="hidden" name="diary_no" value="${diarylist.diary_no}">
 											<input type="hidden" name="diary_gno" value="${diarylist.diary_gno}">
 											<input type="hidden" name="user_plantname" value="${diarylist.user_plantname}">
+											<br>
 											<button type="submit" class="getnameDiary" id="getnameDiary" >더보기</button>
 										</form>
 									</section>

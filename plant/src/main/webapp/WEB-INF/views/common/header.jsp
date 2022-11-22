@@ -27,9 +27,10 @@ function gdlogin() {
 	location.href = "/plant/gd/login.do";	
 }
 
-function search(headersword) {
+function searchElastic() {
 	sword = $('input[name="headersword"]').val();
-	location.href = '/plant/plantbook/search.do?sword='+headersword;
+	console.log("dd"+sword);
+	location.href = '/plant/plantbook/searchElastic.do?sword='+sword;
 }
 
 </script>
@@ -55,7 +56,7 @@ function search(headersword) {
 			<div id="plantBar">
 				<span id="plantTxt">P L A N T</span>
 				
-				<input type="search" id="plantHederSearch" placeholder="검색어를 입력해주세요" name="headersword" onkeyup="if(window.event.keyCode==13){search()}">
+				<input type="search" id="plantHederSearch" placeholder="검색어를 입력해주세요" name="headersword" onkeyup="if(window.event.keyCode==13){searchElastic()}">
 				
 				<c:choose>
 					<c:when test="${!empty loginUserInfo}">

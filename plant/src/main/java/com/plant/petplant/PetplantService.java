@@ -73,6 +73,8 @@ public interface PetplantService {
 	int minuspetplant(PetplantVO vo);
 
 	PetplantVO listpop(PetplantVO vo);
+	
+	Map list2(PetplantVO vo);
 
 	
 

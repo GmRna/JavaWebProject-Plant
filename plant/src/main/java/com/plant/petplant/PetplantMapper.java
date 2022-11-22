@@ -10,6 +10,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface PetplantMapper {
 	// 반려식물 게시판 목록
 	List<PetplantVO> list(PetplantVO vo);
+	// 반려식물 게시판 게시물 수 
+	int listCount(PetplantVO vo);
 	
 	// 반려식물 게시판 등록 + 파일
 	int insert(PetplantVO vo);
@@ -89,6 +91,7 @@ public interface PetplantMapper {
 	List<PetplantVO> searchpet(PetplantVO vo);
 	// 반려식물 게시판 - 삭제
 	int delete(PetplantVO vo);
+
 
 	
 

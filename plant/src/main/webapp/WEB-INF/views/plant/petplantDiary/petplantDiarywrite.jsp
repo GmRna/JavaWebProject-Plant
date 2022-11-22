@@ -199,7 +199,7 @@ body {
 							</select>
 						</div>
 						<div class="col-12">
-							<span class="txt" style="margin-right: 5px;">품종명</span><input class="inputtxt" type="text" name="user_planttype" id="user_planttype" readonly="readonly">
+							<span class="txt" style="margin-right: 5px;">품종명</span><input class="inputtxt" type="text" name="user_planttype" id="user_planttype" >
 						</div>
 						<div class="col-12">
 							<span class="txt">제목</span>

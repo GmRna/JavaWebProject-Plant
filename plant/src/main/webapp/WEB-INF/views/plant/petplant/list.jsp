@@ -33,15 +33,8 @@
 // 전역 변수로 선언 - 함수에 계속 담아서 이동 시키기 때문에 & 그때 그때 마다 저장되는 변수값이 변해서
 var petboard;	// 반려식물 게시판 pk, content 배열
 var listIdx = 0;
+
 $(function () {
-	
-	infiniteScroll({
-	    container: "#container",
-	    item: ".item",
-	    next: ".next",
-	    prev: ".prev"
-	})
-	
 	// 반려식물 TR 클릭 시 
 	$("#petplant #petplantImgDiv, .icons-react .icons-left #petreplydiv").click(function (){
 		
@@ -237,65 +230,60 @@ $(function () {
 		})
 		
 	})
+	 $(window).scroll(function() {
+        var scrolltop = $(document).scrollTop();
+        var height = $(document).height();
+        var height_win = $(window).height();
+        
+     	if (Math.round( $(window).scrollTop()) == $(document).height() - $(window).height()) {
+        	moreList();
+    	}  
+     	
+	});
 	
-	
-	
-	
-	
-	
-});
-
-
-
-// 내용 더보기 
-function morecontent(no) {
-	document.getElementById("pet_contentmore"+no).className += "open";
-	document.getElementById("pet_content").className += "open";
-	document.getElementById("description").className += "open";
-}
-
-
-/* ,
-window.addEventListener("load", () => {
-    msnry.layout()
 })
- */
 
+var page = 0; 
 
-/* function YesScroll () {
-	const pagination = document.querySelector('.paginaiton');
-	const fullContent = document.querySelector('.petplant');
-	const screenHeight = screen.height;
-	let oneTime = false;
-	document.addEventListener('scroll',OnScroll,{passive:true})
+function moreList() {
+	var container = $("#container");
 	
-	function OnScroll () {
-		const fullHeight = fullContent.clientHeight;   
-		const scrollPosition = pageYOffset;
-		
-		if (fullHeight-screenHeight/2 <= scrollPosition && !oneTime) {
-		oneTime = true;
-		madeBox();
-		}
- 	}
-	function madeBox() {
-	  const list = document.createElement('div');
-	  const box = list.cloneNode('false');
-	  box.className="box";
-	  
-	  for (var i=0; i<5; i++){
-	    list.appendChild(box.cloneNode('true'));
-	  }    
-	  
-	  list.className = "list";
-	  fullContent.appendChild(list);
-	  oneTime = false;
-	  
+	if (page == 0) {
+		page = ${petplantVO.page}+1;
+		console.log("page 1 "+ page);
 	}
+	
+	$.ajax ({
+		url : '/plant/plant/list2.do',
+		data : {
+			page : page
+		},
+		success : function(data) {
+			container.append(data);
+			if (page == ${list.endPage }){
+				endpage();
+			}
+			page = page+1;
+		}, error: function (xhr, desc, err) {
+            alert('에러가 발생');
+            console.log(err);
+            return; 
+        }
+	}) 
+	
 }
-YesScroll() */
-	
-	
+
+function endpage() {
+	$(window).scroll(function() {
+        var scrolltop = $(document).scrollTop();
+        var height = $(document).height();
+        var height_win = $(window).height();
+     	if (Math.round( $(window).scrollTop()) == $(document).height() - $(window).height()) {
+			console.log("끝 "+ page + "endPage" + ${list.endPage });
+			alert("마지막 게시글 입니다.");
+    	}  
+	});
+}
 </script>
 
 
@@ -317,7 +305,7 @@ YesScroll() */
 	<c:forEach items="${list.list}" var="list">
 	<div class="feeds" id="petplant" >
     	<!-- article 프로필 사진 및 아이디-->
-     		<article >
+     		<article id="petarticle">
      		<div id="item">
 				<header>
 					<div class="profile-of-article">
@@ -408,19 +396,8 @@ YesScroll() */
 					</div>
 					<br>
 		        </div>
-		</div>			
+			</div>			
 		</article>
 	</div>
     </c:forEach>
-</main>
 
-<div class="paging">
-	<a class="prev" href="/plant/main/index.do"></a> 
-    <a class="next" href="/plant/main/index.do"></a> 
-</div>
-
-<!-- 스크롤 -->
-<script src="https://cdn.jsdelivr.net/gh/marshallku/infinite-scroll/dist/infiniteScroll.js"></script>
-
-</body>
-</html>

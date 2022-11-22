@@ -41,6 +41,22 @@ public class PlantBookController {
 	}
 	
 	
+	@GetMapping("/plantbook/searchElastic.do")
+	public String searchElastic(PlantBookVO vo, @RequestParam String sword , HttpServletRequest req, Model model) throws Exception {
+		vo.setSword(sword);
+		
+		List<Map<String, Object>> list = Elasticsearch.getPlant("plantbook", "all", sword);
+		Map searchList = new HashMap();
+		for (Map<String, Object> map : list) {
+			System.out.println((map.get("plantbook_no"))+"\t"+map.get("cntntsSj")+"\t"+map.get("mainChartrInfo"));
+			searchList.put("list", list);
+		}
+		model.addAttribute("list", searchList);
+		model.addAttribute("totalcount",  list.size());
+		return "plant/plantbook/searchResultElastic";
+	}
+	
+	
 	@GetMapping("/plantbook/search.do")
 	public String search(PlantBookVO vo, @RequestParam String sword , HttpServletRequest req, Model model) {
 		

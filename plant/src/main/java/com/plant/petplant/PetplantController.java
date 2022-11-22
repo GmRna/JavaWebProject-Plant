@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,7 +51,7 @@ public class PetplantController {
 	
 	
 	// 반려 게시판 전체 리스트 
-	@RequestMapping("/plant/list.do")
+	@GetMapping("/plant/list.do")
 	public String petPlantList(Model model, PetplantVO vo,  HttpServletRequest req) throws Exception {
 		// 유저 번호 set
 		HttpSession sess = req.getSession();
@@ -66,6 +67,25 @@ public class PetplantController {
 
 		return "plant/petplant/list";
 	}
+	
+	@GetMapping("/plant/list2.do")
+	public String petPlantList2(Model model, PetplantVO vo,  HttpServletRequest req) throws Exception {
+		// 유저 번호 set
+		HttpSession sess = req.getSession();
+		UserVO user = new UserVO();
+		user = (UserVO) sess.getAttribute("loginUserInfo");
+		
+		if (user != null) {
+			vo.setUser_no(user.getUser_no());
+			System.out.println("@@@@@@@@@@  " + vo.getUser_no());
+		}
+
+		model.addAttribute("list", service.list2(vo));
+
+		return "plant/petplant/list2";
+	}
+	
+	
 	
 	// 반려식물 검색기능 
 	@GetMapping("/plant/searchpet.do")
