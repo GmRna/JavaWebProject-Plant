@@ -132,8 +132,8 @@
                 });
             }); 
             $(".minus_btn2").click(function() {
-                var idx = $(this).index('.minus_btn'); 
-                $(".extendTr").eq(idx).remove();
+                var idx = $(this).index('.minus_btn2'); 
+                $(".extendTr2").eq(idx).remove();
             });
         }) 
     </script>
@@ -347,10 +347,10 @@
                     	<th>*이력</th>              		            		
                          	<c:set var="text2" value="${fn:split(vo.gd_career,',')}" />
                          	<td>
-                         		<a href="javascript:;" class="add_btn2"><img src="../img/sum	_ico.png"/></a>
+                         		<a href="javascript:;" class="add_btn2"><img src="../img/sum_ico.png"/></a>
                          	</td>
 							<c:forEach var="gd_career" items="${text2}" varStatus="varStatus">
-								<tr class="addtr extendTr">
+								<tr class="addtr extendTr2">
 	                         		<th></th>
 	                         			<td class="padding_t">
 											<input type="text" name="gd_career" id="career" value="${gd_career}" style="float:left;"><br>
