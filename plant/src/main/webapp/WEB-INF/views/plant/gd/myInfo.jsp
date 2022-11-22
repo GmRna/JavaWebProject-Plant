@@ -11,7 +11,7 @@
     <meta name="format-detection" content="telephone=no, address=no, email=no">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <title>내 정보 수정하기</title>
+    <title>내 정보</title>
     <link rel="stylesheet" href="/plant/css/reset.css"/>
     <link rel="stylesheet" href="/plant/css/contents.css"/>
     <link rel="stylesheet" href="/plant/css/common.css"/>
@@ -261,7 +261,7 @@
 <body>
 	<div class="sub">
 		<div class="size">
-			<h3 class="sub_title">내 정보 수정하기</h3>
+			<h3 class="sub_title">내 정보</h3>
 			<form name="frm" id="frm" action="edit.do" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="gd_no" value="${vo.gd_no }"/>
 			<table class="board_write">
@@ -345,21 +345,9 @@
 					<tbody class="addtr2">
                     <tr>
                     	<th>*이력</th>              		            		
-                         	<c:set var="text2" value="${fn:split(vo.gd_career,',')}" />
                          	<td>
-                         		<a href="javascript:;" class="add_btn2"><img src="../img/sum	_ico.png"/></a>
+                         		${vo.gd_career }
                          	</td>
-							<c:forEach var="gd_career" items="${text2}" varStatus="varStatus">
-								<tr class="addtr extendTr">
-	                         		<th></th>
-	                         			<td class="padding_t">
-											<input type="text" name="gd_career" id="career" value="${gd_career}" style="float:left;"><br>
-	                         			</td>
-		                         		<td>
-	                            	 		<a href="javascript:;" class="minus_btn2"><img src="../img/minus_ico.png"/></a>
-	    	                     		</td>
-	                     		</tr>
-							</c:forEach>
                     </tr>
                     </tbody>
                     <tr>
@@ -485,9 +473,6 @@
 		                       	</td>
 	                       	</c:forEach>	                     	
                        	</c:if>
-                       	<td>  
-                            <a href="javascript:;" class="add_btn"><img src="../img/sum_ico.png"/></a>
-                        </td>
                     </tr>
                 </tbody>
                 
@@ -504,37 +489,37 @@
                             <td>
                             
                 				<label>
-				                    <input type="checkbox" name="gd_major1" <c:if test="${vo.gd_major1 eq '분재갈이' }">checked='checked'</c:if> value="분재갈이">
+				                    <input type="checkbox" name="gd_major1" <c:if test="${vo.gd_major1 eq '분재갈이' }">checked='checked' checked disabled</c:if> value="분재갈이">
 				                    <span class="label label-info"><small>분재 갈이</small></span>				                    			                    
 				                </label>
  
 				                <label>
-				                    <input type="checkbox" name="gd_major2" <c:if test="${vo.gd_major2 eq '실내식물관리' }">checked='checked'</c:if> value="실내식물관리">
+				                    <input type="checkbox" name="gd_major2" <c:if test="${vo.gd_major2 eq '실내식물관리' }">checked='checked' checked disabled</c:if> value="실내식물관리">
 				                    <span class="label label-info"><small>실내 식물관리</small></span>
 				                </label>
 
 				                <label>
-				                    <input type="checkbox" name="gd_major3" <c:if test="${vo.gd_major3 eq '온라인상담' }">checked='checked'</c:if> value="온라인상담">
+				                    <input type="checkbox" name="gd_major3" <c:if test="${vo.gd_major3 eq '온라인상담' }">checked='checked' checked disabled</c:if> value="온라인상담">
 				                    <span class="label label-info"><small>온라인 상담</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major4" <c:if test="${vo.gd_major4 eq '병충해관리' }">checked='checked'</c:if> value="병충해관리">
+				                    <input type="checkbox" name="gd_major4" <c:if test="${vo.gd_major4 eq '병충해관리' }">checked='checked' checked disabled</c:if> value="병충해관리">
 				                    <span class="label label-info"><small>병충해 관리</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major5" <c:if test="${vo.gd_major5 eq '가지치기' }">checked='checked'</c:if> value="가지치기">
+				                    <input type="checkbox" name="gd_major5" <c:if test="${vo.gd_major5 eq '가지치기' }">checked='checked' checked disabled</c:if> value="가지치기">
 				                    <span class="label label-info"><small>가지 치기</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major6" <c:if test="${vo.gd_major6 eq '정원 식물케어' }">checked='checked'</c:if> value="정원 식물케어">
+				                    <input type="checkbox" name="gd_major6" <c:if test="${vo.gd_major6 eq '정원 식물케어' }">checked='checked' checked disabled</c:if> value="정원 식물케어">
 				                    <span class="label label-info"><small>정원 식물케어</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major7" <c:if test="${vo.gd_major7 eq '식물생장관리' }">checked='checked'</c:if> value="식물생장관리">
+				                    <input type="checkbox" name="gd_major7" <c:if test="${vo.gd_major7 eq '식물생장관리' }">checked='checked' checked disabled</c:if> value="식물생장관리">
 				                    <span class="label label-info"><small>식물 생장관리</small></span>
 				                </label>
                             </td>
