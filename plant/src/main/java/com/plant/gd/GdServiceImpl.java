@@ -65,8 +65,7 @@ public class GdServiceImpl implements GdService {
 	}
 
 	@Override
-	public int insertcer(GdVO vo) {
-		
+	public int insertcer(GdVO vo) {		
 		return mapper.insertcer(vo);
 	}
 	
@@ -111,15 +110,12 @@ public class GdServiceImpl implements GdService {
 			}
 			for (int i=0; i<3; i++) {
 				temp += (int)(Math.random() * 9);
-			}
-			
+			}			
 			// 임시 비밀번호 update
 			vo.setGd_pwd(temp);
-			mapper.updateTempPwd(vo);
-			
+			mapper.updateTempPwd(vo);			
 			// email 발송
-			SendMail.sendMail("carmania4567@naver.com", vo.getGd_email(), "[식물통합정보사이트]임시비밀번호", "임시비밀번호:"+temp);
-			
+			SendMail.sendMail("carmania4567@naver.com", vo.getGd_email(), "[식물통합정보사이트]임시비밀번호", "임시비밀번호:"+temp);			
 			return mv;
 		} else {
 			return null;
@@ -142,8 +138,8 @@ public class GdServiceImpl implements GdService {
 	}
 	
 	@Override
-	public GdVO myInfo(String gd_id) {
-		return mapper.myInfo(gd_id);
+	public GdVO myInfo(int gd_no) {
+		return mapper.myInfo(gd_no);
 	}
 
 	@Override
@@ -159,19 +155,24 @@ public class GdServiceImpl implements GdService {
 
 	@Override
 	public int insert2(GdVO vo) {
-		int no = mapper.insert(vo);
-		no = vo.getGd_no();
+		int no = mapper.insert2(vo);
+		mapper.insertcar2(vo);
+		mapper.insertcer2(vo);
 		return no;
 	}
 	
 	@Override
-	public int insertcar2(GdVO vo) {		
-		return mapper.insertcar(vo);
+	public int insertcar2(GdVO vo) {
+		int no = mapper.insertcar2(vo);
+		no = vo.getGd_no();
+		return mapper.insertcar2(vo);
 	}
 
 	@Override
-	public int insertcer2(GdVO vo) {		
-		return mapper.insertcer(vo);
+	public int insertcer2(GdVO vo) {	
+		int no = mapper.insertcer2(vo);
+		no = vo.getGd_no();
+		return mapper.insertcer2(vo);
 	}
 
 	@Override

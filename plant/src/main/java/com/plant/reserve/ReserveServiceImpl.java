@@ -17,13 +17,21 @@ public class ReserveServiceImpl implements ReserveService {
 
 	@Override
 	public List<ReserveVO> searchGd(ReserveVO vo) {
+		// dateStart와 dateEnd 저장
+		int dateStart = vo.getDateStart();
+		int dateEnd = vo.getDateEnd();
+		String searchMajor = vo.getSearchMajor();
 		// gd 리스트 가져오기
 		List<ReserveVO> list = mapper.searchGd(vo); 
 		// exist 배열 생성
 		List<ReserveVO> exist = new ArrayList<ReserveVO>();
 		// 해당하는 gd가 예약가능한 일정이 있는 경우만 exist 배열에 저장
 		for(int i=0; i<list.size(); i++) {
-			if (mapper.searchGdReservable(list.get(i)) != null && mapper.searchGdReservable(list.get(i)).isEmpty() == false) {
+			list.get(i).setDateStart(dateStart);
+			list.get(i).setDateEnd(dateEnd);
+			list.get(i).setSearchMajor(searchMajor);
+			if (mapper.searchGdReservable(list.get(i)).isEmpty() == false) {
+				System.out.println("#############################"+list.get(i).getDateStart());
 				exist.add(list.get(i));
 			} 
 		}

@@ -362,9 +362,13 @@
 		<div class="size" id="gdView">
 		<!-- 가드너 상세 프로필 -->
 		<div>
+
 			<table id="gdViewtable" border="1" class='default' style="width: -webkit-fill-available;">
+
 				<tr>
+
 					<th colspan='6' style='background-color:#89AD98; color:#fff; font-size: 13px;'>가드너 프로필 카드</th>
+
 				</tr>
 				<tr >
 					<td rowspan="7" style="text-align: center; width: 250px;">
@@ -437,16 +441,21 @@
 					<td style='background-color:#89AD98; color:#fff;'>후기 & 별점</td>
 					<td colspan="3">
 						<div style="overflow: auto; width: 100%; height: 150px;">
-							<div>평균 별점 : ${data.starAverage}점</div>
-							<br>
-							<br>
-							<c:forEach var="r" items="${review}">
-								<div id="review">
-									<p>닉네임 : ${r.user_nick} 별점: ${r.star} <br>
-										후기: ${r.review}</p>
-								</div>
+							<c:if test="${empty r.review}">
+								<p>등록된 후기가 없습니다.</p>
+							</c:if>
+							<c:if test="${!empty r.review}">
+								<div>평균 별점 : ${data.starAverage}점</div>
 								<br>
-							</c:forEach>
+								<br>
+								<c:forEach var="r" items="${review}">
+									<div id="review">
+										<p>닉네임 : ${r.user_nick} 별점: ${r.star} <br>
+											후기: ${r.review}</p>  
+									</div>
+									<br>
+								</c:forEach>
+							</c:if>
 						</div>
 					</td>
 				</tr>

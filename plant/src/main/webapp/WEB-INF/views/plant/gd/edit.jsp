@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -110,7 +112,8 @@
     
     <!-- 이력 -->
     <script>
-        $(function() {       
+        $(function() {   
+        	
             $(".add_btn2").click(function() {
                 var html = '<tr class="addtr extendTr">';
                 html += '        <th></th>';
@@ -118,7 +121,7 @@
                 html += '            <input type="text" name="gd_career" id="career">';
                 html += '        </td>';
                 html += '        <td>';
-                html += '            <a href="javascript:;" class="minus_btn"><img src="../img/minus_ico.png"/></a>';
+                html += '            <a href="javascript:;" class="minus_btn"><img src="../img/minus_ico.png" style="width:17px"/></a>';
                 html += '        </td>';
                 html += '    </tr>';
                 $(".addtr2").append(html);
@@ -128,6 +131,10 @@
                     $(".extendTr").eq(idx).remove();
                 });
             }); 
+            $(".minus_btn2").click(function() {
+                var idx = $(this).index('.minus_btn2'); 
+                $(".extendTr2").eq(idx).remove();
+            });
         }) 
     </script>
     
@@ -198,6 +205,7 @@
                     $(".extendTr").eq(idx).remove();
                 });
             }); 
+            
         }) 
     </script>
     
@@ -255,6 +263,7 @@
 		<div class="size">
 			<h3 class="sub_title">내 정보 수정하기</h3>
 			<form name="frm" id="frm" action="edit.do" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="gd_no" value="${vo.gd_no }"/>
 			<table class="board_write">
 				<caption>내 정보 수정하기</caption>
 				<colgroup>
@@ -334,14 +343,23 @@
                             </td>
 					</tr>
 					<tbody class="addtr2">
-                    <tr>
-                    	<th>*이력</th>
-                            <td>
-                                <input type="text" name="gd_career" id="career" style="float:left;">
-                            </td>
-                            <td>
-                            <a href="javascript:;" class="add_btn2"><img src="../img/sum_ico.png"/></a>
-                        	</td>
+                     <tr>
+                    	<th>*이력</th>              		            		
+                         	<c:set var="text2" value="${fn:split(vo.gd_career,',')}" />
+                         	<td>
+                         		<a href="javascript:;" class="add_btn2"><img src="../img/sum_ico.png"/></a>
+                         	</td>
+							<c:forEach var="gd_career" items="${text2}" varStatus="varStatus">
+								<tr class="addtr extendTr2">
+	                         		<th></th>
+	                         			<td class="padding_t">
+											<input type="text" name="gd_career" id="career" value="${gd_career}" style="float:left;"><br>
+	                         			</td>
+		                         		<td>
+	                            	 		<a href="javascript:;" class="minus_btn2"><img src="../img/minus_ico.png" style="width:17px"/></a>
+	    	                     		</td>
+	                     		</tr>
+							</c:forEach>
                     </tr>
                     </tbody>
                     <tr>
@@ -361,56 +379,112 @@
                 <tbody class="addtr1">
                     <tr>
                         <th>자격증</th>
-                        <td class="padding_t">
-                            <select name="gd_certificate" id="certificate">
-                                <option value="없음">없음</option>
-								<option value="1급 산림치유지도사">1급 산림치유지도사</option>
-								<option value="2급 산림치유지도사">2급 산림치유지도사</option>
-								<option value="나무의사">나무의사</option>
-								<option value="농림토양평가관리산업기사">농림토양평가관리산업기사</option>
-								<option value="농화학기술사">농화학기술사</option>
-								<option value="목재교육전문가">목재교육전문가</option>									
-                                <option value="버섯산업기사">버섯산업기사</option>
-								<option value="버섯종균기능사">버섯종균기능사</option>
-								<option value="산림교육전문가(숲 해설가)">산림교육전문가(숲 해설가)</option>
-								<option value="산림기능사">산림기능사</option>
-								<option value="산림기사">산림기사</option>
-								<option value="산림기술사">산림기술사</option>
-								<option value="산림산업기사">산림산업기사</option>
-								<option value="수목치료기술자">수목치료기술자</option>
-								<option value="시설원예기사">시설원예기사</option>
-								<option value="시설원예기술사">시설원예기술사</option>									
-                                <option value="시설원예산업기사">시설원예산업기사</option>
-								<option value="식물보호기사">식물보호기사</option>
-								<option value="식물보호기술사">식물보호기술사</option>
-								<option value="식물보호산업기사">식물보호산업기사</option>
-								<option value="유기농업기능사">유기농업기능사</option>
-								<option value="유기농업기사">유기농업기사</option>
-								<option value="유기농업산업기사">유기농업산업기사</option>
-								<option value="임산가공기사">임산가공기사</option>
-								<option value="임산가공기능사">임산가공기능사</option>
-								<option value="임산가공산업기사">임산가공산업기사</option>									
-                                <option value="임업종묘기능사">임업종묘기능사</option>
-								<option value="임업종묘기사">임업종묘기사</option>
-								<option value="원예기능사">원예기능사</option>
-								<option value="자연생태복원기사">자연생태복원기사</option>
-								<option value="자연생태복원기술사">자연생태복원기술사</option>
-								<option value="자연생태복원산업기사">자연생태복원산업기사</option>
-								<option value="자연환경관리기술사">자연환경관리기술사</option>
-								<option value="조경기능사">조경기능사</option>
-								<option value="조경기사">조경기사</option>
-								<option value="조경산업기사">조경산업기사</option>
-								<option value="종자기능사">종자기능사</option>
-								<option value="종자기사">종자기사</option>
-								<option value="종자기술사">종자기술사</option>
-								<option value="종자산업기사">종자산업기사</option>
-								<option value="토양환경기사">토양환경기사</option>
-								<option value="토양환경기술사">토양환경기술사</option>
-								<option value="화훼장식기능사">화훼장식기능사</option>
-								<option value="화훼장식기사">화훼장식기사</option>
-								<option value="화훼장식산업기사">화훼장식산업기사</option>
-                            </select>
-                       	</td>
+	                        <c:if test="${vo.gd_certificate == null }" >
+                        		<td class="padding_t">
+				                	<select name="gd_certificate" id="certificate">
+		                                <option value="없음">없음</option>
+										<option value="1급 산림치유지도사">1급 산림치유지도사</option>
+										<option value="2급 산림치유지도사">2급 산림치유지도사</option>
+										<option value="나무의사">나무의사</option>
+										<option value="농림토양평가관리산업기사">농림토양평가관리산업기사</option>
+										<option value="농화학기술사">농화학기술사</option>
+										<option value="목재교육전문가">목재교육전문가</option>									
+		                                <option value="버섯산업기사">버섯산업기사</option>
+										<option value="버섯종균기능사">버섯종균기능사</option>
+										<option value="산림교육전문가(숲 해설가)">산림교육전문가(숲 해설가)</option>
+										<option value="산림기능사">산림기능사</option>
+										<option value="산림기사">산림기사</option>
+										<option value="산림기술사">산림기술사</option>
+										<option value="산림산업기사">산림산업기사</option>
+										<option value="수목치료기술자">수목치료기술자</option>
+										<option value="시설원예기사">시설원예기사</option>
+										<option value="시설원예기술사">시설원예기술사</option>									
+		                                <option value="시설원예산업기사">시설원예산업기사</option>
+										<option value="식물보호기사">식물보호기사</option>
+										<option value="식물보호기술사">식물보호기술사</option>
+										<option value="식물보호산업기사">식물보호산업기사</option>
+										<option value="유기농업기능사">유기농업기능사</option>
+										<option value="유기농업기사">유기농업기사</option>
+										<option value="유기농업산업기사">유기농업산업기사</option>
+										<option value="임산가공기사">임산가공기사</option>
+										<option value="임산가공기능사">임산가공기능사</option>
+										<option value="임산가공산업기사">임산가공산업기사</option>									
+		                                <option value="임업종묘기능사">임업종묘기능사</option>
+										<option value="임업종묘기사">임업종묘기사</option>
+										<option value="원예기능사">원예기능사</option>
+										<option value="자연생태복원기사">자연생태복원기사</option>
+										<option value="자연생태복원기술사">자연생태복원기술사</option>
+										<option value="자연생태복원산업기사">자연생태복원산업기사</option>
+										<option value="자연환경관리기술사">자연환경관리기술사</option>
+										<option value="조경기능사">조경기능사</option>
+										<option value="조경기사">조경기사</option>
+										<option value="조경산업기사">조경산업기사</option>
+										<option value="종자기능사">종자기능사</option>
+										<option value="종자기사">종자기사</option>
+										<option value="종자기술사">종자기술사</option>
+										<option value="종자산업기사">종자산업기사</option>
+										<option value="토양환경기사">토양환경기사</option>
+										<option value="토양환경기술사">토양환경기술사</option>
+										<option value="화훼장식기능사">화훼장식기능사</option>
+										<option value="화훼장식기사">화훼장식기사</option>
+										<option value="화훼장식산업기사">화훼장식산업기사</option>
+                            		</select>                  	    	
+                       			</td>
+	                        </c:if>	                        
+	                        <c:if test="${vo.gd_certificate ne null}">
+	                        <c:set var="text" value="${fn:split(vo.gd_certificate,',')}" />
+	                        <c:forEach var="gd_certificate" items="${text}" varStatus="varStatus">	                           		                 
+		                        <td class="padding_t">                        
+		                            <select name="gd_certificate" id="certificate">
+										<option  <c:if test="${ gd_certificate eq '1급 산림치유지도사' }">selected="selected"</c:if> value="1급 산림치유지도사">1급 산림치유지도사</option>
+										<option  <c:if test="${ gd_certificate eq '2급 산림치유지도사' }">selected="selected"</c:if> value="2급 산림치유지도사">2급 산림치유지도사</option>
+										<option  <c:if test="${ gd_certificate eq '나무의사' }">selected="selected"</c:if> value="나무의사">나무의사</option>									
+										<option  <c:if test="${ gd_certificate eq '농림토양평가관리산업기사' }">selected="selected"</c:if> value="농림토양평가관리산업기사">농림토양평가관리산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '농화학기술사' }">selected="selected"</c:if> value="농화학기술사">농화학기술사</option>			
+										<option  <c:if test="${ gd_certificate eq '목재교육전문가' }">selected="selected"</c:if> value="목재교육전문가">목재교육전문가</option>
+										<option  <c:if test="${ gd_certificate eq '버섯산업기사' }">selected="selected"</c:if> value="버섯산업기사">버섯산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '버섯종균기능사' }">selected="selected"</c:if> value="버섯종균기능사">버섯종균기능사</option>
+										<option  <c:if test="${ gd_certificate eq '산림교육전문가(숲 해설가)' }">selected="selected"</c:if> value="산림교육전문가(숲 해설가)">산림교육전문가(숲 해설가)</option>
+										<option  <c:if test="${ gd_certificate eq '산림기능사' }">selected="selected"</c:if> value="산림기능사">산림기능사</option>
+										<option  <c:if test="${ gd_certificate eq '산림기사' }">selected="selected"</c:if> value="산림기사">산림기사</option>
+										<option  <c:if test="${ gd_certificate eq '산림기술사' }">selected="selected"</c:if> value="산림기술사">산림기술사</option>
+										<option  <c:if test="${ gd_certificate eq '산림산업기사' }">selected="selected"</c:if> value="산림기능사">산림산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '수목치료기술자' }">selected="selected"</c:if> value="수목치료기술자">수목치료기술자</option>
+										<option  <c:if test="${ gd_certificate eq '시설원예기사' }">selected="selected"</c:if> value="시설원예기사">시설원예기사</option>
+										<option  <c:if test="${ gd_certificate eq '시설원예기술사' }">selected="selected"</c:if> value="시설원예기술사">시설원예기술사</option>
+										<option  <c:if test="${ gd_certificate eq '시설원예산업기사' }">selected="selected"</c:if> value="시설원예산업기사">시설원예산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '식물보호기사' }">selected="selected"</c:if> value="식물보호기사">식물보호기사</option>
+										<option  <c:if test="${ gd_certificate eq '식물보호기술사' }">selected="selected"</c:if> value="식물보호기술사">식물보호기술사</option>
+										<option  <c:if test="${ gd_certificate eq '식물보호산업기사' }">selected="selected"</c:if> value="식물보호산업기사">식물보호산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '유기농업기능사' }">selected="selected"</c:if> value="유기농업기능사">유기농업기능사</option>
+										<option  <c:if test="${ gd_certificate eq '유기농업기사' }">selected="selected"</c:if> value="유기농업기사">유기농업기사</option>
+										<option  <c:if test="${ gd_certificate eq '유기농업산업기사' }">selected="selected"</c:if> value="유기농업산업기사">유기농업산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '임산가공기사' }">selected="selected"</c:if> value="임산가공기사">임산가공기사</option>
+										<option  <c:if test="${ gd_certificate eq '임산가공기능사' }">selected="selected"</c:if> value="임산가공기능사">임산가공기능사</option>
+										<option  <c:if test="${ gd_certificate eq '임산가공산업기사' }">selected="selected"</c:if> value="임산가공산업기사">임산가공산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '임업종묘기능사' }">selected="selected"</c:if> value="임업종묘기능사">임업종묘기능사</option>
+										<option  <c:if test="${ gd_certificate eq '임업종묘기사' }">selected="selected"</c:if> value="임업종묘기사">임업종묘기사</option>							
+										<option  <c:if test="${ gd_certificate eq '원예기능사' }">selected="selected"</c:if> value="원예기능사">원예기능사</option>
+										<option  <c:if test="${ gd_certificate eq '자연생태복원기사' }">selected="selected"</c:if> value="자연생태복원기사">자연생태복원기사</option>
+										<option  <c:if test="${ gd_certificate eq '자연생태복원기술사' }">selected="selected"</c:if> value="자연생태복원기술사">자연생태복원기술사</option>
+										<option  <c:if test="${ gd_certificate eq '자연생태복원산업기사' }">selected="selected"</c:if> value="자연생태복원산업기사">자연생태복원산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '자연환경관리기술사' }">selected="selected"</c:if> value="자연환경관리기술사">자연환경관리기술사</option>
+										<option  <c:if test="${ gd_certificate eq '조경기능사' }">selected="selected"</c:if> value="조경기능사">조경기능사</option>
+										<option  <c:if test="${ gd_certificate eq '조경기사' }">selected="selected"</c:if> value="조경기사">조경기사</option>
+										<option  <c:if test="${ gd_certificate eq '조경산업기사' }">selected="selected"</c:if> value="조경산업기사">조경산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '종자기능사' }">selected="selected"</c:if> value="종자기능사">종자기능사</option>
+										<option  <c:if test="${ gd_certificate eq '종자기사' }">selected="selected"</c:if> value="종자기사">종자기사</option>
+										<option  <c:if test="${ gd_certificate eq '종자기술사' }">selected="selected"</c:if> value="종자기술사">종자기술사</option>
+										<option  <c:if test="${ gd_certificate eq '종자산업기사' }">selected="selected"</c:if> value="종자산업기사">종자산업기사</option>
+										<option  <c:if test="${ gd_certificate eq '토양환경기사' }">selected="selected"</c:if> value="토양환경기사">토양환경기사</option>
+										<option  <c:if test="${ gd_certificate eq '토양환경기술사' }">selected="selected"</c:if> value="토양환경기술사">토양환경기술사</option>
+										<option  <c:if test="${ gd_certificate eq '화훼장식기능사' }">selected="selected"</c:if> value="화훼장식기능사">화훼장식기능사</option>
+										<option  <c:if test="${ gd_certificate eq '화훼장식기사' }">selected="selected"</c:if> value="화훼장식기사">화훼장식기사</option>
+										<option  <c:if test="${ gd_certificate eq '화훼장식산업기사' }">selected="selected"</c:if> value="화훼장식산업기사">화훼장식산업기사</option>
+		                            </select>                            
+		                       	</td>
+	                       	</c:forEach>	                     	
+                       	</c:if>
                        	<td>  
                             <a href="javascript:;" class="add_btn"><img src="../img/sum_ico.png"/></a>
                         </td>
@@ -430,37 +504,37 @@
                             <td>
                             
                 				<label>
-				                    <input type="checkbox" name="gd_major1" class="chk" value="분재갈이">
-				                    <span class="label label-info"><small>분재 갈이</small></span>
+				                    <input type="checkbox" name="gd_major1" <c:if test="${vo.gd_major1 eq '분재갈이' }">checked='checked'</c:if> value="분재갈이">
+				                    <span class="label label-info"><small>분재 갈이</small></span>				                    			                    
 				                </label>
  
 				                <label>
-				                    <input type="checkbox" name="gd_major2" class="chk" value="실내식물관리">
+				                    <input type="checkbox" name="gd_major2" <c:if test="${vo.gd_major2 eq '실내식물관리' }">checked='checked' checked disabled</c:if> value="실내식물관리">
 				                    <span class="label label-info"><small>실내 식물관리</small></span>
 				                </label>
 
 				                <label>
-				                    <input type="checkbox" name="gd_major3" class="chk" value="온라인상담">
+				                    <input type="checkbox" name="gd_major3" <c:if test="${vo.gd_major3 eq '온라인상담' }">checked='checked' checked disabled</c:if> value="온라인상담">
 				                    <span class="label label-info"><small>온라인 상담</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major4" class="chk" value="병충해관리" >
+				                    <input type="checkbox" name="gd_major4" <c:if test="${vo.gd_major4 eq '병충해관리' }">checked='checked' checked disabled</c:if> value="병충해관리">
 				                    <span class="label label-info"><small>병충해 관리</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major5" class="chk" value="가지치기" >
+				                    <input type="checkbox" name="gd_major5" <c:if test="${vo.gd_major5 eq '가지치기' }">checked='checked' checked disabled</c:if> value="가지치기">
 				                    <span class="label label-info"><small>가지 치기</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major6" class="chk" value="정원 식물케어" >
+				                    <input type="checkbox" name="gd_major6" <c:if test="${vo.gd_major6 eq '정원 식물케어' }">checked='checked' checked disabled</c:if> value="정원 식물케어">
 				                    <span class="label label-info"><small>정원 식물케어</small></span>
 				                </label>
 				                
 				                <label>
-				                    <input type="checkbox" name="gd_major7" class="chk" value="식물생장관리" >
+				                    <input type="checkbox" name="gd_major7" <c:if test="${vo.gd_major7 eq '식물생장관리' }">checked='checked' checked disabled</c:if> value="식물생장관리">
 				                    <span class="label label-info"><small>식물 생장관리</small></span>
 				                </label>
                             </td>
@@ -473,7 +547,6 @@
                     <div>
                     <a href="javascript:;" class="btn" onclick="goSave();">저장</a> 
                     <a href="/plant/gd/myInfo.do" class="btn">취소</a>
-                    <button onclick="history.forward()">취소</button>
                     </div>
                     <div>별표가 있는 항목은 필수 항목입니다.</div>
                 </div>

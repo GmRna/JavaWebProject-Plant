@@ -128,8 +128,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO myInfo(String user_id) {
-		return mapper.myInfo(user_id);
+	public UserVO myInfo(int user_no) {
+		return mapper.myInfo(user_no);
 	}
 
 	@Override

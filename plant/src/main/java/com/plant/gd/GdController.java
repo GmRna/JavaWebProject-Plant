@@ -36,7 +36,6 @@ public class GdController {
 	@GetMapping("/gd/list.do")
 	public String index(Model model, GdVO vo) {
 		model.addAttribute("data", service.index(vo));
-	
 		return "/plant/gd/list";
 	}
 	
@@ -134,11 +133,11 @@ public class GdController {
 		}		
 	}	
 	
-	@RequestMapping("/gd/myInfo")
+	@RequestMapping("/gd/myInfo.do")
 	public String myInfo(GdVO vo, Model model, HttpServletRequest req) {
 		HttpSession sess = req.getSession();
 		vo = (GdVO) sess.getAttribute("loginGdInfo");
-		GdVO data = service.myInfo(vo.getGd_id());
+		GdVO data = service.myInfo(vo.getGd_no());
 		model.addAttribute("vo", data);
 		return "/plant/gd/myInfo";
 	}
@@ -148,7 +147,7 @@ public class GdController {
 		if(service.delete(vo.getGd_no())) {
 		
 		model.addAttribute("msg", "삭제되었습니다.");
-		model.addAttribute("url", "list.do");
+		model.addAttribute("url", "/plant/gd/list.do");
 		return "common/alert";
 		} else {
 		model.addAttribute("msg", "삭제실패");
@@ -160,35 +159,29 @@ public class GdController {
 	public String edit(GdVO vo, Model model, HttpServletRequest req) {
 		HttpSession sess = req.getSession();
 		vo = (GdVO) sess.getAttribute("loginGdInfo");
-		GdVO data = service.myInfo(vo.getGd_id());
+		GdVO data = service.myInfo(vo.getGd_no());
 		model.addAttribute("vo", data);
 		return "/plant/gd/edit";
 	}
-	
+
 	@PostMapping("/gd/edit.do")
 	public String edit(GdVO vo, Model model, @RequestParam MultipartFile picorg, HttpServletRequest req) {
-		
 		if(!picorg.isEmpty()) {
 			// 파일명 
 			String org = picorg.getOriginalFilename();
 			System.out.println("org : "+ org);
 			String ext = org.substring(org.lastIndexOf(".")); 	// 확장자 
 			String real = new Date().getTime()+ext;
-			
 			// 파일 저장
 			String path = req.getRealPath("/upload/");
 			try {
 				picorg.transferTo(new File(path+real));
-			} catch (Exception e) {}
-			
+			} catch (Exception e) {}			
 			vo.setGd_picorg(org);
 			vo.setGd_picreal(real);
 		}
 		int no = service.insert2(vo);
 		if (no > 0) {
-			vo.setGd_no(no);
-			service.insertcar2(vo);
-			service.insertcer2(vo);
 			model.addAttribute("msg", "정상적으로 수정되었습니다.");
 			model.addAttribute("url", "/plant/gd/myInfo.do");
 			return "common/alert";

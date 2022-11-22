@@ -21,7 +21,7 @@ public interface UserMapper {
 	int delete(int user_no);
 	int count(UserVO vo);
 	UserVO detail(int user_no);
-	UserVO myInfo(String user_id);
+	UserVO myInfo(int user_no);
 	int edit(UserVO vo);
 
 }

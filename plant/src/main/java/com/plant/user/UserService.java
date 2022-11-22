@@ -21,7 +21,7 @@ public interface UserService {
 	
 	boolean delete(int user_no);
 
-	UserVO myInfo(String string);
+	UserVO myInfo(int user_no);
 
 	UserVO list(int user_no);
 	

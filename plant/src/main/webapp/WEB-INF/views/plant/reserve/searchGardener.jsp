@@ -110,6 +110,8 @@
     			, category : $("#category").val()
     		}
     		, success : function(res) {
+    			console.log(Number($("#dateStart").val().replace(/\-/g,'')))
+    			console.log(Number($("#dateEnd").val().replace(/\-/g,'')))
     			$("#profile").html(res); // profile에 프로필 카드 호출
     		}
     	});
