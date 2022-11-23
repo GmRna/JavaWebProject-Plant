@@ -45,9 +45,6 @@
     		return false;
     	}
     </script>
-    <style type="text/css">
-      
-    </style>
 </head>
 <body>
     
@@ -74,6 +71,7 @@
                             </div>
                         </div>
                     </div>
+        
                 </div>
             </div>
         </form>

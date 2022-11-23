@@ -114,60 +114,9 @@
 	    			});
     			}
     		});
-    		
-    		
-    		// 식물 타입
-    		$(".selectList").css('display', 'none');
-    		
-    		$("#typeList li").on('click', function () {
-    			$(".selectList").css('display', 'block');
-    		})
-    		
-    		// 중분류
-    		$("#selectType").change(function(){
-    			stype = $("#selectType").val();
-    			plantTypelist2(stype);
-    		});
-    		
-    		// 소분류 -- 완전히 작물이름
-    		$("#selectType2").change(function () {
-    			$("#user_planttype").val( $("#selectType2").val()); 
-    		})
+
     	})
     	
-    	
-    	function plantTypelist(stype) {
-			$.ajax ({
-				url : '/plant/plantType/plantStypeF.do',   
-				method : 'GET', 
-				dataTpye : 'json',
-				data : { stype : stype },
-				success : function(list) {
-					$("#selectType").html(list);
-				}, error: function (xhr, desc, err) {
-					alert('에러가 발생');
-					console.log(err);
-					return; 
-			    }
-			})
-		}
-
-		function plantTypelist2(stype) {
-			console.log("@@@@@2"+stype);
-			$.ajax ({
-				url : '/plant/plantType/plantStypeF2.do',   
-				method : 'GET', 
-				dataTpye : 'json',
-				data : { stype : stype },
-				success : function(list) {
-					$("#selectType2").html(list);
-				}, error: function (xhr, desc, err) {
-					alert('에러가 발생');
-					console.log(err);
-					return; 
-			    }
-			})
-		}
     </script>
 
 	<script>
@@ -211,17 +160,12 @@
 			 
 			}).open();
 		}
-		
+ 
 </script>
 
 </head>
   <style>
         td{padding:5px;}
-	#typeList{
-		display: -webkit-box;
-		list-style: none;
-		margin: auto;
-	}
   </style>
 <body>
     
@@ -296,27 +240,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <th>반려식물 품종</th>
+                            <th>반려식물 종류</th>
                             <td>
-	                            <div id="plantType">
-									<ul id="typeList">
-										<li><a id="FC" onclick="plantTypelist('FC')">식량 작물</a></li>
-										<li><a id="IC" onclick="plantTypelist('IC')">특용 작물</a></li>
-										<li><a id="VC" onclick="plantTypelist('VC')">채소</a></li>
-										<li><a id="FT" onclick="plantTypelist('FT')">과수</a></li>
-										<li><a id="FL" onclick="plantTypelist('FL')">화훼</a></li>
-										<li><a id="FG" onclick="plantTypelist('FG')">녹비작물</a></li>
-									</ul>
-									<div class="selectList">
-										<select id="selectType">
-											<option>선택해주십시오</option>
-										</select>
-										
-										<select id="selectType2">
-											<option>선택해주십시오</option>
-										</select>
-									</div>
-								</div>
                                 <input type="text" name="user_planttype" id="user_planttype" value="${vo.user_planttype }"  maxlength="25" style="float:left;">
                             </td>
                         </tr>

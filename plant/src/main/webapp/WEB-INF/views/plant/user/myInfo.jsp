@@ -90,6 +90,7 @@
                         <tr>
                             <th>*비밀번호</th>
                             <td>
+                            	${vo.user_pwd }
                             </td>
                         </tr>
                         <tr>

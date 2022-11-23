@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -22,7 +21,7 @@
                 <h3 class="sub_title">일반회원 목록</h3>
                 <div class="bbs">
                     <table class="list">
-                    <p><span><strong>총 ${data.totalCount} 명</strong>  |  ${data.nowPage}/${data.totalPage}페이지</span></p>
+                    <p><span><strong>총 ${data.totalCount} 명</strong>  |  ${data.page}/${data.totalPage}페이지</span></p>
                         <caption>일반회원 목록</caption>
                         <colgroup>
                             <col width="*" />
@@ -56,7 +55,7 @@
 						</c:if>
                         <c:forEach var="vo" items="${data.list }" varStatus="status">           
                             <tr>
-                                <td>${data.totalCount-status.index-(UserVO.page-1)*UserVO.pageRow }</td> 
+                                <td>${data.totalCount-status.index-(userVO.page-1)*userVO.pageRow }</td> 
                                 <td class="txt_l">
                                     <a href="detail.do?user_no=${vo.user_no }">${vo.user_name} </a>
                                 </td>
@@ -104,8 +103,9 @@
                         <form method="get" name="searchForm" id="searchForm" action="">
                             <span class="srchSelect">
                                 <select id="stype" name="stype" class="dSelect" title="검색분류 선택">
-                                    <option value="name">이름</option>
-                                    <option value="favrplant">관심식물</option>
+                                	<option value="all">전체</option>
+                                    <option value="user_name">이름</option>
+                                    <option value="user_favrplant">관심식물</option>
                                 </select>
                             </span>
                             <span class="searchWord">
@@ -115,6 +115,7 @@
                         </form>
                         
                     </div>
+                    
                 </div>
             </div>
         </div> 
