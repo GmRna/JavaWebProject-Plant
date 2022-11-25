@@ -26,7 +26,7 @@
 <script>
 function search() {
 	sword = $('input[name="sword"]').val();
-	location.href = '/plant/plantbook/search.do?sword='+sword;
+	location.href = '/plant/plantbook/searchElastic.do?sword='+sword;
 }
 
 $(function () {

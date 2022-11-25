@@ -22,7 +22,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 public class Elasticsearch {
 	
 	public static void main (String [] args) throws Exception {
-		List<Map<String, Object>> list = getPlant("plantbook", "all", "사라하");
+		List<Map<String, Object>> list = getPlant("plantbook2", "all", "사라하");
 		for (Map<String, Object> map : list) {
 			System.out.println("plantbook_no : "+map.get("plantbook_no")+"\t cntntsSj : "+map.get("cntntsSj")+"\t mainChartrInfo: "+map.get("mainChartrInfo"));
 		}

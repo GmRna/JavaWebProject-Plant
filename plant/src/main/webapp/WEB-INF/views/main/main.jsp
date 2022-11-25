@@ -10,7 +10,14 @@
 <title>메인 페이지</title>
 
 <link rel="stylesheet" href="/plant/css/main/main.css"  type="text/css"/>
+<script type="text/javascript">
+function searchElastic() {
+	sword = $('input[name="headersword"]').val();
+	console.log("dd"+sword);
+	location.href = '/plant/plantbook/searchElastic.do?sword='+sword;
+}
 
+</script>
 </head>
 <body class="homepage is-preload">
 <div id="page-wrapper">
@@ -117,9 +124,9 @@
 	<section id="banner">
 		<header>
 			<div class="search-mode">
-			    <input type="text" class="searchtext" placeholder="   식물도감 검색">
+			    <input type="text" name="headersword" class="searchtext" placeholder="   식물도감 검색" onkeyup="if(window.event.keyCode==13){searchElastic()}" >
 			    <div class="searicon">
-					<img class="searchimg"src="/plant/img/petplant/search.png">
+					<img class="searchimg"src="/plant/img/petplant/search.png" onclick="searchElastic()">
 				</div>
 		    </div>
 		</header>
@@ -133,12 +140,20 @@
 					<section>
 						<ul class="contact">
 							<li>
-								<h3>Address</h3>
-								<p>
-									Untitled Incorporated<br />
-									1234 Somewhere Road Suite<br />
-									Nashville, TN 00000-0000
-								</p>
+								<h3>css 참고</h3>
+								<p><a href="https://velog.io/@eunjin/Javascript-Project%EC%9D%B8%EC%8A%A4%ED%83%80%EA%B7%B8%EB%9E%A8-%ED%81%B4%EB%A1%A0%EC%BD%94%EB%94%A9">반려식물 게시판-인스타</a></p>
+								<p><a href="https://html5up.net/dopetrope">메인페이지 및 전반적인 페이지</a></p>
+								<p><a href="https://html5up.net/txt">반려식물 관찰일지 페이지</a></p>
+							</li>
+						</ul>
+					</section>
+				</div>
+				<div class="col-4 col-12-medium">
+					<section>
+						<ul class="contact">
+							<li>
+								<h3>조원</h3>
+								<p>김우성 류휘문 박현정 송태호</p>
 							</li>
 						</ul>
 					</section>
@@ -147,7 +162,6 @@
 					<!-- Copyright -->
 					<div id="copyright">
 						<ul class="links">
-							<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 							<li>
 								<p><a href="/plant/admin/login.do">관리자 로그인</a></p>
 							</li>
