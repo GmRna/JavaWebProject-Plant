@@ -91,7 +91,7 @@
     	function commentDel(no) {
     		if (confirm("댓글을 삭제하시겠습니까?")) {
     			$.ajax({
-    				url : '/plant/questcomment/delete.do?quest_no='+questreply_no,
+    				url : '/plant/questcomment/delete.do?no='+no,
     				success : function(res) {
     					if (res.trim() == '1') {
     						alert('댓글이 정상적으로 삭제되었습니다.');

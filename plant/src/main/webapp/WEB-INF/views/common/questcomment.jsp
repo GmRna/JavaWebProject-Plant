@@ -20,10 +20,10 @@
                         <c:forEach var="vo" items="${questcomment.list}">     
                             <tr>
                                 <td class="txt_l" style="text-align:left;">
-                                	${vo.content}  <c:if test="${logininfo.no == vo.user_no }"><a href="javascript:commentDel(${vo.no });">[삭제]</a></c:if>
+                                	${vo.user_nick }  <c:if test="${loginUserInfo.user_no eq vo.user_no }"><button onclick='commentDel(${vo.no})'>[삭제]</button></c:if>
                                 </td>
-                                <td class="writer">
-                                     ${vo.user_no }
+                                <td colspan="2" class="writer">
+                                	${vo.content}
                                 </td>
                                 <td class="date"><fmt:formatDate value="${vo.regdate }" pattern="yyyy-MM-dd"/></td>
                             </tr>
