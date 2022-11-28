@@ -773,7 +773,7 @@ table td{
 		for(var i = 0; i<reservableChooseList.length; i++) {
 			var go = false;
 			var dateVal = $('#rcList tr').eq(i).find("td:eq(0)").text(); // input hour값
-			var hourVal = $('#rcList tr').eq(i).find("td:eq(1)").find("input").val(); // input hour값
+			var hourVal = Math.floor($('#rcList tr').eq(i).find("td:eq(1)").find("input").val()); // input hour값
 
 			if (Number(hourVal) >= 9 && Number(hourVal) <= 20) { // 9시 ~20시 일때만 실행
 				go = true;
@@ -944,7 +944,7 @@ table td{
 		var result = "";
 		var dateData = $('#selectDate tr').eq(0).find("td:eq(1)").attr("id");
 		for(var i=0; i<trLength; i++) {
-			var hourData = $('#addReservableSchedule tr').eq(i).find("td:eq(0)").find("input").val();
+			var hourData = Math.floor($('#addReservableSchedule tr').eq(i).find("td:eq(0)").find("input").val());
 			var majorData = $('#addReservableSchedule tr').eq(i).find("td:eq(1)").find("select").val();
 			if(Number(hourData) >= 9 && Number(hourData) <= 20) { // 9시 ~20시 일때만 실행
 				excute = true;
