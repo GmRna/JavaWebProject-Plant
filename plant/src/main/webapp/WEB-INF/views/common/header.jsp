@@ -33,6 +33,9 @@ function searchElastic() {
 	location.href = '/plant/plantbook/searchElastic.do?sword='+sword+'&stype='+stype;
 }
 
+function goHome() {
+	location.href = '/plant/main/index.do';
+}
 </script>
 <style type="text/css">
 
@@ -54,7 +57,7 @@ function searchElastic() {
 	<nav id="nav">
 	<header id="header">
 			<div id="plantBar">
-				<span id="plantTxt">P L A N T</span>
+				<span id="plantTxt" onclick="goHome()">P L A N T</span>
 				
 				<input type="search" id="plantHederSearch" placeholder="검색어를 입력해주세요" name="headersword" onkeyup="if(window.event.keyCode==13){searchElastic()}">
 				

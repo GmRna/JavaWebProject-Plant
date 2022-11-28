@@ -24,38 +24,38 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 public class Elasticsearch {
 	
 	public static void main (String [] args) throws Exception {
-		List<Map<String, Object>> list = getPlant("plantbook2", "mainChartrInfo", "참누리");
+		List<Map<String, Object>> list = getPlant("plantbook", "all", "참누리");
 		for (Map<String, Object> map : list) {
 			System.out.println("plantbook_no : "+map.get("plantbook_no")+"\t cntntsSj : "+map.get("cntntsSj")+"\t mainChartrInfo: "+map.get("mainChartrInfo"));
 		}
 	}
 	
-	public static List<Map<String, Object>> getPlant(String index, String field, String sword) throws Exception {
+	public static List<Map<String, Object>> getPlant(String index, String field, String sword) 
+			throws Exception {
 		
-		// 여러건 조회 
 		HttpHost host = new HttpHost("localhost",9200);
 		RestClientBuilder restClientBuilder = RestClient.builder(host);
 		RestHighLevelClient client = new RestHighLevelClient(restClientBuilder);
 		
-		// 필드 2개 이상 조회하기 위해서 
 		MultiSearchRequest request = new MultiSearchRequest();
 		
 		SearchRequest searchRequest1 = new SearchRequest(index);
 		SearchRequest searchRequest2 = new SearchRequest(index);
 		
-		String mainChartrInfo = "mainChartrInfo";
-		String cntntsSj = "cntntsSj";
-		
+				
 		if (field.equals("all")) {
+			String mainChartrInfo = "mainChartrInfo";
+			String cntntsSj = "cntntsSj";
+
 			SearchSourceBuilder sourceBuilder1 = new SearchSourceBuilder();
-			sourceBuilder1.query(QueryBuilders.fuzzyQuery(mainChartrInfo, sword).fuzziness(Fuzziness.ONE));
-			// 페이징 처리 관련 -----  디폴트 10개 임 
+			sourceBuilder1.query(QueryBuilders.matchQuery(mainChartrInfo, sword));
+
 			sourceBuilder1.size(3200);
 			sourceBuilder1.from(0);
 
 			SearchSourceBuilder sourceBuilder2 = new SearchSourceBuilder();
-			sourceBuilder2.query(QueryBuilders.fuzzyQuery(cntntsSj, sword).fuzziness(Fuzziness.ONE));
-			// 페이징 처리 관련 -----  디폴트 10개 임 
+			sourceBuilder2.query(QueryBuilders.matchQuery(cntntsSj, sword));
+
 			sourceBuilder2.size(3200);
 			sourceBuilder2.from(0);
 			
@@ -75,7 +75,7 @@ public class Elasticsearch {
 						  arrList.add(sourceMap);
 					  }
 				}
-				System.out.println("all @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+				System.out.println("all @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+arrList.size());
 				return arrList;
 				
 			}catch (IOException e) {
@@ -84,7 +84,7 @@ public class Elasticsearch {
 		}
 		else if(field.equals("cntntsSj")) {
 			SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-			sourceBuilder.query(QueryBuilders.matchQuery(cntntsSj, sword));			
+			sourceBuilder.query(QueryBuilders.matchQuery(field, sword));			
 			
 			// 페이징 처리 관련 -----  디폴트 10개 임 
 			sourceBuilder.size(3200);
@@ -104,7 +104,7 @@ public class Elasticsearch {
 		
 		else {
 			SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-			sourceBuilder.query(QueryBuilders.matchQuery(mainChartrInfo, sword));
+			sourceBuilder.query(QueryBuilders.matchQuery(field, sword));
 			
 			// 페이징 처리 관련 -----  디폴트 10개 임 
 			sourceBuilder.size(3200);

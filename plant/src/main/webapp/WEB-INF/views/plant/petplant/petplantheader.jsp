@@ -30,7 +30,7 @@ function goPetplantWrite() {
 	location.href = "/plant/plant/write.do";
 }
 function goplantList() {
-	location.href = "/plant/plant/list.do";
+	location.href = "/plant/main/index.do";
 }
 
 function search() {

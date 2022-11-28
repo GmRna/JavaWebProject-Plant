@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainIndexController {
 	
-	@GetMapping("/")
+	@GetMapping("/main/index.do")
 	public String mainIndex () { 
 		return "main/main";
 	}

@@ -46,8 +46,8 @@ $(function () {
 						<h2> 📚 식 물 도 감 📚 </h2>
 						<select class="stype">
 							<option value="all">전체</option>
-							<option value="cntntsSj">품종명</option>
-							<option value="mainChartrInfo">내용</option>
+							<option value="cntntsSj">품종 명</option>
+							<option value="mainChartrInfo">주요 특성</option>
 						</select> 
 						<input type="search" id="plantbookSearch" onkeyup="if(window.event.keyCode==13){search()}" name="sword" placeholder="검색어를 입력해주세요"> 
 					</div>

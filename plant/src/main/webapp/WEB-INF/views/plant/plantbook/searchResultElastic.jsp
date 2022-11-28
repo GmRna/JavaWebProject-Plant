@@ -100,8 +100,8 @@ function search() {
 	<div class="">
 		<select class="stype">
 			<option value="all">전체</option>
-			<option value="cntntsSj">품종명</option>
-			<option value="mainChartrInfo">내용</option>
+			<option value="cntntsSj">품종 명</option>
+			<option value="mainChartrInfo">주요 특성</option>
 		</select> 
 		<input type="search" id="plantbookSearch" onkeyup="if(window.event.keyCode==13){search()}" name="sword" value="${param.sword}"> <input type="button" id="button" onclick="search()" value="검색">
 	</div>
@@ -138,20 +138,6 @@ function search() {
 	<div class="boxxx">
 	</div>
 	
-	<div class="paging">
-		<ul id="pagingUl">
-			<c:if test="${list.prev == true }">
-		   		<li class="pagingLi"><a href="search.do?page=${list.startPage -1}&stype=${param.stype}&sword=${param.sword}"><</a>
-			</c:if>
-			<c:forEach var="p" begin="${list.startPage }" end="${list.endPage }">
-				<li class="pagingLi"><a href='search.do?page=${p }&sword=${param.sword}' <c:if test="${plantVO.page == p }">class='current'</c:if>>${p }</a></li>
-			</c:forEach>
-			<c:if test="${list.next == true }">
-				<li class="pagingLi"><a href="search.do?page=${list.endPage+1 }&sword=${param.sword}">></a>
-			</c:if>
-		</ul> 
-	</div>
-
 
 </div>
 </div>

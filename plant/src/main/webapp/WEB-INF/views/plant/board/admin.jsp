@@ -337,7 +337,7 @@ function test() {
 					</dl>
 					<dl style="width:12.5%;">
 						<dt><a href="javascript:;">신고 게시판</a></dt>
-						<dd class="frist"><a href="javascript:;" onclick="clickMenu('report', '신고 게시판', '/common/report/reportList.do', false)">신고 게시판</a></dd>
+						<dd class="frist"><a href="javascript:;" onclick="clickMenu('report', '신고 게시판', '/reportList.do', false)">신고 게시판</a></dd>
 					</dl>
 					<dl style="width:12.5%;">
 						<dt><a href="javascript:;">식물도감</a></dt>
@@ -386,7 +386,7 @@ function test() {
 					<dt id="portfolio" class="gnb_menu">신고 게시판</dt>
 					<dd class="gnb_submenu">
 						<ul>	
-							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '신고 게시판', '/common/report/reportList.do', false)">신고 게시판</li>
+							<li id="portfolio1_submenu" onclick="clickMenu('portfolio1', '신고 게시판', '/reportList.do', false)">신고 게시판</li>
 						</ul>
 					</dd>
 					<dt id="portfolio" class="gnb_menu">식물도감</dt>
