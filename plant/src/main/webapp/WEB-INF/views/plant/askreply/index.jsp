@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>  
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -36,9 +37,8 @@
                   <a href="index.do" ><h3 class="sub_title">문의사항</h3></a>
     
                 <div class="bbs">
+             	<p><span><strong>총${data.totalCount }개</strong>  | ${askReplyVO.page }/${ data.totalPage} 페이지</span></p>     
                     <table class="list">
-                           <h3 class="logconfirm" style="text-align:right;"></h3>
-                     
                         <caption>문의사항 목록</caption>
                         <colgroup>
                             <col width="80px" />
@@ -83,8 +83,7 @@
                         </tbody>
                     </table>
                       <div class="btnSet"  style="text-align:right;">
-                      	<p><span><strong>총${data.totalCount }개</strong>  | ${askReplyVO.page }/${ data.totalPage} 페이지</span></p>     
-                      	<a class="btn" style="text-align:right;" href="javascript:goWrite();">글작성 </a>
+                      	<a class="btn" href="javascript:goWrite();">글작성 </a>
                     </div>
            		
            		  <div class="pagenate clear">

@@ -10,6 +10,7 @@ import lombok.Setter;
 public class PlantBookVO {
 	
 	private String sword;
+	private String stype;
 	
 	private int plantbook_no;
 	private String atchFileLink;

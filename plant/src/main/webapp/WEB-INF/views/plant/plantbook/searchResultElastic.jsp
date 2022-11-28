@@ -86,38 +86,10 @@ th.down {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 function search() {
-	sword = $('input[name="sword"]').val();
-	location.href = '/plant/plantbook/searchElastic.do?sword='+sword;
+	var sword = $('input[name="sword"]').val();
+	var stype = $('.stype').val();
+	location.href = '/plant/plantbook/searchElastic.do?sword='+sword+'&stype='+stype;
 }
-
-function booksave(plantbook_no) {
-	<c:if test="${empty loginUserInfo}">
-		alert("로그인 후 이용해주십시오.");
-		location.href = "/plant/user/login.do";
-	</c:if>
-	
-	$.ajax ({
-		url : 'checkbook.do',
-		data : { plantbook_no : plantbook_no},
-		method : 'post',
-		dataType: 'json',
-		success : function (data) {
-			if (data == 1){
-				console.log(data+"담기사진");
-				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/bookmark1.png');
-			} else {
-				console.log(data+"해제사진");
-				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/bookmark2.png');
-			}
-		}, error: function (xhr, desc, err) {
-            alert('에러가 발생');
-            console.log(err);
-            return; 
-        }
-		
-	})
-}
-
 </script>
 </head>
 <body>
@@ -126,6 +98,11 @@ function booksave(plantbook_no) {
 	<div class="size" id="gdView">	
 	
 	<div class="">
+		<select class="stype">
+			<option value="all">전체</option>
+			<option value="cntntsSj">품종명</option>
+			<option value="mainChartrInfo">내용</option>
+		</select> 
 		<input type="search" id="plantbookSearch" onkeyup="if(window.event.keyCode==13){search()}" name="sword" value="${param.sword}"> <input type="button" id="button" onclick="search()" value="검색">
 	</div>
 	

@@ -41,6 +41,11 @@ function search() {
 function goMenu() {
 	$( '.menunone' ).toggleClass( 'menudiv' );
 }
+
+function savepetList() {
+	location.href = "/plant/plant/savepetList.do"; 
+}
+
 </script>
 <style type="text/css">
 #menu{
@@ -235,7 +240,7 @@ ul > li > a {
 	    <div class="nav-2">
 			<c:if test="${!empty loginUserInfo}">
 				<img src="/plant/img/common/editBlack.png" alt="글쓰기" onclick="goPetplantWrite()" > 
-				<img src="/plant/img/petplant/save1.png" alt="담기목록" onclick="goHome()"><span id="txt" onclick="goHome()"></span> 
+				<img src="/plant/img/petplant/save1.png" alt="담기목록" onclick="savepetList()"><span id="txt" onclick="goHome()"></span> 
 				<img class="headerpic" src="<%=request.getContextPath()%>/upload/${loginUserInfo.user_plantfile_real}" alt="마이페이지" onclick="goMypage()">
 			</c:if>
 			<c:if test="${empty loginUserInfo }">

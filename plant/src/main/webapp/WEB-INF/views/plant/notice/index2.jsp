@@ -24,7 +24,7 @@
     
                 <div class="bbs">
                     <table class="list">
-                    <p><span><strong>총 ${data.totalCount } 개</strong>  |  1/${data.totalPage } 페이지</span></p>
+                    <p><span><strong>총 ${data.totalCount } 개</strong>  |  ${ noticeVO.page}/${data.totalPage } 페이지</span></p>
 					<caption>공지사항 목록</caption>
 					<colgroup>
 						<col width="10%" />

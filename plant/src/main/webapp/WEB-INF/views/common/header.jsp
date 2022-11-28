@@ -28,9 +28,9 @@ function gdlogin() {
 }
 
 function searchElastic() {
-	sword = $('input[name="headersword"]').val();
-	console.log("dd"+sword);
-	location.href = '/plant/plantbook/searchElastic.do?sword='+sword;
+	var sword = $('input[name="headersword"]').val();
+	var stype = "all";
+	location.href = '/plant/plantbook/searchElastic.do?sword='+sword+'&stype='+stype;
 }
 
 </script>

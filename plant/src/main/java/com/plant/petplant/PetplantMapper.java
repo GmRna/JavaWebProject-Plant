@@ -91,6 +91,10 @@ public interface PetplantMapper {
 	List<PetplantVO> searchpet(PetplantVO vo);
 	// 반려식물 게시판 - 삭제
 	int delete(PetplantVO vo);
+	// 반려식물 게시판 - 저장한 게시물 리스트
+	List<PetplantVO> savepetList(PetplantVO vo);
+	// 반려식물 게시판 - 저장한 게시물 카운트
+	int savelistCount(PetplantVO vo);
 
 
 	

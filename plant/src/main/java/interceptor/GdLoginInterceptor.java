@@ -21,7 +21,7 @@ public class GdLoginInterceptor implements HandlerInterceptor {
 			res.setContentType("text/html;charset=utf-8"); // 한글일 경우 써야 안깨져서 나옴
 			PrintWriter out = res.getWriter();
 			out.println("<script>");
-			out.println("alert('로그인 후 사용 가능!!!!!')");
+			out.println("alert('가드너 로그인 후 사용 가능!!!!!')");
 			out.println("location.href='/plant/gd/login.do';");
 			out.println("</script>");
 			out.flush();

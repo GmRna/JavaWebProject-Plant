@@ -290,12 +290,41 @@ public class PetplantServiceImpl implements PetplantService {
 		map.put("list", list);
 		
 		return map;
+	}
+
+	// 반려식물 게시물 리스트
+	@Override
+	public Map savepetList(PetplantVO vo) {
+		int totalCount = mapper.savelistCount(vo);
+		
+		// 총 페이지 수
+		int totalPage = totalCount / vo.getPageRow();
+		if (totalCount % vo.getPageRow() > 0) totalPage++;
+		
+		int startIdx = (vo.getPage() -1) * vo.getPageRow();
+		vo.setStartIdx(startIdx);
+		List<PetplantVO> list = mapper.savepetList(vo);
+
+		// 페이징 처리
+		int endPage = (int)(Math.ceil(vo.getPage()/ 10.0)* vo.getPageRow());
+		int startPage = endPage-9;
+		
+		if (endPage > totalPage) endPage = totalPage;
+		boolean prev = startIdx > 1 ? true : false;
+		boolean next = endPage < totalPage ? true : false;
+	
+		Map map = new HashMap();
+		
+		map.put("totalCount", totalCount);
+		map.put("totalPage", totalPage);
+		map.put("startPage", startPage);
+		map.put("endPage", endPage);
+		map.put("prev", prev);
+		map.put("next", next);
+		map.put("list", list);
+		
+		return map;
 	} 
-	
-
-
-	
-	
 	
 }
 

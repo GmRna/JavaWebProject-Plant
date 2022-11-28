@@ -46,7 +46,10 @@ public class PetplantVO {
 	private int like_check;	// 게시판 좋아요 했는지 안했는지 체크
 	private int like_replycheck;	// 댓글 좋아요 했는지 안했는지 체크
 
+	// 저장
 	private int ppp_check;
+	private int plantput_no;
+	private Timestamp regdate;
 	
 	private String sword;
 	

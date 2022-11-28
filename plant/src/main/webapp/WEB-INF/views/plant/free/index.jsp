@@ -37,6 +37,7 @@
                   <a href="index.do" ><h3 class="sub_title">자유게시판</h3></a>
     
                 <div class="bbs">
+            	<p><span><strong>총${data.totalCount }개</strong>  | ${freeVO.page }/${ data.totalPage} 페이지</span></p>     
                     <table class="list">
                         <caption>자유게시판 목록</caption>
                         <colgroup>
@@ -85,7 +86,6 @@
                      </table>
                            
                     <div class="btnSet"  style="text-align:right;">
-                      	<p><span><strong>총${data.totalCount }개</strong>  | ${freeVO.page }/${ data.totalPage} 페이지</span></p>     
                       	<a class="btn" href="javascript:goWrite();">글작성 </a>
                     </div>
                     <div class="pagenate clear">

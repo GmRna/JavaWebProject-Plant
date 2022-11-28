@@ -286,11 +286,12 @@
 	</delete>
 	
 	
-	
+	<!-- 반려식물 게시물 저장했는지 체크 -->
 	<select id="selectsavepetplant"  parameterType="com.plant.petplant.PetplantVO" resultType="java.lang.Integer" >
 		SELECT count(*) AS ppp_check FROM petplantput WHERE pet_no = #{pet_no} AND user_no = #{user_no}
 	</select>
 	
+	<!--  -->
 	<insert id="pluspetplant" parameterType="com.plant.petplant.PetplantVO">
 		INSERT INTO petplantput (
 			pet_no
@@ -302,8 +303,36 @@
 			, NOW()
 		) 
 	</insert>
-	
+	<!--  -->
 	<delete id="minuspetplant" parameterType="com.plant.petplant.PetplantVO">
 		DELETE FROM petplantput WHERE pet_no = #{pet_no} AND user_no = #{user_no}
 	</delete>
+	
+	<!-- 저장한 반려식물 게시물 리스트 -->
+	<select id="savepetList" parameterType="com.plant.petplant.PetplantVO" resultType="com.plant.petplant.PetplantVO" >
+		select *,
+			(select user_nick FROM plant.user WHERE user_no=#{user_no}) AS user_nick,
+			(select user_plantfile_real FROM plant.user WHERE user_no=#{user_no}) AS user_plantfile_real,
+			(select user_no FROM plant.user WHERE user_no=#{user_no}) AS user_writeNo,
+			(select count(*) from plant.ppLike where pet_no=a.pet_no and user_no= #{user_no} and ppreply_no=0) like_check,
+			(select count(*) from plant.ppLike where pet_no=a.pet_no and ppreply_no=0) as countLike,
+			(select count(*) from plant.ppReply where pet_no=a.pet_no) count_reply,
+			(select count(*) from plant.petplantput where pet_no=a.pet_no and user_no = #{user_no} ) as ppp_check
+		from plant.petplant a
+		INNER JOIN ( 
+			SELECT pet_no, group_concat(filename_real) AS filename_real
+			FROM plant.plant_file group by pet_no
+		) AS b
+	    ON (a.pet_no = b.pet_no)
+	    inner join plant.petplantput c
+	    on a.pet_no  = c.pet_no
+	    where a.user_no = #{user_no}
+		ORDER BY c.ppp_regdate DESC
+		LIMIT  ${startIdx},${pageRow}
+	</select>
+	
+	<!--  -->
+	<select id="savelistCount" parameterType="com.plant.petplant.PetplantVO" resultType="int">
+		SELECT count(*) FROM petplantput WHERE user_no = #{user_no}
+	</select>
 </mapper>

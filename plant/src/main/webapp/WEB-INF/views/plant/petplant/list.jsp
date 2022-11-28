@@ -230,7 +230,11 @@ $(function () {
 		})
 		
 	})
-	 $(window).scroll(function() {
+	
+	
+	
+	// 스크롤 맨 밑 닿으면 실행
+	$(window).scroll(function() {
         var scrolltop = $(document).scrollTop();
         var height = $(document).height();
         var height_win = $(window).height();
@@ -244,6 +248,7 @@ $(function () {
 })
 
 var page = 0; 
+
 
 function moreList() {
 	var container = $("#container");

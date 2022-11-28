@@ -42,10 +42,12 @@ public class PlantBookController {
 	
 	
 	@GetMapping("/plantbook/searchElastic.do")
-	public String searchElastic(PlantBookVO vo, @RequestParam String sword , HttpServletRequest req, Model model) throws Exception {
+	public String searchElastic(PlantBookVO vo, @RequestParam String sword , @RequestParam String stype,HttpServletRequest req, Model model) throws Exception {
 		vo.setSword(sword);
+		vo.setStype(stype);
 		
-		List<Map<String, Object>> list = Elasticsearch.getPlant("plantbook2", "all", sword);
+		List<Map<String, Object>> list = Elasticsearch.getPlant("plantbook", vo.getStype(), sword);
+		
 		Map searchList = new HashMap();
 		for (Map<String, Object> map : list) {
 			System.out.println((map.get("plantbook_no"))+"\t"+map.get("cntntsSj")+"\t"+map.get("mainChartrInfo"));

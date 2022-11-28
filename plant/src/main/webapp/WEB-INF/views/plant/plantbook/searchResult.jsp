@@ -86,37 +86,11 @@ th.down {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 function search() {
-	sword = $('input[name="sword"]').val();
-	location.href = '/plant/plantbook/search.do?sword='+sword;
+	var sword = $('input[name="sword"]').val();
+	var stype = $('.stype').val();
+	location.href = '/plant/plantbook/search.do?sword='+sword+'&stype='+stype;
 }
 
-function booksave(plantbook_no) {
-	<c:if test="${empty loginUserInfo}">
-		alert("로그인 후 이용해주십시오.");
-		location.href = "/plant/user/login.do";
-	</c:if>
-	
-	$.ajax ({
-		url : 'checkbook.do',
-		data : { plantbook_no : plantbook_no},
-		method : 'post',
-		dataType: 'json',
-		success : function (data) {
-			if (data == 1){
-				console.log(data+"담기사진");
-				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/bookmark1.png');
-			} else {
-				console.log(data+"해제사진");
-				$(".booksave"+plantbook_no).attr('src','/plant/img/petplant/bookmark2.png');
-			}
-		}, error: function (xhr, desc, err) {
-            alert('에러가 발생');
-            console.log(err);
-            return; 
-        }
-		
-	})
-}
 
 </script>
 </head>
@@ -166,21 +140,6 @@ function booksave(plantbook_no) {
 	
 	<div class="boxxx">
 	</div>
-	
-	<div class="paging">
-		<ul id="pagingUl">
-			<c:if test="${list.prev == true }">
-		   		<li class="pagingLi"><a href="search.do?page=${list.startPage -1}&stype=${param.stype}&sword=${param.sword}"><</a>
-			</c:if>
-			<c:forEach var="p" begin="${list.startPage }" end="${list.endPage }">
-				<li class="pagingLi"><a href='search.do?page=${p }&sword=${param.sword}' <c:if test="${plantVO.page == p }">class='current'</c:if>>${p }</a></li>
-			</c:forEach>
-			<c:if test="${list.next == true }">
-				<li class="pagingLi"><a href="search.do?page=${list.endPage+1 }&sword=${param.sword}">></a>
-			</c:if>
-		</ul> 
-	</div>
-
 
 </div>
 </div>

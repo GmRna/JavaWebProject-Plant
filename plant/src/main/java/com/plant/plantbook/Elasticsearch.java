@@ -10,6 +10,7 @@ import org.elasticsearch.action.search.MultiSearchRequest;
 import org.elasticsearch.action.search.MultiSearchResponse;
 import org.elasticsearch.action.search.MultiSearchResponse.Item;
 import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -19,10 +20,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
+
 public class Elasticsearch {
 	
 	public static void main (String [] args) throws Exception {
-		List<Map<String, Object>> list = getPlant("plantbook2", "all", "사라하");
+		List<Map<String, Object>> list = getPlant("plantbook2", "mainChartrInfo", "참누리");
 		for (Map<String, Object> map : list) {
 			System.out.println("plantbook_no : "+map.get("plantbook_no")+"\t cntntsSj : "+map.get("cntntsSj")+"\t mainChartrInfo: "+map.get("mainChartrInfo"));
 		}
@@ -47,12 +49,12 @@ public class Elasticsearch {
 		if (field.equals("all")) {
 			SearchSourceBuilder sourceBuilder1 = new SearchSourceBuilder();
 			sourceBuilder1.query(QueryBuilders.fuzzyQuery(mainChartrInfo, sword).fuzziness(Fuzziness.ONE));
+			// 페이징 처리 관련 -----  디폴트 10개 임 
 			sourceBuilder1.size(3200);
 			sourceBuilder1.from(0);
 
 			SearchSourceBuilder sourceBuilder2 = new SearchSourceBuilder();
 			sourceBuilder2.query(QueryBuilders.fuzzyQuery(cntntsSj, sword).fuzziness(Fuzziness.ONE));
-
 			// 페이징 처리 관련 -----  디폴트 10개 임 
 			sourceBuilder2.size(3200);
 			sourceBuilder2.from(0);
@@ -71,31 +73,54 @@ public class Elasticsearch {
 					for(SearchHit s:i.getResponse().getHits().getHits()) {
 						  Map<String, Object> sourceMap = s.getSourceAsMap();
 						  arrList.add(sourceMap);
-						  System.out.println(sourceMap.get("plantbook_no"));
 					  }
 				}
+				System.out.println("all @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				return arrList;
 				
 			}catch (IOException e) {
 				System.err.println("Elastic search fail");
 			}
 		}
-		//sourceBuilder.query(QueryBuilders.matchQuery(field, sword));
-		return null;
-		
-	
-					
-		//SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-		
-		//System.out.println(searchResponse.getHits().getHits()); 객체? 로 출력됨
-		/*List<Map<String, Object>> list = new ArrayList();
-		for (SearchHit sh : searchResponse.getHits().getHits()) {
-			list.add(sh.getSourceAsMap());
-		}
+		else if(field.equals("cntntsSj")) {
+			SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+			sourceBuilder.query(QueryBuilders.matchQuery(cntntsSj, sword));			
 			
-		for (Map<String, Object> map : list) {
-			System.out.println(map.get("place_nm"));
+			// 페이징 처리 관련 -----  디폴트 10개 임 
+			sourceBuilder.size(3200);
+			sourceBuilder.from(0);
+			
+			searchRequest1.source(sourceBuilder);
+			SearchResponse searchResponse = client.search(searchRequest1, RequestOptions.DEFAULT);
+			
+			List<Map<String, Object>> list = new ArrayList();
+			
+			for (SearchHit sh : searchResponse.getHits().getHits()) {
+				list.add(sh.getSourceAsMap());
+			}
+			System.out.println("cntntsSj @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+sword+list.size());
+			return list;
 		}
-		return list;*/
+		
+		else {
+			SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+			sourceBuilder.query(QueryBuilders.matchQuery(mainChartrInfo, sword));
+			
+			// 페이징 처리 관련 -----  디폴트 10개 임 
+			sourceBuilder.size(3200);
+			sourceBuilder.from(0);
+
+			searchRequest1.source(sourceBuilder);
+			SearchResponse searchResponse = client.search(searchRequest1, RequestOptions.DEFAULT);
+			
+			List<Map<String, Object>> list = new ArrayList();
+			
+			for (SearchHit sh : searchResponse.getHits().getHits()) {
+				list.add(sh.getSourceAsMap());
+			}
+			System.out.println("ma @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+sword+list.size());
+			return list;
+		}
+		return null;
 	}
 }

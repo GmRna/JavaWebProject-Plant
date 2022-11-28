@@ -75,6 +75,8 @@ public interface PetplantService {
 	PetplantVO listpop(PetplantVO vo);
 	
 	Map list2(PetplantVO vo);
+	
+	Map savepetList(PetplantVO vo);
 
 	
 
