@@ -8,7 +8,7 @@
   데이터 베이스 : MySQL  
   개발 환경 : AWS EC2, eclipse, VSCode, Apatch Tomcat, Github, elastic stack  
 
-- 개발일정
+- 개발일정  
   2022.07.25 ~ 2022.09.02
 
 - 팀원 및 기능 구현  
