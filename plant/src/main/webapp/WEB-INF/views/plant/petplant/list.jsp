@@ -36,7 +36,7 @@ var listIdx = 0;
 
 $(function () {
 	// 반려식물 TR 클릭 시 
-	$("#petplant #petplantImgDiv, .icons-react .icons-left #petreplydiv").click(function (){
+	$(".feeds .petplantImgDiv, .icons-react .icons-left .petreplydiv").click(function (){
 		
 		listIdx = $(this).index("#petplant #petplantImgDiv");
 		
@@ -92,7 +92,7 @@ $(function () {
 	});
 	
 	// 게시판 좋아요 클릭
-	$("#petlike #likeicon").click(function(){ 
+	$(".petlike .likeicon").click(function(){ 
 		
 		<c:if test="${empty loginUserInfo}">
 			alert('로그인 후 이용해주세요like');
@@ -132,7 +132,7 @@ $(function () {
 	});
 	
 	// 게시판 더보기 버튼 - 수정 및 신고 
-	$("#icon-react #icon-more").click(function () {
+	$(".icon-react .icon-more").click(function () {
 		
 		var petplant = $(this).parent().parent().parent();
 		var board_no = petplant.find("input[name='pet_no']").val();
@@ -196,7 +196,7 @@ $(function () {
 	}) 
 	
 	// 담기
-	$(".icons-react #petputDiv").click(function () {
+	$(".icons-react .petputDiv").click(function () {
 		<c:if test="${empty loginUserInfo}">
 			alert('로그인 후 이용해주세요 put');
 			return false;
@@ -318,14 +318,14 @@ function endpage() {
 						<span class="userID main-id point-span" >${list.user_nick }</span>
 					</div>
 					<!-- 더보기 버튼  -->
-					<div id="icon-react">
+					<div id="icon-react" class="icon-react">
 						<img class="icon-react icon-more" id="icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" >
 						<div id="reportList${list.pet_no}"></div>
 						<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
 						<div class="moreDiv" id="moreDiv${list.pet_no}" style="display:none;" >
 							<c:if test="${loginUserInfo.user_no eq list.user_writeNo }">
 								<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
-								<span id="icon-delete" ><img class="icon-edit" id="icon-delete" src="/plant/img/petplant/edit.png" >삭제하기</span>
+								<span id="icon-delete" ><img class="icon-edit" id="icon-delete" src="/plant/img/petplant/X.png" >삭제하기</span>
 							</c:if>
 							<c:if test="${empty loginUserInfo or loginUserInfo.user_no ne list.user_writeNo}">
 								<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>
@@ -343,7 +343,7 @@ function endpage() {
 			    <input type="hidden" name="user_plantfile_real" value="${list.user_plantfile_real}">
         
 				<!-- 상세 페이지 창 띄우는 이미지 petplantImgDiv -->
-				<div id="petplantImgDiv">
+				<div id="petplantImgDiv" class="petplantImgDiv">
   					<!-- 이미지 -->		       
 			        <div class="main-image">
 						<c:set var="pets" value="${fn:split(list.filename_real,',')}"></c:set>
@@ -356,23 +356,23 @@ function endpage() {
 				<div class="icons-react">
 			        <div class="icons-left" id="petlikediv">
 			        	<input type="hidden" name="pet_no" value="${list.pet_no }">
-				<input type="hidden" name="user_writeNo" value="${list.user_writeNo }">
+						<input type="hidden" name="user_writeNo" value="${list.user_writeNo }">
 			        	<!-- 좋아요 아이콘 -->
-						<div id="petlike">
+						<div id="petlike" class="petlike">
 							<c:choose>	
 								<c:when test="${list.like_check == 1}">
-									<img id="likeicon" class="icon-react seedImage" src="/plant/img/petplant/seedLike.png" >
+									<img id="likeicon" class="icon-react seedImage likeicon" src="/plant/img/petplant/seedLike.png" >
 								</c:when>
 							<c:otherwise>
-								<img id="likeicon" class="icon-react seedImage" src="/plant/img/petplant/seednotLike.png" >
+								<img id="likeicon" class="icon-react seedImage likeicon" src="/plant/img/petplant/seednotLike.png" >
 							</c:otherwise>
 							</c:choose>
 						</div>
 						<!-- 댓글 아이콘 -->
-					    <img class="icons-left" id="petreplydiv" src="/plant/img/petplant/speech-bubble.png" >
+					    <img class="icons-left petreplydiv" id="petreplydiv" src="/plant/img/petplant/speech-bubble.png" >
 					</div>
 					<!-- 담기 아이콘 -->
-					<div class="icon-react" id="petputDiv" >
+					<div class="icon-react petputDiv" id="petputDiv" >
 			          	<c:if test="${list.ppp_check == 0 }">
 					 		<img class="icon-react save" src="/plant/img/petplant/save1.png" >
 					 	</c:if>

@@ -18,14 +18,14 @@
 			</div>
 			<!-- ... 아이콘 -->
 			<!-- 더보기 버튼  -->
-			<div id="icon-view-view">
+			<div id="icon-view-view" class="icon-view-view">
 				<img class="icon-react icon-more" id="icon-more" src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png" >
 				<div id="reportList${petboard.pet_no}"></div>
 				<!-- 더보기 버튼 클릭 시 나오는 레이어 -->
 				<div class="moreDivPop" id="moreDivPop${petboard.pet_no}" style="display:none;" >
 					<c:if test="${loginUserInfo.user_no eq petboard.user_writeNo }">
 						<span id="icon-edit" ><img class="icon-edit" id="icon-edit" src="/plant/img/petplant/edit.png" >수정하기</span>
-						<span id="icon-delete" ><img class="icon-edit" id="icon-delete" src="/plant/img/petplant/edit.png" >삭제하기</span>
+						<span id="icon-delete" ><img class="icon-edit" id="icon-delete" src="/plant/img/petplant/X.png" >삭제하기</span>
 					</c:if>
 					<c:if test="${empty loginUserInfo or loginUserInfo.user_no ne petboard.user_writeNo}">
 						<span id="icon-siren"><img class="icon-siren" id="icon-siren" src="/plant/img/petplant/siren.png" >신고하기</span>
@@ -55,15 +55,15 @@
 	         		<!-- 게시판 좋아요 눌렀는지 않눌럿는지 체크 -->
 	         		<c:choose>	
 						<c:when test="${petboard.like_check == 1}">
-							<img id="likeicon" class="icon-react" src="/plant/img/petplant/seedLike.png" >
+							<img id="likeicon" class="likeicon" src="/plant/img/petplant/seedLike.png" >
 						</c:when>
 						<c:otherwise>
-							<img id="likeicon" class="icon-react" src="/plant/img/petplant/seednotLike.png" >
+							<img id="likeicon" class="likeicon" src="/plant/img/petplant/seednotLike.png" >
 						</c:otherwise>
 					</c:choose>
 			</div>
 			<!-- 담았는지 아닌지 -->
-			<div class="icon-react" id="petputDiv">
+			<div class="icon-react petputDiv" id="petputDiv">
             	<c:if test="${pppcheck == 0 }">
 			  		<img class="icon-react save" src="/plant/img/petplant/save1.png" >
 			  	</c:if>
@@ -157,10 +157,10 @@
 								<c:if test="${rlist.ppr_content ne '삭제된 댓글입니다' }">
 									<c:choose>	
 								  		<c:when test="${rlist.like_replycheck == 1}">
-											<img id="hearticon" class="comment-heart" src="/plant/img/petplant/redheart.png" >
+											<img id="hearticon" class="comment-heart hearticon" src="/plant/img/petplant/redheart.png" >
 										</c:when>
 										<c:otherwise>
-					                   		<img id="hearticon" class="comment-heart" src="/plant/img/petplant/heart.png">
+					                   		<img id="hearticon" class="comment-heart hearticon"  src="/plant/img/petplant/heart.png">
 										</c:otherwise>
 							  		</c:choose>
 								</c:if>
@@ -215,7 +215,7 @@ console.log("petboard.like_check : " +petboard.like_check);
 $(function () {
 	
 	// 게시판 좋아요 클릭
-	$(".icons-left #likeicon").click(function(){ 
+	$(".icons-left .likeicon").click(function(){ 
 		
 		<c:if test="${empty loginUserInfo}">
 			alert('로그인 후 이용해주세요 팝업 좋아요');
@@ -270,7 +270,7 @@ $(function () {
 	});
 	
 	// 댓글 좋아요
-	$(".comments #hearticon").click(function(){ 
+	$(".comments .hearticon").click(function(){ 
 		
 		<c:if test="${empty loginUserInfo}">
 			alert('로그인 후 이용해주세요 댓글 좋아요');
@@ -311,7 +311,7 @@ $(function () {
 	
 	
 	// 게시판 더보기 버튼 - 수정 및 신고 
-	$("#icon-view-view #icon-more").click(function () {
+	$(".icon-view-view .icon-more").click(function () {
 		console.log("popup창 신고 수정");
 		
 		var petplant = $(this).parent().parent().parent();
@@ -362,7 +362,41 @@ $(function () {
 		$(".submit-comment").css('color','#0095f6');
 	})
 	
-	
+	// 담기
+	$(".icons-react .petputDiv").click(function () {
+		<c:if test="${empty loginUserInfo}">
+			alert('로그인 후 이용해주세요 put');
+			return false;
+		</c:if>
+		
+		var petputDiv = $(this).find(".save");
+		var petplant = $(this).parent().parent();
+		var pet_no = petplant.find("input[name='pet_no']").val();
+		
+		console.log("pet_no : " + pet_no + " 담기버튼 ");
+		
+		$.ajax ({
+			url : 'savepetplant.do',
+			method : 'post',
+			data : {
+				pet_no : pet_no				
+			},
+			dataType : 'json',
+			success : function(no) {
+				if(no == 1){
+					console.log("no : " +no);
+					$(petputDiv).attr('src','/plant/img/petplant/save2.png');
+				} else {
+					$(petputDiv).attr('src','/plant/img/petplant/save1.png');
+				}
+			}, error: function (xhr, desc, err) {
+	            alert('에러가 발생');
+	            console.log(err);
+	            return; 
+	        }
+		})
+		
+	})
 });
 
 

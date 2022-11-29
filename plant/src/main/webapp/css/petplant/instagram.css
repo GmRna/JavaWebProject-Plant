@@ -207,7 +207,7 @@ header {
     justify-content: space-between;
 }
 
-.icon-react {
+.icon-react , .likeicon{
     width: 24px;
     height: 24px;
 }

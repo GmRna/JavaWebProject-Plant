@@ -326,7 +326,7 @@
 	    ON (a.pet_no = b.pet_no)
 	    inner join plant.petplantput c
 	    on a.pet_no  = c.pet_no
-	    where a.user_no = #{user_no}
+	    where c.user_no = #{user_no}
 		ORDER BY c.ppp_regdate DESC
 		LIMIT  ${startIdx},${pageRow}
 	</select>
