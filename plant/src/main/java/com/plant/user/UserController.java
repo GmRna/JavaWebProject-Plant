@@ -197,7 +197,7 @@ public class UserController {
 		sess.invalidate(); // 세션초기화(세션객체에있는 모든 값들이 삭제)
 		//sess.removeAttribute("loginInfo"); // 세션객체의 해당값만 삭제
 		model.addAttribute("msg", "로그아웃되었습니다.");
-		model.addAttribute("url", "plant/main/index.do");
+		model.addAttribute("url", "redirect:/plant/main/index.do");
 		return "common/alert";
 	}
 	
