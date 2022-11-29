@@ -15,7 +15,7 @@
 	</select>
 	
 	<select id="myInfo" resultType="com.plant.user.UserVO">
-		SELECT * FROM user WHERE user_id = #{user_id}
+		SELECT * FROM user WHERE user_no = #{user_no}
 	</select>
 
 	<insert id="insert" parameterType="com.plant.user.UserVO">
