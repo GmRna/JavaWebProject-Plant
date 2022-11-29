@@ -14,7 +14,7 @@
 function searchElastic() {
 	var sword = $('input[name="headersword"]').val();
 	var stype = "all";
-	location.href = '/plant/plantbook/searchElastic.do?sword='+sword+'&stype='+stype;
+	location.href = '/plant/plantbook/searchElastic.do?sword='+sword+'&stype='+stype+'&page=1';
 }
 
 </script>

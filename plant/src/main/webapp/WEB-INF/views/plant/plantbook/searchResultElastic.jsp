@@ -52,21 +52,33 @@ th.down {
     width: 80em;
    }
 
-#pagingUl {
-	display: flex;
+#maplistBtn {
+	padding-top: 15px;
+    padding-bottom: 15px;
+    float: right;
 }
 
-.pagingLi:hover a {
+li.elastic:hover a {
   color: #fdfdfd;
-  background-color: #48663f;
+  background-color: #89AD98;
 }
 
-.pagingLi.active a {
+li.elastic.active a {
   color: #fdfdfd;
-  background-color: #48663f;
+  background-color: #89AD98;
 }
 
-.pagingLi a {
+a.current{ 
+	color: #fdfdfd;
+	background-color: #89AD98; 
+}
+
+.ulBtn{
+    display: flex;
+    justify-content: center;
+}
+
+li.elastic a {
   border-radius: 0.2rem;
   color: #7d7d7d;
   text-decoration: none;
@@ -75,12 +87,7 @@ th.down {
   text-align: center;
   padding: 2px 7px 5px 7px;
   border: solid 1px #d7d7d7;
-}
-.paging{
-    display: flex;
-    justify-content: center; 
-}
-
+}  
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -88,7 +95,7 @@ th.down {
 function search() {
 	var sword = $('input[name="sword"]').val();
 	var stype = $('.stype').val();
-	location.href = '/plant/plantbook/searchElastic.do?sword='+sword+'&stype='+stype;
+	location.href = '/plant/plantbook/searchElastic.do?sword='+sword+'&stype='+stype+'&page=1';
 }
 </script>
 </head>
@@ -136,6 +143,22 @@ function search() {
 	</c:if>
 	
 	<div class="boxxx">
+	</div>
+	<!-- 페이징 처리 -->
+	<div class="pagenate clear">
+		<div class="paging">
+			<ul class="ulBtn" >
+				<c:if test="${paging.prev == true }">
+					<li class="elastic"><a href="searchElastic.do?page=${paging.page }&stype=${param.stype}&sword=${param.sword}"><</a></li>
+				</c:if>
+				<c:forEach var="p" begin="${paging.startPage }" end="${paging.endPage }">
+					<li class="elastic"><a href='searchElastic.do?page=${p }&stype=${param.stype}&sword=${param.sword}' <c:if test="${plantBookVO.page == p }"> class='current' </c:if>>${p }</a></li>
+				</c:forEach>
+				<c:if test="${paging.next == true }"> 
+					<li class="elastic"><a href="searchElastic.do?page=${paging.endPage+1 }&stype=${param.stype}&sword=${param.sword}">></a></li>
+				</c:if>
+			</ul> 
+		</div>
 	</div>
 	
 

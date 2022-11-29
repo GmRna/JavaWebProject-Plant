@@ -88,7 +88,7 @@ th.down {
 function search() {
 	var sword = $('input[name="sword"]').val();
 	var stype = $('.stype').val();
-	location.href = '/plant/plantbook/search.do?sword='+sword+'&stype='+stype;
+	location.href = '/plant/plantbook/search.do?sword='+sword+'&stype='+stype+'&page=1';
 }
 
 

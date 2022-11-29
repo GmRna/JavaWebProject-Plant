@@ -1,74 +1,94 @@
 package com.plant.plantbook;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpHost;
+import org.elasticsearch.action.search.MultiSearchRequest;
+import org.elasticsearch.action.search.MultiSearchResponse;
+import org.elasticsearch.action.search.MultiSearchResponse.Item;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 
-public class Elasticsearch {
+public class Elasticsearch3 {
 	
 	public static void main (String [] args) throws Exception {
-		List<Map<String, Object>> list = getPlant("plantbook", "all", "참누리", 1, 10);
+		List<Map<String, Object>> list = getPlant("plantbook", "all", "참누리");
 		for (Map<String, Object> map : list) {
 			System.out.println("plantbook_no : "+map.get("plantbook_no")+"\t cntntsSj : "+map.get("cntntsSj")+"\t mainChartrInfo: "+map.get("mainChartrInfo"));
 		}
 	}
 	
-	public static List<Map<String, Object>> getPlant(String index, String field, 
-			String sword, int page, int size) 
+	public static List<Map<String, Object>> getPlant(String index, String field, String sword) 
 			throws Exception {
 		
 		HttpHost host = new HttpHost("localhost",9200);
 		RestClientBuilder restClientBuilder = RestClient.builder(host);
-		
 		RestHighLevelClient client = new RestHighLevelClient(restClientBuilder);
 		
+		MultiSearchRequest request = new MultiSearchRequest();
+		
 		SearchRequest searchRequest1 = new SearchRequest(index);
+		SearchRequest searchRequest2 = new SearchRequest(index);
 		
-		// 주요 특성
-		String mainChartrInfo = "mainChartrInfo";
-		// 품종 명
-		String cntntsSj = "cntntsSj";
-		
-		
+				
 		if (field.equals("all")) {
-			SearchSourceBuilder sourceBuilder1 = new SearchSourceBuilder();
-			sourceBuilder1.query(QueryBuilders.multiMatchQuery(sword, mainChartrInfo, cntntsSj));
+			String mainChartrInfo = "mainChartrInfo";
+			String cntntsSj = "cntntsSj";
 
-			sourceBuilder1.size(size);
-			sourceBuilder1.from(page);
+			SearchSourceBuilder sourceBuilder1 = new SearchSourceBuilder();
+			sourceBuilder1.query(QueryBuilders.matchQuery(mainChartrInfo, sword));
+
+			sourceBuilder1.size(3200);
+			sourceBuilder1.from(0);
+
+			SearchSourceBuilder sourceBuilder2 = new SearchSourceBuilder();
+			sourceBuilder2.query(QueryBuilders.matchQuery(cntntsSj, sword));
+
+			sourceBuilder2.size(3200);
+			sourceBuilder2.from(0);
 			
 			searchRequest1.source(sourceBuilder1);
+			searchRequest2.source(sourceBuilder2);
 			
-			SearchResponse searchResponse = client.search(searchRequest1, RequestOptions.DEFAULT);
+			request.add(searchRequest1);
+			request.add(searchRequest2);
 			
-			List <Map<String, Object>> list = new ArrayList<>();
-			
-			for (SearchHit sh : searchResponse.getHits().getHits()) {
-				list.add(sh.getSourceAsMap());
+			try {
+				MultiSearchResponse searchResponse = client.msearch(request, RequestOptions.DEFAULT);
+				List <Map<String, Object>> arrList = new ArrayList<>();
+				
+				for(Item i:searchResponse.getResponses()) {
+					for(SearchHit s:i.getResponse().getHits().getHits()) {
+						  Map<String, Object> sourceMap = s.getSourceAsMap();
+						  arrList.add(sourceMap);
+					  }
+				}
+				System.out.println("all @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+arrList.size());
+				return arrList;
+				
+			}catch (IOException e) {
+				System.err.println("Elastic search fail");
 			}
-			System.out.println("all @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+list.size());
-			return list;
 		}
 		else if(field.equals("cntntsSj")) {
 			SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
 			sourceBuilder.query(QueryBuilders.matchQuery(field, sword));			
 			
 			// 페이징 처리 관련 -----  디폴트 10개 임 
-			sourceBuilder.size(4000);
-			sourceBuilder.from(page);
+			sourceBuilder.size(3200);
+			sourceBuilder.from(0);
 			
 			searchRequest1.source(sourceBuilder);
 			SearchResponse searchResponse = client.search(searchRequest1, RequestOptions.DEFAULT);
@@ -87,8 +107,8 @@ public class Elasticsearch {
 			sourceBuilder.query(QueryBuilders.matchQuery(field, sword));
 			
 			// 페이징 처리 관련 -----  디폴트 10개 임 
-			sourceBuilder.size(4000);
-			sourceBuilder.from();
+			sourceBuilder.size(3200);
+			sourceBuilder.from(0);
 
 			searchRequest1.source(sourceBuilder);
 			SearchResponse searchResponse = client.search(searchRequest1, RequestOptions.DEFAULT);
@@ -101,36 +121,6 @@ public class Elasticsearch {
 			System.out.println("ma @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+sword+list.size());
 			return list;
 		}
-	}
-
-	public static Map getPaging(List<Map<String, Object>> list) {
-		PlantBookVO vo = new PlantBookVO();
-		
-		int totalCount = list.size();
-		int totalPage = totalCount / vo.getPageRow();
-		
-		if ( totalCount % vo.getPageRow() > 0 ) totalPage++;
-		
-		int startIdx = (vo.getPage()-1) * vo.getPageRow();
-		
-		vo.setStartIdx(startIdx);
-
-		int endPage = (int)(Math.ceil(vo.getPage()/10.0)*10);
-		int startPage = endPage-9;
-		if (endPage > totalPage) endPage = totalPage;
-		boolean prev = startPage > 1 ? true : false;
-		boolean next = endPage < totalPage ? true : false;
-		
-		Map map = new HashMap();
-		map.put("totalCount", totalCount);
-		map.put("totalPage", totalPage);
-		map.put("startPage", startPage);
-		map.put("endPage", endPage);
-		map.put("prev", prev);
-		map.put("next", next);
-		map.put("list", list);
-		
-		System.out.println(" totalCount " + totalCount + " " + totalPage + " " + startPage + " " + endPage);
-		return map;
+		return null;
 	}
 }

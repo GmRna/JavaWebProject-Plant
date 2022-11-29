@@ -42,19 +42,38 @@ public class PlantBookController {
 	
 	
 	@GetMapping("/plantbook/searchElastic.do")
-	public String searchElastic(PlantBookVO vo, @RequestParam String sword , @RequestParam String stype,HttpServletRequest req, Model model) throws Exception {
+	public String searchElastic(PlantBookVO vo, @RequestParam String sword , @RequestParam String stype,
+			@RequestParam Integer page,
+			HttpServletRequest req, Model model) throws Exception {
 		vo.setSword(sword);
 		vo.setStype(stype);
 		
-		List<Map<String, Object>> list = Elasticsearch.getPlant("plantbook", vo.getStype(), sword);
+		// 전체
+		int size = 4000;
+		List<Map<String, Object>> list = Elasticsearch.getPlant("plantbook", vo.getStype(), sword, 0, size);
+		
+		Map paging = new HashMap();
+		paging = Elasticsearch.getPaging(list);
+		System.out.println("paging 시작");
+		model.addAttribute("paging", paging); 
+		
+		// 1페이지
+		if(vo.getPage() == 1) {
+			vo.setPage(vo.getPage()-1);
+		} else {
+			vo.setPage((vo.getPage()-1) * vo.getPageRow());
+		}
 		
 		Map searchList = new HashMap();
-		for (Map<String, Object> map : list) {
+		List<Map<String, Object>> list2 = Elasticsearch.getPlant("plantbook", vo.getStype(), sword, vo.getPage(), 10);
+		for (Map<String, Object> map : list2) {
 			System.out.println((map.get("plantbook_no"))+"\t"+map.get("cntntsSj")+"\t"+map.get("mainChartrInfo"));
-			searchList.put("list", list);
+			searchList.put("list", list2);
 		}
+		
 		model.addAttribute("list", searchList);
 		model.addAttribute("totalcount",  list.size());
+		
 		return "plant/plantbook/searchResultElastic";
 	}
 	
