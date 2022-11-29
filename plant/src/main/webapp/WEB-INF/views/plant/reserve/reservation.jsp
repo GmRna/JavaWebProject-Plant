@@ -482,7 +482,12 @@
 				}
 				if(result) {
 					price += "	<td>출장비용</td>";
-					price += "	<td>"+visitPay+"</td>";
+					if(select[2] == "비대면 케어"){
+						price += "	<td>추가 금액 없음</td>";
+						visitPay = 0;
+					} else {
+						price += "	<td>"+visitPay+"</td>";	
+					}
 					price += "	<td class='subTotal' id='"+id+"subTotal'>"+(Number(majorPay) + Number(visitPay))+"</td>";
 				}
 			}			
