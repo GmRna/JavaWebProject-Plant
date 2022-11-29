@@ -22,10 +22,12 @@
 </script>
 </head>
 <body>
-<div class="sub" id="wrapper">
-	<h2>가드너 메뉴 바로가기</h2>
-	<div class="size" id="gdView">
+<div style="width:300px; margin:auto;" class="sub" id="wrapper">
+	<h2 style="text-align: center;">가드너 메뉴 바로가기</h2>
+	<div style="width:fit-content; margin:auto;" class="size" id="gdView">
 		<button type='button' onclick='goGdReservationView(${loginGdInfo.gd_no})'>나의 예약 스케줄 관리</button>
+	</div>
+	<div style="width:fit-content; margin:auto;" class="size" id="gdView">
 		<button type='button' onclick='goCompletion(${loginGdInfo.gd_no})'>케어진행 내용 및 리뷰 관리</button>
 	</div>
 </div>
